@@ -1,0 +1,613 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Synthwave Color Palette */
+    --neon-pink: #ff2a6d;
+    --neon-cyan: #05d9e8;
+    --neon-purple: #d300c5;
+    --neon-blue: #7700ff;
+    --neon-orange: #ff6b35;
+    --dark-bg: #0d0221;
+    --grid-color: rgba(255, 42, 109, 0.3);
+    --sun-yellow: #ffcc00;
+    --sun-orange: #ff6600;
+
+    /* Typography */
+    --font-display: 'Orbitron', monospace;
+    --font-body: 'Rajdhani', sans-serif;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--dark-bg);
+    font-family: var(--font-body);
+    color: white;
+}
+
+/* Toronto Skyline Background - AI Generated */
+.skyline-backdrop {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 50vh;
+    background: url('/toronto-skyline.png') center bottom / cover no-repeat;
+    z-index: 0;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Canvas Container */
+.canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+/* UI Overlay */
+.ui-overlay {
+    position: fixed;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.ui-overlay>* {
+    pointer-events: auto;
+}
+
+/* Logo/Title */
+.title-container {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    z-index: 100;
+}
+
+.title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(5, 217, 232, 0.5);
+    animation: glow-pulse 2s ease-in-out infinite alternate;
+}
+
+.subtitle {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--neon-cyan);
+    opacity: 0.8;
+    margin-top: 5px;
+}
+
+@keyframes glow-pulse {
+    from {
+        filter: drop-shadow(0 0 10px rgba(5, 217, 232, 0.5));
+    }
+
+    to {
+        filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.8));
+    }
+}
+
+/* Controls Hint */
+.controls-hint {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    text-align: center;
+}
+
+.controls-hint p {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--neon-cyan);
+    opacity: 0.6;
+    animation: fade-pulse 3s ease-in-out infinite;
+}
+
+@keyframes fade-pulse {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* Speed Indicator */
+.speed-indicator {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 100;
+    text-align: right;
+}
+
+.speed-label {
+    font-family: var(--font-body);
+    font-size: 0.625rem;
+    letter-spacing: 0.2em;
+    color: var(--neon-pink);
+    opacity: 0.6;
+}
+
+.speed-value {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--neon-pink);
+    text-shadow: 0 0 20px rgba(255, 42, 109, 0.8);
+}
+
+/* Loading Screen */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--dark-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading-text {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.3em;
+    color: var(--neon-cyan);
+    animation: loading-blink 1.5s ease-in-out infinite;
+}
+
+@keyframes loading-blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.loading-bar {
+    width: 200px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.loading-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+    animation: loading-slide 1.5s ease-in-out infinite;
+}
+
+@keyframes loading-slide {
+    0% {
+        width: 0;
+        transform: translateX(0);
+    }
+
+    50% {
+        width: 100%;
+        transform: translateX(0);
+    }
+
+    100% {
+        width: 100%;
+        transform: translateX(200px);
+    }
+}
+
+/* Project Info Panel */
+.project-info {
+    position: fixed;
+    bottom: 100px;
+    left: 30px;
+    z-index: 100;
+    max-width: 350px;
+    padding: 20px;
+    background: rgba(13, 2, 33, 0.85);
+    border: 1px solid rgba(5, 217, 232, 0.3);
+    border-radius: 4px;
+    backdrop-filter: blur(10px);
+    transform: translateX(-120%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-info.visible {
+    transform: translateX(0);
+}
+
+.project-info h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: var(--neon-cyan);
+    margin-bottom: 10px;
+}
+
+.project-info p {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 15px;
+}
+
+.project-link {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--neon-pink);
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid var(--neon-pink);
+    transition: all 0.3s ease;
+}
+
+.project-link:hover {
+    background: var(--neon-pink);
+    color: var(--dark-bg);
+    box-shadow: 0 0 20px rgba(255, 42, 109, 0.5);
+}
+
+/* Pulse animation for audio button */
+.audio-prompt {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    background: rgba(5, 217, 232, 0.2);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--neon-cyan);
+    font-family: var(--font-display);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: pulse 2s infinite;
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(5, 217, 232, 0.3);
+    appearance: none;
+}
+
+.audio-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 8px 16px;
+    background: rgba(13, 2, 33, 0.8);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 4px;
+    color: var(--neon-cyan);
+    font-family: var(--font-display);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 1000;
+    cursor: pointer;
+    appearance: none;
+    transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.audio-toggle.off {
+    border-color: var(--neon-pink);
+    color: var(--neon-pink);
+}
+
+.audio-toggle:hover,
+.audio-prompt:hover {
+    background: rgba(5, 217, 232, 0.3);
+}
+
+.audio-toggle.off:hover {
+    background: rgba(255, 42, 109, 0.2);
+}
+
+.audio-toggle:focus-visible,
+.audio-prompt:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 2px;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: translateX(-50%) scale(1);
+        box-shadow: 0 0 20px rgba(5, 217, 232, 0.3);
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.05);
+        box-shadow: 0 0 30px rgba(5, 217, 232, 0.6);
+    }
+}
+
+/* ============================================
+   VIDEO OVERLAY - Fixed HTML Panel
+   ============================================ */
+.video-overlay {
+    position: fixed;
+    top: 120px;
+    left: 30px;
+    z-index: 200;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+}
+
+.video-overlay.visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.video-frame {
+    width: 400px;
+    background: rgba(13, 2, 33, 0.95);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow:
+        0 0 30px rgba(5, 217, 232, 0.3),
+        inset 0 0 60px rgba(5, 217, 232, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+.video-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px currentColor;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* CRT Scanline Overlay */
+.crt-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 3px, 3px 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.video-description {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 10px;
+    letter-spacing: 0.05em;
+}
+
+/* ============================================
+   LANE INDICATOR
+   ============================================ */
+.lane-indicator {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: rgba(13, 2, 33, 0.9);
+    border: 1px solid rgba(5, 217, 232, 0.3);
+    border-radius: 30px;
+    padding: 8px 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(5, 217, 232, 0.15);
+}
+
+.lane-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 20px;
+}
+
+.lane-btn:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.lane-btn.active {
+    background: rgba(5, 217, 232, 0.2);
+    color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(5, 217, 232, 0.3);
+}
+
+.lane-btn.active .lane-icon {
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px var(--neon-pink);
+}
+
+.lane-icon {
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.lane-label {
+    font-weight: 600;
+}
+
+.lane-hint {
+    font-size: 0.9rem;
+    opacity: 0.6;
+    font-weight: bold;
+}
+
+.lane-divider {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 1.2rem;
+    margin: 0 4px;
+}
+
+.lane-hint-text {
+    font-size: 0.65rem !important;
+    opacity: 0.4 !important;
+    margin-top: 5px;
+}
+
+/* ============================================
+   VEHICLE SELECTOR
+   ============================================ */
+.vehicle-selector {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    z-index: 100;
+    display: flex;
+    gap: 8px;
+    background: rgba(13, 2, 33, 0.9);
+    border: 1px solid rgba(5, 217, 232, 0.3);
+    border-radius: 25px;
+    padding: 6px 10px;
+    backdrop-filter: blur(10px);
+}
+
+.vehicle-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: var(--font-display);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 15px;
+}
+
+.vehicle-btn:hover {
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(5, 217, 232, 0.1);
+}
+
+.vehicle-btn.active {
+    background: rgba(5, 217, 232, 0.2);
+    color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(5, 217, 232, 0.3);
+}
+
+.vehicle-icon {
+    font-size: 1.2rem;
+}
+
+.vehicle-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .video-overlay {
+        top: auto;
+        bottom: 180px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+    }
+
+    .video-overlay.visible {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .video-frame {
+        width: 320px;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .lane-indicator {
+        bottom: 120px;
+        padding: 6px 10px;
+    }
+
+    .lane-btn {
+        padding: 6px 10px;
+        font-size: 0.6rem;
+    }
+
+    .lane-icon {
+        font-size: 0.8rem;
+    }
+
+    .lane-hint {
+        display: none;
+    }
+}
