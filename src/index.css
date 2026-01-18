@@ -399,6 +399,37 @@ body,
     text-transform: uppercase;
     margin-bottom: 10px;
     text-shadow: 0 0 10px currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+/* Theater Mode Button */
+.theater-mode-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid;
+    border-radius: 4px;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.theater-mode-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.theater-mode-btn svg {
+    width: 14px;
+    height: 14px;
 }
 
 .video-container {

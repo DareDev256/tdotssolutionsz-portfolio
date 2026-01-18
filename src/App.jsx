@@ -12,7 +12,8 @@ import * as THREE from 'three'
 
 // Phase 1 visual upgrade components
 import { SoftParticles } from './components/particles'
-import { GroundFog, DistanceHaze } from './components/atmosphere'
+import { GroundFog, DistanceHaze, EnhancedStarField, ProceduralNebula } from './components/atmosphere'
+import { TheaterMode } from './components/ui'
 
 // ============================================
 // PROJECT DATA (Loaded from JSON)
@@ -508,7 +509,7 @@ const SynthwaveRoad = () => {
     // Dashed lane divider markers
     const laneMarkers = useMemo(() => {
         const markers = []
-        for (let z = 0; z > -700; z -= 15) {
+        for (let z = 0; z > -700; z -= 25) {
             markers.push(z)
         }
         return markers
@@ -553,19 +554,31 @@ const SynthwaveRoad = () => {
                 />
             </mesh>
 
-            {/* Dashed lane markers for Popular lane (left) */}
+            {/* Dashed lane markers for Popular lane (left) - subtle dashes */}
             {laneMarkers.map((z, i) => (
                 <mesh key={`left-${i}`} rotation={[-Math.PI / 2, 0, 0]} position={[LANE_CONFIG.POPULAR.x, 0.025, z]}>
-                    <planeGeometry args={[0.15, 8]} />
-                    <meshBasicMaterial color="#7700ff" transparent opacity={0.7} />
+                    <planeGeometry args={[0.12, 3]} />
+                    <meshStandardMaterial
+                        color="#9933ff"
+                        emissive="#9933ff"
+                        emissiveIntensity={0.6}
+                        transparent
+                        opacity={0.35}
+                    />
                 </mesh>
             ))}
 
-            {/* Dashed lane markers for Chronological lane (right) */}
+            {/* Dashed lane markers for Chronological lane (right) - subtle dashes */}
             {laneMarkers.map((z, i) => (
                 <mesh key={`right-${i}`} rotation={[-Math.PI / 2, 0, 0]} position={[LANE_CONFIG.CHRONOLOGICAL.x, 0.025, z]}>
-                    <planeGeometry args={[0.15, 8]} />
-                    <meshBasicMaterial color="#ff6b35" transparent opacity={0.7} />
+                    <planeGeometry args={[0.12, 3]} />
+                    <meshStandardMaterial
+                        color="#ffaa44"
+                        emissive="#ffaa44"
+                        emissiveIntensity={0.6}
+                        transparent
+                        opacity={0.35}
+                    />
                 </mesh>
             ))}
 
@@ -1291,9 +1304,9 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
             {/* Cool rim light from front */}
             <directionalLight position={[0, 10, 50]} intensity={0.2} color="#05d9e8" />
 
-            {/* Cosmic background elements - reduced on tablets */}
-            {!reducedEffects && <StarField />}
-            {!reducedEffects && <NebulaClouds />}
+            {/* Cosmic background elements - Phase 2 enhanced versions */}
+            {!reducedEffects && <EnhancedStarField count={2000} radius={400} depth={600} />}
+            {!reducedEffects && <ProceduralNebula scrollOffset={scroll.offset} intensity={0.5} />}
 
             {/* Ambient neon particles - Phase 1 upgrade */}
             <SoftParticles
@@ -1406,7 +1419,7 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
 // ============================================
 // VIDEO OVERLAY (Fixed HTML - Never floats!)
 // ============================================
-const VideoOverlay = ({ activeProject, audioEnabled }) => {
+const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
     const [isVisible, setIsVisible] = useState(false)
 
     useEffect(() => {
@@ -1426,6 +1439,17 @@ const VideoOverlay = ({ activeProject, audioEnabled }) => {
             <div className="video-frame" style={{ borderColor: activeProject.color }}>
                 <div className="video-title" style={{ color: activeProject.color }}>
                     {activeProject.title}
+                    {/* Fullscreen/Theater Mode button */}
+                    <button
+                        className="theater-mode-btn"
+                        onClick={onOpenTheater}
+                        title="Theater Mode (F)"
+                        style={{ borderColor: activeProject.color }}
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                        </svg>
+                    </button>
                 </div>
                 <div className="video-container">
                     <iframe
@@ -1573,6 +1597,7 @@ export default function App({ reducedEffects = false }) {
     const [activeProject, setActiveProject] = useState(null)
     const [currentLane, setCurrentLane] = useState('chronological')
     const [vehicleType, setVehicleType] = useState('tron') // tron, delorean, cyberbike
+    const [theaterMode, setTheaterMode] = useState(false)
 
     const handleToggleAudio = useCallback(() => {
         setAudioEnabled((prev) => !prev)
@@ -1589,6 +1614,34 @@ export default function App({ reducedEffects = false }) {
     const handleVehicleChange = useCallback((type) => {
         setVehicleType(type)
     }, [])
+
+    const handleOpenTheater = useCallback(() => {
+        if (activeProject) {
+            setTheaterMode(true)
+        }
+    }, [activeProject])
+
+    const handleCloseTheater = useCallback(() => {
+        setTheaterMode(false)
+    }, [])
+
+    // Keyboard shortcut: F to toggle theater mode
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'f' || e.key === 'F') {
+                // Don't trigger if typing in an input
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+
+                if (theaterMode) {
+                    setTheaterMode(false)
+                } else if (activeProject) {
+                    setTheaterMode(true)
+                }
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [theaterMode, activeProject])
 
     return (
         <>
@@ -1612,7 +1665,18 @@ export default function App({ reducedEffects = false }) {
                 </Canvas>
             </div>
             {/* Video overlay - Fixed HTML, never floats! */}
-            <VideoOverlay activeProject={activeProject} audioEnabled={audioEnabled} />
+            <VideoOverlay
+                activeProject={activeProject}
+                audioEnabled={audioEnabled}
+                onOpenTheater={handleOpenTheater}
+            />
+            {/* Theater mode - fullscreen video experience */}
+            <TheaterMode
+                project={activeProject}
+                audioEnabled={audioEnabled}
+                isOpen={theaterMode}
+                onClose={handleCloseTheater}
+            />
             <UIOverlay
                 audioEnabled={audioEnabled}
                 onToggleAudio={handleToggleAudio}

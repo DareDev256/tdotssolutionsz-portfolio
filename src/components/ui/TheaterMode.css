@@ -1,0 +1,144 @@
+/* src/components/ui/TheaterMode.css */
+
+.theater-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: theater-fade-in 0.3s ease-out;
+}
+
+@keyframes theater-fade-in {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(20px);
+  }
+}
+
+.theater-container {
+  width: 85vw;
+  max-width: 1600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: theater-scale-in 0.3s ease-out;
+}
+
+@keyframes theater-scale-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.theater-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.theater-close:hover {
+  background: rgba(255, 42, 109, 0.3);
+  border-color: #ff2a6d;
+  transform: scale(1.1);
+}
+
+.theater-title {
+  font-family: 'Orbitron', 'Rajdhani', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 30px currentColor;
+  text-align: center;
+}
+
+.theater-video-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 3px solid;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    0 0 60px rgba(0, 0, 0, 0.8),
+    0 0 30px currentColor,
+    inset 0 0 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.theater-video-frame iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.theater-description {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  max-width: 800px;
+  line-height: 1.5;
+}
+
+.theater-hint {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.theater-hint kbd {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .theater-container {
+    width: 95vw;
+  }
+
+  .theater-close {
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .theater-hint {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+}
