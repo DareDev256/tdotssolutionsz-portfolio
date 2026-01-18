@@ -10,37 +10,22 @@ import { EffectComposer, Bloom, Vignette, Noise, Scanline, ChromaticAberration }
 import { BlendFunction } from 'postprocessing'
 import * as THREE from 'three'
 
+// Phase 1 visual upgrade components
+import { SoftParticles } from './components/particles'
+import { GroundFog, DistanceHaze } from './components/atmosphere'
+
 // ============================================
-// PROJECT DATA (YouTube Links)
+// PROJECT DATA (Loaded from JSON)
 // ============================================
+import videoData from './data/videos.json'
+
 const NEON_COLORS = ['#ff2a6d', '#05d9e8', '#d300c5', '#7700ff', '#ff6b35', '#ffcc00', '#00ff88', '#ff00ff']
 
-const VIDEOS = [
-    // Original 6 videos
-    { id: 1, title: 'Synthwave Beats', description: 'Original vibes', url: 'https://www.youtube.com/watch?v=9hRUzEGfW7o', uploadDate: '2023-01-15', viewCount: 850000 },
-    { id: 2, title: 'Vaporwave Vibes', description: 'Chill aesthetic', url: 'https://www.youtube.com/watch?v=EmrpNsyVtDQ', uploadDate: '2023-03-20', viewCount: 1200000 },
-    { id: 3, title: 'Neon Nights', description: 'City lights', url: 'https://www.youtube.com/watch?v=Xedv19NEX-E', uploadDate: '2023-05-10', viewCount: 750000 },
-    { id: 4, title: 'Cyberpunk Drive', description: 'Future roads', url: 'https://www.youtube.com/watch?v=8p4i1b5IW2k', uploadDate: '2023-07-22', viewCount: 2100000 },
-    { id: 5, title: 'Retro Future', description: 'Back to tomorrow', url: 'https://www.youtube.com/watch?v=u3O5PKN9vCQ', uploadDate: '2023-09-05', viewCount: 450000 },
-    { id: 6, title: 'Final Lap', description: 'Victory ride', url: 'https://www.youtube.com/watch?v=E7ZStZMn-ac', uploadDate: '2023-11-18', viewCount: 1800000 },
-    // New 16 videos (placeholder data - update later)
-    { id: 7, title: 'Digital Dreams', description: 'Electronic vision', url: 'https://www.youtube.com/watch?v=L1ECRyART6o', uploadDate: '2024-01-15', viewCount: 500000 },
-    { id: 8, title: 'Midnight Run', description: 'Night drive', url: 'https://www.youtube.com/watch?v=gOid4x6kpAk', uploadDate: '2024-02-20', viewCount: 750000 },
-    { id: 9, title: 'Neon Highway', description: 'Endless road', url: 'https://www.youtube.com/watch?v=B28ZQ0l2loc', uploadDate: '2024-03-10', viewCount: 1200000 },
-    { id: 10, title: 'Starlight Express', description: 'Cosmic journey', url: 'https://www.youtube.com/watch?v=d5ganmZS6aY', uploadDate: '2024-04-05', viewCount: 2000000 },
-    { id: 11, title: 'Chrome Hearts', description: 'Metallic soul', url: 'https://www.youtube.com/watch?v=rFoNntvuQA8', uploadDate: '2024-05-12', viewCount: 350000 },
-    { id: 12, title: 'Electric Sunset', description: 'Golden hour', url: 'https://www.youtube.com/watch?v=pPVPBMPShkQ', uploadDate: '2024-06-18', viewCount: 1500000 },
-    { id: 13, title: 'Vapor Trail', description: 'Disappearing act', url: 'https://www.youtube.com/watch?v=kgIISZzhQBE', uploadDate: '2024-07-22', viewCount: 800000 },
-    { id: 14, title: 'Turbo Boost', description: 'Maximum speed', url: 'https://www.youtube.com/watch?v=7MZ3YfQPZrs', uploadDate: '2024-08-30', viewCount: 3000000 },
-    { id: 15, title: 'Laser Grid', description: 'Digital matrix', url: 'https://www.youtube.com/watch?v=FkVtdPrgtsU', uploadDate: '2024-09-14', viewCount: 450000 },
-    { id: 16, title: 'Arcade Mode', description: 'Game on', url: 'https://www.youtube.com/watch?v=AKuI1b-o69M', uploadDate: '2024-10-08', viewCount: 1100000 },
-    { id: 17, title: 'Pulse Wave', description: 'Heartbeat rhythm', url: 'https://www.youtube.com/watch?v=cUnESoCRPsw', uploadDate: '2024-11-20', viewCount: 600000 },
-    { id: 18, title: 'Hologram City', description: 'Virtual reality', url: 'https://www.youtube.com/watch?v=_ijbOhWdGHQ', uploadDate: '2024-12-05', viewCount: 900000 },
-    { id: 19, title: 'Quantum Leap', description: 'Time warp', url: 'https://www.youtube.com/watch?v=L75mTYXcRHw', uploadDate: '2025-01-10', viewCount: 2500000 },
-    { id: 20, title: 'Plasma Core', description: 'Energy surge', url: 'https://www.youtube.com/watch?v=gwXOTijyua4', uploadDate: '2025-02-14', viewCount: 400000 },
-    { id: 21, title: 'Warp Speed', description: 'Beyond limits', url: 'https://www.youtube.com/watch?v=0l5xIst3VME', uploadDate: '2025-03-22', viewCount: 1800000 },
-    { id: 22, title: 'Infinity Loop', description: 'Never ending', url: 'https://www.youtube.com/watch?v=Jp9BsyBZJz4', uploadDate: '2025-04-01', viewCount: 700000 },
-]
+// Transform JSON data to include full YouTube URLs
+const VIDEOS = videoData.videos.map(video => ({
+    ...video,
+    url: `https://www.youtube.com/watch?v=${video.youtubeId}`
+}))
 
 // Lane configuration
 const LANE_CONFIG = {
@@ -50,14 +35,14 @@ const LANE_CONFIG = {
     BILLBOARD_Y: 4.5,
     BILLBOARD_Z_START: -25,
     BILLBOARD_Z_SPACING: 28,
-    POPULAR_THRESHOLD: 1000000, // 1M views
+    POPULAR_THRESHOLD: videoData.settings?.popularThreshold || 500000, // 500K views (from settings)
 }
 
 // Process videos into lanes with positions
 const processVideosIntoLanes = () => {
-    // Sort by date for chronological lane (oldest first)
+    // Sort by date for chronological lane (newest first)
     const chronological = [...VIDEOS]
-        .sort((a, b) => new Date(a.uploadDate) - new Date(b.uploadDate))
+        .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
         .map((video, index) => ({
             ...video,
             color: NEON_COLORS[index % NEON_COLORS.length],
@@ -108,7 +93,8 @@ const CANVAS_GL_OPTIONS = {
     powerPreference: 'high-performance',
     stencil: false
 }
-const CANVAS_DPR = [1.5, 2] // Higher DPR for sharper visuals
+const CANVAS_DPR_DESKTOP = [1.5, 2] // Higher DPR for sharper visuals
+const CANVAS_DPR_TABLET = [1, 1.5] // Lower DPR for better tablet performance
 
 // Lane switching animation
 const LANE_SWITCH_SPEED = 0.08
@@ -238,6 +224,53 @@ const BillboardFrame = ({ project, isActive }) => {
                 {title}
             </Text>
 
+            {/* Ground Reflections - Inverted neon border glow */}
+            <group position={[0, -position[1] * 2 - 0.5, 0]} scale={[1, -0.4, 1]}>
+                {/* Top border reflection */}
+                <mesh position={[0, 1.55, 0.02]}>
+                    <boxGeometry args={[5.6, 0.1, 0.02]} />
+                    <meshBasicMaterial
+                        color={color}
+                        transparent
+                        opacity={0.15}
+                        blending={THREE.AdditiveBlending}
+                        depthWrite={false}
+                    />
+                </mesh>
+                {/* Bottom border reflection */}
+                <mesh position={[0, -1.55, 0.02]}>
+                    <boxGeometry args={[5.6, 0.1, 0.02]} />
+                    <meshBasicMaterial
+                        color={color}
+                        transparent
+                        opacity={0.15}
+                        blending={THREE.AdditiveBlending}
+                        depthWrite={false}
+                    />
+                </mesh>
+                {/* Side border reflections */}
+                <mesh position={[-2.75, 0, 0.02]}>
+                    <boxGeometry args={[0.1, 3.1, 0.02]} />
+                    <meshBasicMaterial
+                        color={color}
+                        transparent
+                        opacity={0.12}
+                        blending={THREE.AdditiveBlending}
+                        depthWrite={false}
+                    />
+                </mesh>
+                <mesh position={[2.75, 0, 0.02]}>
+                    <boxGeometry args={[0.1, 3.1, 0.02]} />
+                    <meshBasicMaterial
+                        color={color}
+                        transparent
+                        opacity={0.12}
+                        blending={THREE.AdditiveBlending}
+                        depthWrite={false}
+                    />
+                </mesh>
+            </group>
+
             {/* Glow light only when active - saves GPU */}
             {isActive && <pointLight position={[0, 0, 2]} color={color} intensity={1.5} distance={6} />}
         </group>
@@ -284,7 +317,7 @@ const CameraRig = ({ children, currentLane, onLaneChange }) => {
             rigRef.current.position.z = THREE.MathUtils.lerp(
                 rigRef.current.position.z,
                 targetZ,
-                0.1
+                0.15 // Snappier response for better 60fps feel
             )
             // Smooth lateral movement for lane switching
             rigRef.current.position.x = THREE.MathUtils.lerp(
@@ -303,13 +336,99 @@ const CameraRig = ({ children, currentLane, onLaneChange }) => {
 }
 
 // ============================================
+// SPEED LINES - Motion blur effect when scrolling fast
+// ============================================
+const SpeedLines = ({ reducedEffects }) => {
+    const scroll = useScroll()
+    const groupRef = useRef()
+    const lastOffsetRef = useRef(0)
+    const velocityRef = useRef(0)
+    const lineCount = reducedEffects ? 12 : 20
+
+    // Pre-generate line positions (spread on left and right sides)
+    const lineData = useMemo(() => {
+        const data = []
+        for (let i = 0; i < lineCount; i++) {
+            const side = i % 2 === 0 ? -1 : 1 // Alternate left/right
+            const spreadY = (Math.random() - 0.5) * 4 + 2 // Vertical spread
+            const spreadX = 2 + Math.random() * 2 // Distance from center
+            const length = 3 + Math.random() * 5 // Line length variation
+            data.push({
+                side,
+                x: side * spreadX,
+                y: spreadY,
+                z: -2 - Math.random() * 4,
+                length,
+                color: i % 3 === 0 ? '#05d9e8' : i % 3 === 1 ? '#ff2a6d' : '#ffffff'
+            })
+        }
+        return data
+    }, [lineCount])
+
+    useFrame(() => {
+        if (!groupRef.current) return
+
+        // Calculate velocity from scroll offset change
+        const currentOffset = scroll.offset
+        const delta = Math.abs(currentOffset - lastOffsetRef.current)
+        lastOffsetRef.current = currentOffset
+
+        // Smooth velocity with lerp (decay when not scrolling)
+        const targetVelocity = delta * 1000 // Scale for visibility
+        velocityRef.current = THREE.MathUtils.lerp(velocityRef.current, targetVelocity, 0.1)
+
+        // Velocity threshold for showing lines
+        const velocityThreshold = 0.5
+        const maxVelocity = 8
+        const normalizedVelocity = Math.min((velocityRef.current - velocityThreshold) / maxVelocity, 1)
+        const showLines = velocityRef.current > velocityThreshold
+
+        // Update line opacities and scales
+        groupRef.current.children.forEach((line, i) => {
+            if (showLines && normalizedVelocity > 0) {
+                line.material.opacity = normalizedVelocity * (0.3 + Math.random() * 0.2)
+                line.scale.z = 1 + normalizedVelocity * 2 // Stretch lines based on velocity
+            } else {
+                line.material.opacity = THREE.MathUtils.lerp(line.material.opacity, 0, 0.15)
+            }
+        })
+    })
+
+    return (
+        <group ref={groupRef} position={[0, 0, 0]}>
+            {lineData.map((line, i) => (
+                <mesh
+                    key={i}
+                    position={[line.x, line.y, line.z]}
+                    rotation={[0, 0, line.side * 0.1]} // Slight angle
+                >
+                    <planeGeometry args={[0.03, line.length]} />
+                    <meshBasicMaterial
+                        color={line.color}
+                        transparent
+                        opacity={0}
+                        blending={THREE.AdditiveBlending}
+                        depthWrite={false}
+                    />
+                </mesh>
+            ))}
+        </group>
+    )
+}
+
+// ============================================
 // PROXIMITY TRACKER - Determines closest billboard (lane-aware)
 // ============================================
 const ProximityTracker = ({ onActiveChange, onActiveUpdate, currentLane }) => {
     const scroll = useScroll()
     const lastActiveRef = useRef(null)
+    const frameCountRef = useRef(0)
 
     useFrame(() => {
+        // Throttle to check every 2nd frame for performance
+        frameCountRef.current++
+        if (frameCountRef.current % 2 !== 0) return
+
         // Calculate current camera Z position
         const cameraZ = -scroll.offset * TOTAL_DISTANCE
 
@@ -397,10 +516,15 @@ const SynthwaveRoad = () => {
 
     return (
         <group>
-            {/* Ground plane - extended */}
+            {/* Ground plane - extended with wet/reflective surface */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, -300]} receiveShadow>
                 <planeGeometry args={[800, 800]} />
-                <meshStandardMaterial color="#030308" roughness={0.95} />
+                <meshStandardMaterial
+                    color="#030308"
+                    roughness={0.3}
+                    metalness={0.6}
+                    envMapIntensity={0.5}
+                />
             </mesh>
 
             {/* Animated grid */}
@@ -479,6 +603,129 @@ const SynthwaveRoad = () => {
 }
 
 // ============================================
+// FLOATING NEON PARTICLES - Ambient atmosphere
+// ============================================
+const FloatingParticles = () => {
+    const particlesRef = useRef()
+    const count = 100 // Reduced from 150 for better performance
+
+    const [positions, velocities, colors] = useMemo(() => {
+        const positions = new Float32Array(count * 3)
+        const velocities = new Float32Array(count * 3)
+        const colors = new Float32Array(count * 3)
+
+        const neonColors = [
+            [1.0, 0.16, 0.43],   // pink
+            [0.02, 0.85, 0.91],  // cyan
+            [0.47, 0, 1.0],      // purple
+            [1.0, 0.42, 0.21],   // orange
+        ]
+
+        for (let i = 0; i < count; i++) {
+            // Spread particles around the driving path
+            positions[i * 3] = (Math.random() - 0.5) * 40
+            positions[i * 3 + 1] = Math.random() * 15 + 2
+            positions[i * 3 + 2] = Math.random() * -600
+
+            // Random slow velocities for drifting
+            velocities[i * 3] = (Math.random() - 0.5) * 0.02
+            velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.01
+            velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.01
+
+            // Random neon color
+            const color = neonColors[Math.floor(Math.random() * neonColors.length)]
+            colors[i * 3] = color[0]
+            colors[i * 3 + 1] = color[1]
+            colors[i * 3 + 2] = color[2]
+        }
+        return [positions, velocities, colors]
+    }, [])
+
+    useFrame((state) => {
+        if (!particlesRef.current) return
+        const posArray = particlesRef.current.geometry.attributes.position.array
+        const time = state.clock.elapsedTime
+
+        for (let i = 0; i < count; i++) {
+            // Gentle floating motion
+            posArray[i * 3] += velocities[i * 3] + Math.sin(time * 0.5 + i) * 0.005
+            posArray[i * 3 + 1] += Math.sin(time * 0.3 + i * 0.5) * 0.01
+            posArray[i * 3 + 2] += velocities[i * 3 + 2]
+
+            // Reset particles that drift too far
+            if (posArray[i * 3 + 1] > 20) posArray[i * 3 + 1] = 2
+            if (posArray[i * 3 + 1] < 1) posArray[i * 3 + 1] = 15
+        }
+        particlesRef.current.geometry.attributes.position.needsUpdate = true
+    })
+
+    return (
+        <points ref={particlesRef}>
+            <bufferGeometry>
+                <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
+                <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
+            </bufferGeometry>
+            <pointsMaterial
+                size={0.3}
+                vertexColors
+                transparent
+                opacity={0.8}
+                sizeAttenuation
+                blending={THREE.AdditiveBlending}
+                depthWrite={false}
+            />
+        </points>
+    )
+}
+
+// ============================================
+// LASER BEAM SWEEPS - Classic synthwave spotlights
+// ============================================
+const LaserBeams = () => {
+    const beamsRef = useRef()
+
+    useFrame((state) => {
+        if (!beamsRef.current) return
+        const time = state.clock.elapsedTime
+
+        // Animate beam rotations
+        beamsRef.current.children.forEach((beam, i) => {
+            const baseAngle = (i / beamsRef.current.children.length) * Math.PI * 2
+            beam.rotation.z = Math.sin(time * 0.3 + baseAngle) * 0.5 + baseAngle
+            beam.rotation.x = Math.sin(time * 0.2 + i) * 0.3 - 0.2
+        })
+    })
+
+    const beamCount = 4 // Reduced from 6 for better performance
+
+    return (
+        <group ref={beamsRef} position={[0, 0, -400]}>
+            {[...Array(beamCount)].map((_, i) => (
+                <mesh
+                    key={i}
+                    position={[
+                        Math.sin((i / beamCount) * Math.PI * 2) * 50,
+                        0,
+                        Math.cos((i / beamCount) * Math.PI * 2) * 50
+                    ]}
+                    rotation={[0, 0, (i / beamCount) * Math.PI * 2]}
+                >
+                    <coneGeometry args={[8, 150, 4, 1, true]} />
+                    <meshBasicMaterial
+                        color={i % 2 === 0 ? '#ff2a6d' : '#05d9e8'}
+                        transparent
+                        opacity={0.15}
+                        side={THREE.DoubleSide}
+                        blending={THREE.AdditiveBlending}
+                        depthWrite={false}
+                    />
+                </mesh>
+            ))}
+        </group>
+    )
+}
+
+// ============================================
 // STAR FIELD - Optimized static stars (no per-frame updates)
 // ============================================
 const StarField = () => {
@@ -522,9 +769,37 @@ const StarField = () => {
 }
 
 // ============================================
-// CN TOWER - Toronto landmark (optimized geometry)
+// CN TOWER - Toronto landmark (with pulsing beacon)
 // ============================================
 const CNTower = ({ position = [0, 0, 0] }) => {
+    const beaconRef = useRef()
+    const glowRef = useRef()
+    const podGlowRef = useRef()
+
+    useFrame((state) => {
+        const time = state.clock.elapsedTime
+
+        // Pulsing beacon
+        if (beaconRef.current) {
+            const pulse = Math.sin(time * 3) * 0.5 + 0.5
+            beaconRef.current.material.emissiveIntensity = 3 + pulse * 7
+            beaconRef.current.scale.setScalar(1 + pulse * 0.3)
+        }
+
+        // Outer glow pulse
+        if (glowRef.current) {
+            const pulse = Math.sin(time * 3) * 0.5 + 0.5
+            glowRef.current.material.opacity = 0.1 + pulse * 0.2
+            glowRef.current.scale.setScalar(1 + pulse * 0.5)
+        }
+
+        // Pod windows subtle pulse
+        if (podGlowRef.current) {
+            const pulse = Math.sin(time * 1.5) * 0.3 + 0.7
+            podGlowRef.current.material.emissiveIntensity = 2 + pulse * 2
+        }
+    })
+
     return (
         <group position={position}>
             {/* Main shaft */}
@@ -537,8 +812,8 @@ const CNTower = ({ position = [0, 0, 0] }) => {
                 <cylinderGeometry args={[3, 2.5, 4, 12]} />
                 <meshBasicMaterial color="#0a0a15" />
             </mesh>
-            {/* Pod windows glow - EMISSIVE */}
-            <mesh position={[0, 28, 0]}>
+            {/* Pod windows glow - EMISSIVE with pulse */}
+            <mesh ref={podGlowRef} position={[0, 28, 0]}>
                 <cylinderGeometry args={[3.1, 2.6, 1.5, 12]} />
                 <meshStandardMaterial
                     color="#05d9e8"
@@ -559,8 +834,19 @@ const CNTower = ({ position = [0, 0, 0] }) => {
                 <cylinderGeometry args={[0.1, 0.3, 20, 4]} />
                 <meshBasicMaterial color="#222" />
             </mesh>
+            {/* Beacon outer glow */}
+            <mesh ref={glowRef} position={[0, 58, 0]}>
+                <sphereGeometry args={[2.5, 16, 16]} />
+                <meshBasicMaterial
+                    color="#ff2a6d"
+                    transparent
+                    opacity={0.15}
+                    blending={THREE.AdditiveBlending}
+                    depthWrite={false}
+                />
+            </mesh>
             {/* Beacon - EMISSIVE pulsing beacon */}
-            <mesh position={[0, 58, 0]}>
+            <mesh ref={beaconRef} position={[0, 58, 0]}>
                 <sphereGeometry args={[0.8, 8, 8]} />
                 <meshStandardMaterial
                     color="#ff2a6d"
@@ -569,6 +855,8 @@ const CNTower = ({ position = [0, 0, 0] }) => {
                     toneMapped={false}
                 />
             </mesh>
+            {/* Beacon point light */}
+            <pointLight position={[0, 58, 0]} color="#ff2a6d" intensity={50} distance={100} />
         </group>
     )
 }
@@ -794,16 +1082,43 @@ const TronLightCycle = ({ color = '#05d9e8' }) => {
                 />
             </mesh>
 
-            {/* Light trail effect (static representation) */}
-            <mesh position={[0, 0.05, 2.5]} rotation={[-Math.PI / 2, 0, 0]}>
-                <planeGeometry args={[0.08, 3]} />
+            {/* Enhanced light trail effect - multiple layers for depth */}
+            <mesh position={[0, 0.05, 4]} rotation={[-Math.PI / 2, 0, 0]}>
+                <planeGeometry args={[0.12, 8]} />
                 <meshStandardMaterial
                     color={color}
                     emissive={color}
-                    emissiveIntensity={2}
+                    emissiveIntensity={3}
                     transparent
-                    opacity={0.4}
+                    opacity={0.6}
                     toneMapped={false}
+                    blending={THREE.AdditiveBlending}
+                    depthWrite={false}
+                />
+            </mesh>
+            {/* Outer glow trail */}
+            <mesh position={[0, 0.04, 5]} rotation={[-Math.PI / 2, 0, 0]}>
+                <planeGeometry args={[0.4, 12]} />
+                <meshBasicMaterial
+                    color={color}
+                    transparent
+                    opacity={0.15}
+                    blending={THREE.AdditiveBlending}
+                    depthWrite={false}
+                />
+            </mesh>
+            {/* Trail particles (simulated) */}
+            <mesh position={[0, 0.06, 6]} rotation={[-Math.PI / 2, 0, 0]}>
+                <planeGeometry args={[0.06, 15]} />
+                <meshStandardMaterial
+                    color={color}
+                    emissive={color}
+                    emissiveIntensity={4}
+                    transparent
+                    opacity={0.3}
+                    toneMapped={false}
+                    blending={THREE.AdditiveBlending}
+                    depthWrite={false}
                 />
             </mesh>
 
@@ -944,8 +1259,9 @@ const Vehicle = ({ type = 'tron', color }) => {
 // ============================================
 // MAIN SCENE
 // ============================================
-const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType }) => {
+const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reducedEffects = false }) => {
     const [activeProject, setActiveProject] = useState(null)
+    const scroll = useScroll()
 
     const handleActiveChange = useCallback((project) => {
         setActiveProject(project)
@@ -975,9 +1291,21 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType }) => {
             {/* Cool rim light from front */}
             <directionalLight position={[0, 10, 50]} intensity={0.2} color="#05d9e8" />
 
-            {/* Cosmic background elements */}
-            <StarField />
-            <NebulaClouds />
+            {/* Cosmic background elements - reduced on tablets */}
+            {!reducedEffects && <StarField />}
+            {!reducedEffects && <NebulaClouds />}
+
+            {/* Ambient neon particles - Phase 1 upgrade */}
+            <SoftParticles
+                count={100}
+                spread={60}
+                height={18}
+                baseY={1}
+                scrollOffset={scroll.offset}
+            />
+
+            {/* Sweeping laser beams in the distance */}
+            {!reducedEffects && <LaserBeams />}
 
             {/* Sun at the END of the journey, behind CN Tower */}
             <SynthwaveSun zPosition={-TOTAL_DISTANCE - 30} />
@@ -988,10 +1316,27 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType }) => {
             {/* Road stays in place */}
             <SynthwaveRoad />
 
+            {/* Atmospheric fog - Phase 1 upgrade */}
+            <GroundFog
+                width={120}
+                length={600}
+                height={4}
+                color="#0d0221"
+                secondaryColor="#ff2a6d"
+                opacity={0.35}
+                scrollOffset={scroll.offset}
+            />
+            <DistanceHaze
+                color="#0d0221"
+                intensity={0.5}
+            />
+
             {/* Camera rig that moves with scroll + lane switching */}
             <CameraRig currentLane={currentLane} onLaneChange={onLaneChange}>
                 <PerspectiveCamera makeDefault position={[0, 3.5, 0]} fov={75} />
                 <Vehicle type={vehicleType} />
+                {/* Speed lines appear when scrolling fast */}
+                <SpeedLines reducedEffects={reducedEffects} />
             </CameraRig>
 
             {/* Proximity tracker to determine active billboard (lane-aware) */}
@@ -1018,35 +1363,41 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType }) => {
                 />
             ))}
 
-            {/* Enhanced Post-Processing for Synthwave Aesthetic */}
-            <EffectComposer disableNormalPass multisampling={4}>
+            {/* Post-Processing - reduced on tablets for performance */}
+            <EffectComposer disableNormalPass multisampling={reducedEffects ? 0 : 4}>
                 <Bloom
                     luminanceThreshold={0.2}
                     luminanceSmoothing={0.9}
-                    intensity={1.2}
+                    intensity={reducedEffects ? 0.8 : 1.2}
                     mipmapBlur
-                    radius={0.8}
+                    radius={reducedEffects ? 0.4 : 0.8}
                 />
-                <ChromaticAberration
-                    offset={[0.0008, 0.0008]}
-                    radialModulation={true}
-                    modulationOffset={0.5}
-                />
+                {!reducedEffects && (
+                    <ChromaticAberration
+                        offset={[0.0008, 0.0008]}
+                        radialModulation={true}
+                        modulationOffset={0.5}
+                    />
+                )}
                 <Vignette
                     offset={0.3}
-                    darkness={0.7}
+                    darkness={reducedEffects ? 0.5 : 0.7}
                     blendFunction={BlendFunction.NORMAL}
                 />
-                <Noise
-                    premultiply
-                    blendFunction={BlendFunction.SOFT_LIGHT}
-                    opacity={0.15}
-                />
-                <Scanline
-                    blendFunction={BlendFunction.OVERLAY}
-                    density={1.2}
-                    opacity={0.08}
-                />
+                {!reducedEffects && (
+                    <Noise
+                        premultiply
+                        blendFunction={BlendFunction.SOFT_LIGHT}
+                        opacity={0.15}
+                    />
+                )}
+                {!reducedEffects && (
+                    <Scanline
+                        blendFunction={BlendFunction.OVERLAY}
+                        density={1.2}
+                        opacity={0.08}
+                    />
+                )}
             </EffectComposer>
         </>
     )
@@ -1217,7 +1568,7 @@ const LoadingScreen = () => {
 // ============================================
 // MAIN APP
 // ============================================
-export default function App() {
+export default function App({ reducedEffects = false }) {
     const [audioEnabled, setAudioEnabled] = useState(false)
     const [activeProject, setActiveProject] = useState(null)
     const [currentLane, setCurrentLane] = useState('chronological')
@@ -1245,7 +1596,7 @@ export default function App() {
                 <Canvas
                     shadows
                     gl={CANVAS_GL_OPTIONS}
-                    dpr={CANVAS_DPR}
+                    dpr={reducedEffects ? CANVAS_DPR_TABLET : CANVAS_DPR_DESKTOP}
                 >
                     <Suspense fallback={null}>
                         <ScrollControls pages={SCROLL_PAGES} damping={0.2}>
@@ -1254,6 +1605,7 @@ export default function App() {
                                 currentLane={currentLane}
                                 onLaneChange={handleLaneChange}
                                 vehicleType={vehicleType}
+                                reducedEffects={reducedEffects}
                             />
                         </ScrollControls>
                     </Suspense>
