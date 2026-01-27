@@ -84,6 +84,13 @@ body.mobile-mode {
     z-index: 100;
 }
 
+.site-logo {
+    height: 200px;
+    width: auto;
+    filter: invert(1) brightness(1.5) drop-shadow(0 0 18px rgba(5, 217, 232, 0.7));
+    animation: glow-pulse 2s ease-in-out infinite alternate;
+}
+
 .title {
     font-family: var(--font-display);
     font-size: 2.5rem;
@@ -628,6 +635,10 @@ body.mobile-mode {
 
     .video-frame {
         width: 320px;
+    }
+
+    .site-logo {
+        height: 100px;
     }
 
     .title {

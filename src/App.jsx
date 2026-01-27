@@ -1450,8 +1450,8 @@ const UIOverlay = ({ audioEnabled, onToggleAudio, currentLane, onLaneChange, cur
     return (
         <>
             <div className="title-container">
-                <h1 className="title">♫ MUSIC VIDEO PORTFOLIO ♫</h1>
-                <p className="subtitle">♪ ── TDOTSSOLUTIONSZ ── ♪</p>
+                <img src="/logo.png" alt="TDots Solutionsz" className="site-logo" />
+                <p className="subtitle">[ Music Video Portfolio ]</p>
             </div>
             <div className="controls-hint">
                 <p>↓ SCROLL TO DRIVE ↓</p>
