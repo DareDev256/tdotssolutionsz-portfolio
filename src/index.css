@@ -102,9 +102,10 @@ body.mobile-mode {
     font-size: 0.875rem;
     font-weight: 300;
     letter-spacing: 0.3em;
-    color: var(--neon-cyan);
-    opacity: 0.8;
+    color: var(--neon-pink);
+    opacity: 0.9;
     margin-top: 5px;
+    text-shadow: 0 0 8px rgba(255, 42, 109, 0.6);
 }
 
 @keyframes glow-pulse {

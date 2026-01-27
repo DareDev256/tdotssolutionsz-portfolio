@@ -39,10 +39,10 @@ export default function MobileApp() {
             {/* Header */}
             <header className="mobile-header">
                 <h1 className="mobile-title">
-                    <span className="title-infinite">MUSIC VIDEO</span>
+                    <span className="title-infinite">♫ MUSIC VIDEO ♫</span>
                     <span className="title-drive">PORTFOLIO</span>
                 </h1>
-                <p className="mobile-subtitle">TDOTSSOLUTIONSZ</p>
+                <p className="mobile-subtitle">♪ ── TDOTSSOLUTIONSZ ── ♪</p>
             </header>
 
             {/* Filter Tabs */}
@@ -98,7 +98,7 @@ export default function MobileApp() {
 
             {/* Footer */}
             <footer className="mobile-footer">
-                <p>© {new Date().getFullYear()} TdotsSolutionsz</p>
+                <p>♫ © {new Date().getFullYear()} TdotsSolutionsz ♫</p>
             </footer>
         </div>
     )

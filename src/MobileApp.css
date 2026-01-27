@@ -42,9 +42,10 @@
 .mobile-subtitle {
     margin: 8px 0 0;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
-    letter-spacing: 2px;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #ff0080;
+    letter-spacing: 3px;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 8px rgba(255, 0, 128, 0.6);
 }
 
 /* Filter Tabs */
