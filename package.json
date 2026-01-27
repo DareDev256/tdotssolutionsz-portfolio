@@ -1,12 +1,14 @@
 {
   "name": "infinite-drive-portfolio",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "npm run fetch-data && vite build",
+    "preview": "vite preview",
+    "fetch-data": "node scripts/fetch-youtube-data.js",
+    "fix-ids": "node scripts/fix-video-ids.js"
   },
   "dependencies": {
     "@react-three/drei": "^9.117.3",

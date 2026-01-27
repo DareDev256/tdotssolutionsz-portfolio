@@ -31,12 +31,12 @@ const VIDEOS = videoData.videos.map(video => ({
 // Lane configuration
 const LANE_CONFIG = {
     CHRONOLOGICAL: { x: 6, label: 'BY DATE' },
-    POPULAR: { x: -6, label: 'MOST POPULAR' },
+    POPULAR: { x: -6, label: 'FEATURED' },
     CENTER: { x: 0 },
     BILLBOARD_Y: 4.5,
     BILLBOARD_Z_START: -25,
     BILLBOARD_Z_SPACING: 28,
-    POPULAR_THRESHOLD: videoData.settings?.popularThreshold || 500000, // 500K views (from settings)
+    // Featured videos are curated via the "featured" field in videos.json
 }
 
 // Process videos into lanes with positions
@@ -55,10 +55,10 @@ const processVideosIntoLanes = () => {
             ]
         }))
 
-    // Filter and sort by views for popular lane (highest first)
+    // Featured lane: curated selection
     const popular = [...VIDEOS]
-        .filter(v => v.viewCount >= LANE_CONFIG.POPULAR_THRESHOLD)
-        .sort((a, b) => b.viewCount - a.viewCount)
+        .filter(v => v.featured)
+        .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
         .map((video, index) => ({
             ...video,
             color: NEON_COLORS[(index + 3) % NEON_COLORS.length], // Offset colors

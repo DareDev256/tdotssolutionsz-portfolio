@@ -1,0 +1,16 @@
+node_modules
+dist
+.DS_Store
+*.log
+.call_count
+.circuit_breaker_history
+.circuit_breaker_state
+.exit_signals
+.last_reset
+.ralph_session
+.ralph_session_history
+.response_analysis
+ralph-output.log
+progress.json
+status.json
+logs/

@@ -1,0 +1,251 @@
+{
+  "videos": [
+    {
+      "id": 1,
+      "title": "Shortiie Raw - Cartier Tints",
+      "artist": "Shortiie Raw",
+      "description": "Cartier Tints",
+      "youtubeId": "9hRUzEGfW7o",
+      "uploadDate": "2023-01-15",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/9hRUzEGfW7o/maxresdefault.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Shortiie Raw ft. Molly Brazy - Drip",
+      "artist": "Shortiie Raw",
+      "description": "ft. Molly Brazy",
+      "youtubeId": "EmrpNsyVtDQ",
+      "uploadDate": "2023-03-20",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/EmrpNsyVtDQ/maxresdefault.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Shortiie Raw - Way We Move ft. Ingomblock",
+      "artist": "Shortiie Raw",
+      "description": "ft. Ingomblock",
+      "youtubeId": "Xedv19NEX-E",
+      "uploadDate": "2023-05-10",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/Xedv19NEX-E/maxresdefault.jpg"
+    },
+    {
+      "id": 4,
+      "title": "King Louie - Made Drill",
+      "artist": "King Louie",
+      "description": "Made Drill",
+      "youtubeId": "8p4i1b5IW2k",
+      "uploadDate": "2023-07-22",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/8p4i1b5IW2k/maxresdefault.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Masicka - Everything Mi Want",
+      "artist": "Masicka",
+      "description": "Everything Mi Want",
+      "youtubeId": "u3O5PKN9vCQ",
+      "uploadDate": "2023-09-05",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/u3O5PKN9vCQ/maxresdefault.jpg"
+    },
+    {
+      "id": 6,
+      "title": "Casper TNG ft. Fresh - Dope Boy",
+      "artist": "Casper TNG",
+      "description": "Ghost Town Vol 2",
+      "youtubeId": "E7ZStZMn-ac",
+      "uploadDate": "2023-11-18",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/E7ZStZMn-ac/maxresdefault.jpg"
+    },
+    {
+      "id": 7,
+      "title": "Dundas Dolla - 5 AM On The Dundas",
+      "artist": "Dundas Dolla",
+      "description": "5 AM On The Dundas",
+      "youtubeId": "L1ECRyART6o",
+      "uploadDate": "2024-01-15",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/L1ECRyART6o/maxresdefault.jpg"
+    },
+    {
+      "id": 8,
+      "title": "Moshine - Crime Pays",
+      "artist": "Moshine",
+      "description": "Prod. Jmak X Dennis",
+      "youtubeId": "gOid4x6kpAk",
+      "uploadDate": "2024-02-20",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/gOid4x6kpAk/maxresdefault.jpg"
+    },
+    {
+      "id": 9,
+      "title": "Hypa, Sloc, M, Fresh - Deeper Than The Ocean",
+      "artist": "Hypa",
+      "description": "Sloc, M, Fresh",
+      "youtubeId": "B28ZQ0l2loc",
+      "uploadDate": "2024-03-10",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/B28ZQ0l2loc/maxresdefault.jpg"
+    },
+    {
+      "id": 10,
+      "title": "Hypa - 2014",
+      "artist": "Hypa",
+      "description": "2014",
+      "youtubeId": "d5ganmZS6aY",
+      "uploadDate": "2024-04-05",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/d5ganmZS6aY/maxresdefault.jpg"
+    },
+    {
+      "id": 11,
+      "title": "SLOC X BG X LV X YG - It's Only Us",
+      "artist": "SLOC",
+      "description": "BG, LV, YG",
+      "youtubeId": "rFoNntvuQA8",
+      "uploadDate": "2024-05-12",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/rFoNntvuQA8/maxresdefault.jpg"
+    },
+    {
+      "id": 12,
+      "title": "BG - 96 Days",
+      "artist": "BG",
+      "description": "96 Days",
+      "youtubeId": "pPVPBMPShkQ",
+      "uploadDate": "2024-06-18",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/pPVPBMPShkQ/maxresdefault.jpg"
+    },
+    {
+      "id": 13,
+      "title": "Jay Jay - Grindin",
+      "artist": "Jay Jay",
+      "description": "Grindin",
+      "youtubeId": "kgIISZzhQBE",
+      "uploadDate": "2024-07-22",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/kgIISZzhQBE/maxresdefault.jpg"
+    },
+    {
+      "id": 14,
+      "title": "Casper TNG - Klutch",
+      "artist": "Casper TNG",
+      "description": "Dope Boy The Album",
+      "youtubeId": "7MZ3YfQPZrs",
+      "uploadDate": "2024-08-30",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/7MZ3YfQPZrs/maxresdefault.jpg"
+    },
+    {
+      "id": 15,
+      "title": "Street Bud - What's The Move",
+      "artist": "Street Bud",
+      "description": "What's The Move",
+      "youtubeId": "FkVtdPrgtsU",
+      "uploadDate": "2024-09-14",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/FkVtdPrgtsU/maxresdefault.jpg"
+    },
+    {
+      "id": 16,
+      "title": "Street Bud - No Cap",
+      "artist": "Street Bud",
+      "description": "No Cap",
+      "youtubeId": "AKuI1b-o69M",
+      "uploadDate": "2024-10-08",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/AKuI1b-o69M/maxresdefault.jpg"
+    },
+    {
+      "id": 17,
+      "title": "Street Bud - Run My Check Up",
+      "artist": "Street Bud",
+      "description": "Shot By Solutionsz",
+      "youtubeId": "cUnESoCRPsw",
+      "uploadDate": "2024-11-20",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/cUnESoCRPsw/maxresdefault.jpg"
+    },
+    {
+      "id": 18,
+      "title": "OG Dre - Dead Opps",
+      "artist": "OG Dre",
+      "description": "Dead Opps",
+      "youtubeId": "_ijbOhWdGHQ",
+      "uploadDate": "2024-12-05",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/_ijbOhWdGHQ/maxresdefault.jpg"
+    },
+    {
+      "id": 19,
+      "title": "Big Kitty ft. OG Dre - Pressure",
+      "artist": "Big Kitty",
+      "description": "ft. OG Dre",
+      "youtubeId": "L75mTYXcRHw",
+      "uploadDate": "2025-01-10",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/L75mTYXcRHw/maxresdefault.jpg"
+    },
+    {
+      "id": 20,
+      "title": "Purple X BG - 10 Toes",
+      "artist": "Purple",
+      "description": "X BG",
+      "youtubeId": "gwXOTijyua4",
+      "uploadDate": "2025-02-14",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/gwXOTijyua4/maxresdefault.jpg"
+    },
+    {
+      "id": 21,
+      "title": "Soodope - WTF",
+      "artist": "Soodope",
+      "description": "WTF",
+      "youtubeId": "0l5xIst3VME",
+      "uploadDate": "2025-03-22",
+      "viewCount": 0,
+      "featured": true,
+      "thumbnail": "https://img.youtube.com/vi/0l5xIst3VME/maxresdefault.jpg"
+    },
+    {
+      "id": 22,
+      "title": "H3RSH - Turnt Up",
+      "artist": "H3RSH",
+      "description": "Turnt Up",
+      "youtubeId": "Jp9BsyBZJz4",
+      "uploadDate": "2025-04-01",
+      "viewCount": 0,
+      "featured": false,
+      "thumbnail": "https://img.youtube.com/vi/Jp9BsyBZJz4/maxresdefault.jpg"
+    }
+  ],
+  "settings": {
+    "chronologicalOrder": "newest-first"
+  },
+  "lastFetched": "2026-01-27T15:17:03.618Z",
+  "apiKeyUsed": false
+}
