@@ -33,6 +33,11 @@ npm run preview  # Preview production build
 
 ## Changelog
 
+### v1.2.0
+- Fetched real YouTube upload dates for all 22 videos (range: 2013–2025)
+- By Date lane now correctly sorted by actual upload date (newest first)
+- Oldest video: Dundas Dolla - 5 AM On The Dundas (2013), newest: H3RSH - Turnt Up (2025)
+
 ### v1.1.0
 - Fetched real YouTube view counts for all 22 videos
 - Popular lane now shows 7 videos with 500K+ real views (Masicka 5.7M, Casper TNG 5.2M, King Louie 2.7M, Street Bud 1.1M, Purple X BG 665K, Hypa 589K, BG 503K)
