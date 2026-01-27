@@ -31,12 +31,12 @@ const VIDEOS = videoData.videos.map(video => ({
 // Lane configuration
 const LANE_CONFIG = {
     CHRONOLOGICAL: { x: 6, label: 'BY DATE' },
-    POPULAR: { x: -6, label: 'FEATURED' },
+    POPULAR: { x: -6, label: 'MOST POPULAR' },
     CENTER: { x: 0 },
     BILLBOARD_Y: 4.5,
     BILLBOARD_Z_START: -25,
     BILLBOARD_Z_SPACING: 28,
-    // Featured videos are curated via the "featured" field in videos.json
+    POPULAR_THRESHOLD: videoData.settings?.popularThreshold || 500000,
 }
 
 // Process videos into lanes with positions
@@ -55,10 +55,10 @@ const processVideosIntoLanes = () => {
             ]
         }))
 
-    // Featured lane: curated selection
+    // Filter by real YouTube view counts (500K+ threshold)
     const popular = [...VIDEOS]
-        .filter(v => v.featured)
-        .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+        .filter(v => v.viewCount >= LANE_CONFIG.POPULAR_THRESHOLD)
+        .sort((a, b) => b.viewCount - a.viewCount)
         .map((video, index) => ({
             ...video,
             color: NEON_COLORS[(index + 3) % NEON_COLORS.length], // Offset colors
@@ -94,8 +94,8 @@ const CANVAS_GL_OPTIONS = {
     powerPreference: 'high-performance',
     stencil: false
 }
-const CANVAS_DPR_DESKTOP = [1.5, 2] // Higher DPR for sharper visuals
-const CANVAS_DPR_TABLET = [1, 1.5] // Lower DPR for better tablet performance
+const CANVAS_DPR_DESKTOP = [1, 1.5] // Capped for performance
+const CANVAS_DPR_TABLET = [1, 1] // Fixed 1x for tablets
 
 // Lane switching animation
 const LANE_SWITCH_SPEED = 0.08
@@ -224,53 +224,6 @@ const BillboardFrame = ({ project, isActive }) => {
             >
                 {title}
             </Text>
-
-            {/* Ground Reflections - Inverted neon border glow */}
-            <group position={[0, -position[1] * 2 - 0.5, 0]} scale={[1, -0.4, 1]}>
-                {/* Top border reflection */}
-                <mesh position={[0, 1.55, 0.02]}>
-                    <boxGeometry args={[5.6, 0.1, 0.02]} />
-                    <meshBasicMaterial
-                        color={color}
-                        transparent
-                        opacity={0.15}
-                        blending={THREE.AdditiveBlending}
-                        depthWrite={false}
-                    />
-                </mesh>
-                {/* Bottom border reflection */}
-                <mesh position={[0, -1.55, 0.02]}>
-                    <boxGeometry args={[5.6, 0.1, 0.02]} />
-                    <meshBasicMaterial
-                        color={color}
-                        transparent
-                        opacity={0.15}
-                        blending={THREE.AdditiveBlending}
-                        depthWrite={false}
-                    />
-                </mesh>
-                {/* Side border reflections */}
-                <mesh position={[-2.75, 0, 0.02]}>
-                    <boxGeometry args={[0.1, 3.1, 0.02]} />
-                    <meshBasicMaterial
-                        color={color}
-                        transparent
-                        opacity={0.12}
-                        blending={THREE.AdditiveBlending}
-                        depthWrite={false}
-                    />
-                </mesh>
-                <mesh position={[2.75, 0, 0.02]}>
-                    <boxGeometry args={[0.1, 3.1, 0.02]} />
-                    <meshBasicMaterial
-                        color={color}
-                        transparent
-                        opacity={0.12}
-                        blending={THREE.AdditiveBlending}
-                        depthWrite={false}
-                    />
-                </mesh>
-            </group>
 
             {/* Glow light only when active - saves GPU */}
             {isActive && <pointLight position={[0, 0, 2]} color={color} intensity={1.5} distance={6} />}
@@ -490,7 +443,7 @@ const SynthwaveRoad = () => {
     const gridLines = useMemo(() => {
         const positions = []
         const gridSize = 800
-        const divisions = 160
+        const divisions = 60
         const step = gridSize / divisions
 
         for (let i = 0; i <= divisions; i++) {
@@ -509,7 +462,7 @@ const SynthwaveRoad = () => {
     // Dashed lane divider markers
     const laneMarkers = useMemo(() => {
         const markers = []
-        for (let z = 0; z > -700; z -= 25) {
+        for (let z = 0; z > -700; z -= 60) {
             markers.push(z)
         }
         return markers
@@ -620,7 +573,7 @@ const SynthwaveRoad = () => {
 // ============================================
 const FloatingParticles = () => {
     const particlesRef = useRef()
-    const count = 100 // Reduced from 150 for better performance
+    const count = 40 // Reduced for performance
 
     const [positions, velocities, colors] = useMemo(() => {
         const positions = new Float32Array(count * 3)
@@ -884,12 +837,12 @@ const Cityscape = ({ cnTowerZ = -280 }) => {
         const baseZ = -200
         const spread = 600
 
-        // Reduced to 20 buildings per side (40 total instead of 80)
-        for (let i = 0; i < 20; i++) {
+        // 12 buildings per side (24 total)
+        for (let i = 0; i < 12; i++) {
             const height = 8 + Math.random() * 30
             const width = 3 + Math.random() * 5
             result.push({
-                position: [-22 - Math.random() * 25, height / 2, baseZ + i * (spread / 20)],
+                position: [-22 - Math.random() * 25, height / 2, baseZ + i * (spread / 12)],
                 size: [width, height, 3],
                 // Pre-generate window positions
                 windows: Math.random() > 0.5 ? [...Array(3)].map(() => ({
@@ -900,11 +853,11 @@ const Cityscape = ({ cnTowerZ = -280 }) => {
             })
         }
 
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 12; i++) {
             const height = 8 + Math.random() * 30
             const width = 3 + Math.random() * 5
             result.push({
-                position: [22 + Math.random() * 25, height / 2, baseZ + i * (spread / 20)],
+                position: [22 + Math.random() * 25, height / 2, baseZ + i * (spread / 12)],
                 size: [width, height, 3],
                 windows: Math.random() > 0.5 ? [...Array(3)].map(() => ({
                     x: (Math.random() - 0.5) * width * 0.5,
@@ -1305,20 +1258,17 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
             <directionalLight position={[0, 10, 50]} intensity={0.2} color="#05d9e8" />
 
             {/* Cosmic background elements - Phase 2 enhanced versions */}
-            {!reducedEffects && <EnhancedStarField count={2000} radius={400} depth={600} />}
-            {!reducedEffects && <ProceduralNebula scrollOffset={scroll.offset} intensity={0.5} />}
+            {!reducedEffects && <EnhancedStarField count={800} radius={400} depth={600} />}
+            {reducedEffects && <StarField />}
 
-            {/* Ambient neon particles - Phase 1 upgrade */}
+            {/* Ambient neon particles - reduced count */}
             <SoftParticles
-                count={100}
+                count={reducedEffects ? 30 : 50}
                 spread={60}
                 height={18}
                 baseY={1}
                 scrollOffset={scroll.offset}
             />
-
-            {/* Sweeping laser beams in the distance */}
-            {!reducedEffects && <LaserBeams />}
 
             {/* Sun at the END of the journey, behind CN Tower */}
             <SynthwaveSun zPosition={-TOTAL_DISTANCE - 30} />
@@ -1329,20 +1279,7 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
             {/* Road stays in place */}
             <SynthwaveRoad />
 
-            {/* Atmospheric fog - Phase 1 upgrade */}
-            <GroundFog
-                width={120}
-                length={600}
-                height={4}
-                color="#0d0221"
-                secondaryColor="#ff2a6d"
-                opacity={0.35}
-                scrollOffset={scroll.offset}
-            />
-            <DistanceHaze
-                color="#0d0221"
-                intensity={0.5}
-            />
+            {/* Use built-in fog instead of shader-based for performance */}
 
             {/* Camera rig that moves with scroll + lane switching */}
             <CameraRig currentLane={currentLane} onLaneChange={onLaneChange}>
@@ -1377,40 +1314,19 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
             ))}
 
             {/* Post-Processing - reduced on tablets for performance */}
-            <EffectComposer disableNormalPass multisampling={reducedEffects ? 0 : 4}>
+            <EffectComposer disableNormalPass multisampling={0}>
                 <Bloom
-                    luminanceThreshold={0.2}
+                    luminanceThreshold={0.3}
                     luminanceSmoothing={0.9}
-                    intensity={reducedEffects ? 0.8 : 1.2}
+                    intensity={reducedEffects ? 0.6 : 0.9}
                     mipmapBlur
-                    radius={reducedEffects ? 0.4 : 0.8}
+                    radius={0.4}
                 />
-                {!reducedEffects && (
-                    <ChromaticAberration
-                        offset={[0.0008, 0.0008]}
-                        radialModulation={true}
-                        modulationOffset={0.5}
-                    />
-                )}
                 <Vignette
                     offset={0.3}
-                    darkness={reducedEffects ? 0.5 : 0.7}
+                    darkness={0.6}
                     blendFunction={BlendFunction.NORMAL}
                 />
-                {!reducedEffects && (
-                    <Noise
-                        premultiply
-                        blendFunction={BlendFunction.SOFT_LIGHT}
-                        opacity={0.15}
-                    />
-                )}
-                {!reducedEffects && (
-                    <Scanline
-                        blendFunction={BlendFunction.OVERLAY}
-                        density={1.2}
-                        opacity={0.08}
-                    />
-                )}
             </EffectComposer>
         </>
     )
@@ -1647,7 +1563,6 @@ export default function App({ reducedEffects = false }) {
         <>
             <div className="canvas-container">
                 <Canvas
-                    shadows
                     gl={CANVAS_GL_OPTIONS}
                     dpr={reducedEffects ? CANVAS_DPR_TABLET : CANVAS_DPR_DESKTOP}
                 >

@@ -8,7 +8,7 @@ const VIDEOS = videoData.videos.map(video => ({
     url: `https://www.youtube.com/watch?v=${video.youtubeId}`
 }))
 
-// Featured videos are curated via the "featured" field
+const POPULAR_THRESHOLD = videoData.settings?.popularThreshold || 500000
 
 export default function MobileApp() {
     const [activeTab, setActiveTab] = useState('latest')
@@ -21,8 +21,8 @@ export default function MobileApp() {
             )
         } else {
             return [...VIDEOS]
-                .filter(v => v.featured)
-                .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+                .filter(v => v.viewCount >= POPULAR_THRESHOLD)
+                .sort((a, b) => b.viewCount - a.viewCount)
         }
     }, [activeTab])
 
@@ -57,7 +57,7 @@ export default function MobileApp() {
                     className={`tab ${activeTab === 'popular' ? 'active' : ''}`}
                     onClick={() => setActiveTab('popular')}
                 >
-                    Featured
+                    Popular
                 </button>
             </nav>
 

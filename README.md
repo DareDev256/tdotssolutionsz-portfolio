@@ -33,6 +33,21 @@ npm run preview  # Preview production build
 
 ## Changelog
 
+### v1.1.0
+- Fetched real YouTube view counts for all 22 videos
+- Popular lane now shows 7 videos with 500K+ real views (Masicka 5.7M, Casper TNG 5.2M, King Louie 2.7M, Street Bud 1.1M, Purple X BG 665K, Hypa 589K, BG 503K)
+- Major performance overhaul:
+  - Removed MSAA 4x multisampling, chromatic aberration, noise, and scanline post-processing
+  - Reduced DPR cap from 2x to 1.5x
+  - Replaced heavy shader-based fog with built-in Three.js fog
+  - Cut grid divisions from 160 to 60
+  - Reduced particles from 100+100 to 40+50
+  - Cut buildings from 40 to 24
+  - Removed per-billboard ground reflection meshes (~116 draw calls saved)
+  - Reduced star field from 2000 to 800
+  - Removed ProceduralNebula and LaserBeams (heavy shaders)
+  - Disabled shadow maps
+
 ### v1.0.0
 - Replaced placeholder titles with real YouTube video titles and artist names
 - Added `artist` and `featured` fields to video data
