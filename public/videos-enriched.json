@@ -219,12 +219,432 @@
       "uploadDate": "2025-06-08",
       "viewCount": 4900,
       "thumbnail": "https://img.youtube.com/vi/Jp9BsyBZJz4/maxresdefault.jpg"
+    },
+    {
+      "id": 23,
+      "title": "Seanpane ft. Swagger Rite - Still Thuggin",
+      "artist": "Seanpane",
+      "description": "ft. Swagger Rite",
+      "youtubeId": "_ermU7tanb4",
+      "uploadDate": "2023-10-27",
+      "viewCount": 3994,
+      "thumbnail": "https://img.youtube.com/vi/_ermU7tanb4/maxresdefault.jpg"
+    },
+    {
+      "id": 24,
+      "title": "Seanpane - Mr. Carter",
+      "artist": "Seanpane",
+      "description": "Mr. Carter",
+      "youtubeId": "s6aNn4UWPV0",
+      "uploadDate": "2016-06-07",
+      "viewCount": 11340,
+      "thumbnail": "https://img.youtube.com/vi/s6aNn4UWPV0/maxresdefault.jpg"
+    },
+    {
+      "id": 25,
+      "title": "Seanpane ft. Swagger Rite - Straight Thuggin",
+      "artist": "Seanpane",
+      "description": "ft. Swagger Rite",
+      "youtubeId": "xLxMS9K4g-Y",
+      "uploadDate": "2016-08-27",
+      "viewCount": 22600,
+      "thumbnail": "https://img.youtube.com/vi/xLxMS9K4g-Y/maxresdefault.jpg"
+    },
+    {
+      "id": 26,
+      "title": "Seanpane - The Healer",
+      "artist": "Seanpane",
+      "description": "The Healer",
+      "youtubeId": "yhpVsvjnBEU",
+      "uploadDate": "2012-09-30",
+      "viewCount": 5267,
+      "thumbnail": "https://img.youtube.com/vi/yhpVsvjnBEU/maxresdefault.jpg"
+    },
+    {
+      "id": 27,
+      "title": "Seanpane - Only 1s (New Edition)",
+      "artist": "Seanpane",
+      "description": "Only 1s",
+      "youtubeId": "hqnjuO9XMlQ",
+      "uploadDate": "2023-11-22",
+      "viewCount": 70177,
+      "thumbnail": "https://img.youtube.com/vi/hqnjuO9XMlQ/maxresdefault.jpg"
+    },
+    {
+      "id": 28,
+      "title": "Seanpane - Five Star Lit",
+      "artist": "Seanpane",
+      "description": "Five Star Lit",
+      "youtubeId": "QUqHboPhea8",
+      "uploadDate": "2023-05-23",
+      "viewCount": 3648,
+      "thumbnail": "https://img.youtube.com/vi/QUqHboPhea8/maxresdefault.jpg"
+    },
+    {
+      "id": 29,
+      "title": "Shortiie Raw - Angola Kinaxixi Freestyle",
+      "artist": "Shortiie Raw",
+      "description": "Reprod. AK Marv",
+      "youtubeId": "X8zj9clGQO4",
+      "uploadDate": "2024-02-22",
+      "viewCount": 8604,
+      "thumbnail": "https://img.youtube.com/vi/X8zj9clGQO4/maxresdefault.jpg"
+    },
+    {
+      "id": 30,
+      "title": "Shortiie Raw - Sip Cuca",
+      "artist": "Shortiie Raw",
+      "description": "Sip Cuca",
+      "youtubeId": "NbJnT5j365M",
+      "uploadDate": "2025-03-07",
+      "viewCount": 6300,
+      "thumbnail": "https://img.youtube.com/vi/NbJnT5j365M/maxresdefault.jpg"
+    },
+    {
+      "id": 31,
+      "title": "Shortiie Raw - Fire",
+      "artist": "Shortiie Raw",
+      "description": "In Studio Performance",
+      "youtubeId": "82_xVuYR45c",
+      "uploadDate": "2024-11-21",
+      "viewCount": 7957,
+      "thumbnail": "https://img.youtube.com/vi/82_xVuYR45c/maxresdefault.jpg"
+    },
+    {
+      "id": 32,
+      "title": "Shortiie Raw - Don't Act New",
+      "artist": "Shortiie Raw",
+      "description": "Don't Act New",
+      "youtubeId": "HueUBufXMbs",
+      "uploadDate": "2021-09-17",
+      "viewCount": 14503,
+      "thumbnail": "https://img.youtube.com/vi/HueUBufXMbs/maxresdefault.jpg"
+    },
+    {
+      "id": 33,
+      "title": "Shortiie Raw - Strawberry Go-Kart",
+      "artist": "Shortiie Raw",
+      "description": "Strawberry Go-Kart",
+      "youtubeId": "iiYmh9-D_14",
+      "uploadDate": "2018-07-02",
+      "viewCount": 31805,
+      "thumbnail": "https://img.youtube.com/vi/iiYmh9-D_14/maxresdefault.jpg"
+    },
+    {
+      "id": 34,
+      "title": "Shortiie Raw - Peace",
+      "artist": "Shortiie Raw",
+      "description": "Peace",
+      "youtubeId": "z2BL7wgPsaI",
+      "uploadDate": "2023-04-01",
+      "viewCount": 10935,
+      "thumbnail": "https://img.youtube.com/vi/z2BL7wgPsaI/maxresdefault.jpg"
+    },
+    {
+      "id": 35,
+      "title": "ScaleBreakerBlo ft. Baby Joker - Struggle",
+      "artist": "ScaleBreakerBlo",
+      "description": "ft. Baby Joker",
+      "youtubeId": "qdvPglsqxz4",
+      "uploadDate": "2022-04-09",
+      "viewCount": 25428,
+      "thumbnail": "https://img.youtube.com/vi/qdvPglsqxz4/maxresdefault.jpg"
+    },
+    {
+      "id": 36,
+      "title": "Mally Swayzz ft. Triggs - I Got It",
+      "artist": "Mally Swayzz",
+      "description": "ft. Triggs",
+      "youtubeId": "GmluuI5aZvc",
+      "uploadDate": "2014-06-29",
+      "viewCount": 2222,
+      "thumbnail": "https://img.youtube.com/vi/GmluuI5aZvc/maxresdefault.jpg"
+    },
+    {
+      "id": 37,
+      "title": "Big Money - If You Hear / Too Much",
+      "artist": "Big Money",
+      "description": "If You Hear / Too Much",
+      "youtubeId": "ZUEmjTeH3Jk",
+      "uploadDate": "2015-06-12",
+      "viewCount": 27143,
+      "thumbnail": "https://img.youtube.com/vi/ZUEmjTeH3Jk/maxresdefault.jpg"
+    },
+    {
+      "id": 38,
+      "title": "Big Money X Cass X S D X Mile$Boy X Tookie - Watchu Been Doin",
+      "artist": "Big Money",
+      "description": "Prod. TdotMovements",
+      "youtubeId": "CrRJTdQYNC4",
+      "uploadDate": "2015-05-25",
+      "viewCount": 13002,
+      "thumbnail": "https://img.youtube.com/vi/CrRJTdQYNC4/maxresdefault.jpg"
+    },
+    {
+      "id": 39,
+      "title": "Scooby Blacks - No Manners",
+      "artist": "Scooby Blacks",
+      "description": "No Manners",
+      "youtubeId": "Ff4rGINSD70",
+      "uploadDate": "2015-08-02",
+      "viewCount": 17505,
+      "thumbnail": "https://img.youtube.com/vi/Ff4rGINSD70/maxresdefault.jpg"
+    },
+    {
+      "id": 40,
+      "title": "Da Kid Bluntz - Last Hope",
+      "artist": "Da Kid Bluntz",
+      "description": "Last Hope",
+      "youtubeId": "3kOwVdKswn0",
+      "uploadDate": "2015-10-19",
+      "viewCount": 50584,
+      "thumbnail": "https://img.youtube.com/vi/3kOwVdKswn0/maxresdefault.jpg"
+    },
+    {
+      "id": 41,
+      "title": "RoadKidd - Back 2 Work",
+      "artist": "RoadKidd",
+      "description": "Back 2 Work",
+      "youtubeId": "gNKTVWO_GMg",
+      "uploadDate": "2015-01-24",
+      "viewCount": 58326,
+      "thumbnail": "https://img.youtube.com/vi/gNKTVWO_GMg/maxresdefault.jpg"
+    },
+    {
+      "id": 42,
+      "title": "Murda - On Me",
+      "artist": "Murda",
+      "description": "On Me",
+      "youtubeId": "imW0L6CT5Cw",
+      "uploadDate": "2015-08-21",
+      "viewCount": 46673,
+      "thumbnail": "https://img.youtube.com/vi/imW0L6CT5Cw/maxresdefault.jpg"
+    },
+    {
+      "id": 43,
+      "title": "Arez ft. Fresh - So High (Why)",
+      "artist": "Arez",
+      "description": "ft. Fresh",
+      "youtubeId": "KZMiTNbaVyw",
+      "uploadDate": "2015-09-13",
+      "viewCount": 225359,
+      "thumbnail": "https://img.youtube.com/vi/KZMiTNbaVyw/maxresdefault.jpg"
+    },
+    {
+      "id": 44,
+      "title": "Yogi Savage - Trap Life",
+      "artist": "Yogi Savage",
+      "description": "Prod. Jayy Godd",
+      "youtubeId": "tpjpT0mfnMk",
+      "uploadDate": "2015-04-10",
+      "viewCount": 12582,
+      "thumbnail": "https://img.youtube.com/vi/tpjpT0mfnMk/maxresdefault.jpg"
+    },
+    {
+      "id": 45,
+      "title": "Thug Different",
+      "artist": "Unknown",
+      "description": "Prod. HotFryz Beats",
+      "youtubeId": "fZMjlObLLNY",
+      "uploadDate": "2022-03-21",
+      "viewCount": 144,
+      "thumbnail": "https://img.youtube.com/vi/fZMjlObLLNY/maxresdefault.jpg"
+    },
+    {
+      "id": 46,
+      "title": "Hypa - Hot Nigga (Bobby Shmurda Remix)",
+      "artist": "Hypa",
+      "description": "Bobby Shmurda Remix",
+      "youtubeId": "uxVH9KdRMvU",
+      "uploadDate": "2014-08-13",
+      "viewCount": 64168,
+      "thumbnail": "https://img.youtube.com/vi/uxVH9KdRMvU/maxresdefault.jpg"
+    },
+    {
+      "id": 47,
+      "title": "Flash Milla - Milla Madness / Day Dream",
+      "artist": "Flash Milla",
+      "description": "Milla Madness / Day Dream",
+      "youtubeId": "nQ5MAPreEBQ",
+      "uploadDate": "2016-02-16",
+      "viewCount": 11170,
+      "thumbnail": "https://img.youtube.com/vi/nQ5MAPreEBQ/maxresdefault.jpg"
+    },
+    {
+      "id": 48,
+      "title": "Young Blitz X Scooby Blacks - Count On It",
+      "artist": "Young Blitz",
+      "description": "X Scooby Blacks",
+      "youtubeId": "KJJDYqkUlRk",
+      "uploadDate": "2015-11-20",
+      "viewCount": 8548,
+      "thumbnail": "https://img.youtube.com/vi/KJJDYqkUlRk/maxresdefault.jpg"
+    },
+    {
+      "id": 49,
+      "title": "BG X Murda - First Degree",
+      "artist": "BG",
+      "description": "X Murda",
+      "youtubeId": "jttmvMAEriI",
+      "uploadDate": "2014-08-19",
+      "viewCount": 260834,
+      "thumbnail": "https://img.youtube.com/vi/jttmvMAEriI/maxresdefault.jpg"
+    },
+    {
+      "id": 50,
+      "title": "Cooking Up With M10 Vol. 1",
+      "artist": "M10",
+      "description": "Cooking Up Vol. 1",
+      "youtubeId": "3ws47CNzqQM",
+      "uploadDate": "2022-01-05",
+      "viewCount": 171,
+      "thumbnail": "https://img.youtube.com/vi/3ws47CNzqQM/maxresdefault.jpg"
+    },
+    {
+      "id": 51,
+      "title": "LP X Keelow X Shinkz X YBK - I Don't Fuck With Niggas",
+      "artist": "LP",
+      "description": "X Keelow X Shinkz X YBK",
+      "youtubeId": "wL8JXkxqyJI",
+      "uploadDate": "2014-12-24",
+      "viewCount": 80326,
+      "thumbnail": "https://img.youtube.com/vi/wL8JXkxqyJI/maxresdefault.jpg"
+    },
+    {
+      "id": 52,
+      "title": "Robin Banks - Malis Off A Molly",
+      "artist": "Robin Banks",
+      "description": "Malis Off A Molly",
+      "youtubeId": "sJMGY1k2lBk",
+      "uploadDate": "2015-05-28",
+      "viewCount": 986654,
+      "thumbnail": "https://img.youtube.com/vi/sJMGY1k2lBk/maxresdefault.jpg"
+    },
+    {
+      "id": 53,
+      "title": "Murda - 6 God Remix",
+      "artist": "Murda",
+      "description": "6 God Remix",
+      "youtubeId": "kOrg9v-pL1I",
+      "uploadDate": "2014-11-09",
+      "viewCount": 80443,
+      "thumbnail": "https://img.youtube.com/vi/kOrg9v-pL1I/maxresdefault.jpg"
+    },
+    {
+      "id": 54,
+      "title": "Big Money - Lifestyle Remix",
+      "artist": "Big Money",
+      "description": "Lifestyle Remix",
+      "youtubeId": "6uIeW3GJpjk",
+      "uploadDate": "2014-11-29",
+      "viewCount": 7807,
+      "thumbnail": "https://img.youtube.com/vi/6uIeW3GJpjk/maxresdefault.jpg"
+    },
+    {
+      "id": 55,
+      "title": "BG - Chess Up",
+      "artist": "BG",
+      "description": "Chess Up",
+      "youtubeId": "woYX-ovFlro",
+      "uploadDate": "2015-01-23",
+      "viewCount": 79126,
+      "thumbnail": "https://img.youtube.com/vi/woYX-ovFlro/maxresdefault.jpg"
+    },
+    {
+      "id": 56,
+      "title": "Baadass Bukk - Haaaa / 10 Toes Down",
+      "artist": "Baadass Bukk",
+      "description": "Haaaa / 10 Toes Down",
+      "youtubeId": "0TrMvcXm6-U",
+      "uploadDate": "2015-02-24",
+      "viewCount": 8831,
+      "thumbnail": "https://img.youtube.com/vi/0TrMvcXm6-U/maxresdefault.jpg"
+    },
+    {
+      "id": 57,
+      "title": "MsMakeEmStare X ThatSpadeChick - Memorial Day Weekend Miami Preview",
+      "artist": "MsMakeEmStare",
+      "description": "Miami Preview",
+      "youtubeId": "p40zJ6MQiXc",
+      "uploadDate": "2013-05-28",
+      "viewCount": 4160,
+      "thumbnail": "https://img.youtube.com/vi/p40zJ6MQiXc/maxresdefault.jpg"
+    },
+    {
+      "id": 58,
+      "title": "BG X LV X Purple X YG X LittleMan - No Face No Case",
+      "artist": "BG",
+      "description": "X LV X Purple X YG X LittleMan",
+      "youtubeId": "NsVgoeIXVWo",
+      "uploadDate": "2014-12-07",
+      "viewCount": 127087,
+      "thumbnail": "https://img.youtube.com/vi/NsVgoeIXVWo/maxresdefault.jpg"
+    },
+    {
+      "id": 59,
+      "title": "Yogi Savage - Takeover",
+      "artist": "Yogi Savage",
+      "description": "Takeover",
+      "youtubeId": "t8WDeqov2tc",
+      "uploadDate": "2014-11-13",
+      "viewCount": 5524,
+      "thumbnail": "https://img.youtube.com/vi/t8WDeqov2tc/maxresdefault.jpg"
+    },
+    {
+      "id": 60,
+      "title": "T-Dot X Fresh X Murda - She Just Want",
+      "artist": "T-Dot",
+      "description": "X Fresh X Murda",
+      "youtubeId": "5VMuFNygDiI",
+      "uploadDate": "2016-02-01",
+      "viewCount": 96551,
+      "thumbnail": "https://img.youtube.com/vi/5VMuFNygDiI/maxresdefault.jpg"
+    },
+    {
+      "id": 61,
+      "title": "Cuzzin Charlie - South$ide",
+      "artist": "Cuzzin Charlie",
+      "description": "South$ide",
+      "youtubeId": "1tbyKpdmaT0",
+      "uploadDate": "2015-04-28",
+      "viewCount": 44627,
+      "thumbnail": "https://img.youtube.com/vi/1tbyKpdmaT0/maxresdefault.jpg"
+    },
+    {
+      "id": 62,
+      "title": "Sloc - You Mad Or Nah?",
+      "artist": "Sloc",
+      "description": "You Mad Or Nah?",
+      "youtubeId": "lJwITkYr7z4",
+      "uploadDate": "2014-04-14",
+      "viewCount": 67572,
+      "thumbnail": "https://img.youtube.com/vi/lJwITkYr7z4/maxresdefault.jpg"
+    },
+    {
+      "id": 63,
+      "title": "BG X Big Glo X Banks - Fugay",
+      "artist": "BG",
+      "description": "X Big Glo X Banks",
+      "youtubeId": "SsRtwIAYPag",
+      "uploadDate": "2015-10-18",
+      "viewCount": 218206,
+      "thumbnail": "https://img.youtube.com/vi/SsRtwIAYPag/maxresdefault.jpg"
+    },
+    {
+      "id": 64,
+      "title": "BG - Opp Niggas Told",
+      "artist": "BG",
+      "description": "Opp Niggas Told",
+      "youtubeId": "Mh_8tGP5w_0",
+      "uploadDate": "2016-07-19",
+      "viewCount": 115424,
+      "thumbnail": "https://img.youtube.com/vi/Mh_8tGP5w_0/maxresdefault.jpg"
     }
   ],
   "settings": {
-    "popularThreshold": 500000,
+    "popularThreshold": 60000,
     "chronologicalOrder": "newest-first"
   },
-  "lastFetched": "2026-01-27T15:53:19.777Z",
+  "lastFetched": "2026-01-27T16:27:14.046Z",
   "apiKeyUsed": false
 }

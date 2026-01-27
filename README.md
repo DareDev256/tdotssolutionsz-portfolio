@@ -1,6 +1,6 @@
 # TdotsSolutionsz Music Video Portfolio
 
-An immersive synthwave-themed 3D music video portfolio showcasing 22 music videos shot by TdotsSolutionsz. Drive through a neon cityscape and browse videos on billboard displays.
+An immersive synthwave-themed 3D music video portfolio showcasing 64 music videos shot by TdotsSolutionsz. Drive through a neon cityscape and browse videos on billboard displays.
 
 ## Features
 
@@ -32,6 +32,11 @@ npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v1.4.0
+- Added 42 new videos (64 total) featuring Seanpane, Robin Banks, Murda, BG, Arez, RoadKidd, ScaleBreakerBlo, Big Money, Scooby Blacks, Da Kid Bluntz, Yogi Savage, Flash Milla, Young Blitz, LP, Cuzzin Charlie, Sloc, T-Dot, Baadass Bukk, and more
+- Lowered Popular threshold from 500K to 60K views (28 videos now qualify)
+- All new videos include real YouTube view counts and upload dates (range: 2012–2025)
 
 ### v1.3.0
 - Renamed from "Infinite Drive" to "Music Video Portfolio" across all views
