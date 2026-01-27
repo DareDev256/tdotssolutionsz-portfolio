@@ -33,6 +33,12 @@ npm run preview  # Preview production build
 
 ## Changelog
 
+### v1.3.0
+- Renamed from "Infinite Drive" to "Music Video Portfolio" across all views
+- Removed all gradient backgrounds and text — replaced with solid neon colors and glows
+- Fixed mobile scrolling: phone view now scrolls properly to see all videos
+- Loading screen updated to "Loading Portfolio"
+
 ### v1.2.0
 - Fetched real YouTube upload dates for all 22 videos (range: 2013–2025)
 - By Date lane now correctly sorted by actual upload date (newest first)

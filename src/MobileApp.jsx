@@ -39,10 +39,10 @@ export default function MobileApp() {
             {/* Header */}
             <header className="mobile-header">
                 <h1 className="mobile-title">
-                    <span className="title-infinite">INFINITE</span>
-                    <span className="title-drive">DRIVE</span>
+                    <span className="title-infinite">MUSIC VIDEO</span>
+                    <span className="title-drive">PORTFOLIO</span>
                 </h1>
-                <p className="mobile-subtitle">TdotsSolutionsz Portfolio</p>
+                <p className="mobile-subtitle">TDOTSSOLUTIONSZ</p>
             </header>
 
             {/* Filter Tabs */}

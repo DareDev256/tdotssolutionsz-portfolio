@@ -26,10 +26,20 @@ body,
 #root {
     width: 100%;
     height: 100%;
-    overflow: hidden;
     background: var(--dark-bg);
     font-family: var(--font-body);
     color: white;
+}
+
+/* Lock scroll on desktop 3D view, allow on mobile */
+body.desktop-mode,
+body.desktop-mode #root {
+    overflow: hidden;
+}
+
+body.mobile-mode {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Toronto Skyline Background - AI Generated */
@@ -80,11 +90,10 @@ body,
     font-weight: 900;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 0 30px rgba(5, 217, 232, 0.5);
+    color: var(--neon-cyan);
+    text-shadow:
+        0 0 10px rgba(5, 217, 232, 0.8),
+        0 0 40px rgba(5, 217, 232, 0.4);
     animation: glow-pulse 2s ease-in-out infinite alternate;
 }
 
@@ -210,7 +219,7 @@ body,
 
 .loading-progress {
     height: 100%;
-    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+    background: var(--neon-cyan);
     animation: loading-slide 1.5s ease-in-out infinite;
 }
 

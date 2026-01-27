@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import MobileApp from './MobileApp.jsx'
@@ -7,6 +7,16 @@ import './index.css'
 
 function ResponsiveApp() {
     const deviceType = useDeviceType()
+
+    useEffect(() => {
+        if (deviceType === 'phone') {
+            document.body.classList.add('mobile-mode')
+            document.body.classList.remove('desktop-mode')
+        } else {
+            document.body.classList.add('desktop-mode')
+            document.body.classList.remove('mobile-mode')
+        }
+    }, [deviceType])
 
     // Phone gets simplified grid view
     if (deviceType === 'phone') {

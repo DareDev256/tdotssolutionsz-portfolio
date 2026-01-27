@@ -1450,8 +1450,8 @@ const UIOverlay = ({ audioEnabled, onToggleAudio, currentLane, onLaneChange, cur
     return (
         <>
             <div className="title-container">
-                <h1 className="title">INFINITE DRIVE</h1>
-                <p className="subtitle">CREATIVE PORTFOLIO</p>
+                <h1 className="title">MUSIC VIDEO PORTFOLIO</h1>
+                <p className="subtitle">TDOTSSOLUTIONSZ</p>
             </div>
             <div className="controls-hint">
                 <p>↓ SCROLL TO DRIVE ↓</p>
@@ -1497,7 +1497,7 @@ const UIOverlay = ({ audioEnabled, onToggleAudio, currentLane, onLaneChange, cur
 const LoadingScreen = () => {
     return (
         <div className="loading-screen">
-            <div className="loading-text">INITIALIZING ENGINE</div>
+            <div className="loading-text">LOADING PORTFOLIO</div>
             <div className="loading-bar">
                 <div className="loading-progress"></div>
             </div>

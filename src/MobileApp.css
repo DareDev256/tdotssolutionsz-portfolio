@@ -2,12 +2,7 @@
 
 .mobile-app {
     min-height: 100vh;
-    background: linear-gradient(180deg,
-        #0a0015 0%,
-        #1a0030 30%,
-        #2d1050 60%,
-        #1a0030 100%
-    );
+    background: #0a0015;
     color: #fff;
     font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, sans-serif;
     padding-bottom: 60px;
@@ -17,7 +12,7 @@
 .mobile-header {
     text-align: center;
     padding: 24px 16px 16px;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .mobile-title {
@@ -30,12 +25,10 @@
 
 .title-infinite {
     display: block;
-    background: linear-gradient(90deg, #ff0080, #ff00ff, #00ffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: none;
-    filter: drop-shadow(0 0 8px rgba(255, 0, 128, 0.5));
+    color: #ff0080;
+    text-shadow:
+        0 0 10px rgba(255, 0, 128, 0.8),
+        0 0 30px rgba(255, 0, 128, 0.4);
 }
 
 .title-drive {
@@ -83,8 +76,8 @@
 }
 
 .tab.active {
-    background: linear-gradient(135deg, #ff0080, #ff00ff);
-    border-color: transparent;
+    background: #ff0080;
+    border-color: #ff0080;
     color: #fff;
     box-shadow:
         0 0 20px rgba(255, 0, 128, 0.5),
@@ -127,7 +120,7 @@
 .modal-content {
     width: 100%;
     max-width: 500px;
-    background: linear-gradient(135deg, #1a0030 0%, #2d1050 100%);
+    background: #1a0030;
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid rgba(255, 0, 128, 0.3);
