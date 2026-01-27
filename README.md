@@ -1,20 +1,23 @@
 # TdotsSolutionsz Music Video Portfolio
 
-An immersive synthwave-themed 3D music video portfolio showcasing **86 music videos** shot by TdotsSolutionsz. Drive through a neon cityscape and browse videos on billboard displays.
+An immersive synthwave-themed 3D music video portfolio showcasing **87 music videos** by **49 artists**, shot by TdotsSolutionsz. Drive through a neon cityscape and browse videos on billboard displays.
 
 ## Features
 
 - **3D Synthwave Experience** — Navigate a neon road with Three.js and React Three Fiber
-- **Dual Lane System** — Browse by date (chronological) or popular selections (60K+ views, 37 videos qualify)
+- **Dual Lane System** — Browse by date (chronological) or popular selections (60K+ views)
+- **Search & Filter by Artist** — Dropdown search on desktop and mobile to filter videos by artist
+- **Deep Links** — Share direct links to any video via `?v=youtubeId` URL params
+- **Artist Spotlight** — View stats (video count, total views, date range) for each artist
 - **Responsive Design** — Full 3D on desktop, reduced effects on tablet, scrollable grid on mobile
 - **YouTube Integration** — Embedded playback with real view counts and upload dates
 - **Theater Mode** — Fullscreen immersive video viewing (press F)
 - **Vehicle Selection** — Choose between Tron Light Cycle, DeLorean, or Cyber Bike
-- **TDots Solutionsz Logo** — Custom branding with CN Tower silhouette and neon glow
+- **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 
 ## Tech Stack
 
-- React 18 + Vite
+- React 18 + Vite (code-split with React.lazy + manualChunks)
 - Three.js / React Three Fiber / Drei
 - Post-processing (bloom, vignette, soft particles, enhanced star field)
 - Deployed on Vercel
@@ -46,6 +49,14 @@ npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v1.7.0 (2026-01-27)
+- **Search/Filter by Artist** — Dropdown with autocomplete on desktop (top-center pill) and mobile (tab bar)
+- **Deep Links** — `?v=youtubeId` opens video directly; copy-link button in video overlay and mobile modal
+- **Artist Spotlight** — Stats bar below video description showing video count, total views, and date range
+- **Code Splitting** — React.lazy for App/MobileApp, vendor-three and vendor-postprocessing chunks; mobile users skip 1.1MB of Three.js
+- **Favicon** — Swapped Vite default for TDots logo
+- Added "On Fleek" by Hypa ft Trouble Trouble, T-Dot, Fresh (318K views) — video #87
 
 ### v1.6.0 (2026-01-27)
 - Added TDots Solutionsz logo to site header with neon glow effect
