@@ -663,3 +663,134 @@ body.mobile-mode {
         display: none;
     }
 }
+
+/* ============================================
+   SEARCH BAR
+   ============================================ */
+.search-bar-container {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+}
+
+.search-trigger,
+.search-active-filter {
+    padding: 8px 18px;
+    background: rgba(13, 2, 33, 0.9);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 20px;
+    color: var(--neon-cyan);
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.search-trigger:hover {
+    background: rgba(5, 217, 232, 0.15);
+    box-shadow: 0 0 15px rgba(5, 217, 232, 0.3);
+}
+
+.search-active-filter {
+    border-color: var(--neon-pink);
+    color: var(--neon-pink);
+    box-shadow: 0 0 12px rgba(255, 42, 109, 0.3);
+}
+
+.search-active-filter:hover {
+    background: rgba(255, 42, 109, 0.15);
+}
+
+.search-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 260px;
+    background: rgba(13, 2, 33, 0.95);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 32px rgba(5, 217, 232, 0.2);
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-bottom: 1px solid rgba(5, 217, 232, 0.2);
+    color: white;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.search-results {
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.search-result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 8px 14px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: left;
+}
+
+.search-result-item:hover {
+    background: rgba(5, 217, 232, 0.15);
+    color: var(--neon-cyan);
+}
+
+.search-result-count {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: var(--font-display);
+}
+
+/* ============================================
+   ARTIST SPOTLIGHT
+   ============================================ */
+.artist-spotlight {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(5, 217, 232, 0.15);
+}
+
+.spotlight-artist {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    color: var(--neon-cyan);
+    letter-spacing: 0.08em;
+}
+
+.spotlight-stat {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 1px 6px;
+    background: rgba(5, 217, 232, 0.08);
+    border-radius: 8px;
+}

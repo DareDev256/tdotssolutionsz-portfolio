@@ -142,10 +142,34 @@
     }
 }
 
+.modal-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+}
+
+.copy-link-btn {
+    padding: 6px 14px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.4);
+    border-radius: 16px;
+    color: #00ffff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.copy-link-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
 .close-button {
-    position: absolute;
-    top: 12px;
-    right: 12px;
+    position: relative;
+    top: auto;
+    right: auto;
     width: 36px;
     height: 36px;
     border: none;
@@ -242,4 +266,94 @@
     background-size: 40px 40px;
     pointer-events: none;
     z-index: -1;
+}
+
+/* Artist filter active tab */
+.artist-filter-active {
+    background: rgba(0, 255, 255, 0.15) !important;
+    border-color: #00ffff !important;
+    color: #00ffff !important;
+    font-size: 11px !important;
+}
+
+/* Mobile Search Dropdown */
+.mobile-search-dropdown {
+    margin: 0 16px 12px;
+    background: rgba(26, 0, 48, 0.95);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.mobile-search-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.15);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    outline: none;
+}
+
+.mobile-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.mobile-search-results {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.mobile-search-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.mobile-search-item:hover,
+.mobile-search-item:active {
+    background: rgba(0, 255, 255, 0.1);
+    color: #00ffff;
+}
+
+.mobile-search-count {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Artist Spotlight in Modal */
+.mobile-artist-spotlight {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0, 255, 255, 0.15);
+}
+
+.mobile-spotlight-artist {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    color: #00ffff;
+    letter-spacing: 0.05em;
+}
+
+.mobile-spotlight-stat {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 1px 6px;
+    background: rgba(0, 255, 255, 0.08);
+    border-radius: 8px;
 }

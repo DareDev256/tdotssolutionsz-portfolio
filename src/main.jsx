@@ -1,9 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { Suspense, lazy, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import MobileApp from './MobileApp.jsx'
 import { useDeviceType } from './hooks/useDeviceType.js'
 import './index.css'
+
+const App = lazy(() => import('./App.jsx'))
+const MobileApp = lazy(() => import('./MobileApp.jsx'))
+
+function LoadingScreen() {
+    return (
+        <div className="loading-screen">
+            <div className="loading-text">♬ LOADING PORTFOLIO ♬</div>
+            <div className="loading-bar">
+                <div className="loading-progress"></div>
+            </div>
+        </div>
+    )
+}
 
 function ResponsiveApp() {
     const deviceType = useDeviceType()
@@ -18,13 +30,14 @@ function ResponsiveApp() {
         }
     }, [deviceType])
 
-    // Phone gets simplified grid view
-    if (deviceType === 'phone') {
-        return <MobileApp />
-    }
-
-    // Tablet gets 3D with reduced effects, Desktop gets full experience
-    return <App reducedEffects={deviceType === 'tablet'} />
+    return (
+        <Suspense fallback={<LoadingScreen />}>
+            {deviceType === 'phone'
+                ? <MobileApp />
+                : <App reducedEffects={deviceType === 'tablet'} />
+            }
+        </Suspense>
+    )
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(

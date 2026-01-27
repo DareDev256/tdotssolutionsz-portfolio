@@ -6,5 +6,15 @@ export default defineConfig({
     server: {
         port: 5175,
         open: true
+    },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vendor-three': ['three', '@react-three/fiber', '@react-three/drei'],
+                    'vendor-postprocessing': ['postprocessing', '@react-three/postprocessing'],
+                }
+            }
+        }
     }
 })

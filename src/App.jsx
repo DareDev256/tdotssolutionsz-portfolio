@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState, useMemo, useCallback, useEffect } from 'react'
+import React, { Suspense, useRef, useState, useMemo, useCallback, useEffect, createContext, useContext } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import {
     PerspectiveCamera,
@@ -77,6 +77,25 @@ const processVideosIntoLanes = () => {
 const LANES = processVideosIntoLanes()
 const PROJECTS = LANES.all // Backward compatibility
 
+// Feature 2: Unique artists for search/filter
+const ALL_ARTISTS = [...new Set(VIDEOS.map(v => v.artist))].sort()
+
+// Feature 5: Pre-computed artist stats
+const ARTIST_STATS = VIDEOS.reduce((acc, v) => {
+    if (!acc[v.artist]) {
+        acc[v.artist] = { count: 0, totalViews: 0, earliest: v.uploadDate, latest: v.uploadDate }
+    }
+    const s = acc[v.artist]
+    s.count++
+    s.totalViews += v.viewCount
+    if (v.uploadDate < s.earliest) s.earliest = v.uploadDate
+    if (v.uploadDate > s.latest) s.latest = v.uploadDate
+    return acc
+}, {})
+
+// Filter context — lets nested 3D components read the current filter without prop drilling
+const FilterContext = createContext(null)
+
 // Calculate total distance based on longest lane
 const TOTAL_DISTANCE = Math.max(LANES.chronological.length, LANES.popular.length) * LANE_CONFIG.BILLBOARD_Z_SPACING + 50
 const SCROLL_PAGES = Math.ceil(TOTAL_DISTANCE / 100) // Dynamic page count
@@ -113,6 +132,7 @@ const getVolumeFromDistance = (distance) => {
 // ============================================
 const BillboardFrame = ({ project, isActive }) => {
     const { title, description, position, color, url } = project
+    const filterArtist = useContext(FilterContext)
 
     // Extract video ID for thumbnail URL
     const videoId = useMemo(() => {
@@ -159,13 +179,13 @@ const BillboardFrame = ({ project, isActive }) => {
                 />
             </mesh>
 
-            {/* Dark overlay when not active */}
+            {/* Dark overlay when not active or filtered out */}
             <mesh position={[0, 0, 0.02]}>
                 <planeGeometry args={[5.4, 3.0]} />
                 <meshBasicMaterial
                     color="#000"
                     transparent
-                    opacity={isActive ? 0 : 0.5}
+                    opacity={filterArtist && project.artist !== filterArtist ? 0.85 : (isActive ? 0 : 0.5)}
                 />
             </mesh>
 
@@ -377,6 +397,7 @@ const ProximityTracker = ({ onActiveChange, onActiveUpdate, currentLane }) => {
     const scroll = useScroll()
     const lastActiveRef = useRef(null)
     const frameCountRef = useRef(0)
+    const filterArtist = useContext(FilterContext)
 
     useFrame(() => {
         // Throttle to check every 2nd frame for performance
@@ -386,10 +407,13 @@ const ProximityTracker = ({ onActiveChange, onActiveUpdate, currentLane }) => {
         // Calculate current camera Z position
         const cameraZ = -scroll.offset * TOTAL_DISTANCE
 
-        // Get billboards in current lane only
-        const laneBillboards = currentLane === 'popular'
+        // Get billboards in current lane only, respecting artist filter
+        let laneBillboards = currentLane === 'popular'
             ? LANES.popular
             : LANES.chronological
+        if (filterArtist) {
+            laneBillboards = laneBillboards.filter(p => p.artist === filterArtist)
+        }
 
         // Find the closest billboard within range
         let closestProject = null
@@ -1337,10 +1361,12 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
 // ============================================
 const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
     const [isVisible, setIsVisible] = useState(false)
+    const [copied, setCopied] = useState(false)
 
     useEffect(() => {
         if (activeProject) {
             setIsVisible(true)
+            setCopied(false)
         } else {
             setIsVisible(false)
         }
@@ -1349,23 +1375,43 @@ const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
     if (!activeProject) return null
 
     const videoId = activeProject.url.split('v=')[1]?.split('&')[0] || activeProject.url
+    const stats = ARTIST_STATS[activeProject.artist]
+
+    const handleCopyLink = () => {
+        const url = `${window.location.origin}${window.location.pathname}?v=${activeProject.youtubeId || videoId}`
+        navigator.clipboard.writeText(url).then(() => {
+            setCopied(true)
+            setTimeout(() => setCopied(false), 2000)
+        })
+    }
 
     return (
         <div className={`video-overlay ${isVisible ? 'visible' : ''}`}>
             <div className="video-frame" style={{ borderColor: activeProject.color }}>
                 <div className="video-title" style={{ color: activeProject.color }}>
                     {activeProject.title}
-                    {/* Fullscreen/Theater Mode button */}
-                    <button
-                        className="theater-mode-btn"
-                        onClick={onOpenTheater}
-                        title="Theater Mode (F)"
-                        style={{ borderColor: activeProject.color }}
-                    >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
-                        </svg>
-                    </button>
+                    <span style={{ display: 'flex', gap: '4px' }}>
+                        {/* Copy Link button */}
+                        <button
+                            className="theater-mode-btn"
+                            onClick={handleCopyLink}
+                            title="Copy Link"
+                            style={{ borderColor: activeProject.color }}
+                        >
+                            {copied ? '✓' : '🔗'}
+                        </button>
+                        {/* Fullscreen/Theater Mode button */}
+                        <button
+                            className="theater-mode-btn"
+                            onClick={onOpenTheater}
+                            title="Theater Mode (F)"
+                            style={{ borderColor: activeProject.color }}
+                        >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                            </svg>
+                        </button>
+                    </span>
                 </div>
                 <div className="video-container">
                     <iframe
@@ -1382,6 +1428,15 @@ const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
                     <div className="crt-overlay" />
                 </div>
                 <div className="video-description">{activeProject.description}</div>
+                {/* Artist spotlight stats */}
+                {stats && (
+                    <div className="artist-spotlight">
+                        <span className="spotlight-artist">{activeProject.artist}</span>
+                        <span className="spotlight-stat">{stats.count} video{stats.count > 1 ? 's' : ''}</span>
+                        <span className="spotlight-stat">{(stats.totalViews / 1000).toFixed(0)}K views</span>
+                        <span className="spotlight-stat">{stats.earliest.slice(0, 4)}–{stats.latest.slice(0, 4)}</span>
+                    </div>
+                )}
             </div>
         </div>
     )
@@ -1506,6 +1561,72 @@ const LoadingScreen = () => {
 }
 
 // ============================================
+// SEARCH BAR
+// ============================================
+const SearchBar = ({ filterArtist, onFilterChange }) => {
+    const [open, setOpen] = useState(false)
+    const [query, setQuery] = useState('')
+
+    const filtered = useMemo(() => {
+        if (!query) return ALL_ARTISTS
+        const q = query.toLowerCase()
+        return ALL_ARTISTS.filter(a => a.toLowerCase().includes(q))
+    }, [query])
+
+    const handleSelect = (artist) => {
+        onFilterChange(artist)
+        setOpen(false)
+        setQuery('')
+    }
+
+    const handleClear = () => {
+        onFilterChange(null)
+        setQuery('')
+        setOpen(false)
+    }
+
+    return (
+        <div className="search-bar-container">
+            {filterArtist ? (
+                <button className="search-active-filter" onClick={handleClear}>
+                    {filterArtist} ✕
+                </button>
+            ) : (
+                <button className="search-trigger" onClick={() => setOpen(!open)}>
+                    🔍 ARTIST
+                </button>
+            )}
+            {open && (
+                <div className="search-dropdown">
+                    <input
+                        className="search-input"
+                        type="text"
+                        placeholder="Search artist..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        autoFocus
+                    />
+                    <div className="search-results">
+                        {filtered.map(artist => (
+                            <button
+                                key={artist}
+                                className="search-result-item"
+                                onClick={() => handleSelect(artist)}
+                            >
+                                {artist}
+                                <span className="search-result-count">
+                                    {ARTIST_STATS[artist]?.count || 0}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
+
+// ============================================
 // MAIN APP
 // ============================================
 export default function App({ reducedEffects = false }) {
@@ -1514,6 +1635,7 @@ export default function App({ reducedEffects = false }) {
     const [currentLane, setCurrentLane] = useState('chronological')
     const [vehicleType, setVehicleType] = useState('tron') // tron, delorean, cyberbike
     const [theaterMode, setTheaterMode] = useState(false)
+    const [filterArtist, setFilterArtist] = useState(null)
 
     const handleToggleAudio = useCallback(() => {
         setAudioEnabled((prev) => !prev)
@@ -1559,6 +1681,37 @@ export default function App({ reducedEffects = false }) {
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [theaterMode, activeProject])
 
+    // Feature 4: Deep link — read ?v= on mount
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search)
+        const vId = params.get('v')
+        if (vId) {
+            const found = VIDEOS.find(v => v.youtubeId === vId)
+            if (found) {
+                // Build a project-like object to open theater
+                const enriched = {
+                    ...found,
+                    url: `https://www.youtube.com/watch?v=${found.youtubeId}`,
+                    color: NEON_COLORS[0]
+                }
+                setActiveProject(enriched)
+                setTheaterMode(true)
+            }
+        }
+    }, [])
+
+    // Feature 4: Update URL when entering/exiting theater
+    useEffect(() => {
+        if (theaterMode && activeProject) {
+            const vid = activeProject.youtubeId || activeProject.url?.split('v=')[1]?.split('&')[0]
+            if (vid) {
+                window.history.replaceState(null, '', `?v=${vid}`)
+            }
+        } else {
+            window.history.replaceState(null, '', window.location.pathname)
+        }
+    }, [theaterMode, activeProject])
+
     return (
         <>
             <div className="canvas-container">
@@ -1566,17 +1719,19 @@ export default function App({ reducedEffects = false }) {
                     gl={CANVAS_GL_OPTIONS}
                     dpr={reducedEffects ? CANVAS_DPR_TABLET : CANVAS_DPR_DESKTOP}
                 >
-                    <Suspense fallback={null}>
-                        <ScrollControls pages={SCROLL_PAGES} damping={0.2}>
-                            <Scene
-                                onActiveChange={handleActiveChange}
-                                currentLane={currentLane}
-                                onLaneChange={handleLaneChange}
-                                vehicleType={vehicleType}
-                                reducedEffects={reducedEffects}
-                            />
-                        </ScrollControls>
-                    </Suspense>
+                    <FilterContext.Provider value={filterArtist}>
+                        <Suspense fallback={null}>
+                            <ScrollControls pages={SCROLL_PAGES} damping={0.2}>
+                                <Scene
+                                    onActiveChange={handleActiveChange}
+                                    currentLane={currentLane}
+                                    onLaneChange={handleLaneChange}
+                                    vehicleType={vehicleType}
+                                    reducedEffects={reducedEffects}
+                                />
+                            </ScrollControls>
+                        </Suspense>
+                    </FilterContext.Provider>
                 </Canvas>
             </div>
             {/* Video overlay - Fixed HTML, never floats! */}
@@ -1592,6 +1747,7 @@ export default function App({ reducedEffects = false }) {
                 isOpen={theaterMode}
                 onClose={handleCloseTheater}
             />
+            <SearchBar filterArtist={filterArtist} onFilterChange={setFilterArtist} />
             <UIOverlay
                 audioEnabled={audioEnabled}
                 onToggleAudio={handleToggleAudio}
