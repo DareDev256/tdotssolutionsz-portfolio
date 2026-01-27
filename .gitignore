@@ -14,3 +14,4 @@ ralph-output.log
 progress.json
 status.json
 logs/
+.vercel

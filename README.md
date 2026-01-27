@@ -1,37 +1,44 @@
 # TdotsSolutionsz Music Video Portfolio
 
-An immersive synthwave-themed 3D music video portfolio showcasing 64 music videos shot by TdotsSolutionsz. Drive through a neon cityscape and browse videos on billboard displays.
+An immersive synthwave-themed 3D music video portfolio showcasing **64 music videos** shot by TdotsSolutionsz. Drive through a neon cityscape and browse videos on billboard displays.
 
 ## Features
 
 - **3D Synthwave Experience** — Navigate a neon road with Three.js and React Three Fiber
-- **Dual Lane System** — Browse by date (chronological) or featured selections
-- **Responsive Design** — Full 3D on desktop, reduced effects on tablet, grid view on mobile
-- **YouTube Integration** — Embedded playback with proximity-based audio
+- **Dual Lane System** — Browse by date (chronological) or popular selections (60K+ views)
+- **Responsive Design** — Full 3D on desktop, reduced effects on tablet, scrollable grid on mobile
+- **YouTube Integration** — Embedded playback with real view counts and upload dates
 - **Theater Mode** — Fullscreen immersive video viewing
 - **Vehicle Selection** — Choose between Tron Light Cycle, DeLorean, or Cyber Bike
+- **Music Symbol Titles** — Decorative note symbols on billboard titles
 
 ## Tech Stack
 
 - React 18 + Vite
 - Three.js / React Three Fiber / Drei
-- Custom GLSL shaders (nebula, fog, star field, particles)
-- Post-processing (bloom, chromatic aberration, vignette, scanlines)
+- Custom GLSL shaders (fog, star field, particles)
+- Post-processing (bloom, vignette)
+- Deployed on Vercel
 
 ## Artists Featured
 
-Shortiie Raw, King Louie, Masicka, Casper TNG, Dundas Dolla, Moshine, Hypa, SLOC, BG, Jay Jay, Street Bud, OG Dre, Big Kitty, Purple, Soodope, H3RSH
+Shortiie Raw, King Louie, Masicka, Casper TNG, Dundas Dolla, Moshine, Hypa, SLOC, BG, Jay Jay, Street Bud, OG Dre, Big Kitty, Purple, Soodope, H3RSH, Seanpane, Robin Banks, Murda, Arez, RoadKidd, ScaleBreakerBlo, Big Money, Scooby Blacks, Da Kid Bluntz, Yogi Savage, Flash Milla, Young Blitz, LP, Cuzzin Charlie, T-Dot, Baadass Bukk, and more
 
 ## Development
 
 ```bash
 npm install
 npm run dev      # Start dev server on port 5175
-npm run build    # Build for production
+npm run build    # Build for production (fetches YouTube data first)
 npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v1.5.0 (2026-01-27)
+- Added music symbols and decorative elements to billboard titles
+- Updated fix plan with completion audit — most phases complete
+- Added `.vercel` to .gitignore
 
 ### v1.4.0
 - Added 42 new videos (64 total) featuring Seanpane, Robin Banks, Murda, BG, Arez, RoadKidd, ScaleBreakerBlo, Big Money, Scooby Blacks, Da Kid Bluntz, Yogi Savage, Flash Milla, Young Blitz, LP, Cuzzin Charlie, Sloc, T-Dot, Baadass Bukk, and more
@@ -52,22 +59,8 @@ npm run preview  # Preview production build
 ### v1.1.0
 - Fetched real YouTube view counts for all 22 videos
 - Popular lane now shows 7 videos with 500K+ real views (Masicka 5.7M, Casper TNG 5.2M, King Louie 2.7M, Street Bud 1.1M, Purple X BG 665K, Hypa 589K, BG 503K)
-- Major performance overhaul:
-  - Removed MSAA 4x multisampling, chromatic aberration, noise, and scanline post-processing
-  - Reduced DPR cap from 2x to 1.5x
-  - Replaced heavy shader-based fog with built-in Three.js fog
-  - Cut grid divisions from 160 to 60
-  - Reduced particles from 100+100 to 40+50
-  - Cut buildings from 40 to 24
-  - Removed per-billboard ground reflection meshes (~116 draw calls saved)
-  - Reduced star field from 2000 to 800
-  - Removed ProceduralNebula and LaserBeams (heavy shaders)
-  - Disabled shadow maps
+- Major performance overhaul (removed heavy shaders, reduced draw calls, optimized particles/buildings/stars)
 
 ### v1.0.0
-- Replaced placeholder titles with real YouTube video titles and artist names
-- Added `artist` and `featured` fields to video data
-- Changed "Popular" lane to "Featured" (curated selection)
-- Removed fake view counts
-- Updated .gitignore for clean repo
+- Real YouTube video titles, artist names, and metadata
 - Initial Vercel deployment
