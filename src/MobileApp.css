@@ -333,6 +333,139 @@
     font-family: 'Orbitron', sans-serif;
 }
 
+/* Error State */
+.mobile-error-state {
+    text-align: center;
+    padding: 48px 24px;
+}
+
+.error-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #ff0080;
+    text-shadow: 0 0 20px rgba(255, 0, 128, 0.6);
+}
+
+.error-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    color: #ff0080;
+    margin: 0 0 12px;
+    text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+}
+
+.error-message {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 24px;
+    line-height: 1.5;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.error-retry-btn {
+    padding: 12px 32px;
+    background: #ff0080;
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(255, 0, 128, 0.4);
+}
+
+.error-retry-btn:hover {
+    box-shadow: 0 0 30px rgba(255, 0, 128, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Loading Skeleton */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.tab-skeleton {
+    width: 80px;
+    height: 40px;
+    border-radius: 25px;
+    background: linear-gradient(90deg,
+        rgba(255, 0, 128, 0.1) 25%,
+        rgba(255, 0, 128, 0.2) 50%,
+        rgba(255, 0, 128, 0.1) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.tab-skeleton-small {
+    width: 44px;
+}
+
+.video-card-skeleton {
+    background: linear-gradient(135deg, rgba(20, 10, 40, 0.9) 0%, rgba(40, 20, 60, 0.8) 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 0, 128, 0.1);
+}
+
+.skeleton-thumbnail {
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(90deg,
+        rgba(255, 0, 128, 0.05) 25%,
+        rgba(255, 0, 128, 0.12) 50%,
+        rgba(255, 0, 128, 0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-info {
+    padding: 12px;
+}
+
+.skeleton-title {
+    height: 14px;
+    width: 85%;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg,
+        rgba(255, 255, 255, 0.05) 25%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-description {
+    height: 12px;
+    width: 60%;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg,
+        rgba(255, 255, 255, 0.03) 25%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(255, 255, 255, 0.03) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-meta {
+    height: 11px;
+    width: 40%;
+    border-radius: 4px;
+    background: linear-gradient(90deg,
+        rgba(255, 0, 128, 0.03) 25%,
+        rgba(255, 0, 128, 0.08) 50%,
+        rgba(255, 0, 128, 0.03) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
 /* Artist Spotlight in Modal */
 .mobile-artist-spotlight {
     display: flex;

@@ -4,15 +4,29 @@ export default function VideoCard({ video, onClick }) {
     const thumbnailUrl = video.thumbnail ||
         `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            onClick()
+        }
+    }
+
     return (
-        <article className="video-card" onClick={onClick}>
+        <article
+            className="video-card"
+            onClick={onClick}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+            role="listitem"
+            aria-label={`${video.title} by ${video.artist}`}
+        >
             <div className="card-thumbnail">
                 <img
                     src={thumbnailUrl}
-                    alt={video.title}
+                    alt={`Thumbnail for ${video.title}`}
                     loading="lazy"
                 />
-                <div className="play-overlay">
+                <div className="play-overlay" aria-hidden="true">
                     <svg viewBox="0 0 24 24" className="play-icon">
                         <path d="M8 5v14l11-7z" fill="currentColor" />
                     </svg>

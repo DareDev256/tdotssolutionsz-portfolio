@@ -3,26 +3,36 @@ import videoData from './data/videos.json'
 import VideoCard from './components/VideoCard'
 import './MobileApp.css'
 
-const VIDEOS = videoData.videos.map(video => ({
-    ...video,
-    url: `https://www.youtube.com/watch?v=${video.youtubeId}`
-}))
+let VIDEOS = []
+let POPULAR_THRESHOLD = 500000
+let ALL_ARTISTS = []
+let ARTIST_STATS = {}
+let LOAD_ERROR = null
 
-const POPULAR_THRESHOLD = videoData.settings?.popularThreshold || 500000
-
-const ALL_ARTISTS = [...new Set(VIDEOS.map(v => v.artist))].sort()
-
-const ARTIST_STATS = VIDEOS.reduce((acc, v) => {
-    if (!acc[v.artist]) {
-        acc[v.artist] = { count: 0, totalViews: 0, earliest: v.uploadDate, latest: v.uploadDate }
+try {
+    if (!videoData?.videos || !Array.isArray(videoData.videos)) {
+        throw new Error('Invalid video data format')
     }
-    const s = acc[v.artist]
-    s.count++
-    s.totalViews += v.viewCount
-    if (v.uploadDate < s.earliest) s.earliest = v.uploadDate
-    if (v.uploadDate > s.latest) s.latest = v.uploadDate
-    return acc
-}, {})
+    VIDEOS = videoData.videos.map(video => ({
+        ...video,
+        url: `https://www.youtube.com/watch?v=${video.youtubeId}`
+    }))
+    POPULAR_THRESHOLD = videoData.settings?.popularThreshold || 500000
+    ALL_ARTISTS = [...new Set(VIDEOS.map(v => v.artist))].sort()
+    ARTIST_STATS = VIDEOS.reduce((acc, v) => {
+        if (!acc[v.artist]) {
+            acc[v.artist] = { count: 0, totalViews: 0, earliest: v.uploadDate, latest: v.uploadDate }
+        }
+        const s = acc[v.artist]
+        s.count++
+        s.totalViews += v.viewCount
+        if (v.uploadDate < s.earliest) s.earliest = v.uploadDate
+        if (v.uploadDate > s.latest) s.latest = v.uploadDate
+        return acc
+    }, {})
+} catch (err) {
+    LOAD_ERROR = err.message || 'Failed to load video data'
+}
 
 export default function MobileApp() {
     const [activeTab, setActiveTab] = useState('latest')
@@ -31,6 +41,18 @@ export default function MobileApp() {
     const [searchOpen, setSearchOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
     const [copied, setCopied] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(LOAD_ERROR)
+
+    // Simulate loading state for initial data hydration
+    useEffect(() => {
+        if (VIDEOS.length > 0 || LOAD_ERROR) {
+            // Short delay to show loading skeleton for perceived performance
+            const timer = setTimeout(() => setLoading(false), 300)
+            return () => clearTimeout(timer)
+        }
+        setLoading(false)
+    }, [])
 
     // Deep link: read ?v= on mount
     useEffect(() => {
@@ -88,7 +110,73 @@ export default function MobileApp() {
         })
     }
 
+    const handleRetry = () => {
+        setError(null)
+        setLoading(true)
+        window.location.reload()
+    }
+
     const stats = playingVideo ? ARTIST_STATS[playingVideo.artist] : null
+
+    // Error state
+    if (error) {
+        return (
+            <div className="mobile-app">
+                <header className="mobile-header">
+                    <h1 className="mobile-title">
+                        <span className="title-infinite">♫ MUSIC VIDEO ♫</span>
+                        <span className="title-drive">PORTFOLIO</span>
+                    </h1>
+                    <p className="mobile-subtitle">♪ ── TDOTSSOLUTIONSZ ── ♪</p>
+                </header>
+                <div className="mobile-error-state" role="alert">
+                    <div className="error-icon">⚠</div>
+                    <h2 className="error-title">Unable to Load Videos</h2>
+                    <p className="error-message">
+                        Something went wrong while loading the video portfolio. Please check your connection and try again.
+                    </p>
+                    <button className="error-retry-btn" onClick={handleRetry}>
+                        Try Again
+                    </button>
+                </div>
+                <footer className="mobile-footer">
+                    <p>♫ &copy; {new Date().getFullYear()} TdotsSolutionsz ♫</p>
+                </footer>
+            </div>
+        )
+    }
+
+    // Loading state
+    if (loading) {
+        return (
+            <div className="mobile-app">
+                <header className="mobile-header">
+                    <h1 className="mobile-title">
+                        <span className="title-infinite">♫ MUSIC VIDEO ♫</span>
+                        <span className="title-drive">PORTFOLIO</span>
+                    </h1>
+                    <p className="mobile-subtitle">♪ ── TDOTSSOLUTIONSZ ── ♪</p>
+                </header>
+                <nav className="filter-tabs">
+                    <div className="tab-skeleton" aria-hidden="true"></div>
+                    <div className="tab-skeleton" aria-hidden="true"></div>
+                    <div className="tab-skeleton tab-skeleton-small" aria-hidden="true"></div>
+                </nav>
+                <main className="video-grid" aria-busy="true" aria-label="Loading videos">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} className="video-card-skeleton" aria-hidden="true">
+                            <div className="skeleton-thumbnail"></div>
+                            <div className="skeleton-info">
+                                <div className="skeleton-title"></div>
+                                <div className="skeleton-description"></div>
+                                <div className="skeleton-meta"></div>
+                            </div>
+                        </div>
+                    ))}
+                </main>
+            </div>
+        )
+    }
 
     return (
         <div className="mobile-app">
@@ -102,16 +190,22 @@ export default function MobileApp() {
             </header>
 
             {/* Search + Filter Tabs */}
-            <nav className="filter-tabs">
+            <nav className="filter-tabs" role="tablist" aria-label="Video filters">
                 <button
                     className={`tab ${activeTab === 'latest' ? 'active' : ''}`}
                     onClick={() => setActiveTab('latest')}
+                    role="tab"
+                    aria-selected={activeTab === 'latest'}
+                    aria-pressed={activeTab === 'latest'}
                 >
                     Latest
                 </button>
                 <button
                     className={`tab ${activeTab === 'popular' ? 'active' : ''}`}
                     onClick={() => setActiveTab('popular')}
+                    role="tab"
+                    aria-selected={activeTab === 'popular'}
+                    aria-pressed={activeTab === 'popular'}
                 >
                     Popular
                 </button>
@@ -119,6 +213,8 @@ export default function MobileApp() {
                     <button
                         className="tab artist-filter-active"
                         onClick={() => { setFilterArtist(null); setSearchQuery('') }}
+                        aria-label={`Clear filter: ${filterArtist}`}
+                        aria-pressed={true}
                     >
                         {filterArtist} ✕
                     </button>
@@ -126,6 +222,9 @@ export default function MobileApp() {
                     <button
                         className="tab"
                         onClick={() => setSearchOpen(!searchOpen)}
+                        aria-expanded={searchOpen}
+                        aria-label="Search artists"
+                        aria-pressed={searchOpen}
                     >
                         🔍
                     </button>
@@ -134,7 +233,7 @@ export default function MobileApp() {
 
             {/* Artist Search Dropdown */}
             {searchOpen && (
-                <div className="mobile-search-dropdown">
+                <div className="mobile-search-dropdown" role="search">
                     <input
                         className="mobile-search-input"
                         type="text"
@@ -142,12 +241,15 @@ export default function MobileApp() {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         autoFocus
+                        aria-label="Search for an artist"
                     />
-                    <div className="mobile-search-results">
+                    <div className="mobile-search-results" role="listbox" aria-label="Artist search results">
                         {searchResults.map(artist => (
                             <button
                                 key={artist}
                                 className="mobile-search-item"
+                                role="option"
+                                aria-selected={filterArtist === artist}
                                 onClick={() => {
                                     setFilterArtist(artist)
                                     setSearchOpen(false)
@@ -163,7 +265,7 @@ export default function MobileApp() {
             )}
 
             {/* Video Grid */}
-            <main className="video-grid">
+            <main className="video-grid" role="list" aria-label="Music videos">
                 {filteredVideos.map(video => (
                     <VideoCard
                         key={video.id}
@@ -180,13 +282,13 @@ export default function MobileApp() {
 
             {/* Video Player Modal */}
             {playingVideo && (
-                <div className="video-modal" onClick={handleClosePlayer}>
+                <div className="video-modal" onClick={handleClosePlayer} role="dialog" aria-modal="true" aria-label={`Now playing: ${playingVideo.title}`}>
                     <div className="modal-content" onClick={e => e.stopPropagation()}>
                         <div className="modal-top-bar">
                             <button className="copy-link-btn" onClick={handleCopyLink}>
                                 {copied ? '✓ Copied' : '🔗 Share'}
                             </button>
-                            <button className="close-button" onClick={handleClosePlayer}>
+                            <button className="close-button" onClick={handleClosePlayer} aria-label="Close video player">
                                 ✕
                             </button>
                         </div>
@@ -216,7 +318,7 @@ export default function MobileApp() {
 
             {/* Footer */}
             <footer className="mobile-footer">
-                <p>♫ © {new Date().getFullYear()} TdotsSolutionsz ♫</p>
+                <p>♫ &copy; {new Date().getFullYear()} TdotsSolutionsz ♫</p>
             </footer>
         </div>
     )
