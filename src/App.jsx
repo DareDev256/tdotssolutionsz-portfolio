@@ -454,6 +454,9 @@ const ProximityTracker = ({ onActiveChange, onActiveUpdate, currentLane }) => {
 // ============================================
 const SynthwaveRoad = () => {
     const gridRef = useRef()
+    // Road length scales to cover the full journey + padding
+    const roadLength = TOTAL_DISTANCE + 200
+    const roadCenter = -roadLength / 2
 
     useFrame((_, delta) => {
         if (gridRef.current) {
@@ -466,37 +469,42 @@ const SynthwaveRoad = () => {
 
     const gridLines = useMemo(() => {
         const positions = []
-        const gridSize = 800
-        const divisions = 60
-        const step = gridSize / divisions
+        const gridWidth = 60
+        const gridDepth = roadLength
+        const divisionsX = 40
+        const divisionsZ = Math.floor(roadLength / 13)
+        const stepX = gridWidth / divisionsX
+        const stepZ = gridDepth / divisionsZ
 
-        for (let i = 0; i <= divisions; i++) {
-            const z = -gridSize / 2 + i * step
-            positions.push(-gridSize / 2, 0.01, z)
-            positions.push(gridSize / 2, 0.01, z)
+        // Horizontal lines (across road)
+        for (let i = 0; i <= divisionsZ; i++) {
+            const z = -gridDepth / 2 + i * stepZ
+            positions.push(-gridWidth / 2, 0.01, z)
+            positions.push(gridWidth / 2, 0.01, z)
         }
-        for (let i = 0; i <= divisions; i++) {
-            const x = -gridSize / 2 + i * step
-            positions.push(x, 0.01, -gridSize / 2)
-            positions.push(x, 0.01, gridSize / 2)
+        // Vertical lines (along road)
+        for (let i = 0; i <= divisionsX; i++) {
+            const x = -gridWidth / 2 + i * stepX
+            positions.push(x, 0.01, -gridDepth / 2)
+            positions.push(x, 0.01, gridDepth / 2)
         }
         return new Float32Array(positions)
-    }, [])
+    }, [roadLength])
 
-    // Dashed lane divider markers
+    // Dashed lane divider markers — full road length
     const laneMarkers = useMemo(() => {
         const markers = []
-        for (let z = 0; z > -700; z -= 60) {
+        for (let z = 0; z > -roadLength; z -= 60) {
             markers.push(z)
         }
         return markers
-    }, [])
+    }, [roadLength])
 
     return (
         <group>
-            {/* Ground plane - extended with wet/reflective surface */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, -300]} receiveShadow>
-                <planeGeometry args={[800, 800]} />
+            {/* Ground plane — scales to full journey */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, roadCenter]} receiveShadow>
+                <planeGeometry args={[200, roadLength]} />
                 <meshStandardMaterial
                     color="#030308"
                     roughness={0.3}
@@ -520,9 +528,9 @@ const SynthwaveRoad = () => {
                 </lineSegments>
             </group>
 
-            {/* Center divider - EMISSIVE for proper glow */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, -300]}>
-                <planeGeometry args={[0.3, 800]} />
+            {/* Center divider */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, roadCenter]}>
+                <planeGeometry args={[0.3, roadLength]} />
                 <meshStandardMaterial
                     color="#05d9e8"
                     emissive="#05d9e8"
@@ -531,7 +539,7 @@ const SynthwaveRoad = () => {
                 />
             </mesh>
 
-            {/* Dashed lane markers for Popular lane (left) - subtle dashes */}
+            {/* Dashed lane markers — Popular (left) */}
             {laneMarkers.map((z, i) => (
                 <mesh key={`left-${i}`} rotation={[-Math.PI / 2, 0, 0]} position={[LANE_CONFIG.POPULAR.x, 0.025, z]}>
                     <planeGeometry args={[0.12, 3]} />
@@ -545,7 +553,7 @@ const SynthwaveRoad = () => {
                 </mesh>
             ))}
 
-            {/* Dashed lane markers for Chronological lane (right) - subtle dashes */}
+            {/* Dashed lane markers — Chronological (right) */}
             {laneMarkers.map((z, i) => (
                 <mesh key={`right-${i}`} rotation={[-Math.PI / 2, 0, 0]} position={[LANE_CONFIG.CHRONOLOGICAL.x, 0.025, z]}>
                     <planeGeometry args={[0.12, 3]} />
@@ -559,9 +567,9 @@ const SynthwaveRoad = () => {
                 </mesh>
             ))}
 
-            {/* Outer edge lines - EMISSIVE neon pink */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-15, 0.02, -300]}>
-                <planeGeometry args={[0.5, 800]} />
+            {/* Outer edge lines */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-15, 0.02, roadCenter]}>
+                <planeGeometry args={[0.5, roadLength]} />
                 <meshStandardMaterial
                     color="#ff2a6d"
                     emissive="#ff2a6d"
@@ -569,8 +577,8 @@ const SynthwaveRoad = () => {
                     toneMapped={false}
                 />
             </mesh>
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[15, 0.02, -300]}>
-                <planeGeometry args={[0.5, 800]} />
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[15, 0.02, roadCenter]}>
+                <planeGeometry args={[0.5, roadLength]} />
                 <meshStandardMaterial
                     color="#ff2a6d"
                     emissive="#ff2a6d"
@@ -579,7 +587,7 @@ const SynthwaveRoad = () => {
                 />
             </mesh>
 
-            {/* Lane labels on ground (subtle) */}
+            {/* Lane labels on ground */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[LANE_CONFIG.POPULAR.x, 0.02, -10]}>
                 <planeGeometry args={[4, 1]} />
                 <meshBasicMaterial color="#7700ff" transparent opacity={0.15} />
@@ -761,10 +769,17 @@ const StarField = () => {
 // ============================================
 // CN TOWER - Toronto landmark (with pulsing beacon)
 // ============================================
+// ============================================
+// CN TOWER - Tron Energy Spire with orbiting rings
+// ============================================
 const CNTower = ({ position = [0, 0, 0] }) => {
     const beaconRef = useRef()
     const glowRef = useRef()
     const podGlowRef = useRef()
+    const ring1Ref = useRef()
+    const ring2Ref = useRef()
+    const ring3Ref = useRef()
+    const coreRef = useRef()
 
     useFrame((state) => {
         const time = state.clock.elapsedTime
@@ -788,6 +803,26 @@ const CNTower = ({ position = [0, 0, 0] }) => {
             const pulse = Math.sin(time * 1.5) * 0.3 + 0.7
             podGlowRef.current.material.emissiveIntensity = 2 + pulse * 2
         }
+
+        // Orbiting energy rings
+        if (ring1Ref.current) {
+            ring1Ref.current.rotation.y = time * 0.5
+            ring1Ref.current.rotation.x = Math.sin(time * 0.3) * 0.2
+        }
+        if (ring2Ref.current) {
+            ring2Ref.current.rotation.y = -time * 0.7
+            ring2Ref.current.rotation.z = Math.cos(time * 0.4) * 0.15
+        }
+        if (ring3Ref.current) {
+            ring3Ref.current.rotation.y = time * 0.3
+            ring3Ref.current.rotation.x = Math.cos(time * 0.2) * 0.3
+        }
+
+        // Energy core pulse
+        if (coreRef.current) {
+            const p = Math.sin(time * 2) * 0.5 + 0.5
+            coreRef.current.material.emissiveIntensity = 4 + p * 4
+        }
     })
 
     return (
@@ -797,23 +832,60 @@ const CNTower = ({ position = [0, 0, 0] }) => {
                 <cylinderGeometry args={[0.8, 1.5, 30, 6]} />
                 <meshBasicMaterial color="#1a1a2e" />
             </mesh>
+            {/* Shaft neon edge lines */}
+            {[0, 1, 2, 3, 4, 5].map(i => (
+                <mesh key={`shaft-line-${i}`} position={[
+                    Math.cos(i * Math.PI / 3) * 1.1,
+                    15,
+                    Math.sin(i * Math.PI / 3) * 1.1
+                ]}>
+                    <boxGeometry args={[0.03, 30, 0.03]} />
+                    <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={2} toneMapped={false} />
+                </mesh>
+            ))}
             {/* Pod (observation deck) */}
             <mesh position={[0, 28, 0]}>
                 <cylinderGeometry args={[3, 2.5, 4, 12]} />
                 <meshBasicMaterial color="#0a0a15" />
             </mesh>
-            {/* Pod windows glow - EMISSIVE with pulse */}
+            {/* Pod windows glow */}
             <mesh ref={podGlowRef} position={[0, 28, 0]}>
                 <cylinderGeometry args={[3.1, 2.6, 1.5, 12]} />
-                <meshStandardMaterial
-                    color="#05d9e8"
-                    emissive="#05d9e8"
-                    emissiveIntensity={3}
-                    transparent
-                    opacity={0.9}
-                    toneMapped={false}
-                />
+                <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={3} transparent opacity={0.9} toneMapped={false} />
             </mesh>
+            {/* Pod neon ring */}
+            <mesh position={[0, 26, 0]} rotation={[Math.PI / 2, 0, 0]}>
+                <torusGeometry args={[3.2, 0.05, 8, 24]} />
+                <meshStandardMaterial color="#ff2a6d" emissive="#ff2a6d" emissiveIntensity={3} toneMapped={false} />
+            </mesh>
+            <mesh position={[0, 30, 0]} rotation={[Math.PI / 2, 0, 0]}>
+                <torusGeometry args={[3.2, 0.05, 8, 24]} />
+                <meshStandardMaterial color="#ff2a6d" emissive="#ff2a6d" emissiveIntensity={3} toneMapped={false} />
+            </mesh>
+            {/* Energy core inside pod */}
+            <mesh ref={coreRef} position={[0, 28, 0]}>
+                <sphereGeometry args={[1.2, 12, 12]} />
+                <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={5} transparent opacity={0.6} toneMapped={false} />
+            </mesh>
+            {/* Orbiting energy rings */}
+            <group ref={ring1Ref} position={[0, 28, 0]}>
+                <mesh rotation={[Math.PI / 2, 0, 0]}>
+                    <torusGeometry args={[5, 0.06, 8, 32]} />
+                    <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={3} transparent opacity={0.7} toneMapped={false} />
+                </mesh>
+            </group>
+            <group ref={ring2Ref} position={[0, 28, 0]}>
+                <mesh rotation={[Math.PI / 3, 0, 0]}>
+                    <torusGeometry args={[6.5, 0.04, 8, 32]} />
+                    <meshStandardMaterial color="#ff2a6d" emissive="#ff2a6d" emissiveIntensity={2.5} transparent opacity={0.5} toneMapped={false} />
+                </mesh>
+            </group>
+            <group ref={ring3Ref} position={[0, 28, 0]}>
+                <mesh rotation={[Math.PI / 4, Math.PI / 6, 0]}>
+                    <torusGeometry args={[8, 0.03, 8, 32]} />
+                    <meshStandardMaterial color="#d300c5" emissive="#d300c5" emissiveIntensity={2} transparent opacity={0.4} toneMapped={false} />
+                </mesh>
+            </group>
             {/* Upper shaft */}
             <mesh position={[0, 35, 0]}>
                 <cylinderGeometry args={[0.5, 0.8, 10, 6]} />
@@ -824,98 +896,344 @@ const CNTower = ({ position = [0, 0, 0] }) => {
                 <cylinderGeometry args={[0.1, 0.3, 20, 4]} />
                 <meshBasicMaterial color="#222" />
             </mesh>
+            {/* Antenna neon tip */}
+            <mesh position={[0, 57, 0]}>
+                <sphereGeometry args={[0.3, 8, 8]} />
+                <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={4} toneMapped={false} />
+            </mesh>
             {/* Beacon outer glow */}
             <mesh ref={glowRef} position={[0, 58, 0]}>
                 <sphereGeometry args={[2.5, 16, 16]} />
-                <meshBasicMaterial
-                    color="#ff2a6d"
-                    transparent
-                    opacity={0.15}
-                    blending={THREE.AdditiveBlending}
-                    depthWrite={false}
-                />
+                <meshBasicMaterial color="#ff2a6d" transparent opacity={0.15} blending={THREE.AdditiveBlending} depthWrite={false} />
             </mesh>
-            {/* Beacon - EMISSIVE pulsing beacon */}
+            {/* Beacon */}
             <mesh ref={beaconRef} position={[0, 58, 0]}>
                 <sphereGeometry args={[0.8, 8, 8]} />
-                <meshStandardMaterial
-                    color="#ff2a6d"
-                    emissive="#ff2a6d"
-                    emissiveIntensity={5}
-                    toneMapped={false}
-                />
+                <meshStandardMaterial color="#ff2a6d" emissive="#ff2a6d" emissiveIntensity={5} toneMapped={false} />
             </mesh>
             {/* Beacon point light */}
             <pointLight position={[0, 58, 0]} color="#ff2a6d" intensity={50} distance={100} />
+            {/* Base platform */}
+            <mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                <ringGeometry args={[2, 6, 6]} />
+                <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={1.5} transparent opacity={0.3} toneMapped={false} side={THREE.DoubleSide} />
+            </mesh>
         </group>
     )
 }
 
 // ============================================
-// CITYSCAPE - Toronto-inspired skyline (Optimized)
+// TRON BUILDING - Procedural neon-edged structure
+// ============================================
+const TronBuilding = ({ position, width, depth, height, color, type }) => {
+    return (
+        <group position={position}>
+            {/* Main structure - dark body */}
+            <mesh position={[0, height / 2, 0]}>
+                <boxGeometry args={[width, height, depth]} />
+                <meshBasicMaterial color="#06060f" />
+            </mesh>
+            {/* Neon edge lines - vertical corners */}
+            {[
+                [-width / 2, 0, -depth / 2],
+                [width / 2, 0, -depth / 2],
+                [-width / 2, 0, depth / 2],
+                [width / 2, 0, depth / 2],
+            ].map((pos, i) => (
+                <mesh key={i} position={[pos[0], height / 2, pos[2]]}>
+                    <boxGeometry args={[0.06, height, 0.06]} />
+                    <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2} toneMapped={false} />
+                </mesh>
+            ))}
+            {/* Top edge ring */}
+            {[
+                { pos: [0, height, 0], size: [width, 0.06, 0.06] },
+                { pos: [0, height, 0], size: [0.06, 0.06, depth] },
+            ].map((edge, i) => (
+                <mesh key={`top-${i}`} position={edge.pos}>
+                    <boxGeometry args={edge.size} />
+                    <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2} toneMapped={false} />
+                </mesh>
+            ))}
+            {/* Bottom edge */}
+            <mesh position={[0, 0.03, 0]}>
+                <boxGeometry args={[width + 0.1, 0.06, depth + 0.1]} />
+                <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.5} toneMapped={false} />
+            </mesh>
+            {/* Window grid on front face */}
+            {type !== 'small' && [...Array(Math.min(Math.floor(height / 3), 6))].map((_, row) => (
+                [...Array(Math.min(Math.floor(width / 2), 4))].map((_, col) => {
+                    const winW = (width * 0.6) / Math.min(Math.floor(width / 2), 4)
+                    const winH = 1.2
+                    const startX = -width * 0.3
+                    const startY = 2 + row * 3
+                    if (startY + winH > height - 1) return null
+                    return (
+                        <mesh key={`win-${row}-${col}`} position={[startX + col * (winW + 0.3), startY, depth / 2 + 0.02]}>
+                            <planeGeometry args={[winW * 0.8, winH]} />
+                            <meshStandardMaterial
+                                color={color}
+                                emissive={color}
+                                emissiveIntensity={0.8}
+                                transparent
+                                opacity={0.25}
+                                toneMapped={false}
+                            />
+                        </mesh>
+                    )
+                })
+            ))}
+            {/* Horizontal accent lines */}
+            {type === 'tower' && [0.33, 0.66].map(frac => (
+                <mesh key={frac} position={[0, height * frac, depth / 2 + 0.02]}>
+                    <boxGeometry args={[width, 0.04, 0.01]} />
+                    <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.5} toneMapped={false} />
+                </mesh>
+            ))}
+            {/* Rooftop antenna for tall buildings */}
+            {type === 'tower' && (
+                <>
+                    <mesh position={[0, height + 2, 0]}>
+                        <cylinderGeometry args={[0.04, 0.04, 4, 4]} />
+                        <meshBasicMaterial color="#1a1a2e" />
+                    </mesh>
+                    <mesh position={[0, height + 4, 0]}>
+                        <sphereGeometry args={[0.15, 6, 6]} />
+                        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={4} toneMapped={false} />
+                    </mesh>
+                </>
+            )}
+        </group>
+    )
+}
+
+// ============================================
+// HIGHWAY ARCH - Tron-style arch over the road
+// ============================================
+const HighwayArch = ({ zPos, color = '#05d9e8' }) => {
+    return (
+        <group position={[0, 0, zPos]}>
+            {/* Left pillar */}
+            <mesh position={[-14, 10, 0]}>
+                <boxGeometry args={[0.3, 20, 0.3]} />
+                <meshBasicMaterial color="#08081a" />
+            </mesh>
+            {/* Right pillar */}
+            <mesh position={[14, 10, 0]}>
+                <boxGeometry args={[0.3, 20, 0.3]} />
+                <meshBasicMaterial color="#08081a" />
+            </mesh>
+            {/* Top beam */}
+            <mesh position={[0, 20, 0]}>
+                <boxGeometry args={[28.6, 0.3, 0.3]} />
+                <meshBasicMaterial color="#08081a" />
+            </mesh>
+            {/* Neon outlines - pillars */}
+            {[-14, 14].map((x, i) => (
+                <React.Fragment key={i}>
+                    <mesh position={[x, 10, 0.16]}>
+                        <boxGeometry args={[0.04, 20, 0.04]} />
+                        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2.5} toneMapped={false} />
+                    </mesh>
+                    <mesh position={[x, 10, -0.16]}>
+                        <boxGeometry args={[0.04, 20, 0.04]} />
+                        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2.5} toneMapped={false} />
+                    </mesh>
+                </React.Fragment>
+            ))}
+            {/* Neon top beam */}
+            <mesh position={[0, 20.16, 0]}>
+                <boxGeometry args={[28.6, 0.04, 0.04]} />
+                <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2.5} toneMapped={false} />
+            </mesh>
+            {/* Downward light strip from center of arch */}
+            <mesh position={[0, 15, 0]}>
+                <planeGeometry args={[0.08, 10]} />
+                <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.5} transparent opacity={0.15} toneMapped={false} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} depthWrite={false} />
+            </mesh>
+        </group>
+    )
+}
+
+// ============================================
+// DATA STREAM - Animated vertical light pillar
+// ============================================
+const DataStream = ({ position, height = 30, color = '#05d9e8' }) => {
+    const streamRef = useRef()
+    const basePhase = useMemo(() => Math.random() * Math.PI * 2, [])
+
+    useFrame((state) => {
+        if (streamRef.current) {
+            const pulse = Math.sin(state.clock.elapsedTime * 2 + basePhase) * 0.3 + 0.7
+            streamRef.current.material.opacity = 0.12 * pulse
+        }
+    })
+
+    return (
+        <group position={position}>
+            {/* Light pillar */}
+            <mesh ref={streamRef} position={[0, height / 2, 0]}>
+                <planeGeometry args={[0.4, height]} />
+                <meshStandardMaterial
+                    color={color}
+                    emissive={color}
+                    emissiveIntensity={2}
+                    transparent
+                    opacity={0.12}
+                    toneMapped={false}
+                    side={THREE.DoubleSide}
+                    blending={THREE.AdditiveBlending}
+                    depthWrite={false}
+                />
+            </mesh>
+            {/* Base glow ring */}
+            <mesh position={[0, 0.05, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                <ringGeometry args={[0.1, 0.6, 6]} />
+                <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2} transparent opacity={0.3} toneMapped={false} side={THREE.DoubleSide} />
+            </mesh>
+        </group>
+    )
+}
+
+// ============================================
+// CITYSCAPE - Tron-style metropolis
 // ============================================
 const Cityscape = ({ cnTowerZ = -280 }) => {
-    // Pre-computed buildings with fixed window positions (no random in render)
-    const buildings = useMemo(() => {
-        const result = []
-        const baseZ = -200
-        const spread = 600
+    const cityData = useMemo(() => {
+        const seed = (n) => {
+            // Simple seeded pseudo-random for deterministic generation
+            let x = Math.sin(n * 127.1) * 43758.5453
+            return x - Math.floor(x)
+        }
 
-        // 12 buildings per side (24 total)
-        for (let i = 0; i < 12; i++) {
-            const height = 8 + Math.random() * 30
-            const width = 3 + Math.random() * 5
-            result.push({
-                position: [-22 - Math.random() * 25, height / 2, baseZ + i * (spread / 12)],
-                size: [width, height, 3],
-                // Pre-generate window positions
-                windows: Math.random() > 0.5 ? [...Array(3)].map(() => ({
-                    x: (Math.random() - 0.5) * width * 0.5,
-                    y: (Math.random() - 0.5) * height * 0.6,
-                    color: Math.random() > 0.5 ? '#ffcc00' : '#05d9e8'
-                })) : []
+        const buildings = []
+        const arches = []
+        const streams = []
+        const baseZ = -30
+        const spread = TOTAL_DISTANCE + 100
+        const colors = ['#05d9e8', '#ff2a6d', '#7700ff', '#d300c5', '#00ff88']
+
+        // Scale building count to road length (roughly 1 building per 40 units per row)
+        const innerCount = Math.max(18, Math.floor(spread / 40))
+        const outerCount = Math.max(14, Math.floor(spread / 55))
+
+        // LEFT SIDE - Dense inner row (close to road)
+        for (let i = 0; i < innerCount; i++) {
+            const s = seed(i * 3.7)
+            const s2 = seed(i * 7.3)
+            const s3 = seed(i * 11.1)
+            const height = 12 + s * 35
+            const width = 3 + s2 * 5
+            const z = baseZ - i * (spread / innerCount)
+            const type = height > 30 ? 'tower' : height > 18 ? 'mid' : 'small'
+            buildings.push({
+                position: [-18 - s2 * 6, 0, z],
+                width, depth: 2 + s3 * 3, height,
+                color: colors[Math.floor(s3 * colors.length)],
+                type
             })
         }
 
-        for (let i = 0; i < 12; i++) {
-            const height = 8 + Math.random() * 30
-            const width = 3 + Math.random() * 5
-            result.push({
-                position: [22 + Math.random() * 25, height / 2, baseZ + i * (spread / 12)],
-                size: [width, height, 3],
-                windows: Math.random() > 0.5 ? [...Array(3)].map(() => ({
-                    x: (Math.random() - 0.5) * width * 0.5,
-                    y: (Math.random() - 0.5) * height * 0.6,
-                    color: Math.random() > 0.5 ? '#ffcc00' : '#05d9e8'
-                })) : []
+        // LEFT SIDE - Outer row (further back)
+        for (let i = 0; i < outerCount; i++) {
+            const s = seed(i * 5.1 + 100)
+            const s2 = seed(i * 9.7 + 100)
+            const s3 = seed(i * 13.3 + 100)
+            const height = 18 + s * 45
+            const width = 4 + s2 * 8
+            const z = baseZ - 15 - i * (spread / outerCount)
+            buildings.push({
+                position: [-30 - s2 * 18, 0, z],
+                width, depth: 3 + s3 * 4, height,
+                color: colors[Math.floor(s3 * colors.length)],
+                type: height > 35 ? 'tower' : 'mid'
             })
         }
 
-        return result
+        // RIGHT SIDE - Dense inner row
+        for (let i = 0; i < innerCount; i++) {
+            const s = seed(i * 4.3 + 200)
+            const s2 = seed(i * 8.1 + 200)
+            const s3 = seed(i * 12.7 + 200)
+            const height = 12 + s * 35
+            const width = 3 + s2 * 5
+            const z = baseZ - i * (spread / innerCount)
+            const type = height > 30 ? 'tower' : height > 18 ? 'mid' : 'small'
+            buildings.push({
+                position: [18 + s2 * 6, 0, z],
+                width, depth: 2 + s3 * 3, height,
+                color: colors[Math.floor(s3 * colors.length)],
+                type
+            })
+        }
+
+        // RIGHT SIDE - Outer row
+        for (let i = 0; i < outerCount; i++) {
+            const s = seed(i * 6.1 + 300)
+            const s2 = seed(i * 10.3 + 300)
+            const s3 = seed(i * 14.7 + 300)
+            const height = 18 + s * 45
+            const width = 4 + s2 * 8
+            const z = baseZ - 15 - i * (spread / outerCount)
+            buildings.push({
+                position: [30 + s2 * 18, 0, z],
+                width, depth: 3 + s3 * 4, height,
+                color: colors[Math.floor(s3 * colors.length)],
+                type: height > 35 ? 'tower' : 'mid'
+            })
+        }
+
+        // Highway arches scale with distance
+        const archCount = Math.max(8, Math.floor(TOTAL_DISTANCE / 80))
+        for (let i = 0; i < archCount; i++) {
+            const z = -60 - i * (TOTAL_DISTANCE / archCount)
+            arches.push({
+                zPos: z,
+                color: i % 2 === 0 ? '#05d9e8' : '#ff2a6d'
+            })
+        }
+
+        // Data stream pillars scale with distance
+        const streamCount = Math.max(12, Math.floor(TOTAL_DISTANCE / 100))
+        for (let i = 0; i < streamCount; i++) {
+            const s = seed(i * 17.3 + 500)
+            const s2 = seed(i * 19.7 + 500)
+            const side = i % 2 === 0 ? -1 : 1
+            streams.push({
+                position: [side * (20 + s * 15), 0, -50 - i * (TOTAL_DISTANCE / streamCount)],
+                height: 25 + s2 * 30,
+                color: colors[Math.floor(s * colors.length)]
+            })
+        }
+
+        return { buildings, arches, streams }
     }, [])
-
-    // Shared materials for better batching
-    const buildingMaterial = useMemo(() => (
-        <meshBasicMaterial color="#0a0a15" />
-    ), [])
 
     return (
         <group>
             <CNTower position={[0, 0, cnTowerZ]} />
 
-            {buildings.map((building, i) => (
-                <group key={i} position={building.position}>
-                    <mesh>
-                        <boxGeometry args={building.size} />
-                        {buildingMaterial}
-                    </mesh>
-                    {building.windows.map((win, j) => (
-                        <mesh key={j} position={[win.x, win.y, building.size[2] / 2 + 0.01]}>
-                            <planeGeometry args={[0.4, 0.5]} />
-                            <meshBasicMaterial color={win.color} transparent opacity={0.6} />
-                        </mesh>
-                    ))}
-                </group>
+            {/* Tron Buildings - 64 total across 4 rows */}
+            {cityData.buildings.map((b, i) => (
+                <TronBuilding
+                    key={`bldg-${i}`}
+                    position={b.position}
+                    width={b.width}
+                    depth={b.depth}
+                    height={b.height}
+                    color={b.color}
+                    type={b.type}
+                />
+            ))}
+
+            {/* Highway arches */}
+            {cityData.arches.map((arch, i) => (
+                <HighwayArch key={`arch-${i}`} zPos={arch.zPos} color={arch.color} />
+            ))}
+
+            {/* Data stream light pillars */}
+            {cityData.streams.map((stream, i) => (
+                <DataStream key={`stream-${i}`} position={stream.position} height={stream.height} color={stream.color} />
             ))}
         </group>
     )
@@ -1265,8 +1583,8 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
         <>
             {/* Deep space background */}
             <color attach="background" args={['#030308']} />
-            {/* Atmospheric fog - closer start for more depth */}
-            <fog attach="fog" args={['#0d0221', 40, 280]} />
+            {/* Atmospheric fog - extends with road */}
+            <fog attach="fog" args={['#0d0221', 40, 350]} />
 
             {/* Enhanced Lighting Setup */}
             <ambientLight intensity={0.15} color="#1a0a2e" />

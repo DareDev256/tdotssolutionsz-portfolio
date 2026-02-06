@@ -26,6 +26,11 @@ export default function VideoCard({ video, onClick }) {
                     alt={`Thumbnail for ${video.title}`}
                     loading="lazy"
                 />
+                {video.viewCount > 0 && (
+                    <span className="card-views-badge">
+                        {formatViews(video.viewCount)}
+                    </span>
+                )}
                 <div className="play-overlay" aria-hidden="true">
                     <svg viewBox="0 0 24 24" className="play-icon">
                         <path d="M8 5v14l11-7z" fill="currentColor" />
@@ -38,12 +43,28 @@ export default function VideoCard({ video, onClick }) {
                 <div className="card-meta">
                     <span className="card-artist">{video.artist}</span>
                     <span className="upload-date">
-                        {formatDate(video.uploadDate)}
+                        {formatYear(video.uploadDate)}
                     </span>
                 </div>
+                {video.viewCount > 0 && (
+                    <div className="card-stats-row">
+                        <span className="card-stat-views">{formatViews(video.viewCount)} views</span>
+                        <span className="card-stat-date">{formatDate(video.uploadDate)}</span>
+                    </div>
+                )}
             </div>
         </article>
     )
+}
+
+function formatViews(count) {
+    if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`
+    if (count >= 1000) return `${(count / 1000).toFixed(0)}K`
+    return count.toString()
+}
+
+function formatYear(dateString) {
+    return new Date(dateString).getFullYear().toString()
 }
 
 function formatDate(dateString) {

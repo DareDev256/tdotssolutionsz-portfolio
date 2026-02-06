@@ -5,19 +5,75 @@
     background: #0a0015;
     color: #fff;
     font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, sans-serif;
-    padding-bottom: 60px;
+    padding-bottom: 80px;
+    position: relative;
+}
+
+/* Animated gradient background */
+.mobile-app::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 0, 128, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(0, 255, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(120, 0, 255, 0.06) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Grid overlay */
+.mobile-app::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(rgba(255, 0, 128, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 0, 128, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* Header */
 .mobile-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     text-align: center;
-    padding: 24px 16px 16px;
-    background: rgba(0, 0, 0, 0.4);
+    padding: 16px 16px 12px;
+    background: linear-gradient(180deg, rgba(10, 0, 21, 0.97) 0%, rgba(10, 0, 21, 0.92) 80%, rgba(10, 0, 21, 0) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* Logo */
+.mobile-logo {
+    height: 80px;
+    width: auto;
+    filter: invert(1) brightness(1.5) drop-shadow(0 0 14px rgba(5, 217, 232, 0.7));
+    animation: logo-glow 2s ease-in-out infinite alternate;
+    margin-bottom: 4px;
+}
+
+@keyframes logo-glow {
+    from {
+        filter: invert(1) brightness(1.5) drop-shadow(0 0 10px rgba(5, 217, 232, 0.5));
+    }
+    to {
+        filter: invert(1) brightness(1.5) drop-shadow(0 0 22px rgba(5, 217, 232, 0.9));
+    }
 }
 
 .mobile-title {
     margin: 0;
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 700;
     letter-spacing: 4px;
     line-height: 1.2;
@@ -39,29 +95,39 @@
         0 0 20px rgba(0, 255, 255, 0.4);
 }
 
+/* Decorative line */
+.mobile-header-line {
+    width: 120px;
+    height: 1px;
+    margin: 8px auto;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.6), rgba(255, 0, 128, 0.6), transparent);
+}
+
 .mobile-subtitle {
-    margin: 8px 0 0;
-    font-size: 12px;
-    color: #ff0080;
-    letter-spacing: 3px;
+    margin: 0;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 4px;
     font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 8px rgba(255, 0, 128, 0.6);
+    text-transform: uppercase;
 }
 
 /* Filter Tabs */
 .filter-tabs {
     display: flex;
     gap: 8px;
-    padding: 0 16px 16px;
+    padding: 12px 16px 16px;
     justify-content: center;
+    position: relative;
+    z-index: 1;
 }
 
 .tab {
     padding: 10px 24px;
-    border: 2px solid rgba(255, 0, 128, 0.5);
-    background: transparent;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 14px;
+    border: 1px solid rgba(255, 0, 128, 0.3);
+    background: rgba(255, 0, 128, 0.05);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
     font-weight: 600;
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 1px;
@@ -77,11 +143,12 @@
 }
 
 .tab.active {
-    background: #ff0080;
+    background: linear-gradient(135deg, rgba(255, 0, 128, 0.9), rgba(200, 0, 100, 0.9));
     border-color: #ff0080;
     color: #fff;
     box-shadow:
-        0 0 20px rgba(255, 0, 128, 0.5),
+        0 0 20px rgba(255, 0, 128, 0.4),
+        0 4px 15px rgba(255, 0, 128, 0.2),
         inset 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
@@ -91,6 +158,8 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     padding: 0 12px;
+    position: relative;
+    z-index: 1;
 }
 
 @media (min-width: 480px) {
@@ -121,12 +190,13 @@
 .modal-content {
     width: 100%;
     max-width: 500px;
-    background: #1a0030;
+    background: linear-gradient(180deg, #1a0030 0%, #0d0020 100%);
     border-radius: 16px;
     overflow: hidden;
     border: 1px solid rgba(255, 0, 128, 0.3);
     box-shadow:
-        0 0 40px rgba(255, 0, 128, 0.3),
+        0 0 40px rgba(255, 0, 128, 0.2),
+        0 0 80px rgba(0, 255, 255, 0.1),
         0 20px 60px rgba(0, 0, 0, 0.5);
     animation: slideUp 0.3s ease;
 }
@@ -193,7 +263,7 @@
 .video-container {
     position: relative;
     width: 100%;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    padding-bottom: 56.25%;
 }
 
 .video-container iframe {
@@ -232,15 +302,27 @@
 /* Footer */
 .mobile-footer {
     text-align: center;
-    padding: 24px 16px;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 12px;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 32px 16px;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 11px;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+}
+
+.mobile-footer::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 1px;
+    margin: 0 auto 16px;
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 128, 0.4), transparent);
 }
 
 /* Scrollbar */
 .mobile-app::-webkit-scrollbar {
-    width: 4px;
+    width: 3px;
 }
 
 .mobile-app::-webkit-scrollbar-track {
@@ -248,29 +330,13 @@
 }
 
 .mobile-app::-webkit-scrollbar-thumb {
-    background: rgba(255, 0, 128, 0.5);
+    background: linear-gradient(180deg, #ff0080, #00ffff);
     border-radius: 2px;
-}
-
-/* Add grid background effect */
-.mobile-app::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image:
-        linear-gradient(rgba(255, 0, 128, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 0, 128, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: -1;
 }
 
 /* Artist filter active tab */
 .artist-filter-active {
-    background: rgba(0, 255, 255, 0.15) !important;
+    background: rgba(0, 255, 255, 0.1) !important;
     border-color: #00ffff !important;
     color: #00ffff !important;
     font-size: 11px !important;
@@ -283,6 +349,9 @@
     border: 1px solid rgba(0, 255, 255, 0.3);
     border-radius: 12px;
     overflow: hidden;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .mobile-search-input {

@@ -182,11 +182,13 @@ export default function MobileApp() {
         <div className="mobile-app">
             {/* Header */}
             <header className="mobile-header">
+                <img src="/logo.png" alt="TDots Solutionsz" className="mobile-logo" />
                 <h1 className="mobile-title">
-                    <span className="title-infinite">♫ MUSIC VIDEO ♫</span>
+                    <span className="title-infinite">MUSIC VIDEO</span>
                     <span className="title-drive">PORTFOLIO</span>
                 </h1>
-                <p className="mobile-subtitle">♪ ── TDOTSSOLUTIONSZ ── ♪</p>
+                <div className="mobile-header-line" />
+                <p className="mobile-subtitle">TDOTSSOLUTIONSZ</p>
             </header>
 
             {/* Search + Filter Tabs */}

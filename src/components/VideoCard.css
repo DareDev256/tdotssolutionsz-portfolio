@@ -3,14 +3,17 @@
     border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(255, 0, 128, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 1px solid rgba(255, 0, 128, 0.15);
+    position: relative;
 }
 
 .video-card:hover,
 .video-card:focus-visible {
     transform: translateY(-4px);
-    box-shadow: 0 8px 32px rgba(255, 0, 128, 0.3);
+    box-shadow:
+        0 8px 32px rgba(255, 0, 128, 0.25),
+        0 0 0 1px rgba(255, 0, 128, 0.4);
     border-color: rgba(255, 0, 128, 0.5);
 }
 
@@ -45,6 +48,25 @@
     transform: scale(1.05);
 }
 
+/* View count badge */
+.card-views-badge {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    padding: 2px 7px;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 6px;
+    color: rgba(0, 255, 255, 0.9);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 2;
+}
+
 .play-overlay {
     position: absolute;
     inset: 0;
@@ -61,21 +83,21 @@
 }
 
 .play-icon {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     color: white;
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
 }
 
 .card-info {
-    padding: 12px;
+    padding: 10px 10px 12px;
 }
 
 .card-title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: #fff;
-    margin: 0 0 4px;
+    margin: 0 0 3px;
     line-height: 1.3;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -85,26 +107,53 @@
 }
 
 .card-description {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
-    margin: 0 0 8px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 6px;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .card-meta {
     display: flex;
     justify-content: space-between;
-    font-size: 11px;
-    color: rgba(255, 0, 128, 0.8);
+    align-items: center;
+    font-size: 10px;
 }
 
-.view-count {
-    font-weight: 500;
+.card-artist {
+    color: rgba(255, 0, 128, 0.85);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%;
 }
 
 .upload-date {
+    color: rgba(0, 255, 255, 0.6);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+}
+
+.card-stats-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255, 0, 128, 0.1);
+    font-size: 9px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.card-stat-views {
     color: rgba(0, 255, 255, 0.7);
+}
+
+.card-stat-date {
+    color: rgba(255, 255, 255, 0.35);
 }

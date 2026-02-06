@@ -4,12 +4,13 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 
 ## Features
 
-- **3D Synthwave Experience** — Navigate a neon road with Three.js and React Three Fiber
+- **Tron-Style 3D Cityscape** — Drive through a neon metropolis with 200+ edge-lit buildings, highway arches, data stream pillars, and an orbiting-ring CN Tower
 - **Dual Lane System** — Browse by date (chronological) or popular selections (60K+ views)
+- **Dynamic Road** — Road, grid, buildings, and arches scale to match total video count
 - **Search & Filter by Artist** — Dropdown search on desktop and mobile to filter videos by artist
 - **Deep Links** — Share direct links to any video via `?v=youtubeId` URL params
 - **Artist Spotlight** — View stats (video count, total views, date range) for each artist
-- **Responsive Design** — Full 3D on desktop, reduced effects on tablet, scrollable grid on mobile
+- **Responsive Design** — Full 3D on desktop, reduced effects on tablet, polished mobile grid with logo and view counts
 - **YouTube Integration** — Embedded playback with real view counts and upload dates
 - **Theater Mode** — Fullscreen immersive video viewing (press F)
 - **Vehicle Selection** — Choose between Tron Light Cycle, DeLorean, or Cyber Bike
@@ -49,6 +50,19 @@ npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v1.8.0 (2026-02-06)
+- **Tron Cityscape** — Replaced 24 basic box buildings with 200+ neon edge-outlined structures across 4 rows (inner/outer per side), with window grids, rooftop antennas, and horizontal accent lines
+- **Highway Arches** — Alternating cyan/pink neon arches spanning the road with light strips
+- **Data Stream Pillars** — Pulsing vertical light beams with base glow rings rising from the city
+- **CN Tower Energy Spire** — 3 orbiting energy rings, glowing core, neon shaft lines, hexagonal base platform
+- **Dynamic Road Length** — Road, grid, edge lines, lane markers, buildings, and arches now scale dynamically with video count (fixes road ending early)
+- **Extended Fog** — Increased fog far distance for better depth perception
+- **Mobile Logo** — Added TDots logo to mobile header with animated cyan glow (matching desktop)
+- **Mobile Visual Polish** — Sticky frosted-glass header, gradient backgrounds, gradient scrollbar, decorative dividers
+- **View Count Badges** — Neon cyan badges on mobile video card thumbnails (e.g. "5.2M", "252K")
+- **Mobile Card Stats** — Added views and release date row to each mobile video card
+- **Cleaner Mobile Typography** — Refined subtitle, reduced music symbol noise
 
 ### v1.7.0 (2026-01-27)
 - **Search/Filter by Artist** — Dropdown with autocomplete on desktop (top-center pill) and mobile (tab bar)
