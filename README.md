@@ -18,6 +18,10 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Theater Mode** — Fullscreen immersive video viewing (press F), arrow keys to skip tracks
 - **Custom Domain** — Live at [tdotssolutionsz.com](https://tdotssolutionsz.com)
 - **Vehicle Selection** — Choose between Tron Light Cycle, DeLorean, or Cyber Bike
+- **Favorites** — Heart button to save videos; favorites persist via localStorage with dedicated filter tab
+- **Related Videos** — "More by this artist" section in mobile modal with thumbnails and view counts
+- **SEO Optimized** — Sitemap, robots.txt, JSON-LD structured data, Open Graph image, canonical URLs
+- **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 
 ## Tech Stack
@@ -55,6 +59,15 @@ npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v2.0.0 (2026-02-06)
+- **Favorites System** — Heart button on video cards and modal to save favorites to localStorage; dedicated "Favorites" tab on mobile
+- **Related Videos** — "More by this artist" section in mobile modal showing up to 4 videos with thumbnails and view counts
+- **SEO Overhaul** — Sitemap with all 87 video deep links, robots.txt, JSON-LD structured data, Open Graph image (1200x630), canonical URLs, optimized meta tags
+- **Performance** — Toronto skyline compressed from 2.8MB PNG to 185KB WebP (93% reduction); OG image optimized to 42KB; Vercel caching headers for immutable assets
+- **Accessibility** — Skip-to-content link for keyboard users, `prefers-reduced-motion` support to disable animations, reduced mobile `backdrop-filter` for GPU savings
+- **PWA Manifest** — Web app manifest for home screen installability with themed icons
+- **YouTube API Key** — Vercel environment variable configured for live view count refresh during builds
 
 ### v1.9.0 (2026-02-06)
 - **Auto-Advance Playback** — Videos automatically advance to the next when finished; loops at end of list

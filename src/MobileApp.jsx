@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react'
 import videoData from './data/videos.json'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
+import useFavorites from './hooks/useFavorites'
 import './MobileApp.css'
 
 let VIDEOS = []
@@ -44,6 +45,7 @@ export default function MobileApp() {
     const [copied, setCopied] = useState(false)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(LOAD_ERROR)
+    const { favorites, toggleFavorite, isFavorite } = useFavorites()
 
     // Simulate loading state for initial data hydration
     useEffect(() => {
@@ -79,6 +81,11 @@ export default function MobileApp() {
         if (filterArtist) {
             vids = vids.filter(v => v.artist === filterArtist)
         }
+        if (activeTab === 'favorites') {
+            return vids
+                .filter(v => favorites.includes(v.id))
+                .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+        }
         if (activeTab === 'latest') {
             return vids.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
         } else {
@@ -86,7 +93,7 @@ export default function MobileApp() {
                 .filter(v => v.viewCount >= POPULAR_THRESHOLD)
                 .sort((a, b) => b.viewCount - a.viewCount)
         }
-    }, [activeTab, filterArtist])
+    }, [activeTab, filterArtist, favorites])
 
     const searchResults = useMemo(() => {
         if (!searchQuery) return ALL_ARTISTS
@@ -124,6 +131,14 @@ export default function MobileApp() {
             setTimeout(() => setCopied(false), 2000)
         })
     }
+
+    // Related videos: other videos by same artist (exclude current)
+    const relatedVideos = useMemo(() => {
+        if (!playingVideo) return []
+        return VIDEOS.filter(v => v.artist === playingVideo.artist && v.id !== playingVideo.id)
+            .sort((a, b) => b.viewCount - a.viewCount)
+            .slice(0, 4)
+    }, [playingVideo])
 
     const handleRetry = () => {
         setError(null)
@@ -193,6 +208,12 @@ export default function MobileApp() {
         )
     }
 
+    const formatViews = (count) => {
+        if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`
+        if (count >= 1000) return `${(count / 1000).toFixed(0)}K`
+        return count.toString()
+    }
+
     return (
         <div className="mobile-app">
             {/* Header */}
@@ -226,6 +247,17 @@ export default function MobileApp() {
                 >
                     Popular
                 </button>
+                {favorites.length > 0 && (
+                    <button
+                        className={`tab tab-fav ${activeTab === 'favorites' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('favorites')}
+                        role="tab"
+                        aria-selected={activeTab === 'favorites'}
+                        aria-pressed={activeTab === 'favorites'}
+                    >
+                        ♥ {favorites.length}
+                    </button>
+                )}
                 {filterArtist ? (
                     <button
                         className="tab artist-filter-active"
@@ -288,6 +320,8 @@ export default function MobileApp() {
                         key={video.id}
                         video={video}
                         onClick={() => handleVideoClick(video)}
+                        isFavorite={isFavorite(video.id)}
+                        onToggleFavorite={toggleFavorite}
                     />
                 ))}
                 {filteredVideos.length === 0 && (
@@ -302,9 +336,18 @@ export default function MobileApp() {
                 <div className="video-modal" onClick={handleClosePlayer} role="dialog" aria-modal="true" aria-label={`Now playing: ${playingVideo.title}`}>
                     <div className="modal-content" onClick={e => e.stopPropagation()}>
                         <div className="modal-top-bar">
-                            <button className="copy-link-btn" onClick={handleCopyLink}>
-                                {copied ? '✓ Copied' : '🔗 Share'}
-                            </button>
+                            <div style={{ display: 'flex', gap: '6px' }}>
+                                <button className="copy-link-btn" onClick={handleCopyLink}>
+                                    {copied ? '✓ Copied' : '🔗 Share'}
+                                </button>
+                                <button
+                                    className={`copy-link-btn fav-modal-btn ${isFavorite(playingVideo.id) ? 'is-fav' : ''}`}
+                                    onClick={() => toggleFavorite(playingVideo.id)}
+                                    aria-label={isFavorite(playingVideo.id) ? 'Remove from favorites' : 'Add to favorites'}
+                                >
+                                    {isFavorite(playingVideo.id) ? '♥ Saved' : '♡ Save'}
+                                </button>
+                            </div>
                             <button className="close-button" onClick={handleClosePlayer} aria-label="Close video player">
                                 ✕
                             </button>
@@ -332,6 +375,31 @@ export default function MobileApp() {
                                     <span className="mobile-spotlight-artist">{playingVideo.artist}</span>
                                     <span className="mobile-spotlight-stat">{stats.count} video{stats.count > 1 ? 's' : ''}</span>
                                     <span className="mobile-spotlight-stat">{(stats.totalViews / 1000).toFixed(0)}K views</span>
+                                </div>
+                            )}
+                            {relatedVideos.length > 0 && (
+                                <div className="related-videos">
+                                    <h3 className="related-title">More by {playingVideo.artist}</h3>
+                                    <div className="related-list">
+                                        {relatedVideos.map(rv => (
+                                            <button
+                                                key={rv.id}
+                                                className="related-item"
+                                                onClick={() => setPlayingVideo(rv)}
+                                            >
+                                                <img
+                                                    src={`https://img.youtube.com/vi/${rv.youtubeId}/default.jpg`}
+                                                    alt={rv.title}
+                                                    className="related-thumb"
+                                                    loading="lazy"
+                                                />
+                                                <span className="related-info">
+                                                    <span className="related-name">{rv.title}</span>
+                                                    <span className="related-views">{formatViews(rv.viewCount)} views</span>
+                                                </span>
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             )}
                         </div>

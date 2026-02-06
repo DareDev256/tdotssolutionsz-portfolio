@@ -157,3 +157,37 @@
 .card-stat-date {
     color: rgba(255, 255, 255, 0.35);
 }
+
+/* Favorite heart button */
+.card-fav-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.card-fav-btn:hover {
+    background: rgba(255, 0, 128, 0.3);
+    color: #ff0080;
+    transform: scale(1.15);
+}
+
+.card-fav-btn.is-fav {
+    color: #ff0080;
+    text-shadow: 0 0 8px rgba(255, 0, 128, 0.6);
+}

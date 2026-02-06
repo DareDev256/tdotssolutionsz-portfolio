@@ -1,6 +1,6 @@
 import './VideoCard.css'
 
-export default function VideoCard({ video, onClick }) {
+export default function VideoCard({ video, onClick, isFavorite, onToggleFavorite }) {
     const thumbnailUrl = video.thumbnail ||
         `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`
 
@@ -30,6 +30,15 @@ export default function VideoCard({ video, onClick }) {
                     <span className="card-views-badge">
                         {formatViews(video.viewCount)}
                     </span>
+                )}
+                {onToggleFavorite && (
+                    <button
+                        className={`card-fav-btn ${isFavorite ? 'is-fav' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); onToggleFavorite(video.id) }}
+                        aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                    >
+                        {isFavorite ? '♥' : '♡'}
+                    </button>
                 )}
                 <div className="play-overlay" aria-hidden="true">
                     <svg viewBox="0 0 24 24" className="play-icon">

@@ -4,6 +4,27 @@
     box-sizing: border-box;
 }
 
+/* Skip to content link for keyboard users */
+.skip-nav {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    background: var(--neon-cyan, #05d9e8);
+    color: #0d0221;
+    font-weight: 700;
+    font-size: 14px;
+    z-index: 10000;
+    border-radius: 0 0 8px 8px;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+
+.skip-nav:focus {
+    top: 0;
+}
+
 :root {
     /* Synthwave Color Palette */
     --neon-pink: #ff2a6d;
@@ -49,7 +70,7 @@ body.mobile-mode {
     left: 0;
     width: 100vw;
     height: 50vh;
-    background: url('/toronto-skyline.png') center bottom / cover no-repeat;
+    background: url('/toronto-skyline.webp') center bottom / cover no-repeat;
     z-index: 0;
     opacity: 0.6;
     pointer-events: none;
@@ -793,4 +814,15 @@ body.mobile-mode {
     padding: 1px 6px;
     background: rgba(5, 217, 232, 0.08);
     border-radius: 8px;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
