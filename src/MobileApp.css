@@ -266,7 +266,8 @@
     padding-bottom: 56.25%;
 }
 
-.video-container iframe {
+.video-container iframe,
+.video-container > div {
     position: absolute;
     top: 0;
     left: 0;
@@ -276,6 +277,42 @@
 
 .video-info {
     padding: 16px;
+}
+
+.video-nav-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.video-nav-row h2 {
+    flex: 1;
+    min-width: 0;
+}
+
+.video-nav-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    background: rgba(0, 255, 255, 0.08);
+    color: rgba(0, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.video-nav-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+}
+
+.video-nav-btn:active {
+    transform: scale(0.92);
 }
 
 .video-info h2 {

@@ -1981,6 +1981,28 @@ export default function App({ reducedEffects = false }) {
         setTheaterMode(false)
     }, [])
 
+    // Theater mode: navigate to next/prev video in current lane
+    const currentLaneVideos = useMemo(() => {
+        return currentLane === 'popular' ? LANES.popular : LANES.chronological
+    }, [currentLane])
+
+    const activeIndex = useMemo(() => {
+        if (!activeProject) return -1
+        return currentLaneVideos.findIndex(v => v.id === activeProject.id)
+    }, [activeProject, currentLaneVideos])
+
+    const handleTheaterNext = useCallback(() => {
+        if (activeIndex < 0 || currentLaneVideos.length === 0) return
+        const next = currentLaneVideos[(activeIndex + 1) % currentLaneVideos.length]
+        setActiveProject(next)
+    }, [activeIndex, currentLaneVideos])
+
+    const handleTheaterPrev = useCallback(() => {
+        if (activeIndex < 0 || currentLaneVideos.length === 0) return
+        const prev = currentLaneVideos[(activeIndex - 1 + currentLaneVideos.length) % currentLaneVideos.length]
+        setActiveProject(prev)
+    }, [activeIndex, currentLaneVideos])
+
     // Keyboard shortcut: F to toggle theater mode
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -2064,6 +2086,10 @@ export default function App({ reducedEffects = false }) {
                 audioEnabled={audioEnabled}
                 isOpen={theaterMode}
                 onClose={handleCloseTheater}
+                onNext={handleTheaterNext}
+                onPrev={handleTheaterPrev}
+                hasNext={currentLaneVideos.length > 1}
+                hasPrev={currentLaneVideos.length > 1}
             />
             <SearchBar filterArtist={filterArtist} onFilterChange={setFilterArtist} />
             <UIOverlay

@@ -1,11 +1,13 @@
 // src/components/ui/TheaterMode.jsx
 import { useEffect, useCallback } from 'react';
+import YouTubePlayer from '../YouTubePlayer';
 import './TheaterMode.css';
 
 /**
  * Full viewport theater mode overlay for immersive video viewing
  * - 85% viewport video with blurred/dimmed background
  * - YouTube with controls enabled
+ * - Auto-advances to next video when current one ends
  * - ESC or click outside to exit
  * - F key to toggle (handled by parent)
  */
@@ -13,14 +15,19 @@ export function TheaterMode({
   project,
   audioEnabled,
   isOpen,
-  onClose
+  onClose,
+  onNext,
+  onPrev,
+  hasNext,
+  hasPrev
 }) {
-  // Handle ESC key to close
+  // Handle keyboard shortcuts
   const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Escape' && isOpen) {
-      onClose();
-    }
-  }, [isOpen, onClose]);
+    if (!isOpen) return;
+    if (e.key === 'Escape') onClose();
+    if (e.key === 'ArrowRight' && hasNext) onNext?.();
+    if (e.key === 'ArrowLeft' && hasPrev) onPrev?.();
+  }, [isOpen, onClose, onNext, onPrev, hasNext, hasPrev]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -67,20 +74,32 @@ export function TheaterMode({
           </svg>
         </button>
 
-        {/* Video title */}
-        <div className="theater-title" style={{ color: project.color }}>
-          {project.title}
+        {/* Video title with nav */}
+        <div className="theater-title-row">
+          {hasPrev && (
+            <button className="theater-nav-btn" onClick={onPrev} aria-label="Previous video">
+              <svg viewBox="0 0 24 24" width="24" height="24"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+          )}
+          <div className="theater-title" style={{ color: project.color }}>
+            {project.title}
+          </div>
+          {hasNext && (
+            <button className="theater-nav-btn" onClick={onNext} aria-label="Next video">
+              <svg viewBox="0 0 24 24" width="24" height="24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+          )}
         </div>
 
         {/* Video frame */}
         <div className="theater-video-frame" style={{ borderColor: project.color }}>
-          <iframe
+          <YouTubePlayer
             key={videoId}
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${audioEnabled ? 0 : 1}&loop=1&playlist=${videoId}&controls=1&modestbranding=1&rel=0&playsinline=1`}
-            style={{ border: 'none' }}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-            allowFullScreen
-            title={project.title}
+            videoId={videoId}
+            autoplay
+            controls
+            muted={!audioEnabled}
+            onEnd={onNext}
           />
         </div>
 
@@ -91,7 +110,7 @@ export function TheaterMode({
 
         {/* Hint text */}
         <div className="theater-hint">
-          Press <kbd>ESC</kbd> or <kbd>F</kbd> to exit | Click outside video to close
+          Press <kbd>ESC</kbd> or <kbd>F</kbd> to exit | <kbd>←</kbd> <kbd>→</kbd> prev/next | Click outside to close
         </div>
       </div>
     </div>

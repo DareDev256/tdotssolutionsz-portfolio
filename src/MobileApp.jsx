@@ -1,6 +1,7 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import videoData from './data/videos.json'
 import VideoCard from './components/VideoCard'
+import YouTubePlayer from './components/YouTubePlayer'
 import './MobileApp.css'
 
 let VIDEOS = []
@@ -100,6 +101,20 @@ export default function MobileApp() {
     const handleClosePlayer = () => {
         setPlayingVideo(null)
     }
+
+    const handleNextVideo = useCallback(() => {
+        if (!playingVideo) return
+        const idx = filteredVideos.findIndex(v => v.id === playingVideo.id)
+        const next = filteredVideos[(idx + 1) % filteredVideos.length]
+        if (next) setPlayingVideo(next)
+    }, [playingVideo, filteredVideos])
+
+    const handlePrevVideo = useCallback(() => {
+        if (!playingVideo) return
+        const idx = filteredVideos.findIndex(v => v.id === playingVideo.id)
+        const prev = filteredVideos[(idx - 1 + filteredVideos.length) % filteredVideos.length]
+        if (prev) setPlayingVideo(prev)
+    }, [playingVideo, filteredVideos])
 
     const handleCopyLink = () => {
         if (!playingVideo) return
@@ -295,16 +310,22 @@ export default function MobileApp() {
                             </button>
                         </div>
                         <div className="video-container">
-                            <iframe
-                                src={`https://www.youtube.com/embed/${playingVideo.youtubeId}?autoplay=1`}
-                                title={playingVideo.title}
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
+                            <YouTubePlayer
+                                key={playingVideo.youtubeId}
+                                videoId={playingVideo.youtubeId}
+                                onEnd={handleNextVideo}
                             />
                         </div>
                         <div className="video-info">
-                            <h2>{playingVideo.title}</h2>
+                            <div className="video-nav-row">
+                                <button className="video-nav-btn" onClick={handlePrevVideo} aria-label="Previous video">
+                                    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                </button>
+                                <h2>{playingVideo.title}</h2>
+                                <button className="video-nav-btn" onClick={handleNextVideo} aria-label="Next video">
+                                    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                </button>
+                            </div>
                             <p>{playingVideo.description}</p>
                             {stats && (
                                 <div className="mobile-artist-spotlight">

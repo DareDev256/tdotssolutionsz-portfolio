@@ -67,6 +67,40 @@
   transform: scale(1.1);
 }
 
+.theater-title-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.theater-nav-btn {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  background: rgba(0, 255, 255, 0.06);
+  color: rgba(0, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theater-nav-btn:hover {
+  background: rgba(0, 255, 255, 0.15);
+  border-color: rgba(0, 255, 255, 0.6);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.theater-nav-btn:active {
+  transform: scale(0.95);
+}
+
 .theater-title {
   font-family: 'Orbitron', 'Rajdhani', sans-serif;
   font-size: clamp(1.5rem, 3vw, 2.5rem);
@@ -75,6 +109,8 @@
   letter-spacing: 0.2em;
   text-shadow: 0 0 30px currentColor;
   text-align: center;
+  flex: 1;
+  min-width: 0;
 }
 
 .theater-video-frame {
@@ -90,7 +126,8 @@
   position: relative;
 }
 
-.theater-video-frame iframe {
+.theater-video-frame iframe,
+.theater-video-frame > div {
   width: 100%;
   height: 100%;
   display: block;
