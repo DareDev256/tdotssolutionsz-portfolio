@@ -1,21 +1,28 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useId } from 'react'
 
 // ── YouTube IFrame API loader (singleton) ──
 let ytApiPromise = null
 
 function ensureYTApi() {
-    if (window.YT?.Player) return Promise.resolve()
+    // Already fully loaded
+    if (window.YT && window.YT.Player && window.YT.PlayerState) {
+        return Promise.resolve()
+    }
     if (ytApiPromise) return ytApiPromise
 
     ytApiPromise = new Promise((resolve) => {
-        const prev = window.onYouTubeIframeAPIReady
+        // The API may already be loading from a previous attempt
+        const existingCb = window.onYouTubeIframeAPIReady
         window.onYouTubeIframeAPIReady = () => {
-            prev?.()
+            existingCb?.()
             resolve()
         }
-        const script = document.createElement('script')
-        script.src = 'https://www.youtube.com/iframe_api'
-        document.head.appendChild(script)
+        // Only add script tag if not already present
+        if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+            const script = document.createElement('script')
+            script.src = 'https://www.youtube.com/iframe_api'
+            document.head.appendChild(script)
+        }
     })
     return ytApiPromise
 }
@@ -23,13 +30,6 @@ function ensureYTApi() {
 /**
  * YouTube player with end-detection via IFrame API.
  * Use key={videoId} on parent to remount for new videos.
- *
- * Props:
- *  - videoId: YouTube video ID
- *  - autoplay: start playing immediately (default true)
- *  - controls: show player controls (default true)
- *  - muted: start muted (default false)
- *  - onEnd: callback when video finishes
  */
 export default function YouTubePlayer({
     videoId,
@@ -38,7 +38,8 @@ export default function YouTubePlayer({
     muted = false,
     onEnd
 }) {
-    const containerRef = useRef(null)
+    const uniqueId = useId().replace(/:/g, '_')
+    const containerId = `yt-player-${uniqueId}`
     const playerRef = useRef(null)
     const onEndRef = useRef(onEnd)
     onEndRef.current = onEnd
@@ -47,12 +48,12 @@ export default function YouTubePlayer({
         let destroyed = false
 
         ensureYTApi().then(() => {
-            if (destroyed || !containerRef.current) return
+            if (destroyed) return
+            const el = document.getElementById(containerId)
+            if (!el) return
 
-            playerRef.current = new window.YT.Player(containerRef.current, {
+            playerRef.current = new window.YT.Player(containerId, {
                 videoId,
-                width: '100%',
-                height: '100%',
                 playerVars: {
                     autoplay: autoplay ? 1 : 0,
                     controls: controls ? 1 : 0,
@@ -60,12 +61,20 @@ export default function YouTubePlayer({
                     rel: 0,
                     playsinline: 1,
                     mute: muted ? 1 : 0,
+                    enablejsapi: 1,
+                    origin: window.location.origin,
                 },
                 events: {
+                    onReady: () => {
+                        // Player initialized successfully
+                    },
                     onStateChange: (event) => {
                         if (event.data === window.YT.PlayerState.ENDED) {
                             onEndRef.current?.()
                         }
+                    },
+                    onError: () => {
+                        // Silently handle - video still plays, just no end detection
                     }
                 }
             })
@@ -73,12 +82,16 @@ export default function YouTubePlayer({
 
         return () => {
             destroyed = true
-            if (playerRef.current?.destroy) {
-                playerRef.current.destroy()
-                playerRef.current = null
+            try {
+                if (playerRef.current?.destroy) {
+                    playerRef.current.destroy()
+                }
+            } catch (e) {
+                // Player may already be gone
             }
+            playerRef.current = null
         }
-    }, [videoId, autoplay, controls, muted])
+    }, [containerId, videoId, autoplay, controls, muted])
 
-    return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
+    return <div id={containerId} style={{ width: '100%', height: '100%' }} />
 }

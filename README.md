@@ -2,6 +2,8 @@
 
 An immersive synthwave-themed 3D music video portfolio showcasing **87 music videos** by **49 artists**, shot by TdotsSolutionsz. Drive through a neon cityscape and browse videos on billboard displays.
 
+**Live at [tdotssolutionsz.com](https://tdotssolutionsz.com)**
+
 ## Features
 
 - **Tron-Style 3D Cityscape** — Drive through a neon metropolis with 200+ edge-lit buildings, highway arches, data stream pillars, and an orbiting-ring CN Tower
@@ -11,8 +13,10 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Deep Links** — Share direct links to any video via `?v=youtubeId` URL params
 - **Artist Spotlight** — View stats (video count, total views, date range) for each artist
 - **Responsive Design** — Full 3D on desktop, reduced effects on tablet, polished mobile grid with logo and view counts
-- **YouTube Integration** — Embedded playback with real view counts and upload dates
-- **Theater Mode** — Fullscreen immersive video viewing (press F)
+- **Auto-Advance Playback** — Videos auto-advance to the next when finished, with prev/next navigation buttons and arrow key support
+- **YouTube Integration** — Embedded playback with real view counts and upload dates via YouTube IFrame API
+- **Theater Mode** — Fullscreen immersive video viewing (press F), arrow keys to skip tracks
+- **Custom Domain** — Live at [tdotssolutionsz.com](https://tdotssolutionsz.com)
 - **Vehicle Selection** — Choose between Tron Light Cycle, DeLorean, or Cyber Bike
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 
@@ -21,7 +25,8 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - React 18 + Vite (code-split with React.lazy + manualChunks)
 - Three.js / React Three Fiber / Drei
 - Post-processing (bloom, vignette, soft particles, enhanced star field)
-- Deployed on Vercel
+- YouTube IFrame API for playback control and end-detection
+- Deployed on Vercel — [tdotssolutionsz.com](https://tdotssolutionsz.com)
 
 ## Notable Artists Featured
 
@@ -50,6 +55,13 @@ npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v1.9.0 (2026-02-06)
+- **Auto-Advance Playback** — Videos automatically advance to the next when finished; loops at end of list
+- **Prev/Next Navigation** — Navigation buttons in mobile modal and desktop theater mode
+- **Arrow Key Controls** — Left/right arrow keys skip tracks in theater mode
+- **YouTube IFrame API** — Replaced raw iframes with API-backed player for end-detection and playback control
+- **Custom Domain** — Connected tdotssolutionsz.com via Namecheap DNS (A record + CNAME to Vercel)
 
 ### v1.8.0 (2026-02-06)
 - **Tron Cityscape** — Replaced 24 basic box buildings with 200+ neon edge-outlined structures across 4 rows (inner/outer per side), with window grids, rooftop antennas, and horizontal accent lines
