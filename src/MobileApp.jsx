@@ -315,10 +315,9 @@ export default function MobileApp() {
 
             {/* Video Grid */}
             <main className="video-grid" role="list" aria-label="Music videos">
-                {filteredVideos.map((video, index) => {
-                    const currentIdx = playingVideo ? filteredVideos.findIndex(v => v.id === playingVideo.id) : -1
+                {(() => { const currentIdx = playingVideo ? filteredVideos.findIndex(v => v.id === playingVideo.id) : -1; return filteredVideos.map((video, index) => {
                     const isNowPlaying = playingVideo && video.id === playingVideo.id
-                    const isUpNext = playingVideo && currentIdx >= 0 && index === (currentIdx + 1) % filteredVideos.length && !isNowPlaying
+                    const isUpNext = currentIdx >= 0 && index === (currentIdx + 1) % filteredVideos.length && !isNowPlaying
                     return (
                         <VideoCard
                             key={video.id}
@@ -330,7 +329,7 @@ export default function MobileApp() {
                             isUpNext={isUpNext}
                         />
                     )
-                })}
+                })})()}
                 {filteredVideos.length === 0 && (
                     <p style={{ textAlign: 'center', opacity: 0.5, padding: '2rem', gridColumn: '1 / -1' }}>
                         No videos match this filter.
@@ -383,9 +382,6 @@ export default function MobileApp() {
                             <YouTubePlayer
                                 key={playingVideo.youtubeId}
                                 videoId={playingVideo.youtubeId}
-                                autoplay
-                                controls
-                                muted
                                 onEnd={handleNextVideo}
                             />
                         </div>
