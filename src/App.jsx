@@ -2090,6 +2090,9 @@ export default function App({ reducedEffects = false }) {
                 onPrev={handleTheaterPrev}
                 hasNext={currentLaneVideos.length > 1}
                 hasPrev={currentLaneVideos.length > 1}
+                queuePosition={activeIndex >= 0 ? activeIndex + 1 : null}
+                queueTotal={currentLaneVideos.length}
+                nextVideoTitle={activeIndex >= 0 && currentLaneVideos.length > 1 ? currentLaneVideos[(activeIndex + 1) % currentLaneVideos.length]?.title : null}
             />
             <SearchBar filterArtist={filterArtist} onFilterChange={setFilterArtist} />
             <UIOverlay

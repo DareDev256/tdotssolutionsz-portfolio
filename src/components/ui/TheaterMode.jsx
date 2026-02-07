@@ -19,7 +19,10 @@ export function TheaterMode({
   onNext,
   onPrev,
   hasNext,
-  hasPrev
+  hasPrev,
+  queuePosition,
+  queueTotal,
+  nextVideoTitle
 }) {
   // Handle keyboard shortcuts
   const handleKeyDown = useCallback((e) => {
@@ -103,9 +106,55 @@ export function TheaterMode({
           />
         </div>
 
-        {/* Video description */}
+        {/* Queue info + description */}
+        <div className="theater-queue-row">
+          <div className="theater-queue-info">
+            <span className="theater-now-playing-icon">
+              <span></span><span></span><span></span>
+            </span>
+            {queuePosition && queueTotal ? `${queuePosition} / ${queueTotal}` : ''}
+          </div>
+          {nextVideoTitle && (
+            <div className="theater-up-next">Up Next: {nextVideoTitle}</div>
+          )}
+        </div>
+
         <div className="theater-description">
           {project.description}
+        </div>
+
+        {/* Social sharing */}
+        <div className="theater-share-row">
+          <button
+            className="theater-share-btn"
+            onClick={() => {
+              const vid = project.url?.split('v=')[1]?.split('&')[0] || project.youtubeId
+              const url = `${window.location.origin}?v=${vid}`
+              navigator.clipboard.writeText(url)
+            }}
+          >
+            🔗 Copy Link
+          </button>
+          <button
+            className="theater-share-btn"
+            onClick={() => {
+              const vid = project.url?.split('v=')[1]?.split('&')[0] || project.youtubeId
+              const url = `${window.location.origin}?v=${vid}`
+              window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(project.title + ' — shot by TdotsSolutionsz 🎬')}&url=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420')
+            }}
+          >
+            𝕏 Post
+          </button>
+          <button
+            className="theater-share-btn"
+            onClick={() => {
+              const vid = project.url?.split('v=')[1]?.split('&')[0] || project.youtubeId
+              const url = `${window.location.origin}?v=${vid}`
+              window.open(`https://wa.me/?text=${encodeURIComponent(project.title + ' — ' + url)}`, '_blank')
+            }}
+          >
+            WA Share
+          </button>
         </div>
 
         {/* Hint text */}

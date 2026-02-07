@@ -1,6 +1,6 @@
 import './VideoCard.css'
 
-export default function VideoCard({ video, onClick, isFavorite, onToggleFavorite }) {
+export default function VideoCard({ video, onClick, isFavorite, onToggleFavorite, isNowPlaying, isUpNext }) {
     const thumbnailUrl = video.thumbnail ||
         `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`
 
@@ -13,17 +13,28 @@ export default function VideoCard({ video, onClick, isFavorite, onToggleFavorite
 
     return (
         <article
-            className="video-card"
+            className={`video-card${isNowPlaying ? ' now-playing' : ''}${isUpNext ? ' up-next' : ''}`}
             onClick={onClick}
             onKeyDown={handleKeyDown}
             tabIndex={0}
             role="listitem"
-            aria-label={`${video.title} by ${video.artist}`}
+            aria-label={`${video.title} by ${video.artist}${isNowPlaying ? ' — now playing' : ''}${isUpNext ? ' — up next' : ''}`}
         >
             <div className="card-thumbnail">
+                {isNowPlaying && (
+                    <span className="card-now-playing-badge">
+                        <span className="now-playing-bars">
+                            <span></span><span></span><span></span>
+                        </span>
+                        NOW PLAYING
+                    </span>
+                )}
+                {isUpNext && !isNowPlaying && (
+                    <span className="card-up-next-badge">UP NEXT</span>
+                )}
                 <img
                     src={thumbnailUrl}
-                    alt={`Thumbnail for ${video.title}`}
+                    alt={`${video.title} by ${video.artist} — Toronto music video by TdotsSolutionsz`}
                     loading="lazy"
                 />
                 {video.viewCount > 0 && (

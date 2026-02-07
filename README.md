@@ -1,6 +1,6 @@
 # TdotsSolutionsz Music Video Portfolio
 
-An immersive synthwave-themed 3D music video portfolio showcasing **87 music videos** by **49 artists**, shot by TdotsSolutionsz. Drive through a neon cityscape and browse videos on billboard displays.
+An immersive synthwave-themed 3D music video portfolio showcasing **87 music videos** by **49 artists**, shot by TdotsSolutionsz — Toronto's premier hip-hop video production company. Drive through a neon cityscape and browse videos on billboard displays.
 
 **Live at [tdotssolutionsz.com](https://tdotssolutionsz.com)**
 
@@ -13,14 +13,17 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Deep Links** — Share direct links to any video via `?v=youtubeId` URL params
 - **Artist Spotlight** — View stats (video count, total views, date range) for each artist
 - **Responsive Design** — Full 3D on desktop, reduced effects on tablet, polished mobile grid with logo and view counts
-- **Auto-Advance Playback** — Videos auto-advance to the next when finished, with prev/next navigation buttons and arrow key support
+- **Auto-Advance Playback** — Videos auto-advance to the next when finished, with "Now Playing" indicator, "Up Next" preview, and queue position display
 - **YouTube Integration** — Embedded playback with real view counts and upload dates via YouTube IFrame API
-- **Theater Mode** — Fullscreen immersive video viewing (press F), arrow keys to skip tracks
+- **Theater Mode** — Fullscreen immersive video viewing (press F), arrow keys to skip tracks, queue info, social sharing
 - **Custom Domain** — Live at [tdotssolutionsz.com](https://tdotssolutionsz.com)
 - **Vehicle Selection** — Choose between Tron Light Cycle, DeLorean, or Cyber Bike
 - **Favorites** — Heart button to save videos; favorites persist via localStorage with dedicated filter tab
 - **Related Videos** — "More by this artist" section in mobile modal with thumbnails and view counts
-- **SEO Optimized** — Sitemap, robots.txt, JSON-LD structured data, Open Graph image, canonical URLs
+- **Social Sharing** — Share videos to X/Twitter and WhatsApp from modal and theater mode, with copy-link support
+- **Toronto-Targeted SEO** — LocalBusiness + VideoObject structured data, geo-targeted meta tags, sitemap with 87 deep links, Open Graph, Twitter Cards
+- **Security Hardened** — CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy headers via Vercel
+- **Analytics Ready** — Google Analytics 4 integration (placeholder ID, ready to activate)
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 
@@ -59,6 +62,18 @@ npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v2.1.0 (2026-02-07)
+- **Now Playing / Up Next Queue** — Animated equalizer badge on currently playing card, "Up Next" badge on the next card in sequence, queue position display (e.g. "3 / 87") in mobile modal and desktop theater mode
+- **Social Sharing** — X/Twitter and WhatsApp share buttons in both mobile player modal and desktop theater mode, plus copy-link button
+- **Toronto-Targeted SEO** — LocalBusiness schema with Toronto geo-coordinates and 80km GTA service radius, VideoObject ItemList with top 5 videos (5.7M, 5.2M, 2.7M, 1.1M, 986K views), geo-targeted meta tags (geo.region, geo.placename, ICBM), `en_CA` locale, Toronto-specific keywords
+- **Security Headers** — Content-Security-Policy (whitelists YouTube, Google Fonts, GA), Strict-Transport-Security (2yr + preload), X-Content-Type-Options: nosniff, X-Frame-Options: SAMEORIGIN, Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy (no camera/mic/geo/FLoC)
+- **Performance** — DNS prefetch + preconnect to YouTube, YouTube image CDN, and Google Tag Manager; PNG cache headers added
+- **Analytics** — Google Analytics 4 integration scaffold (replace `G-XXXXXXXXXX` with real measurement ID)
+- **Mobile Autoplay** — YouTube player on mobile now starts muted for autoplay compliance on iOS/Android
+- **Footer Branding** — New branded footer with "Toronto, Ontario" location and "Music Video Production & Direction" tagline
+- **Alt Text** — All video thumbnails now include artist name and "Toronto music video by TdotsSolutionsz" for image SEO
+- **Dependencies** — 0 vulnerabilities (npm audit clean), 0 new dependencies added
 
 ### v2.0.0 (2026-02-06)
 - **Favorites System** — Heart button on video cards and modal to save favorites to localStorage; dedicated "Favorites" tab on mobile

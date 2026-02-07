@@ -315,15 +315,22 @@ export default function MobileApp() {
 
             {/* Video Grid */}
             <main className="video-grid" role="list" aria-label="Music videos">
-                {filteredVideos.map(video => (
-                    <VideoCard
-                        key={video.id}
-                        video={video}
-                        onClick={() => handleVideoClick(video)}
-                        isFavorite={isFavorite(video.id)}
-                        onToggleFavorite={toggleFavorite}
-                    />
-                ))}
+                {filteredVideos.map((video, index) => {
+                    const currentIdx = playingVideo ? filteredVideos.findIndex(v => v.id === playingVideo.id) : -1
+                    const isNowPlaying = playingVideo && video.id === playingVideo.id
+                    const isUpNext = playingVideo && currentIdx >= 0 && index === (currentIdx + 1) % filteredVideos.length && !isNowPlaying
+                    return (
+                        <VideoCard
+                            key={video.id}
+                            video={video}
+                            onClick={() => handleVideoClick(video)}
+                            isFavorite={isFavorite(video.id)}
+                            onToggleFavorite={toggleFavorite}
+                            isNowPlaying={isNowPlaying}
+                            isUpNext={isUpNext}
+                        />
+                    )
+                })}
                 {filteredVideos.length === 0 && (
                     <p style={{ textAlign: 'center', opacity: 0.5, padding: '2rem', gridColumn: '1 / -1' }}>
                         No videos match this filter.
@@ -336,9 +343,29 @@ export default function MobileApp() {
                 <div className="video-modal" onClick={handleClosePlayer} role="dialog" aria-modal="true" aria-label={`Now playing: ${playingVideo.title}`}>
                     <div className="modal-content" onClick={e => e.stopPropagation()}>
                         <div className="modal-top-bar">
-                            <div style={{ display: 'flex', gap: '6px' }}>
+                            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                 <button className="copy-link-btn" onClick={handleCopyLink}>
-                                    {copied ? '✓ Copied' : '🔗 Share'}
+                                    {copied ? '✓ Copied' : '🔗 Copy'}
+                                </button>
+                                <button
+                                    className="copy-link-btn share-social-btn"
+                                    onClick={() => {
+                                        const url = `${window.location.origin}${window.location.pathname}?v=${playingVideo.youtubeId}`
+                                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(playingVideo.title + ' — shot by TdotsSolutionsz 🎬')}&url=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420')
+                                    }}
+                                    aria-label="Share on X/Twitter"
+                                >
+                                    𝕏
+                                </button>
+                                <button
+                                    className="copy-link-btn share-social-btn"
+                                    onClick={() => {
+                                        const url = `${window.location.origin}${window.location.pathname}?v=${playingVideo.youtubeId}`
+                                        window.open(`https://wa.me/?text=${encodeURIComponent(playingVideo.title + ' — ' + url)}`, '_blank')
+                                    }}
+                                    aria-label="Share on WhatsApp"
+                                >
+                                    WA
                                 </button>
                                 <button
                                     className={`copy-link-btn fav-modal-btn ${isFavorite(playingVideo.id) ? 'is-fav' : ''}`}
@@ -356,10 +383,29 @@ export default function MobileApp() {
                             <YouTubePlayer
                                 key={playingVideo.youtubeId}
                                 videoId={playingVideo.youtubeId}
+                                autoplay
+                                controls
+                                muted
                                 onEnd={handleNextVideo}
                             />
                         </div>
                         <div className="video-info">
+                            {/* Queue indicator */}
+                            {(() => {
+                                const idx = filteredVideos.findIndex(v => v.id === playingVideo.id)
+                                const nextVideo = idx >= 0 ? filteredVideos[(idx + 1) % filteredVideos.length] : null
+                                return (
+                                    <div className="queue-indicator">
+                                        <span className="queue-now">
+                                            <span className="now-playing-bars-small"><span></span><span></span><span></span></span>
+                                            Now Playing ({idx + 1}/{filteredVideos.length})
+                                        </span>
+                                        {nextVideo && nextVideo.id !== playingVideo.id && (
+                                            <span className="queue-next">Up Next: {nextVideo.title}</span>
+                                        )}
+                                    </div>
+                                )
+                            })()}
                             <div className="video-nav-row">
                                 <button className="video-nav-btn" onClick={handlePrevVideo} aria-label="Previous video">
                                     <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -409,7 +455,10 @@ export default function MobileApp() {
 
             {/* Footer */}
             <footer className="mobile-footer">
-                <p>♫ &copy; {new Date().getFullYear()} TdotsSolutionsz ♫</p>
+                <p className="footer-brand">TdotsSolutionsz</p>
+                <p className="footer-location">Toronto, Ontario 🇨🇦</p>
+                <p className="footer-tagline">Music Video Production &amp; Direction</p>
+                <p>&copy; {new Date().getFullYear()} TdotsSolutionsz</p>
             </footer>
         </div>
     )
