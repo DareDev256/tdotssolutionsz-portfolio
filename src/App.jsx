@@ -931,7 +931,7 @@ const TronBuilding = ({ position, width, depth, height, color, type }) => {
             {/* Main structure - dark body */}
             <mesh position={[0, height / 2, 0]}>
                 <boxGeometry args={[width, height, depth]} />
-                <meshBasicMaterial color="#06060f" />
+                <meshBasicMaterial color="#0a1228" />
             </mesh>
             {/* Neon edge lines - vertical corners */}
             {[
@@ -955,6 +955,19 @@ const TronBuilding = ({ position, width, depth, height, color, type }) => {
                     <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2} toneMapped={false} />
                 </mesh>
             ))}
+            {/* Rooftop cap - subtle glow to define building top */}
+            <mesh position={[0, height, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                <planeGeometry args={[width - 0.1, depth - 0.1]} />
+                <meshStandardMaterial
+                    color={color}
+                    emissive={color}
+                    emissiveIntensity={0.3}
+                    transparent
+                    opacity={0.15}
+                    toneMapped={false}
+                    side={THREE.DoubleSide}
+                />
+            </mesh>
             {/* Bottom edge */}
             <mesh position={[0, 0.03, 0]}>
                 <boxGeometry args={[width + 0.1, 0.06, depth + 0.1]} />
