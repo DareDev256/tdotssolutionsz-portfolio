@@ -22,11 +22,11 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Related Videos** — "More by this artist" section in mobile modal with thumbnails and view counts
 - **Social Sharing** — Share videos to X/Twitter and WhatsApp from modal and theater mode, with copy-link support
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject structured data, geo-targeted meta tags, sitemap with 87 deep links, Open Graph, Twitter Cards
-- **Security Hardened** — Enforced CSP (no `unsafe-eval`), HSTS with preload, X-Frame-Options DENY, COOP (`same-origin-allow-popups`), CORP (`same-origin`), Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep link parameters
+- **Security Hardened** — Enforced CSP (no `unsafe-eval`, `upgrade-insecure-requests`), HSTS with preload, X-Frame-Options DENY, COOP + CORP + COEP (Spectre isolation), Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep links; localStorage favorites validated and capped
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 - **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
-- **Tested** — 21 unit tests via Vitest covering YouTube ID validation, video data integrity, lane processing, and responsive breakpoints
+- **Tested** — 29 unit tests via Vitest covering YouTube ID validation, video data integrity, lane processing, responsive breakpoints, and localStorage security
 
 ## Tech Stack
 
@@ -66,6 +66,13 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v2.2.3 (2026-02-10)
+- **Security: COEP header** — Added `Cross-Origin-Embedder-Policy: credentialless` completing Spectre isolation (COOP + CORP + COEP)
+- **Security: CSP upgrade-insecure-requests** — Auto-upgrades HTTP subresource requests to HTTPS
+- **Security: Thumbnail URL validation** — `getThumbnailUrl()` now validates videoId and restricts quality to a 5-preset whitelist
+- **Security: localStorage hardening** — Favorites validated through YouTube ID pattern, array-type check, and 500-item cap
+- **Tests** — 29 total (up from 21): added 6 favorites validation tests + 3 thumbnail injection tests
 
 ### v2.2.2 (2026-02-09)
 - **Test infrastructure** — Added Vitest with 21 unit tests covering YouTube ID validation (XSS prevention), video data integrity, lane processing, and responsive breakpoints

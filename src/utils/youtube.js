@@ -36,9 +36,17 @@ export function getShareUrl(video) {
     return `${window.location.origin}${window.location.pathname}?v=${vid}`
 }
 
+/** Allowed YouTube thumbnail quality presets */
+const VALID_QUALITIES = new Set([
+    'default', 'mqdefault', 'hqdefault', 'sddefault', 'maxresdefault'
+])
+
 /**
  * Build a YouTube thumbnail URL (hqdefault is always available).
+ * Validates both videoId and quality to prevent URL path injection.
  */
 export function getThumbnailUrl(videoId, quality = 'hqdefault') {
-    return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`
+    if (!isValidYouTubeId(videoId)) return ''
+    const safeQuality = VALID_QUALITIES.has(quality) ? quality : 'hqdefault'
+    return `https://img.youtube.com/vi/${videoId}/${safeQuality}.jpg`
 }

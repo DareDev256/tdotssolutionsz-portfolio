@@ -1,11 +1,18 @@
 import { useState, useCallback } from 'react'
+import { isValidYouTubeId } from '../utils/youtube'
 
 const STORAGE_KEY = 'tdots-favorites'
+const MAX_FAVORITES = 500
 
-function readFavorites() {
+/** @internal Exported for testing */
+export function readFavorites() {
     try {
         const raw = localStorage.getItem(STORAGE_KEY)
-        return raw ? JSON.parse(raw) : []
+        if (!raw) return []
+        const parsed = JSON.parse(raw)
+        if (!Array.isArray(parsed)) return []
+        // Only keep valid YouTube IDs, cap at MAX_FAVORITES
+        return parsed.filter(isValidYouTubeId).slice(0, MAX_FAVORITES)
     } catch {
         return []
     }

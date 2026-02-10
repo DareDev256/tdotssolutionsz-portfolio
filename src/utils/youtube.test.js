@@ -69,12 +69,37 @@ describe('getThumbnailUrl', () => {
         )
     })
 
-    it('accepts custom quality parameter', () => {
+    it('accepts valid quality presets', () => {
         expect(getThumbnailUrl('dQw4w9WgXcQ', 'maxresdefault')).toBe(
             'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg'
         )
         expect(getThumbnailUrl('dQw4w9WgXcQ', 'sddefault')).toBe(
             'https://img.youtube.com/vi/dQw4w9WgXcQ/sddefault.jpg'
+        )
+        expect(getThumbnailUrl('dQw4w9WgXcQ', 'default')).toBe(
+            'https://img.youtube.com/vi/dQw4w9WgXcQ/default.jpg'
+        )
+        expect(getThumbnailUrl('dQw4w9WgXcQ', 'mqdefault')).toBe(
+            'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg'
+        )
+    })
+
+    it('returns empty string for invalid video ID', () => {
+        expect(getThumbnailUrl('')).toBe('')
+        expect(getThumbnailUrl('not-valid')).toBe('')
+        expect(getThumbnailUrl('<script>xss')).toBe('')
+        expect(getThumbnailUrl(null)).toBe('')
+    })
+
+    it('falls back to hqdefault for invalid quality param (path injection prevention)', () => {
+        expect(getThumbnailUrl('dQw4w9WgXcQ', '../../../etc/passwd')).toBe(
+            'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg'
+        )
+        expect(getThumbnailUrl('dQw4w9WgXcQ', 'bad?query=1')).toBe(
+            'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg'
+        )
+        expect(getThumbnailUrl('dQw4w9WgXcQ', '')).toBe(
+            'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg'
         )
     })
 })
