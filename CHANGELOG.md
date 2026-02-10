@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [2.4.0] - 2026-02-10
+
+### Added
+- **Portfolio Stats Dashboard** — New stats overlay on desktop (click "STATS" button, bottom-right) showing total videos, artists, aggregate view count, year range, and top artist by views. Mobile shows a compact stats banner below the header with video count, artist count, and total views
+- **`PORTFOLIO_STATS` export** — Pre-computed aggregate portfolio metrics in `videoData.js` (totalVideos, totalArtists, totalViews, earliestDate, latestDate, topArtist), shared between desktop and mobile via the existing single-source-of-truth pattern
+- **4 new PORTFOLIO_STATS tests** — Verifies totalVideos/totalArtists match source, totalViews equals sum, date range covers all videos, topArtist has highest views (95 total tests, up from 91)
+
 ## [2.3.2] - 2026-02-10
 
 ### Security

@@ -33,6 +33,19 @@ export const ARTIST_STATS = VIDEOS.reduce((acc, v) => {
     return acc
 }, {})
 
+/** Portfolio-wide aggregate stats (pre-computed at import time) */
+export const PORTFOLIO_STATS = {
+    totalVideos: VIDEOS.length,
+    totalArtists: ALL_ARTISTS.length,
+    totalViews: VIDEOS.reduce((sum, v) => sum + v.viewCount, 0),
+    earliestDate: VIDEOS.reduce((min, v) => v.uploadDate < min ? v.uploadDate : min, VIDEOS[0]?.uploadDate || ''),
+    latestDate: VIDEOS.reduce((max, v) => v.uploadDate > max ? v.uploadDate : max, VIDEOS[0]?.uploadDate || ''),
+    topArtist: ALL_ARTISTS.reduce((top, a) => {
+        const s = ARTIST_STATS[a]
+        return (!top || s.totalViews > top.totalViews) ? { name: a, ...s } : top
+    }, null),
+}
+
 /** Lane layout configuration for the 3D billboard system */
 export const LANE_CONFIG = {
     CHRONOLOGICAL: { x: 6, label: 'BY DATE' },

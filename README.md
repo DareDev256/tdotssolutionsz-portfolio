@@ -12,6 +12,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Search & Filter by Artist** — Dropdown search on desktop and mobile to filter videos by artist
 - **Deep Links** — Share direct links to any video via `?v=youtubeId` URL params
 - **Artist Spotlight** — View stats (video count, total views, date range) for each artist
+- **Portfolio Stats** — Aggregate dashboard showing total videos, artists, views, year range, and top artist; desktop overlay (STATS button) and mobile compact banner
 - **Responsive Design** — Full 3D on desktop, reduced effects on tablet, polished mobile grid with logo and view counts
 - **Auto-Advance Playback** — Videos auto-advance to the next when finished, with "Now Playing" indicator, "Up Next" preview, and queue position display
 - **YouTube Integration** — Embedded playback with real view counts and upload dates via YouTube IFrame API
@@ -27,7 +28,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Error Resilient** — React Error Boundary catches WebGL/Three.js crashes and shows a styled fallback with reload button instead of a blank screen
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 - **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
-- **Tested** — 91 unit tests via Vitest covering YouTube ID validation, URL origin guarding, share URL injection, deep link XSS prevention, thumbnail URL consolidation, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, Three.js material construction, procedural texture generation (Canvas 2D mocking), and MobileApp filtering/sorting/search logic
+- **Tested** — 95 unit tests via Vitest covering YouTube ID validation, URL origin guarding, share URL injection, deep link XSS prevention, thumbnail URL consolidation, video data integrity, portfolio stats consistency, lane processing, responsive breakpoints, localStorage security, view/date formatters, Three.js material construction, procedural texture generation (Canvas 2D mocking), and MobileApp filtering/sorting/search logic
 
 ## Tech Stack
 
@@ -67,6 +68,11 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v2.4.0 (2026-02-10)
+- **Portfolio Stats Dashboard** — Desktop: synthwave-styled overlay (STATS button) with total videos, artists, views, year range, and top artist. Mobile: compact stats banner below header
+- **`PORTFOLIO_STATS` shared data** — Pre-computed aggregate metrics in `videoData.js`, follows existing single-source-of-truth pattern
+- **Tests** — 95 total (up from 91): 4 portfolio stats consistency tests
 
 ### v2.3.2 (2026-02-10)
 - **Security: URL origin guard** — `extractVideoId()` now only accepts YouTube-origin URLs via hostname whitelist, rejecting `evil.com?v=validId` spoofing. Also adds `youtu.be` short link support

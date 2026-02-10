@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
     VIDEOS, ALL_ARTISTS, ARTIST_STATS, NEON_COLORS,
-    LANE_CONFIG, POPULAR_THRESHOLD, processVideosIntoLanes
+    LANE_CONFIG, POPULAR_THRESHOLD, PORTFOLIO_STATS, processVideosIntoLanes
 } from './videoData.js'
 
 describe('VIDEOS', () => {
@@ -32,6 +32,32 @@ describe('ALL_ARTISTS / ARTIST_STATS', () => {
             const actual = VIDEOS.filter(v => v.artist === artist).length
             expect(ARTIST_STATS[artist].count).toBe(actual)
             expect(ARTIST_STATS[artist].totalViews).toBeGreaterThanOrEqual(0)
+        }
+    })
+})
+
+describe('PORTFOLIO_STATS', () => {
+    it('totalVideos and totalArtists match source data', () => {
+        expect(PORTFOLIO_STATS.totalVideos).toBe(VIDEOS.length)
+        expect(PORTFOLIO_STATS.totalArtists).toBe(ALL_ARTISTS.length)
+    })
+
+    it('totalViews equals sum of all video view counts', () => {
+        const expected = VIDEOS.reduce((sum, v) => sum + v.viewCount, 0)
+        expect(PORTFOLIO_STATS.totalViews).toBe(expected)
+    })
+
+    it('date range covers all videos', () => {
+        for (const v of VIDEOS) {
+            expect(v.uploadDate >= PORTFOLIO_STATS.earliestDate).toBe(true)
+            expect(v.uploadDate <= PORTFOLIO_STATS.latestDate).toBe(true)
+        }
+    })
+
+    it('topArtist has the highest total views', () => {
+        expect(PORTFOLIO_STATS.topArtist).not.toBeNull()
+        for (const artist of ALL_ARTISTS) {
+            expect(PORTFOLIO_STATS.topArtist.totalViews).toBeGreaterThanOrEqual(ARTIST_STATS[artist].totalViews)
         }
     })
 })

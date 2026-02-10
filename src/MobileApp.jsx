@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
 import useFavorites from './hooks/useFavorites'
-import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS } from './utils/videoData'
+import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from './utils/videoData'
 import { isValidYouTubeId, getShareUrl, getThumbnailUrl } from './utils/youtube'
 import './MobileApp.css'
 
@@ -198,6 +198,15 @@ export default function MobileApp() {
                 <div className="mobile-header-line" />
                 <p className="mobile-subtitle">TDOTSSOLUTIONSZ</p>
             </header>
+
+            {/* Portfolio Stats Banner */}
+            <div className="mobile-stats-banner" role="region" aria-label="Portfolio statistics">
+                <span className="mobile-stat-item">{PORTFOLIO_STATS.totalVideos} Videos</span>
+                <span className="mobile-stat-divider">·</span>
+                <span className="mobile-stat-item">{PORTFOLIO_STATS.totalArtists} Artists</span>
+                <span className="mobile-stat-divider">·</span>
+                <span className="mobile-stat-item">{PORTFOLIO_STATS.totalViews >= 1000000 ? `${(PORTFOLIO_STATS.totalViews / 1000000).toFixed(1)}M` : `${(PORTFOLIO_STATS.totalViews / 1000).toFixed(0)}K`} Views</span>
+            </div>
 
             {/* Search + Filter Tabs */}
             <nav className="filter-tabs" role="tablist" aria-label="Video filters">
