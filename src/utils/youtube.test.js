@@ -60,6 +60,27 @@ describe('extractVideoId', () => {
         expect(extractVideoId('https://example.com/watch?v=<script>alert(1)</script>')).toBe('')
         expect(extractVideoId('https://example.com/watch?v=../../etc/passwd')).toBe('')
     })
+
+    it('rejects non-YouTube origins even with valid v= IDs (origin guard)', () => {
+        expect(extractVideoId('https://evil.com/watch?v=dQw4w9WgXcQ')).toBe('')
+        expect(extractVideoId('https://notyoutube.com/watch?v=dQw4w9WgXcQ')).toBe('')
+        expect(extractVideoId('https://youtube.com.evil.com/watch?v=dQw4w9WgXcQ')).toBe('')
+    })
+
+    it('accepts youtu.be short links', () => {
+        expect(extractVideoId('https://youtu.be/dQw4w9WgXcQ')).toBe('dQw4w9WgXcQ')
+        expect(extractVideoId('https://youtu.be/Xedv19NEX-E')).toBe('Xedv19NEX-E')
+    })
+
+    it('accepts m.youtube.com and music.youtube.com URLs', () => {
+        expect(extractVideoId('https://m.youtube.com/watch?v=dQw4w9WgXcQ')).toBe('dQw4w9WgXcQ')
+        expect(extractVideoId('https://music.youtube.com/watch?v=dQw4w9WgXcQ')).toBe('dQw4w9WgXcQ')
+    })
+
+    it('rejects youtu.be with invalid IDs', () => {
+        expect(extractVideoId('https://youtu.be/<script>alert(1)')).toBe('')
+        expect(extractVideoId('https://youtu.be/short')).toBe('')
+    })
 })
 
 describe('getShareUrl', () => {

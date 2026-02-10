@@ -15,16 +15,41 @@ export function isValidYouTubeId(id) {
     return typeof id === 'string' && YT_ID_RE.test(id)
 }
 
+/** Hostnames accepted as YouTube origins for URL parsing */
+const YT_HOSTS = new Set([
+    'youtube.com', 'www.youtube.com', 'm.youtube.com',
+    'youtu.be', 'www.youtu.be',
+    'music.youtube.com',
+])
+
 /**
  * Extract YouTube video ID from a full URL or return the input if already an ID.
- * Handles ?v=ID, ?v=ID&extra, and bare IDs.
+ * Only accepts YouTube-origin URLs (youtube.com, youtu.be, music.youtube.com).
+ * Handles ?v=ID, ?v=ID&extra, youtu.be/ID, and bare IDs.
  * Returns empty string if the extracted value doesn't pass validation.
  */
 export function extractVideoId(urlOrId) {
     if (!urlOrId) return ''
-    const vParam = urlOrId.split('v=')[1]
-    const candidate = vParam ? vParam.split('&')[0] : urlOrId
-    return isValidYouTubeId(candidate) ? candidate : ''
+    // Bare ID (no protocol/slash) — validate directly
+    if (!urlOrId.includes('/')) {
+        return isValidYouTubeId(urlOrId) ? urlOrId : ''
+    }
+    // URL — only accept YouTube origins
+    try {
+        const url = new URL(urlOrId)
+        if (!YT_HOSTS.has(url.hostname)) return ''
+        // youtu.be/ID short links
+        if (url.hostname === 'youtu.be' || url.hostname === 'www.youtu.be') {
+            const candidate = url.pathname.slice(1).split('/')[0]
+            return isValidYouTubeId(candidate) ? candidate : ''
+        }
+        // Standard ?v= parameter
+        const candidate = url.searchParams.get('v') || ''
+        return isValidYouTubeId(candidate) ? candidate : ''
+    } catch {
+        // Not a valid URL and not a bare ID — reject
+        return ''
+    }
 }
 
 /**

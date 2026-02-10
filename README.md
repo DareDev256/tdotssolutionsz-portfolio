@@ -22,12 +22,12 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Related Videos** — "More by this artist" section in mobile modal with thumbnails and view counts
 - **Social Sharing** — Share videos to X/Twitter and WhatsApp from modal and theater mode, with copy-link support
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject structured data, geo-targeted meta tags, sitemap with 87 deep links, Open Graph, Twitter Cards
-- **Security Hardened** — Enforced CSP (no `unsafe-eval`, `upgrade-insecure-requests`), HSTS with preload, X-Frame-Options DENY, COOP, Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep links, share URLs, thumbnail URLs, and YouTubePlayer; all thumbnail `<img src>` routed through validated `getThumbnailUrl()`; iframe `sandbox` on embeds; `noopener,noreferrer` on social popups; localStorage favorites validated and capped
+- **Security Hardened** — Enforced CSP (no `unsafe-eval`, `upgrade-insecure-requests`), HSTS with preload, X-Frame-Options DENY, COOP, Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep links, share URLs, thumbnail URLs, and YouTubePlayer; `extractVideoId()` restricted to YouTube-origin URLs only (hostname whitelist); all thumbnail `<img src>` routed through validated `getThumbnailUrl()`; iframe `sandbox` on embeds; `noopener,noreferrer` on social popups; localStorage favorites validated on both read and write with 500-item cap
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL/Three.js crashes and shows a styled fallback with reload button instead of a blank screen
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 - **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
-- **Tested** — 87 unit tests via Vitest covering YouTube ID validation, share URL injection, deep link XSS prevention, thumbnail URL consolidation, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, Three.js material construction, procedural texture generation (Canvas 2D mocking), and MobileApp filtering/sorting/search logic
+- **Tested** — 91 unit tests via Vitest covering YouTube ID validation, URL origin guarding, share URL injection, deep link XSS prevention, thumbnail URL consolidation, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, Three.js material construction, procedural texture generation (Canvas 2D mocking), and MobileApp filtering/sorting/search logic
 
 ## Tech Stack
 
@@ -67,6 +67,11 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v2.3.2 (2026-02-10)
+- **Security: URL origin guard** — `extractVideoId()` now only accepts YouTube-origin URLs via hostname whitelist, rejecting `evil.com?v=validId` spoofing. Also adds `youtu.be` short link support
+- **Security: Favorites write-side validation** — `toggleFavorite()` validates videoId before persisting to localStorage (defense-in-depth alongside existing read-side validation)
+- **Tests** — 91 total (up from 87): 4 URL origin guard tests (non-YouTube rejection, youtu.be support, mobile/music YouTube, short link XSS)
 
 ### v2.2.8 (2026-02-10)
 - **Security: Thumbnail URL consolidation** — Replaced 2 inline thumbnail URL constructions in VideoCard and MobileApp with validated `getThumbnailUrl()`, blocking injection via tampered `youtubeId`

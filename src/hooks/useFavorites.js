@@ -48,6 +48,7 @@ export default function useFavorites() {
     const [favorites, setFavorites] = useState(readFavorites)
 
     const toggleFavorite = useCallback((videoId) => {
+        if (!isValidYouTubeId(videoId)) return
         setFavorites(prev => {
             const next = prev.includes(videoId)
                 ? prev.filter(id => id !== videoId)

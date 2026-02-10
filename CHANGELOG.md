@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [2.3.2] - 2026-02-10
+
+### Security
+- **`extractVideoId()` origin guard** — Replaced naive `split('v=')` parser with `new URL()` + hostname whitelist, so only YouTube-origin URLs (`youtube.com`, `youtu.be`, `m.youtube.com`, `music.youtube.com`) are accepted. Previously, `https://evil.com/watch?v=dQw4w9WgXcQ` would extract a valid ID; now it returns empty string. Also adds support for `youtu.be/ID` short links
+- **`toggleFavorite()` write-side validation** — Added `isValidYouTubeId()` guard before writing to localStorage, preventing invalid strings from being persisted even if a caller passes unsanitized input. Read-side validation already existed but defense-in-depth requires validating at the boundary
+
+### Added
+- **URL origin guard tests** — 4 new tests: non-YouTube origins rejected even with valid `v=` IDs, `youtu.be` short links accepted, `m.youtube.com`/`music.youtube.com` accepted, `youtu.be` with XSS payloads rejected (91 total tests, up from 87)
+
 ## [2.3.1] - 2026-02-10
 
 ### Fixed
