@@ -1550,6 +1550,9 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
                 scrollOffset={scroll.offset}
             />
 
+            {/* CN Tower at the START - welcome to Toronto */}
+            <CNTower position={[0, 0, 20]} />
+
             {/* Sun at the END of the journey, behind CN Tower */}
             <SynthwaveSun zPosition={-TOTAL_DISTANCE - 30} />
 
