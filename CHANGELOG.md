@@ -2,6 +2,28 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.0.0] - 2026-02-10
+
+### Added
+- **Hub Landing Page** — New `HubPage` component at `/` with two-card navigation linking to Music Videos (`/videos`) and Photography (`/photos`) sections. Synthwave aesthetic with animated gradient borders and backdrop blur
+- **Photography Gallery** — New `PhotoGallery` component at `/photos` with 25 curated photos across 4 categories (Portraits, Artist/Music, Events, Street). Features category tab filtering, lightbox modal with prev/next navigation, keyboard support (Escape, Arrow keys), and IntersectionObserver-based lazy loading
+- **Photo Data** — `src/data/photos.json` with 25 entries containing title, category, subject, description, and camera metadata
+- **25 Optimized Photos** — WebP images in `public/photos/` organized by category subdirectories (portraits, artist, events, street). Source photos resized to max 2000px width and converted from JPG to WebP
+- **Client-Side Routing** — Added `react-router-dom` v7.13.0 with `BrowserRouter`, three lazy-loaded routes, and `RouteCleanup` component for body class management
+- **Legacy Deep Link Redirect** — `/?v=youtubeId` at root automatically redirects to `/videos?v=youtubeId`
+- **ImageGallery Schema** — JSON-LD structured data for the photography section
+- **SPA Rewrites** — Vercel config updated with rewrites for `/videos` and `/photos` to `index.html`
+- **Sitemap Routes** — Added `/videos` and `/photos` to sitemap.xml; updated all video deep links from `/?v=` to `/videos?v=`
+
+### Changed
+- **Root Route** — `/` now renders `HubPage` instead of the video experience directly. Music videos moved to `/videos`
+- **Title & Meta** — Updated to "TdotsSolutionsz — Toronto Creative Production | Music Videos & Photography"
+- **Open Graph** — Updated descriptions to include photography portfolio
+- **Version** — Major bump from 2.4.0 to 3.0.0 (new navigation architecture, new section)
+
+### Dependencies
+- Added `react-router-dom` ^7.13.0
+
 ## [2.4.0] - 2026-02-10
 
 ### Added

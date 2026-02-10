@@ -1,4 +1,8 @@
 {
+  "rewrites": [
+    { "source": "/videos", "destination": "/index.html" },
+    { "source": "/photos", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

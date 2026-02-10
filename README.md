@@ -1,38 +1,53 @@
-# TdotsSolutionsz Music Video Portfolio
+# TdotsSolutionsz — Toronto Creative Production
 
-An immersive synthwave-themed 3D music video portfolio showcasing **87 music videos** by **49 artists**, shot by TdotsSolutionsz — Toronto's premier hip-hop video production company. Drive through a neon cityscape and browse videos on billboard displays.
+An immersive synthwave-themed creative portfolio showcasing **87 music videos** by **49 artists** and a **25-image photography gallery**, by TdotsSolutionsz — Toronto's premier hip-hop video production and photography company. Hub landing page links to a 3D neon cityscape for music videos and a categorized photo gallery.
 
 **Live at [tdotssolutionsz.com](https://tdotssolutionsz.com)**
 
 ## Features
 
-- **Tron-Style 3D Cityscape** — Drive through a neon metropolis with 200+ edge-lit buildings, highway arches, data stream pillars, and CN Towers bookending the journey — one at the start, one at the end
+### Hub Landing Page (`/`)
+- **Split Navigation** — Two-card layout linking to Music Videos and Photography sections
+- **Synthwave Aesthetic** — Consistent neon-glow branding with animated gradient borders and backdrop blur
+- **Responsive** — Grid on desktop, stacked on mobile
+
+### Photography Gallery (`/photos`)
+- **25 Curated Photos** — Portraits, artist/music, events, and street photography in optimized WebP
+- **Category Tabs** — Filter by All, Portraits, Artist, Events, or Street
+- **Lightbox Viewer** — Full-size modal with prev/next navigation, keyboard support (Escape, Arrow keys)
+- **Lazy Loading** — IntersectionObserver-based image loading with 200px lookahead
+- **Photo Metadata** — Title, subject, category, and camera info for each image
+
+### Music Videos (`/videos`)
+- **Tron-Style 3D Cityscape** — Drive through a neon metropolis with 200+ edge-lit buildings, highway arches, data stream pillars, and CN Towers bookending the journey
 - **Dual Lane System** — Browse by date (chronological) or popular selections (60K+ views)
 - **Dynamic Road** — Road, grid, buildings, and arches scale to match total video count
 - **Search & Filter by Artist** — Dropdown search on desktop and mobile to filter videos by artist
-- **Deep Links** — Share direct links to any video via `?v=youtubeId` URL params
+- **Deep Links** — Share direct links to any video via `/videos?v=youtubeId` URL params
 - **Artist Spotlight** — View stats (video count, total views, date range) for each artist
-- **Portfolio Stats** — Aggregate dashboard showing total videos, artists, views, year range, and top artist; desktop overlay (STATS button) and mobile compact banner
-- **Responsive Design** — Full 3D on desktop, reduced effects on tablet, polished mobile grid with logo and view counts
-- **Auto-Advance Playback** — Videos auto-advance to the next when finished, with "Now Playing" indicator, "Up Next" preview, and queue position display
-- **YouTube Integration** — Embedded playback with real view counts and upload dates via YouTube IFrame API
-- **Theater Mode** — Fullscreen immersive video viewing (press F), arrow keys to skip tracks, queue info, social sharing
-- **Custom Domain** — Live at [tdotssolutionsz.com](https://tdotssolutionsz.com)
+- **Portfolio Stats** — Aggregate dashboard showing total videos, artists, views, year range, and top artist
+- **Auto-Advance Playback** — Videos auto-advance with "Now Playing" indicator and "Up Next" preview
+- **YouTube Integration** — Embedded playback with real view counts via YouTube IFrame API
+- **Theater Mode** — Fullscreen immersive viewing (press F), arrow keys to skip tracks, social sharing
 - **Vehicle Selection** — Choose between Tron Light Cycle, DeLorean, or Cyber Bike
-- **Favorites** — Heart button to save videos; favorites persist via localStorage with dedicated filter tab
-- **Related Videos** — "More by this artist" section in mobile modal with thumbnails and view counts
-- **Social Sharing** — Share videos to X/Twitter and WhatsApp from modal and theater mode, with copy-link support
-- **Toronto-Targeted SEO** — LocalBusiness + VideoObject structured data, geo-targeted meta tags, sitemap with 87 deep links, Open Graph, Twitter Cards
-- **Security Hardened** — Enforced CSP (no `unsafe-eval`, `upgrade-insecure-requests`), HSTS with preload, X-Frame-Options DENY, COOP, Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep links, share URLs, thumbnail URLs, and YouTubePlayer; `extractVideoId()` restricted to YouTube-origin URLs only (hostname whitelist); all thumbnail `<img src>` routed through validated `getThumbnailUrl()`; iframe `sandbox` on embeds; `noopener,noreferrer` on social popups; localStorage favorites validated on both read and write with 500-item cap
+- **Favorites** — Heart button to save videos; persist via localStorage with dedicated filter tab
+- **Related Videos** — "More by this artist" section in mobile modal
+- **Social Sharing** — Share to X/Twitter and WhatsApp with copy-link support
+
+### Cross-Cutting
+- **Client-Side Routing** — React Router v7 with lazy-loaded routes; legacy `/?v=` deep links redirect to `/videos?v=`
+- **Responsive Design** — Full 3D on desktop, reduced effects on tablet, polished mobile grid
+- **Toronto-Targeted SEO** — LocalBusiness + VideoObject + ImageGallery structured data, geo-targeted meta tags, sitemap with video deep links and photo routes
+- **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, Referrer-Policy, Permissions-Policy; YouTube ID validation; localStorage hardening
 - **PWA Ready** — Web app manifest for installability
-- **Error Resilient** — React Error Boundary catches WebGL/Three.js crashes and shows a styled fallback with reload button instead of a blank screen
-- **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
-- **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
-- **Tested** — 95 unit tests via Vitest covering YouTube ID validation, URL origin guarding, share URL injection, deep link XSS prevention, thumbnail URL consolidation, video data integrity, portfolio stats consistency, lane processing, responsive breakpoints, localStorage security, view/date formatters, Three.js material construction, procedural texture generation (Canvas 2D mocking), and MobileApp filtering/sorting/search logic
+- **Error Resilient** — React Error Boundary catches WebGL crashes with styled fallback
+- **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
+- **Tested** — 95 unit tests via Vitest
 
 ## Tech Stack
 
 - React 18 + Vite (code-split with React.lazy + manualChunks)
+- React Router v7 (BrowserRouter with lazy routes)
 - Three.js / React Three Fiber / Drei
 - Post-processing (bloom, vignette, soft particles, enhanced star field)
 - YouTube IFrame API for playback control and end-detection
@@ -68,6 +83,14 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.0.0 (2026-02-10)
+- **Hub Landing Page** — New root route (`/`) with two-card navigation to Music Videos and Photography sections
+- **Photography Gallery** — 25 curated photos (portraits, artist, events, street) with category tabs, lightbox viewer, keyboard navigation, and lazy loading
+- **Client-Side Routing** — React Router v7 with lazy-loaded routes (`/`, `/videos`, `/photos`); legacy `/?v=` deep links redirect to `/videos?v=`
+- **25 Optimized Photos** — WebP format in `public/photos/` (portraits, artist, events, street subdirs)
+- **SEO Updates** — ImageGallery structured data, updated title/meta/OG tags, sitemap with `/videos` and `/photos` routes
+- **SPA Routing** — Vercel rewrites for `/videos` and `/photos`
 
 ### v2.4.0 (2026-02-10)
 - **Portfolio Stats Dashboard** — Desktop: synthwave-styled overlay (STATS button) with total videos, artists, views, year range, and top artist. Mobile: compact stats banner below header

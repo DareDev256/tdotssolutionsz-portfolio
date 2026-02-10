@@ -1,0 +1,227 @@
+[
+  {
+    "id": "p1",
+    "filename": "kat-rose-01.webp",
+    "title": "Kat Rose — Studio Portrait",
+    "category": "portraits",
+    "subject": "Kat Rose",
+    "description": "Professional glamour portrait with dramatic studio lighting",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "p2",
+    "filename": "kat-rose-02.webp",
+    "title": "Kat Rose — Natural Light",
+    "category": "portraits",
+    "subject": "Kat Rose",
+    "description": "Natural light portrait session",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "p3",
+    "filename": "kat-rose-03.webp",
+    "title": "Kat Rose — Editorial",
+    "category": "portraits",
+    "subject": "Kat Rose",
+    "description": "Editorial portrait with cinematic tones",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "p4",
+    "filename": "juju-01.webp",
+    "title": "Juju — Cinematic Edit",
+    "category": "portraits",
+    "subject": "Juju",
+    "description": "Retouched cinematic portrait",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "p5",
+    "filename": "juju-02.webp",
+    "title": "Juju — Close-Up",
+    "category": "portraits",
+    "subject": "Juju",
+    "description": "Intimate close-up portrait",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "p6",
+    "filename": "juju-03.webp",
+    "title": "Juju — Full Frame",
+    "category": "portraits",
+    "subject": "Juju",
+    "description": "Full-frame portrait with depth of field",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "p7",
+    "filename": "sandra-01.webp",
+    "title": "Sandra — Studio Session",
+    "category": "portraits",
+    "subject": "Sandra",
+    "description": "Studio portrait with professional lighting",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "p8",
+    "filename": "sandra-02.webp",
+    "title": "Sandra — Portrait",
+    "category": "portraits",
+    "subject": "Sandra",
+    "description": "High-fashion inspired portrait",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "p9",
+    "filename": "sandra-03.webp",
+    "title": "Sandra — Creative",
+    "category": "portraits",
+    "subject": "Sandra",
+    "description": "Creative portrait with styled composition",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "a1",
+    "filename": "sean-pane-01.webp",
+    "title": "Sean Pane — EPK",
+    "category": "artist",
+    "subject": "Sean Pane",
+    "description": "Electronic press kit portrait for artist branding",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "a2",
+    "filename": "sean-pane-02.webp",
+    "title": "Sean Pane — Promo",
+    "category": "artist",
+    "subject": "Sean Pane",
+    "description": "Promotional artist portrait",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "a3",
+    "filename": "concert-warm-01.webp",
+    "title": "Live Performance",
+    "category": "artist",
+    "subject": "Concert",
+    "description": "Warm-lit live performance capture",
+    "camera": "iPhone"
+  },
+  {
+    "id": "a4",
+    "filename": "artist-car-01.webp",
+    "title": "Artist — Behind the Scenes",
+    "category": "artist",
+    "subject": "Artist",
+    "description": "Creative lifestyle shot between takes",
+    "camera": "iPhone"
+  },
+  {
+    "id": "a5",
+    "filename": "night-street-01.webp",
+    "title": "Night Session",
+    "category": "artist",
+    "subject": "Artist",
+    "description": "Night street photography with ambient city light",
+    "camera": "iPhone"
+  },
+  {
+    "id": "e1",
+    "filename": "baby-shower-01.webp",
+    "title": "Celebration — Wide Shot",
+    "category": "events",
+    "subject": "Baby Shower",
+    "description": "Event coverage — venue wide shot with decor",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "e2",
+    "filename": "baby-shower-02.webp",
+    "title": "Celebration — Moments",
+    "category": "events",
+    "subject": "Baby Shower",
+    "description": "Candid moments between guests",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "e3",
+    "filename": "baby-shower-03.webp",
+    "title": "Celebration — Details",
+    "category": "events",
+    "subject": "Baby Shower",
+    "description": "Event details and styling",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "e4",
+    "filename": "baby-shower-04.webp",
+    "title": "Celebration — Group",
+    "category": "events",
+    "subject": "Baby Shower",
+    "description": "Group shot with guests",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "e5",
+    "filename": "baby-shower-05.webp",
+    "title": "Celebration — Portrait",
+    "category": "events",
+    "subject": "Baby Shower",
+    "description": "Portrait of guest of honor",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "e6",
+    "filename": "brunch-01.webp",
+    "title": "Brunch — Food Styling",
+    "category": "events",
+    "subject": "Brunch Event",
+    "description": "Professional food and table styling",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "e7",
+    "filename": "brunch-02.webp",
+    "title": "Brunch — Atmosphere",
+    "category": "events",
+    "subject": "Brunch Event",
+    "description": "Venue atmosphere and ambiance",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "e8",
+    "filename": "brunch-03.webp",
+    "title": "Brunch — Scene",
+    "category": "events",
+    "subject": "Brunch Event",
+    "description": "Full event scene with guests",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "e9",
+    "filename": "team-01.webp",
+    "title": "Team — Group Portrait",
+    "category": "events",
+    "subject": "Team",
+    "description": "Professional team group photo",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "e10",
+    "filename": "team-02.webp",
+    "title": "Team — Candid",
+    "category": "events",
+    "subject": "Team",
+    "description": "Candid team interaction shot",
+    "camera": "Sony Alpha"
+  },
+  {
+    "id": "s1",
+    "filename": "urban-night-01.webp",
+    "title": "Toronto Night — Urban",
+    "category": "street",
+    "subject": "Urban Night",
+    "description": "Nighttime urban photography in Toronto",
+    "camera": "Sony Alpha"
+  }
+]
