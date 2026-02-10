@@ -67,6 +67,9 @@ npm run test:watch # Run tests in watch mode
 
 ## Changelog
 
+### v2.2.5 (2026-02-10)
+- **Docs** — Added JSDoc with `@param`/`@returns` annotations across 5 source files: `VideoCard.jsx`, `useFavorites.js`, `main.jsx`, `useDeviceType.js`, `useFresnelMaterial.js` — enables IDE hover-docs for all public exports
+
 ### v2.2.4 (2026-02-10)
 - **Tests** — 47 total (up from 29): added 11 VideoCard formatter tests (`formatViews` K/M boundaries, `formatYear` date parsing, `formatDate` relative time with fake timers) + 7 fresnel material tests (`updateFresnelMaterial` null-safety, `createRimGlowMaterial` construction)
 

@@ -1,5 +1,17 @@
 import './VideoCard.css'
 
+/**
+ * Mobile/tablet video card — displays thumbnail, title, artist, view count,
+ * favorite toggle, and now-playing/up-next queue badges.
+ *
+ * @param {Object} props
+ * @param {Object} props.video - Video object with title, artist, youtubeId, viewCount, uploadDate
+ * @param {() => void} props.onClick - Opens the video player modal
+ * @param {boolean} props.isFavorite - Whether this video is in the user's favorites
+ * @param {(id: string) => void} [props.onToggleFavorite] - Toggles favorite state; omit to hide heart button
+ * @param {boolean} props.isNowPlaying - Shows animated equalizer badge and cyan border
+ * @param {boolean} props.isUpNext - Shows "UP NEXT" badge on thumbnail
+ */
 export default function VideoCard({ video, onClick, isFavorite, onToggleFavorite, isNowPlaying, isUpNext }) {
     const thumbnailUrl = video.thumbnail ||
         `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`
@@ -77,19 +89,34 @@ export default function VideoCard({ video, onClick, isFavorite, onToggleFavorite
     )
 }
 
-/** @internal Exported for testing */
+/**
+ * Format a view count into a compact string (e.g. 5200000 → "5.2M", 1500 → "2K").
+ * @internal Exported for testing
+ * @param {number} count - Raw view count from YouTube API
+ * @returns {string} Compact display string with K/M suffix
+ */
 export function formatViews(count) {
     if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`
     if (count >= 1000) return `${(count / 1000).toFixed(0)}K`
     return count.toString()
 }
 
-/** @internal Exported for testing */
+/**
+ * Extract the 4-digit year from an ISO date string.
+ * @internal Exported for testing
+ * @param {string} dateString - ISO 8601 date (e.g. "2024-03-15")
+ * @returns {string} Four-digit year (e.g. "2024")
+ */
 export function formatYear(dateString) {
     return new Date(dateString).getFullYear().toString()
 }
 
-/** @internal Exported for testing */
+/**
+ * Format a date as relative time (e.g. "3d ago", "2w ago", "5mo ago", "1y ago").
+ * @internal Exported for testing
+ * @param {string} dateString - ISO 8601 date
+ * @returns {string} Human-readable relative time string
+ */
 export function formatDate(dateString) {
     const date = new Date(dateString)
     const now = new Date()

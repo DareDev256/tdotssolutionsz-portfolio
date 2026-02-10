@@ -112,8 +112,12 @@ export function updateFresnelMaterial(material, time) {
 }
 
 /**
- * Creates a simple fresnel rim-only material for existing meshes
- * Use this to add rim glow to existing standard materials
+ * Creates a simple fresnel rim-only material for existing meshes.
+ * Uses additive blending on back faces to produce an outline glow effect.
+ * @param {string} [rimColor='#05d9e8'] - Hex color for the rim glow
+ * @param {number} [rimPower=3] - Fresnel falloff exponent (higher = tighter rim)
+ * @param {number} [rimIntensity=1] - Brightness multiplier for the glow
+ * @returns {THREE.ShaderMaterial} Transparent additive-blended shader material
  */
 export function createRimGlowMaterial(rimColor = '#05d9e8', rimPower = 3, rimIntensity = 1) {
   return new THREE.ShaderMaterial({

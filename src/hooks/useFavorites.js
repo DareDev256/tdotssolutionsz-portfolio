@@ -1,10 +1,22 @@
+/**
+ * Favorites persistence hook — stores favorite video IDs in localStorage
+ * with validation (YouTube ID pattern check) and a 500-item cap.
+ * @module hooks/useFavorites
+ */
 import { useState, useCallback } from 'react'
 import { isValidYouTubeId } from '../utils/youtube'
 
+/** localStorage key for persisted favorites array */
 const STORAGE_KEY = 'tdots-favorites'
+/** Hard cap to prevent storage abuse via crafted localStorage payloads */
 const MAX_FAVORITES = 500
 
-/** @internal Exported for testing */
+/**
+ * Read and validate persisted favorites from localStorage.
+ * Filters out invalid YouTube IDs and caps array length for safety.
+ * @internal Exported for testing
+ * @returns {string[]} Array of validated YouTube video IDs
+ */
 export function readFavorites() {
     try {
         const raw = localStorage.getItem(STORAGE_KEY)
@@ -18,12 +30,20 @@ export function readFavorites() {
     }
 }
 
+/**
+ * Persist favorites array to localStorage. Silently fails on quota exceeded.
+ * @param {string[]} ids - Array of YouTube video IDs
+ */
 function writeFavorites(ids) {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(ids))
     } catch { /* quota exceeded — fail silently */ }
 }
 
+/**
+ * React hook for managing video favorites with localStorage persistence.
+ * @returns {{ favorites: string[], toggleFavorite: (videoId: string) => void, isFavorite: (videoId: string) => boolean }}
+ */
 export default function useFavorites() {
     const [favorites, setFavorites] = useState(readFavorites)
 
