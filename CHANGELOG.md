@@ -2,6 +2,18 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [2.2.6] - 2026-02-10
+
+### Security
+- **Deep link `?v=` validation** — Both `App.jsx` and `MobileApp.jsx` now validate the `?v=` URL parameter through `isValidYouTubeId()` before use, preventing crafted URLs with XSS payloads from being written back to the address bar via `replaceState`
+- **`getShareUrl()` injection fix** — Share URL builder now validates the video ID before embedding into the URL template, closing a path where a malformed `youtubeId` property could inject arbitrary content into share links and clipboard output
+- **Iframe `sandbox` attribute** — Desktop VideoOverlay YouTube embed now includes `sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"`, restricting the iframe to minimum required capabilities
+- **`noopener,noreferrer` on popups** — All `window.open()` calls for X/Twitter and WhatsApp sharing (TheaterMode + MobileApp) now include `noopener,noreferrer` to prevent reverse tabnabbing and Referer header leakage
+
+### Added
+- **Share URL tests** — 3 new tests for `getShareUrl()` covering youtubeId preference, URL fallback, and XSS payload rejection
+- **Deep link validation tests** — 2 new tests verifying that common XSS payloads are rejected by `isValidYouTubeId()` in the deep link context, and that real video IDs from the dataset pass validation
+
 ## [2.2.5] - 2026-02-10
 
 ### Added

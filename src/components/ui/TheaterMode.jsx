@@ -136,7 +136,7 @@ export function TheaterMode({
             className="theater-share-btn"
             onClick={() => {
               const url = getShareUrl(project)
-              window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(project.title + ' — shot by TdotsSolutionsz 🎬')}&url=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420')
+              window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(project.title + ' — shot by TdotsSolutionsz 🎬')}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer,width=550,height=420')
             }}
           >
             𝕏 Post
@@ -145,7 +145,7 @@ export function TheaterMode({
             className="theater-share-btn"
             onClick={() => {
               const url = getShareUrl(project)
-              window.open(`https://wa.me/?text=${encodeURIComponent(project.title + ' — ' + url)}`, '_blank')
+              window.open(`https://wa.me/?text=${encodeURIComponent(project.title + ' — ' + url)}`, '_blank', 'noopener,noreferrer')
             }}
           >
             WA Share

@@ -3,7 +3,7 @@ import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
 import useFavorites from './hooks/useFavorites'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS } from './utils/videoData'
-import { getShareUrl } from './utils/youtube'
+import { isValidYouTubeId, getShareUrl } from './utils/youtube'
 import './MobileApp.css'
 
 // Validate shared data loaded correctly
@@ -30,11 +30,11 @@ export default function MobileApp() {
         setLoading(false)
     }, [])
 
-    // Deep link: read ?v= on mount
+    // Deep link: read ?v= on mount (validated)
     useEffect(() => {
         const params = new URLSearchParams(window.location.search)
         const vId = params.get('v')
-        if (vId) {
+        if (vId && isValidYouTubeId(vId)) {
             const found = VIDEOS.find(v => v.youtubeId === vId)
             if (found) setPlayingVideo(found)
         }
@@ -322,7 +322,7 @@ export default function MobileApp() {
                                     className="copy-link-btn share-social-btn"
                                     onClick={() => {
                                         const url = getShareUrl(playingVideo)
-                                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(playingVideo.title + ' — shot by TdotsSolutionsz 🎬')}&url=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420')
+                                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(playingVideo.title + ' — shot by TdotsSolutionsz 🎬')}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer,width=550,height=420')
                                     }}
                                     aria-label="Share on X/Twitter"
                                 >
@@ -332,7 +332,7 @@ export default function MobileApp() {
                                     className="copy-link-btn share-social-btn"
                                     onClick={() => {
                                         const url = getShareUrl(playingVideo)
-                                        window.open(`https://wa.me/?text=${encodeURIComponent(playingVideo.title + ' — ' + url)}`, '_blank')
+                                        window.open(`https://wa.me/?text=${encodeURIComponent(playingVideo.title + ' — ' + url)}`, '_blank', 'noopener,noreferrer')
                                     }}
                                     aria-label="Share on WhatsApp"
                                 >

@@ -30,9 +30,11 @@ export function extractVideoId(urlOrId) {
 /**
  * Build a shareable deep-link URL for a video.
  * Prefers youtubeId property, falls back to extracting from url.
+ * Validates the ID before embedding to prevent URL injection.
  */
 export function getShareUrl(video) {
-    const vid = video.youtubeId || extractVideoId(video.url)
+    const candidate = video.youtubeId || extractVideoId(video.url)
+    const vid = isValidYouTubeId(candidate) ? candidate : ''
     return `${window.location.origin}${window.location.pathname}?v=${vid}`
 }
 

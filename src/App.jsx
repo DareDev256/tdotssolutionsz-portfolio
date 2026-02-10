@@ -17,7 +17,7 @@ import { TheaterMode } from './components/ui'
 
 // Shared data & utilities (single source of truth with MobileApp)
 import { VIDEOS, NEON_COLORS, ALL_ARTISTS, ARTIST_STATS, LANE_CONFIG, processVideosIntoLanes } from './utils/videoData'
-import { extractVideoId, getShareUrl, getThumbnailUrl } from './utils/youtube'
+import { isValidYouTubeId, extractVideoId, getShareUrl, getThumbnailUrl } from './utils/youtube'
 
 const LANES = processVideosIntoLanes()
 const PROJECTS = LANES.all // Backward compatibility
@@ -1675,6 +1675,7 @@ const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
                         height="100%"
                         src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${audioEnabled ? 0 : 1}&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1`}
                         style={{ border: 'none' }}
+                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         title={activeProject.title}
@@ -1958,11 +1959,11 @@ export default function App({ reducedEffects = false }) {
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [theaterMode, activeProject])
 
-    // Feature 4: Deep link — read ?v= on mount
+    // Feature 4: Deep link — read ?v= on mount (validated)
     useEffect(() => {
         const params = new URLSearchParams(window.location.search)
         const vId = params.get('v')
-        if (vId) {
+        if (vId && isValidYouTubeId(vId)) {
             const found = VIDEOS.find(v => v.youtubeId === vId)
             if (found) {
                 // Build a project-like object to open theater

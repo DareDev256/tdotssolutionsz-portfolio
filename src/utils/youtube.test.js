@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { isValidYouTubeId, extractVideoId, getThumbnailUrl } from './youtube.js'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { isValidYouTubeId, extractVideoId, getShareUrl, getThumbnailUrl } from './youtube.js'
 
 describe('isValidYouTubeId', () => {
     it('accepts valid 11-char YouTube IDs', () => {
@@ -59,6 +59,59 @@ describe('extractVideoId', () => {
     it('rejects injected content in v= param', () => {
         expect(extractVideoId('https://example.com/watch?v=<script>alert(1)</script>')).toBe('')
         expect(extractVideoId('https://example.com/watch?v=../../etc/passwd')).toBe('')
+    })
+})
+
+describe('getShareUrl', () => {
+    // getShareUrl uses window.location — provide a minimal mock
+    const origWindow = globalThis.window
+    beforeEach(() => {
+        globalThis.window = { location: { origin: 'https://tdotssolutionsz.com', pathname: '/' } }
+    })
+    afterEach(() => {
+        globalThis.window = origWindow
+    })
+
+    it('builds share URL from youtubeId property', () => {
+        const video = { youtubeId: 'dQw4w9WgXcQ' }
+        const url = getShareUrl(video)
+        expect(url).toBe('https://tdotssolutionsz.com/?v=dQw4w9WgXcQ')
+    })
+
+    it('falls back to extracting from url property', () => {
+        const video = { url: 'https://www.youtube.com/watch?v=9hRUzEGfW7o' }
+        const url = getShareUrl(video)
+        expect(url).toBe('https://tdotssolutionsz.com/?v=9hRUzEGfW7o')
+    })
+
+    it('returns safe URL even with invalid video data', () => {
+        const video = { youtubeId: '<script>alert(1)</script>' }
+        const url = getShareUrl(video)
+        // Invalid ID should produce ?v= with empty string, not the injection payload
+        expect(url).not.toContain('<script>')
+    })
+})
+
+describe('deep link ?v= parameter validation', () => {
+    it('rejects XSS payloads that would be written to URL via replaceState', () => {
+        // These are the exact strings an attacker might put in ?v=
+        const xssPayloads = [
+            '"><img src=x onerror=alert(1)>',
+            "'-alert(1)-'",
+            '<svg/onload=alert(1)>',
+            'javascript:alert(1)',
+            '../../etc/passwd',
+        ]
+        for (const payload of xssPayloads) {
+            expect(isValidYouTubeId(payload)).toBe(false)
+        }
+    })
+
+    it('accepts real YouTube IDs that appear in deep links', () => {
+        // Real IDs from the video data
+        expect(isValidYouTubeId('u3O5PKN9vCQ')).toBe(true)
+        expect(isValidYouTubeId('E7ZStZMn-ac')).toBe(true)
+        expect(isValidYouTubeId('8p4i1b5IW2k')).toBe(true)
     })
 })
 

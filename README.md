@@ -22,11 +22,11 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Related Videos** — "More by this artist" section in mobile modal with thumbnails and view counts
 - **Social Sharing** — Share videos to X/Twitter and WhatsApp from modal and theater mode, with copy-link support
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject structured data, geo-targeted meta tags, sitemap with 87 deep links, Open Graph, Twitter Cards
-- **Security Hardened** — Enforced CSP (no `unsafe-eval`, `upgrade-insecure-requests`), HSTS with preload, X-Frame-Options DENY, COOP + CORP + COEP (Spectre isolation), Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep links; localStorage favorites validated and capped
+- **Security Hardened** — Enforced CSP (no `unsafe-eval`, `upgrade-insecure-requests`), HSTS with preload, X-Frame-Options DENY, COOP + CORP + COEP (Spectre isolation), Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep links and share URLs; iframe `sandbox` on embeds; `noopener,noreferrer` on social popups; localStorage favorites validated and capped
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 - **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
-- **Tested** — 47 unit tests via Vitest covering YouTube ID validation, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, and Three.js material construction
+- **Tested** — 52 unit tests via Vitest covering YouTube ID validation, share URL injection, deep link XSS prevention, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, and Three.js material construction
 
 ## Tech Stack
 
@@ -66,6 +66,13 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v2.2.6 (2026-02-10)
+- **Security: Deep link validation** — `?v=` parameter validated through `isValidYouTubeId()` before use in both App.jsx and MobileApp.jsx
+- **Security: Share URL injection fix** — `getShareUrl()` now validates IDs before embedding, preventing payload injection via malformed `youtubeId` property
+- **Security: Iframe sandbox** — Desktop YouTube embed restricted to `allow-scripts allow-same-origin allow-presentation allow-popups`
+- **Security: Popup hardening** — All social share `window.open()` calls include `noopener,noreferrer`
+- **Tests** — 52 total (up from 47): 3 share URL tests + 2 deep link validation tests
 
 ### v2.2.5 (2026-02-10)
 - **Docs** — Added JSDoc with `@param`/`@returns` annotations across 5 source files: `VideoCard.jsx`, `useFavorites.js`, `main.jsx`, `useDeviceType.js`, `useFresnelMaterial.js` — enables IDE hover-docs for all public exports
