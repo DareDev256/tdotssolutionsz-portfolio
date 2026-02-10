@@ -22,8 +22,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Related Videos** — "More by this artist" section in mobile modal with thumbnails and view counts
 - **Social Sharing** — Share videos to X/Twitter and WhatsApp from modal and theater mode, with copy-link support
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject structured data, geo-targeted meta tags, sitemap with 87 deep links, Open Graph, Twitter Cards
-- **Security Hardened** — CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy headers via Vercel
-- **Analytics Ready** — Google Analytics 4 integration (placeholder ID, ready to activate)
+- **Security Hardened** — Enforced CSP (no `unsafe-eval`), HSTS with preload, X-Frame-Options DENY, COOP, Referrer-Policy, Permissions-Policy headers via Vercel
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 
@@ -62,6 +61,12 @@ npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v2.1.3 (2026-02-09)
+- **CSP Enforced** — Switched from report-only to enforcing Content-Security-Policy; removed `unsafe-eval`, tightened whitelist
+- **Clickjacking Protection** — X-Frame-Options upgraded to DENY, added `frame-ancestors 'none'`
+- **Cross-Origin-Opener-Policy** — Added `same-origin` to prevent window.opener attacks
+- **Removed dead GA4 placeholder** — Eliminated non-functional analytics script that widened attack surface
 
 ### v2.1.0 (2026-02-07)
 - **Now Playing / Up Next Queue** — Animated equalizer badge on currently playing card, "Up Next" badge on the next card in sequence, queue position display (e.g. "3 / 87") in mobile modal and desktop theater mode
