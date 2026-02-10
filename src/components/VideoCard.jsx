@@ -77,17 +77,20 @@ export default function VideoCard({ video, onClick, isFavorite, onToggleFavorite
     )
 }
 
-function formatViews(count) {
+/** @internal Exported for testing */
+export function formatViews(count) {
     if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`
     if (count >= 1000) return `${(count / 1000).toFixed(0)}K`
     return count.toString()
 }
 
-function formatYear(dateString) {
+/** @internal Exported for testing */
+export function formatYear(dateString) {
     return new Date(dateString).getFullYear().toString()
 }
 
-function formatDate(dateString) {
+/** @internal Exported for testing */
+export function formatDate(dateString) {
     const date = new Date(dateString)
     const now = new Date()
     const diffTime = Math.abs(now - date)

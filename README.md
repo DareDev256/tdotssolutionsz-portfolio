@@ -26,7 +26,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 - **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
-- **Tested** — 29 unit tests via Vitest covering YouTube ID validation, video data integrity, lane processing, responsive breakpoints, and localStorage security
+- **Tested** — 47 unit tests via Vitest covering YouTube ID validation, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, and Three.js material construction
 
 ## Tech Stack
 
@@ -66,6 +66,9 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v2.2.4 (2026-02-10)
+- **Tests** — 47 total (up from 29): added 11 VideoCard formatter tests (`formatViews` K/M boundaries, `formatYear` date parsing, `formatDate` relative time with fake timers) + 7 fresnel material tests (`updateFresnelMaterial` null-safety, `createRimGlowMaterial` construction)
 
 ### v2.2.3 (2026-02-10)
 - **Security: COEP header** — Added `Cross-Origin-Embedder-Policy: credentialless` completing Spectre isolation (COOP + CORP + COEP)
