@@ -6,7 +6,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 
 ## Features
 
-- **Tron-Style 3D Cityscape** — Drive through a neon metropolis with 200+ edge-lit buildings, highway arches, data stream pillars, and an orbiting-ring CN Tower
+- **Tron-Style 3D Cityscape** — Drive through a neon metropolis with 200+ edge-lit buildings, highway arches, data stream pillars, and CN Towers bookending the journey — one at the start, one at the end
 - **Dual Lane System** — Browse by date (chronological) or popular selections (60K+ views)
 - **Dynamic Road** — Road, grid, buildings, and arches scale to match total video count
 - **Search & Filter by Artist** — Dropdown search on desktop and mobile to filter videos by artist

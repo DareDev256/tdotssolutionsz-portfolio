@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [2.3.0] - 2026-02-10
+
+### Added
+- **CN Tower at start of journey** — Duplicate CN Tower landmark placed at the beginning of the drive (z=-100, around the 3rd-4th billboard), so Toronto bookends the entire experience — one tower greeting you at the start, one waiting at the end
+
+### Fixed
+- **YouTube embeds broken** — Removed `Cross-Origin-Embedder-Policy: credentialless` and `Cross-Origin-Resource-Policy: same-origin` headers that were blocking YouTube iframes from loading (showed "refused to connect"). These headers are designed for sites needing `SharedArrayBuffer`, not portfolio sites with embedded videos
+- **Three.js 3D scene not rendering** — Added `blob:` to CSP `script-src` directive so Three.js Web Workers can load via `importScripts()`. Without this, all 24 workers failed silently and the 3D cityscape was invisible
+- **3D text labels missing** — Added `cdn.jsdelivr.net` and `fonts.gstatic.com` to CSP `connect-src` so Troika (used by drei's `Text` component) can fetch font data inside Web Workers. Font `fetch()` calls in workers are governed by `connect-src`, not `font-src`
+
 ## [2.2.8] - 2026-02-10
 
 ### Security
