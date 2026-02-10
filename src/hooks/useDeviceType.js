@@ -27,7 +27,7 @@ export function useDeviceType() {
     return deviceType
 }
 
-function getDeviceType(width) {
+export function getDeviceType(width) {
     if (width < 768) return 'phone'
     if (width <= 1024) return 'tablet'
     return 'desktop'

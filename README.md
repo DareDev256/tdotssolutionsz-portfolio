@@ -26,6 +26,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 - **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
+- **Tested** — 21 unit tests via Vitest covering YouTube ID validation, video data integrity, lane processing, and responsive breakpoints
 
 ## Tech Stack
 
@@ -33,6 +34,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - Three.js / React Three Fiber / Drei
 - Post-processing (bloom, vignette, soft particles, enhanced star field)
 - YouTube IFrame API for playback control and end-detection
+- Vitest for unit testing
 - Deployed on Vercel — [tdotssolutionsz.com](https://tdotssolutionsz.com)
 
 ## Notable Artists Featured
@@ -56,12 +58,18 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, Da Kid Bluntz, Daz Diner
 
 ```bash
 npm install
-npm run dev      # Start dev server
-npm run build    # Build for production (fetches YouTube data first)
-npm run preview  # Preview production build
+npm run dev        # Start dev server
+npm run build      # Build for production (fetches YouTube data first)
+npm run preview    # Preview production build
+npm test           # Run unit tests
+npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v2.2.2 (2026-02-09)
+- **Test infrastructure** — Added Vitest with 21 unit tests covering YouTube ID validation (XSS prevention), video data integrity, lane processing, and responsive breakpoints
+- **Dev scripts** — `npm test` and `npm run test:watch` commands
 
 ### v2.2.1 (2026-02-09)
 - **Security: YouTube ID validation** — Deep link `?v=` parameter now validated against strict 11-char pattern, preventing injection of arbitrary strings into share URLs

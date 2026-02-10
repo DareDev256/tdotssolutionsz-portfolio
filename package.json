@@ -1,14 +1,16 @@
 {
   "name": "infinite-drive-portfolio",
   "private": true,
-  "version": "2.2.1",
+  "version": "2.2.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "npm run fetch-data && vite build",
     "preview": "vite preview",
     "fetch-data": "node scripts/fetch-youtube-data.js",
-    "fix-ids": "node scripts/fix-video-ids.js"
+    "fix-ids": "node scripts/fix-video-ids.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@react-three/drei": "^9.117.3",
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.0.3"
+    "vite": "^6.0.3",
+    "vitest": "^4.0.18"
   }
 }
