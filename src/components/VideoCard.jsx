@@ -1,3 +1,4 @@
+import { getThumbnailUrl } from '../utils/youtube'
 import './VideoCard.css'
 
 /**
@@ -13,8 +14,7 @@ import './VideoCard.css'
  * @param {boolean} props.isUpNext - Shows "UP NEXT" badge on thumbnail
  */
 export default function VideoCard({ video, onClick, isFavorite, onToggleFavorite, isNowPlaying, isUpNext }) {
-    const thumbnailUrl = video.thumbnail ||
-        `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`
+    const thumbnailUrl = video.thumbnail || getThumbnailUrl(video.youtubeId, 'mqdefault')
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' || e.key === ' ') {

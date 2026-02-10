@@ -3,7 +3,7 @@ import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
 import useFavorites from './hooks/useFavorites'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS } from './utils/videoData'
-import { isValidYouTubeId, getShareUrl } from './utils/youtube'
+import { isValidYouTubeId, getShareUrl, getThumbnailUrl } from './utils/youtube'
 import './MobileApp.css'
 
 // Validate shared data loaded correctly
@@ -402,7 +402,7 @@ export default function MobileApp() {
                                                 onClick={() => setPlayingVideo(rv)}
                                             >
                                                 <img
-                                                    src={`https://img.youtube.com/vi/${rv.youtubeId}/default.jpg`}
+                                                    src={getThumbnailUrl(rv.youtubeId, 'default')}
                                                     alt={rv.title}
                                                     className="related-thumb"
                                                     loading="lazy"

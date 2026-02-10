@@ -22,11 +22,11 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Related Videos** — "More by this artist" section in mobile modal with thumbnails and view counts
 - **Social Sharing** — Share videos to X/Twitter and WhatsApp from modal and theater mode, with copy-link support
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject structured data, geo-targeted meta tags, sitemap with 87 deep links, Open Graph, Twitter Cards
-- **Security Hardened** — Enforced CSP (no `unsafe-eval`, `upgrade-insecure-requests`), HSTS with preload, X-Frame-Options DENY, COOP + CORP + COEP (Spectre isolation), Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep links and share URLs; iframe `sandbox` on embeds; `noopener,noreferrer` on social popups; localStorage favorites validated and capped
+- **Security Hardened** — Enforced CSP (no `unsafe-eval`, `upgrade-insecure-requests`), HSTS with preload, X-Frame-Options DENY, COOP, Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep links, share URLs, thumbnail URLs, and YouTubePlayer; all thumbnail `<img src>` routed through validated `getThumbnailUrl()`; iframe `sandbox` on embeds; `noopener,noreferrer` on social popups; localStorage favorites validated and capped
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 - **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
-- **Tested** — 83 unit tests via Vitest covering YouTube ID validation, share URL injection, deep link XSS prevention, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, Three.js material construction, procedural texture generation (Canvas 2D mocking), and MobileApp filtering/sorting/search logic
+- **Tested** — 87 unit tests via Vitest covering YouTube ID validation, share URL injection, deep link XSS prevention, thumbnail URL consolidation, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, Three.js material construction, procedural texture generation (Canvas 2D mocking), and MobileApp filtering/sorting/search logic
 
 ## Tech Stack
 
@@ -66,6 +66,12 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v2.2.8 (2026-02-10)
+- **Security: Thumbnail URL consolidation** — Replaced 2 inline thumbnail URL constructions in VideoCard and MobileApp with validated `getThumbnailUrl()`, blocking injection via tampered `youtubeId`
+- **Security: YouTubePlayer guard** — Added `isValidYouTubeId()` check before YouTube IFrame API initialization
+- **Security: README accuracy** — Corrected CORP/COEP header claims (removed in v2.2.3)
+- **Tests** — 87 total (up from 83): 4 consolidated thumbnail URL injection tests
 
 ### v2.2.7 (2026-02-10)
 - **Tests** — 83 total (up from 52): 14 procedural texture tests (Canvas 2D mocking for all 4 generators) + 17 MobileApp logic tests (filtering/sorting/search/relatedVideos/formatViews)

@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [2.2.8] - 2026-02-10
+
+### Security
+- **Thumbnail URL consolidation** — Replaced 2 inline `img.youtube.com/vi/${id}/...` template literals in `VideoCard.jsx` and `MobileApp.jsx` with validated `getThumbnailUrl()` calls, closing a path where a tampered `youtubeId` property could inject arbitrary URLs into `<img src>` attributes
+- **YouTubePlayer videoId guard** — Added `isValidYouTubeId()` check before initializing YouTube IFrame API, preventing invalid or malicious strings from reaching the API as a defense-in-depth measure
+- **README security claims corrected** — Removed inaccurate CORP + COEP claims from README; these headers were removed in v2.2.3 to unblock YouTube embeds
+
+### Added
+- **Consolidated thumbnail tests** — 4 new tests verifying `getThumbnailUrl()` produces correct URLs for VideoCard (mqdefault) and MobileApp (default) callers, and blocks injection payloads in both contexts
+
 ## [2.2.7] - 2026-02-10
 
 ### Added

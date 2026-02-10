@@ -1,4 +1,5 @@
 import { useEffect, useRef, useId } from 'react'
+import { isValidYouTubeId } from '../utils/youtube'
 
 // ── YouTube IFrame API loader (singleton) ──
 let ytApiPromise = null
@@ -45,6 +46,8 @@ export default function YouTubePlayer({
     onEndRef.current = onEnd
 
     useEffect(() => {
+        if (!isValidYouTubeId(videoId)) return
+
         let destroyed = false
 
         ensureYTApi().then(() => {

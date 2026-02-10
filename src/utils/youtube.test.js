@@ -156,3 +156,28 @@ describe('getThumbnailUrl', () => {
         )
     })
 })
+
+describe('getThumbnailUrl — consolidated callers (VideoCard + MobileApp)', () => {
+    it('produces correct mqdefault URL for VideoCard fallback', () => {
+        expect(getThumbnailUrl('dQw4w9WgXcQ', 'mqdefault')).toBe(
+            'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg'
+        )
+    })
+
+    it('produces correct default URL for MobileApp related videos', () => {
+        expect(getThumbnailUrl('9hRUzEGfW7o', 'default')).toBe(
+            'https://img.youtube.com/vi/9hRUzEGfW7o/default.jpg'
+        )
+    })
+
+    it('blocks injection via tampered youtubeId in VideoCard context', () => {
+        expect(getThumbnailUrl('<img/onerror=alert(1)>')).toBe('')
+        expect(getThumbnailUrl('javascript:void')).toBe('')
+        expect(getThumbnailUrl('id/../../etc')).toBe('')
+    })
+
+    it('blocks injection via tampered youtubeId in MobileApp related context', () => {
+        expect(getThumbnailUrl('"><script>x</script>', 'default')).toBe('')
+        expect(getThumbnailUrl(undefined, 'default')).toBe('')
+    })
+})
