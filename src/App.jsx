@@ -15,83 +15,12 @@ import { SoftParticles } from './components/particles'
 import { GroundFog, DistanceHaze, EnhancedStarField, ProceduralNebula } from './components/atmosphere'
 import { TheaterMode } from './components/ui'
 
-// ============================================
-// PROJECT DATA (Loaded from JSON)
-// ============================================
-import videoData from './data/videos.json'
-
-const NEON_COLORS = ['#ff2a6d', '#05d9e8', '#d300c5', '#7700ff', '#ff6b35', '#ffcc00', '#00ff88', '#ff00ff']
-
-// Transform JSON data to include full YouTube URLs
-const VIDEOS = videoData.videos.map(video => ({
-    ...video,
-    url: `https://www.youtube.com/watch?v=${video.youtubeId}`
-}))
-
-// Lane configuration
-const LANE_CONFIG = {
-    CHRONOLOGICAL: { x: 6, label: 'BY DATE' },
-    POPULAR: { x: -6, label: 'MOST POPULAR' },
-    CENTER: { x: 0 },
-    BILLBOARD_Y: 4.5,
-    BILLBOARD_Z_START: -25,
-    BILLBOARD_Z_SPACING: 28,
-    POPULAR_THRESHOLD: videoData.settings?.popularThreshold || 500000,
-}
-
-// Process videos into lanes with positions
-const processVideosIntoLanes = () => {
-    // Sort by date for chronological lane (newest first)
-    const chronological = [...VIDEOS]
-        .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
-        .map((video, index) => ({
-            ...video,
-            color: NEON_COLORS[index % NEON_COLORS.length],
-            lane: 'chronological',
-            position: [
-                LANE_CONFIG.CHRONOLOGICAL.x,
-                LANE_CONFIG.BILLBOARD_Y,
-                LANE_CONFIG.BILLBOARD_Z_START - (index * LANE_CONFIG.BILLBOARD_Z_SPACING)
-            ]
-        }))
-
-    // Filter by real YouTube view counts (500K+ threshold)
-    const popular = [...VIDEOS]
-        .filter(v => v.viewCount >= LANE_CONFIG.POPULAR_THRESHOLD)
-        .sort((a, b) => b.viewCount - a.viewCount)
-        .map((video, index) => ({
-            ...video,
-            color: NEON_COLORS[(index + 3) % NEON_COLORS.length], // Offset colors
-            lane: 'popular',
-            position: [
-                LANE_CONFIG.POPULAR.x,
-                LANE_CONFIG.BILLBOARD_Y,
-                LANE_CONFIG.BILLBOARD_Z_START - (index * LANE_CONFIG.BILLBOARD_Z_SPACING)
-            ],
-            laneId: `popular-${video.id}` // Unique ID for this lane instance
-        }))
-
-    return { chronological, popular, all: [...chronological, ...popular] }
-}
+// Shared data & utilities (single source of truth with MobileApp)
+import { VIDEOS, NEON_COLORS, ALL_ARTISTS, ARTIST_STATS, LANE_CONFIG, processVideosIntoLanes } from './utils/videoData'
+import { extractVideoId, getShareUrl, getThumbnailUrl } from './utils/youtube'
 
 const LANES = processVideosIntoLanes()
 const PROJECTS = LANES.all // Backward compatibility
-
-// Feature 2: Unique artists for search/filter
-const ALL_ARTISTS = [...new Set(VIDEOS.map(v => v.artist))].sort()
-
-// Feature 5: Pre-computed artist stats
-const ARTIST_STATS = VIDEOS.reduce((acc, v) => {
-    if (!acc[v.artist]) {
-        acc[v.artist] = { count: 0, totalViews: 0, earliest: v.uploadDate, latest: v.uploadDate }
-    }
-    const s = acc[v.artist]
-    s.count++
-    s.totalViews += v.viewCount
-    if (v.uploadDate < s.earliest) s.earliest = v.uploadDate
-    if (v.uploadDate > s.latest) s.latest = v.uploadDate
-    return acc
-}, {})
 
 // Filter context — lets nested 3D components read the current filter without prop drilling
 const FilterContext = createContext(null)
@@ -135,14 +64,10 @@ const BillboardFrame = ({ project, isActive }) => {
     const filterArtist = useContext(FilterContext)
 
     // Extract video ID for thumbnail URL
-    const videoId = useMemo(() => {
-        const idPart = url.split('v=')[1]
-        if (!idPart) return url
-        return idPart.split('&')[0]
-    }, [url])
+    const videoId = useMemo(() => extractVideoId(url), [url])
 
     // YouTube thumbnail URL (hqdefault is always available)
-    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+    const thumbnailUrl = getThumbnailUrl(videoId)
 
     // Load YouTube thumbnail as texture
     const texture = useMemo(() => {
@@ -1705,12 +1630,11 @@ const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
 
     if (!activeProject) return null
 
-    const videoId = activeProject.url.split('v=')[1]?.split('&')[0] || activeProject.url
+    const videoId = extractVideoId(activeProject.url)
     const stats = ARTIST_STATS[activeProject.artist]
 
     const handleCopyLink = () => {
-        const url = `${window.location.origin}${window.location.pathname}?v=${activeProject.youtubeId || videoId}`
-        navigator.clipboard.writeText(url).then(() => {
+        navigator.clipboard.writeText(getShareUrl(activeProject)).then(() => {
             setCopied(true)
             setTimeout(() => setCopied(false), 2000)
         })
@@ -2056,7 +1980,7 @@ export default function App({ reducedEffects = false }) {
     // Feature 4: Update URL when entering/exiting theater
     useEffect(() => {
         if (theaterMode && activeProject) {
-            const vid = activeProject.youtubeId || activeProject.url?.split('v=')[1]?.split('&')[0]
+            const vid = activeProject.youtubeId || extractVideoId(activeProject.url)
             if (vid) {
                 window.history.replaceState(null, '', `?v=${vid}`)
             }

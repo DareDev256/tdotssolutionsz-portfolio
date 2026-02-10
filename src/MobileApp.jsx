@@ -1,40 +1,13 @@
 import { useState, useMemo, useEffect, useCallback } from 'react'
-import videoData from './data/videos.json'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
 import useFavorites from './hooks/useFavorites'
+import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS } from './utils/videoData'
+import { getShareUrl } from './utils/youtube'
 import './MobileApp.css'
 
-let VIDEOS = []
-let POPULAR_THRESHOLD = 500000
-let ALL_ARTISTS = []
-let ARTIST_STATS = {}
-let LOAD_ERROR = null
-
-try {
-    if (!videoData?.videos || !Array.isArray(videoData.videos)) {
-        throw new Error('Invalid video data format')
-    }
-    VIDEOS = videoData.videos.map(video => ({
-        ...video,
-        url: `https://www.youtube.com/watch?v=${video.youtubeId}`
-    }))
-    POPULAR_THRESHOLD = videoData.settings?.popularThreshold || 500000
-    ALL_ARTISTS = [...new Set(VIDEOS.map(v => v.artist))].sort()
-    ARTIST_STATS = VIDEOS.reduce((acc, v) => {
-        if (!acc[v.artist]) {
-            acc[v.artist] = { count: 0, totalViews: 0, earliest: v.uploadDate, latest: v.uploadDate }
-        }
-        const s = acc[v.artist]
-        s.count++
-        s.totalViews += v.viewCount
-        if (v.uploadDate < s.earliest) s.earliest = v.uploadDate
-        if (v.uploadDate > s.latest) s.latest = v.uploadDate
-        return acc
-    }, {})
-} catch (err) {
-    LOAD_ERROR = err.message || 'Failed to load video data'
-}
+// Validate shared data loaded correctly
+const LOAD_ERROR = (!VIDEOS || VIDEOS.length === 0) ? 'Failed to load video data' : null
 
 export default function MobileApp() {
     const [activeTab, setActiveTab] = useState('latest')
@@ -125,8 +98,7 @@ export default function MobileApp() {
 
     const handleCopyLink = () => {
         if (!playingVideo) return
-        const url = `${window.location.origin}${window.location.pathname}?v=${playingVideo.youtubeId}`
-        navigator.clipboard.writeText(url).then(() => {
+        navigator.clipboard.writeText(getShareUrl(playingVideo)).then(() => {
             setCopied(true)
             setTimeout(() => setCopied(false), 2000)
         })
@@ -349,7 +321,7 @@ export default function MobileApp() {
                                 <button
                                     className="copy-link-btn share-social-btn"
                                     onClick={() => {
-                                        const url = `${window.location.origin}${window.location.pathname}?v=${playingVideo.youtubeId}`
+                                        const url = getShareUrl(playingVideo)
                                         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(playingVideo.title + ' — shot by TdotsSolutionsz 🎬')}&url=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420')
                                     }}
                                     aria-label="Share on X/Twitter"
@@ -359,7 +331,7 @@ export default function MobileApp() {
                                 <button
                                     className="copy-link-btn share-social-btn"
                                     onClick={() => {
-                                        const url = `${window.location.origin}${window.location.pathname}?v=${playingVideo.youtubeId}`
+                                        const url = getShareUrl(playingVideo)
                                         window.open(`https://wa.me/?text=${encodeURIComponent(playingVideo.title + ' — ' + url)}`, '_blank')
                                     }}
                                     aria-label="Share on WhatsApp"

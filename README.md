@@ -25,6 +25,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Security Hardened** — Enforced CSP (no `unsafe-eval`), HSTS with preload, X-Frame-Options DENY, COOP (`same-origin-allow-popups`), Referrer-Policy, Permissions-Policy headers via Vercel
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
+- **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
 
 ## Tech Stack
 
@@ -61,6 +62,9 @@ npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v2.2.0 (2026-02-09)
+- **DRY refactor** — Extracted shared `utils/videoData.js` and `utils/youtube.js` modules, eliminating duplicated video processing and YouTube ID parsing across App.jsx, MobileApp.jsx, and TheaterMode.jsx
 
 ### v2.1.4 (2026-02-09)
 - **COOP fix** — Changed `Cross-Origin-Opener-Policy` from `same-origin` to `same-origin-allow-popups`, restoring X/Twitter and WhatsApp share popups and YouTube IFrame API compatibility
