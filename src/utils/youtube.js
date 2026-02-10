@@ -3,15 +3,28 @@
  * and shareable link generation across desktop, mobile, and theater mode.
  */
 
+/** YouTube video IDs are exactly 11 chars: alphanumeric plus - and _ */
+const YT_ID_RE = /^[A-Za-z0-9_-]{11}$/
+
+/**
+ * Validate a string looks like a legitimate YouTube video ID.
+ * Rejects anything that doesn't match the 11-char alphanumeric pattern,
+ * preventing reflected content injection via the ?v= deep link param.
+ */
+export function isValidYouTubeId(id) {
+    return typeof id === 'string' && YT_ID_RE.test(id)
+}
+
 /**
  * Extract YouTube video ID from a full URL or return the input if already an ID.
  * Handles ?v=ID, ?v=ID&extra, and bare IDs.
+ * Returns empty string if the extracted value doesn't pass validation.
  */
 export function extractVideoId(urlOrId) {
     if (!urlOrId) return ''
     const vParam = urlOrId.split('v=')[1]
-    if (!vParam) return urlOrId
-    return vParam.split('&')[0]
+    const candidate = vParam ? vParam.split('&')[0] : urlOrId
+    return isValidYouTubeId(candidate) ? candidate : ''
 }
 
 /**

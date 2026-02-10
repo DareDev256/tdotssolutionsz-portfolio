@@ -22,7 +22,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Related Videos** — "More by this artist" section in mobile modal with thumbnails and view counts
 - **Social Sharing** — Share videos to X/Twitter and WhatsApp from modal and theater mode, with copy-link support
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject structured data, geo-targeted meta tags, sitemap with 87 deep links, Open Graph, Twitter Cards
-- **Security Hardened** — Enforced CSP (no `unsafe-eval`), HSTS with preload, X-Frame-Options DENY, COOP (`same-origin-allow-popups`), Referrer-Policy, Permissions-Policy headers via Vercel
+- **Security Hardened** — Enforced CSP (no `unsafe-eval`), HSTS with preload, X-Frame-Options DENY, COOP (`same-origin-allow-popups`), CORP (`same-origin`), Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep link parameters
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 - **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
@@ -62,6 +62,11 @@ npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v2.2.1 (2026-02-09)
+- **Security: YouTube ID validation** — Deep link `?v=` parameter now validated against strict 11-char pattern, preventing injection of arbitrary strings into share URLs
+- **Security: CORP header** — Added `Cross-Origin-Resource-Policy: same-origin` to block cross-origin asset hotlinking and Spectre-class side-channel leaks
+- **Security: Font CORS** — Added `crossorigin="anonymous"` to Google Fonts stylesheet for consistent CORS handling
 
 ### v2.2.0 (2026-02-09)
 - **DRY refactor** — Extracted shared `utils/videoData.js` and `utils/youtube.js` modules, eliminating duplicated video processing and YouTube ID parsing across App.jsx, MobileApp.jsx, and TheaterMode.jsx
