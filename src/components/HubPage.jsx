@@ -1,26 +1,16 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './HubPage.css'
 
-const CATEGORIES = [
-  {
-    title: 'Music Videos',
-    subtitle: '87 VIDEOS — 49 ARTISTS',
-    description: 'Immersive 3D experience showcasing a decade of Toronto hip-hop videography',
-    path: '/videos',
-    icon: '🎬',
-    accent: 'pink',
-  },
-  {
-    title: 'Photography',
-    subtitle: '25 PHOTOS — 5 CATEGORIES',
-    description: 'Portraits, events, artist EPKs, and urban street photography',
-    path: '/photos',
-    icon: '📸',
-    accent: 'cyan',
-  },
-]
-
 export default function HubPage() {
+  const [showToast, setShowToast] = useState(false)
+
+  function handleLockedClick(e) {
+    e.preventDefault()
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 2500)
+  }
+
   return (
     <div className="hub-page">
       <div className="hub-bg-grid" aria-hidden="true" />
@@ -43,23 +33,42 @@ export default function HubPage() {
       </header>
 
       <nav className="hub-cards" aria-label="Portfolio sections">
-        {CATEGORIES.map((cat) => (
-          <Link
-            key={cat.path}
-            to={cat.path}
-            className={`hub-card hub-card--${cat.accent}`}
-            aria-label={`View ${cat.title} portfolio`}
-          >
-            <span className="hub-card-icon">{cat.icon}</span>
-            <h2 className="hub-card-title">{cat.title}</h2>
-            <span className="hub-card-subtitle">{cat.subtitle}</span>
-            <p className="hub-card-desc">{cat.description}</p>
-            <span className="hub-card-cta">
-              ENTER <span aria-hidden="true">→</span>
-            </span>
-          </Link>
-        ))}
+        <Link
+          to="/videos"
+          className="hub-card hub-card--pink"
+          aria-label="View Music Videos portfolio"
+        >
+          <span className="hub-card-icon">🎬</span>
+          <h2 className="hub-card-title">Music Videos</h2>
+          <span className="hub-card-subtitle">87 VIDEOS — 49 ARTISTS</span>
+          <p className="hub-card-desc">Immersive 3D experience showcasing a decade of Toronto hip-hop videography</p>
+          <span className="hub-card-cta">
+            ENTER <span aria-hidden="true">→</span>
+          </span>
+        </Link>
+
+        <button
+          className="hub-card hub-card--cyan hub-card--locked"
+          onClick={handleLockedClick}
+          aria-label="Photography — Coming Soon"
+          type="button"
+        >
+          <span className="hub-card-lock">🔒</span>
+          <span className="hub-card-icon">📸</span>
+          <h2 className="hub-card-title">Photography</h2>
+          <span className="hub-card-subtitle">COMING SOON</span>
+          <p className="hub-card-desc">Portraits, events, artist EPKs, and urban street photography</p>
+          <span className="hub-card-cta hub-card-cta--locked">
+            COMING SOON
+          </span>
+        </button>
       </nav>
+
+      {showToast && (
+        <div className="hub-toast" role="status" aria-live="polite">
+          PHOTOGRAPHY — COMING SOON
+        </div>
+      )}
 
       <footer className="hub-footer">
         <span className="hub-footer-brand">TDOTSSOLUTIONSZ</span>
