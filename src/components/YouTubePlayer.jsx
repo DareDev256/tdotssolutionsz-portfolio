@@ -46,42 +46,42 @@ export default function YouTubePlayer({
     onEndRef.current = onEnd
 
     useEffect(() => {
-        if (!isValidYouTubeId(videoId)) return
-
         let destroyed = false
 
-        ensureYTApi().then(() => {
-            if (destroyed) return
-            const el = document.getElementById(containerId)
-            if (!el) return
+        if (isValidYouTubeId(videoId)) {
+            ensureYTApi().then(() => {
+                if (destroyed) return
+                const el = document.getElementById(containerId)
+                if (!el) return
 
-            playerRef.current = new window.YT.Player(containerId, {
-                videoId,
-                playerVars: {
-                    autoplay: autoplay ? 1 : 0,
-                    controls: controls ? 1 : 0,
-                    modestbranding: 1,
-                    rel: 0,
-                    playsinline: 1,
-                    mute: muted ? 1 : 0,
-                    enablejsapi: 1,
-                    origin: window.location.origin,
-                },
-                events: {
-                    onReady: () => {
-                        // Player initialized successfully
+                playerRef.current = new window.YT.Player(containerId, {
+                    videoId,
+                    playerVars: {
+                        autoplay: autoplay ? 1 : 0,
+                        controls: controls ? 1 : 0,
+                        modestbranding: 1,
+                        rel: 0,
+                        playsinline: 1,
+                        mute: muted ? 1 : 0,
+                        enablejsapi: 1,
+                        origin: window.location.origin,
                     },
-                    onStateChange: (event) => {
-                        if (event.data === window.YT.PlayerState.ENDED) {
-                            onEndRef.current?.()
+                    events: {
+                        onReady: () => {
+                            // Player initialized successfully
+                        },
+                        onStateChange: (event) => {
+                            if (event.data === window.YT.PlayerState.ENDED) {
+                                onEndRef.current?.()
+                            }
+                        },
+                        onError: () => {
+                            // Silently handle - video still plays, just no end detection
                         }
-                    },
-                    onError: () => {
-                        // Silently handle - video still plays, just no end detection
                     }
-                }
+                })
             })
-        })
+        }
 
         return () => {
             destroyed = true

@@ -24,6 +24,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject structured data, geo-targeted meta tags, sitemap with 87 deep links, Open Graph, Twitter Cards
 - **Security Hardened** — Enforced CSP (no `unsafe-eval`, `upgrade-insecure-requests`), HSTS with preload, X-Frame-Options DENY, COOP, Referrer-Policy, Permissions-Policy headers via Vercel; YouTube ID validation on deep links, share URLs, thumbnail URLs, and YouTubePlayer; all thumbnail `<img src>` routed through validated `getThumbnailUrl()`; iframe `sandbox` on embeds; `noopener,noreferrer` on social popups; localStorage favorites validated and capped
 - **PWA Ready** — Web app manifest for installability
+- **Error Resilient** — React Error Boundary catches WebGL/Three.js crashes and shows a styled fallback with reload button instead of a blank screen
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 - **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
 - **Tested** — 87 unit tests via Vitest covering YouTube ID validation, share URL injection, deep link XSS prevention, thumbnail URL consolidation, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, Three.js material construction, procedural texture generation (Canvas 2D mocking), and MobileApp filtering/sorting/search logic

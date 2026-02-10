@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [2.3.1] - 2026-02-10
+
+### Fixed
+- **YouTubePlayer cleanup on invalid videoId** — Restructured `useEffect` so the cleanup function (which destroys the iframe player) always runs on unmount/re-render, even when `videoId` is invalid. Previously, an early `return` skipped cleanup entirely, which could leak iframes and event listeners if a valid videoId transitioned to invalid
+- **App crash on WebGL failure** — Added `AppErrorBoundary` in `main.jsx` wrapping the root `<ResponsiveApp>`. If Three.js or the GPU driver crashes, users now see a styled fallback with a reload button instead of a blank white screen
+
+### Changed
+- **Removed unused `react-player` dependency** — The project uses a custom `YouTubePlayer` component via the IFrame API; `react-player` was listed in `package.json` but never imported, adding unnecessary install weight
+
 ## [2.3.0] - 2026-02-10
 
 ### Added
