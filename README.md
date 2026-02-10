@@ -22,7 +22,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **Related Videos** — "More by this artist" section in mobile modal with thumbnails and view counts
 - **Social Sharing** — Share videos to X/Twitter and WhatsApp from modal and theater mode, with copy-link support
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject structured data, geo-targeted meta tags, sitemap with 87 deep links, Open Graph, Twitter Cards
-- **Security Hardened** — Enforced CSP (no `unsafe-eval`), HSTS with preload, X-Frame-Options DENY, COOP, Referrer-Policy, Permissions-Policy headers via Vercel
+- **Security Hardened** — Enforced CSP (no `unsafe-eval`), HSTS with preload, X-Frame-Options DENY, COOP (`same-origin-allow-popups`), Referrer-Policy, Permissions-Policy headers via Vercel
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 
@@ -61,6 +61,9 @@ npm run preview  # Preview production build
 ```
 
 ## Changelog
+
+### v2.1.4 (2026-02-09)
+- **COOP fix** — Changed `Cross-Origin-Opener-Policy` from `same-origin` to `same-origin-allow-popups`, restoring X/Twitter and WhatsApp share popups and YouTube IFrame API compatibility
 
 ### v2.1.3 (2026-02-09)
 - **CSP Enforced** — Switched from report-only to enforcing Content-Security-Policy; removed `unsafe-eval`, tightened whitelist
