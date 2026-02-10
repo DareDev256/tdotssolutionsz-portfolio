@@ -26,7 +26,7 @@ An immersive synthwave-themed 3D music video portfolio showcasing **87 music vid
 - **PWA Ready** — Web app manifest for installability
 - **Code-Split Bundle** — Lazy-loaded App/MobileApp with separate Three.js vendor chunks
 - **Shared Data Layer** — Centralized video processing (`utils/videoData.js`) and YouTube utilities (`utils/youtube.js`) shared across desktop, mobile, and theater mode
-- **Tested** — 52 unit tests via Vitest covering YouTube ID validation, share URL injection, deep link XSS prevention, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, and Three.js material construction
+- **Tested** — 83 unit tests via Vitest covering YouTube ID validation, share URL injection, deep link XSS prevention, video data integrity, lane processing, responsive breakpoints, localStorage security, view/date formatters, Three.js material construction, procedural texture generation (Canvas 2D mocking), and MobileApp filtering/sorting/search logic
 
 ## Tech Stack
 
@@ -66,6 +66,9 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v2.2.7 (2026-02-10)
+- **Tests** — 83 total (up from 52): 14 procedural texture tests (Canvas 2D mocking for all 4 generators) + 17 MobileApp logic tests (filtering/sorting/search/relatedVideos/formatViews)
 
 ### v2.2.6 (2026-02-10)
 - **Security: Deep link validation** — `?v=` parameter validated through `isValidYouTubeId()` before use in both App.jsx and MobileApp.jsx

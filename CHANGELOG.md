@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [2.2.7] - 2026-02-10
+
+### Added
+- **Procedural texture tests** — 14 tests covering all 4 texture generators (`createSoftCircleTexture`, `createHexBokehTexture`, `createStreakTexture`, `createDustTexture`) with Canvas 2D API mocking: gradient creation, color stops, composite operations, hexagonal drawing, canvas dimensions, and `needsUpdate` flag
+- **MobileApp logic tests** — 17 tests covering video filtering (`latest`/`popular`/`favorites` tabs with artist filter combos), artist search (case-insensitive partial matching, empty/no-match), related videos (same-artist exclusion, 4-item cap, view-count sort, solo-artist edge case), and `formatViews` formatter (M/K/raw thresholds)
+
 ## [2.2.6] - 2026-02-10
 
 ### Security
