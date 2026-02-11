@@ -40,7 +40,7 @@ An immersive synthwave-themed creative portfolio showcasing **87 music videos** 
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject + ImageGallery structured data, geo-targeted meta tags, sitemap with video deep links and photo routes
 - **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, COEP (credentialless), CORP, Referrer-Policy, Permissions-Policy; YouTube ID validation at all entry points; localStorage hardening; social share host allowlist; build-time ID validation; no-store HTML cache policy
 - **PWA Ready** — Web app manifest for installability
-- **Error Resilient** — React Error Boundary catches WebGL crashes with styled fallback
+- **Error Resilient** — React Error Boundary catches WebGL crashes; broken thumbnails gracefully fall back to SVG placeholder
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
 - **Tested** — 127 unit tests via Vitest
 
@@ -83,6 +83,10 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.0.4 (2026-02-11)
+- **Fix: Production build** — Resolved missing `react-router-dom` in `node_modules` that broke `npm run build`
+- **Fix: Broken thumbnails** — VideoCard and MobileApp related-video images now show styled SVG fallback instead of browser broken-image icon
 
 ### v3.0.3 (2026-02-11)
 - **Security: COEP header** — Added `Cross-Origin-Embedder-Policy: credentialless` completing Spectre isolation trifecta (COOP + CORP + COEP), compatible with YouTube embeds

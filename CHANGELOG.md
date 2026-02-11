@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.0.4] - 2026-02-11
+
+### Fixed
+- **Production build failure** — `react-router-dom` was declared in `package.json` but missing from `node_modules`, causing Rollup to fail on `npm run build`. Ran `npm install` to sync the dependency tree; build now succeeds and outputs all chunks correctly
+- **Broken thumbnail fallback** — VideoCard and MobileApp related-video thumbnails had no `onError` handler, showing the browser's default broken-image icon when YouTube thumbnails failed to load (deleted videos, private videos, CDN issues). Added SVG data-URI fallback placeholder with synthwave-styled play icon and "No Preview" text
+
+### Added
+- **`imageFallback.js` utility** — Shared 16:9 SVG data-URI thumbnail placeholder used by VideoCard and MobileApp; inline data URI prevents cascading load failures
+
 ## [3.0.3] - 2026-02-11
 
 ### Security

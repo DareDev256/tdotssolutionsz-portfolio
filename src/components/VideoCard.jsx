@@ -1,4 +1,5 @@
 import { getThumbnailUrl } from '../utils/youtube'
+import { THUMBNAIL_FALLBACK } from '../utils/imageFallback'
 import './VideoCard.css'
 
 /**
@@ -48,6 +49,7 @@ export default function VideoCard({ video, onClick, isFavorite, onToggleFavorite
                     src={thumbnailUrl}
                     alt={`${video.title} by ${video.artist} — Toronto music video by TdotsSolutionsz`}
                     loading="lazy"
+                    onError={(e) => { e.currentTarget.src = THUMBNAIL_FALLBACK }}
                 />
                 {video.viewCount > 0 && (
                     <span className="card-views-badge">

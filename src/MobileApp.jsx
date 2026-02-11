@@ -4,6 +4,7 @@ import YouTubePlayer from './components/YouTubePlayer'
 import useFavorites from './hooks/useFavorites'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from './utils/videoData'
 import { isValidYouTubeId, getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
+import { THUMBNAIL_FALLBACK } from './utils/imageFallback'
 import './MobileApp.css'
 
 // Validate shared data loaded correctly
@@ -415,6 +416,7 @@ export default function MobileApp() {
                                                     alt={rv.title}
                                                     className="related-thumb"
                                                     loading="lazy"
+                                                    onError={(e) => { e.currentTarget.src = THUMBNAIL_FALLBACK }}
                                                 />
                                                 <span className="related-info">
                                                     <span className="related-name">{rv.title}</span>
