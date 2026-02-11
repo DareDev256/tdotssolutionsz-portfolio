@@ -13,10 +13,10 @@ import * as THREE from 'three'
 // Phase 1 visual upgrade components
 import { SoftParticles } from './components/particles'
 import { GroundFog, DistanceHaze, EnhancedStarField, ProceduralNebula } from './components/atmosphere'
-import { TheaterMode } from './components/ui'
+import { TheaterMode, ArtistPanel } from './components/ui'
 
 // Shared data & utilities (single source of truth with MobileApp)
-import { VIDEOS, NEON_COLORS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS, LANE_CONFIG, processVideosIntoLanes } from './utils/videoData'
+import { VIDEOS, NEON_COLORS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist } from './utils/videoData'
 import { isValidYouTubeId, extractVideoId, getShareUrl, getThumbnailUrl } from './utils/youtube'
 
 const LANES = processVideosIntoLanes()
@@ -62,6 +62,9 @@ const getVolumeFromDistance = (distance) => {
 const BillboardFrame = ({ project, isActive }) => {
     const { title, description, position, color, url } = project
     const filterArtist = useContext(FilterContext)
+    const isDeceased = isDeceasedArtist(project.artist)
+    const GOLD = '#FFD700'
+    const borderColor = isDeceased ? GOLD : color
 
     // Extract video ID for thumbnail URL
     const videoId = useMemo(() => extractVideoId(url), [url])
@@ -143,20 +146,35 @@ const BillboardFrame = ({ project, isActive }) => {
             {/* Neon Border Glow Effect */}
             <mesh position={[0, 1.55, 0.02]}>
                 <boxGeometry args={[5.6, 0.1, 0.02]} />
-                <meshBasicMaterial color={color} />
+                <meshBasicMaterial color={borderColor} />
             </mesh>
             <mesh position={[0, -1.55, 0.02]}>
                 <boxGeometry args={[5.6, 0.1, 0.02]} />
-                <meshBasicMaterial color={color} />
+                <meshBasicMaterial color={borderColor} />
             </mesh>
             <mesh position={[-2.75, 0, 0.02]}>
                 <boxGeometry args={[0.1, 3.1, 0.02]} />
-                <meshBasicMaterial color={color} />
+                <meshBasicMaterial color={borderColor} />
             </mesh>
             <mesh position={[2.75, 0, 0.02]}>
                 <boxGeometry args={[0.1, 3.1, 0.02]} />
-                <meshBasicMaterial color={color} />
+                <meshBasicMaterial color={borderColor} />
             </mesh>
+
+            {/* Golden angel halo for deceased artists */}
+            {isDeceased && (
+                <>
+                    <mesh position={[0, 3.2, 0]} rotation={[Math.PI * 0.15, 0, 0]}>
+                        <torusGeometry args={[1.8, 0.08, 16, 48]} />
+                        <meshBasicMaterial color={GOLD} toneMapped={false} />
+                    </mesh>
+                    <mesh position={[0, 3.2, 0]} rotation={[Math.PI * 0.15, 0, 0]}>
+                        <torusGeometry args={[1.8, 0.2, 16, 48]} />
+                        <meshBasicMaterial color={GOLD} transparent opacity={0.15} toneMapped={false} />
+                    </mesh>
+                    <pointLight position={[0, 2.5, 1.5]} color={GOLD} intensity={0.8} distance={8} />
+                </>
+            )}
 
             {/* Track label above billboard */}
             <Text
@@ -1618,7 +1636,7 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
 // ============================================
 // VIDEO OVERLAY (Fixed HTML - Never floats!)
 // ============================================
-const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
+const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArtistClick }) => {
     const [isVisible, setIsVisible] = useState(false)
     const [copied, setCopied] = useState(false)
 
@@ -1692,7 +1710,12 @@ const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
                 {/* Artist spotlight stats */}
                 {stats && (
                     <div className="artist-spotlight">
-                        <span className="spotlight-artist">{activeProject.artist}</span>
+                        <button
+                            className="spotlight-artist spotlight-artist--clickable"
+                            onClick={() => onArtistClick(activeProject.artist)}
+                        >
+                            {activeProject.artist}
+                        </button>
                         <span className="spotlight-stat">{stats.count} video{stats.count > 1 ? 's' : ''}</span>
                         <span className="spotlight-stat">{(stats.totalViews / 1000).toFixed(0)}K views</span>
                         <span className="spotlight-stat">{stats.earliest.slice(0, 4)}–{stats.latest.slice(0, 4)}</span>
@@ -1959,6 +1982,7 @@ export default function App({ reducedEffects = false }) {
     const [theaterMode, setTheaterMode] = useState(false)
     const [filterArtist, setFilterArtist] = useState(null)
     const [statsOpen, setStatsOpen] = useState(false)
+    const [artistPanel, setArtistPanel] = useState(null)
 
     const handleToggleAudio = useCallback(() => {
         setAudioEnabled((prev) => !prev)
@@ -1974,6 +1998,14 @@ export default function App({ reducedEffects = false }) {
 
     const handleVehicleChange = useCallback((type) => {
         setVehicleType(type)
+    }, [])
+
+    const handleArtistClick = useCallback((artist) => {
+        setArtistPanel(artist)
+    }, [])
+
+    const handleArtistPanelSelect = useCallback((video) => {
+        setActiveProject(video)
     }, [])
 
     const handleOpenTheater = useCallback(() => {
@@ -2084,6 +2116,7 @@ export default function App({ reducedEffects = false }) {
                 activeProject={activeProject}
                 audioEnabled={audioEnabled}
                 onOpenTheater={handleOpenTheater}
+                onArtistClick={handleArtistClick}
             />
             {/* Theater mode - fullscreen video experience */}
             <TheaterMode
@@ -2098,6 +2131,12 @@ export default function App({ reducedEffects = false }) {
                 queuePosition={activeIndex >= 0 ? activeIndex + 1 : null}
                 queueTotal={currentLaneVideos.length}
                 nextVideoTitle={activeIndex >= 0 && currentLaneVideos.length > 1 ? currentLaneVideos[(activeIndex + 1) % currentLaneVideos.length]?.title : null}
+            />
+            <ArtistPanel
+                artist={artistPanel}
+                activeVideoId={activeProject?.youtubeId}
+                onSelectVideo={handleArtistPanelSelect}
+                onClose={() => setArtistPanel(null)}
             />
             <SearchBar filterArtist={filterArtist} onFilterChange={setFilterArtist} />
             <UIOverlay

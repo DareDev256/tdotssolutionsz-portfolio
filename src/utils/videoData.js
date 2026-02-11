@@ -46,6 +46,14 @@ export const PORTFOLIO_STATS = {
     }, null),
 }
 
+/** Artists who have passed — shown with golden halo on billboards */
+export const DECEASED_ARTISTS = new Set(['Murda', 'BG'])
+
+/** Check if any part of a multi-artist string includes a deceased artist */
+export function isDeceasedArtist(artistField) {
+    return artistField.split(',').some(a => DECEASED_ARTISTS.has(a.trim()))
+}
+
 /** Lane layout configuration for the 3D billboard system */
 export const LANE_CONFIG = {
     CHRONOLOGICAL: { x: 6, label: 'BY DATE' },

@@ -1,11 +1,50 @@
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
+import { ArtistPanel } from './components/ui'
 import useFavorites from './hooks/useFavorites'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from './utils/videoData'
 import { isValidYouTubeId, getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
 import { THUMBNAIL_FALLBACK } from './utils/imageFallback'
 import './MobileApp.css'
+
+/** Reveal cards as they scroll into view */
+function useScrollReveal(deps) {
+    const [revealed, setRevealed] = useState(new Set())
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const newIds = []
+                entries.forEach(e => {
+                    if (e.isIntersecting) newIds.push(e.target.dataset.vid)
+                })
+                if (newIds.length) setRevealed(prev => {
+                    const next = new Set(prev)
+                    newIds.forEach(id => next.add(id))
+                    return next
+                })
+            },
+            { threshold: 0.1, rootMargin: '50px' }
+        )
+        document.querySelectorAll('[data-vid]').forEach(el => observer.observe(el))
+        return () => observer.disconnect()
+    }, [deps])
+    return revealed
+}
+
+/** Swipe left/right gesture detection */
+function useSwipe(onLeft, onRight) {
+    const start = useRef(null)
+    return {
+        onTouchStart: (e) => { start.current = e.touches[0].clientX },
+        onTouchEnd: (e) => {
+            if (start.current === null) return
+            const diff = start.current - e.changedTouches[0].clientX
+            if (Math.abs(diff) > 50) diff > 0 ? onLeft?.() : onRight?.()
+            start.current = null
+        }
+    }
+}
 
 // Validate shared data loaded correctly
 const LOAD_ERROR = (!VIDEOS || VIDEOS.length === 0) ? 'Failed to load video data' : null
@@ -19,6 +58,7 @@ export default function MobileApp() {
     const [copied, setCopied] = useState(false)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(LOAD_ERROR)
+    const [artistPanelArtist, setArtistPanelArtist] = useState(null)
     const { favorites, toggleFavorite, isFavorite } = useFavorites()
 
     // Simulate loading state for initial data hydration
@@ -119,6 +159,9 @@ export default function MobileApp() {
         window.location.reload()
     }
 
+    const revealed = useScrollReveal(filteredVideos)
+    const swipeHandlers = useSwipe(handleNextVideo, handlePrevVideo)
+
     const stats = playingVideo ? ARTIST_STATS[playingVideo.artist] : null
 
     // Error state
@@ -187,8 +230,19 @@ export default function MobileApp() {
         return count.toString()
     }
 
+    const heroVideo = (!filterArtist && !searchOpen && filteredVideos.length > 0) ? filteredVideos[0] : null
+    const gridVideos = heroVideo ? filteredVideos.slice(1) : filteredVideos
+
     return (
         <div className="mobile-app">
+            {/* Ambient atmosphere */}
+            <div className="mobile-particles" aria-hidden="true">
+                {Array.from({ length: 15 }, (_, i) => (
+                    <div key={i} className={`mobile-particle mobile-particle--${i + 1}`} />
+                ))}
+            </div>
+            <div className="mobile-scanline" aria-hidden="true" />
+
             {/* Header */}
             <header className="mobile-header">
                 <img src="/logo.png" alt="TDots Solutionsz" className="mobile-logo" />
@@ -295,21 +349,50 @@ export default function MobileApp() {
                 </div>
             )}
 
+            {/* Hero Card */}
+            {heroVideo && (
+                <div className="hero-card" onClick={() => handleVideoClick(heroVideo)} role="button" tabIndex={0} aria-label={`Play ${heroVideo.title}`}>
+                    <img
+                        className="hero-card__bg"
+                        src={getThumbnailUrl(heroVideo.youtubeId, 'maxresdefault')}
+                        alt={heroVideo.title}
+                        onError={(e) => { e.currentTarget.src = getThumbnailUrl(heroVideo.youtubeId, 'hqdefault') }}
+                    />
+                    <div className="hero-card__overlay" />
+                    <div className="hero-card__content">
+                        <span className="hero-card__label">{activeTab === 'popular' ? 'MOST POPULAR' : 'LATEST'}</span>
+                        <h2 className="hero-card__title">{heroVideo.title}</h2>
+                        <p className="hero-card__artist">{heroVideo.artist}</p>
+                        <div className="hero-card__bottom">
+                            <span className="hero-card__views">{formatViews(heroVideo.viewCount)} views</span>
+                            <span className="hero-card__play">PLAY</span>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Video Grid */}
             <main className="video-grid" role="list" aria-label="Music videos">
-                {(() => { const currentIdx = playingVideo ? filteredVideos.findIndex(v => v.id === playingVideo.id) : -1; return filteredVideos.map((video, index) => {
+                {(() => { const currentIdx = playingVideo ? gridVideos.findIndex(v => v.id === playingVideo.id) : -1; return gridVideos.map((video, index) => {
                     const isNowPlaying = playingVideo && video.id === playingVideo.id
-                    const isUpNext = currentIdx >= 0 && index === (currentIdx + 1) % filteredVideos.length && !isNowPlaying
+                    const isUpNext = currentIdx >= 0 && index === (currentIdx + 1) % gridVideos.length && !isNowPlaying
+                    const isRevealed = revealed.has(String(video.id))
                     return (
-                        <VideoCard
+                        <div
                             key={video.id}
-                            video={video}
-                            onClick={() => handleVideoClick(video)}
-                            isFavorite={isFavorite(video.id)}
-                            onToggleFavorite={toggleFavorite}
-                            isNowPlaying={isNowPlaying}
-                            isUpNext={isUpNext}
-                        />
+                            data-vid={video.id}
+                            className={isRevealed ? 'video-card--reveal' : 'video-card--hidden'}
+                            style={{ animationDelay: `${(index % 2) * 0.1}s` }}
+                        >
+                            <VideoCard
+                                video={video}
+                                onClick={() => handleVideoClick(video)}
+                                isFavorite={isFavorite(video.id)}
+                                onToggleFavorite={toggleFavorite}
+                                isNowPlaying={isNowPlaying}
+                                isUpNext={isUpNext}
+                            />
+                        </div>
                     )
                 })})()}
                 {filteredVideos.length === 0 && (
@@ -322,7 +405,7 @@ export default function MobileApp() {
             {/* Video Player Modal */}
             {playingVideo && (
                 <div className="video-modal" onClick={handleClosePlayer} role="dialog" aria-modal="true" aria-label={`Now playing: ${playingVideo.title}`}>
-                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()} {...swipeHandlers}>
                         <div className="modal-top-bar">
                             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                                 <button className="copy-link-btn" onClick={handleCopyLink}>
@@ -396,7 +479,13 @@ export default function MobileApp() {
                             <p>{playingVideo.description}</p>
                             {stats && (
                                 <div className="mobile-artist-spotlight">
-                                    <span className="mobile-spotlight-artist">{playingVideo.artist}</span>
+                                    <button
+                                        className="mobile-spotlight-artist"
+                                        onClick={() => setArtistPanelArtist(playingVideo.artist)}
+                                        style={{ cursor: 'pointer', background: 'none', border: 'none', padding: 0 }}
+                                    >
+                                        {playingVideo.artist} ›
+                                    </button>
                                     <span className="mobile-spotlight-stat">{stats.count} video{stats.count > 1 ? 's' : ''}</span>
                                     <span className="mobile-spotlight-stat">{(stats.totalViews / 1000).toFixed(0)}K views</span>
                                 </div>
@@ -431,6 +520,18 @@ export default function MobileApp() {
                     </div>
                 </div>
             )}
+
+            {/* Artist Panel — triggered from modal */}
+            <ArtistPanel
+                artist={artistPanelArtist}
+                activeVideoId={playingVideo?.youtubeId}
+                onSelectVideo={(video) => {
+                    setPlayingVideo(video)
+                    setArtistPanelArtist(null)
+                }}
+                onClose={() => setArtistPanelArtist(null)}
+                mobileModal={Boolean(playingVideo)}
+            />
 
             {/* Footer */}
             <footer className="mobile-footer">

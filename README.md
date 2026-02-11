@@ -1,6 +1,6 @@
 # TdotsSolutionsz — Toronto Creative Production
 
-An immersive synthwave-themed creative portfolio showcasing **100 music videos** by **53 artists**, by TdotsSolutionsz — Toronto's premier hip-hop video production and photography company. Hub landing page links to a 3D neon cityscape for music videos. Photography gallery coming soon.
+An immersive synthwave-themed creative portfolio showcasing **101 music videos** by **53 artists**, by TdotsSolutionsz — Toronto's premier hip-hop video production and photography company. Hub landing page links to a 3D neon cityscape for music videos. Photography gallery coming soon.
 
 **Live at [tdotssolutionsz.com](https://tdotssolutionsz.com)**
 
@@ -8,7 +8,7 @@ An immersive synthwave-themed creative portfolio showcasing **100 music videos**
 
 ### Hub Landing Page (`/`)
 - **Split Navigation** — Two-card layout: Music Videos (`/videos`) live, Photography coming soon
-- **Music Videos Live** — 100 videos, 53 artists fully accessible
+- **Music Videos Live** — 101 videos, 53 artists fully accessible
 - **Synthwave Aesthetic** — Consistent neon-glow branding with animated gradient borders and backdrop blur
 - **Responsive** — Grid on desktop, stacked on mobile
 
@@ -21,10 +21,15 @@ An immersive synthwave-themed creative portfolio showcasing **100 music videos**
 - **Artist Spotlight** — View stats (video count, total views, date range) for each artist
 - **Portfolio Stats** — Aggregate dashboard showing total videos, artists, views, year range, and top artist
 - **Auto-Advance Playback** — Videos auto-advance with "Now Playing" indicator and "Up Next" preview
+- **Golden Angel Halos** — Deceased artists (Murda, BG) honored with golden halo, golden billboard border, and ambient golden glow on their 3D billboards; Bloom post-processing creates ethereal shine
+- **Artist Panel** — Slide-in sidebar (desktop right, mobile bottom sheet) showing all videos by an artist with stats; clickable from both desktop spotlight and mobile modal
 - **YouTube Integration** — Embedded playback with real view counts via YouTube IFrame API
 - **Theater Mode** — Fullscreen immersive viewing (press F), arrow keys to skip tracks, social sharing
 - **Vehicle Selection** — Choose between Tron Light Cycle, DeLorean, or Cyber Bike
 - **Favorites** — Heart button to save videos; persist via localStorage with dedicated filter tab
+- **Mobile Atmosphere** — Floating CSS particles (cyan/pink), subtle scanline overlay, card entrance animations with staggered scroll reveal
+- **Hero Card** — Full-width featured video card at top of mobile grid with large thumbnail, gradient overlay, and PLAY button
+- **Swipe Gestures** — Swipe left/right in mobile video modal to navigate between videos
 - **Related Videos** — "More by this artist" section in mobile modal
 - **Social Sharing** — Share to X/Twitter and WhatsApp with copy-link support
 
@@ -64,7 +69,7 @@ An immersive synthwave-themed creative portfolio showcasing **100 music videos**
 - **Seanpane** — 6 videos including Only 1s (70K)
 - **Murda** — 4 videos including 6 God Remix (80K), The Sauce ft. Moshine (58K)
 
-Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, Da Kid Bluntz, Daz Dinero, Cboz, Scooby Blacks, OG Dre, Big Kitty, Purple, Soodope, H3RSH, ScaleBreakerBlo, Big Money, Yogi Savage, Flash Milla, Young Blitz, LP, Cuzzin Charlie, T-Dot, Baadass Bukk, Speng Don, Chinkz Rrahh, $ha, Leiffy Luciano, Jr Tuffy, and more — **49 artists** total.
+Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, Da Kid Bluntz, Daz Dinero, Cboz, Scooby Blacks, OG Dre, Big Kitty, Purple, Soodope, H3RSH, ScaleBreakerBlo, Big Money, Yogi Savage, Flash Milla, Young Blitz, LP, Cuzzin Charlie, T-Dot, Baadass Bukk, Speng Don, Chinkz Rrahh, $ha, Leiffy Luciano, Jr Tuffy, Big Surp, and more — **53 artists** total.
 
 ## Documentation
 
@@ -82,6 +87,15 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.3.0 (2026-02-11)
+- **Golden angel halos** — Deceased artists (Murda, BG) honored with golden torus halo, golden billboard border, and ambient golden light on 3D billboards; Bloom creates ethereal glow
+- **Artist Panel** — Slide-in sidebar on desktop, bottom sheet on mobile; browse all videos by an artist with stats
+- **Mobile atmosphere** — 15 floating CSS particles, scanline overlay, IntersectionObserver card reveal animations
+- **Hero card** — Full-width featured video at top of mobile grid with large thumbnail and gradient overlay
+- **Swipe gestures** — Left/right swipe in mobile modal navigates between videos
+- **Card visual upgrades** — Glassmorphism, pulsing view badge glow, animated now-playing state
+- **Video #101** — Big Surp ft. Cutthroat - New Glock 30 (54K views)
 
 ### v3.1.1 (2026-02-11)
 - **Architecture documentation** — Comprehensive `docs/ARCHITECTURE.md` covering system overview, project structure, data flow, security model, deployment pipeline, and key architecture decisions

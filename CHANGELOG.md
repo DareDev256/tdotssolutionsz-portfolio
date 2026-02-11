@@ -2,6 +2,21 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.3.0] - 2026-02-11
+
+### Added
+- **Golden angel halos (desktop)** — Deceased artists (Murda, BG) honored with golden torus halo above their 3D billboards, golden border bars, and ambient golden pointLight. Double-torus technique (solid ring + transparent bloom ring) with `toneMapped={false}` creates ethereal glow through Bloom post-processing. `isDeceasedArtist()` helper handles multi-artist strings like "BG, Banks, LV, Arez, FreshBoy"
+- **Artist Panel (mobile)** — Wired `ArtistPanel` component into mobile experience. Tap artist name in video modal to open bottom-sheet panel showing all videos by that artist with stats. `mobileModal` prop bumps z-index above the modal overlay (1001/1000)
+- **Mobile floating particles** — 15 CSS-only particles (8 cyan, 7 pink) drifting upward with staggered durations (12-20s) and delays. Respects `prefers-reduced-motion: reduce`
+- **Mobile scanline overlay** — Subtle 4px repeating gradient scrolling downward over 8s. Respects `prefers-reduced-motion: reduce`
+- **Card entrance animations** — `useScrollReveal` hook (IntersectionObserver, threshold 0.1, rootMargin 50px) triggers `card-reveal` animation. Right column staggered 100ms via inline `animationDelay`
+- **Hero card (mobile)** — Full-width featured video card above the grid with `maxresdefault` thumbnail, gradient overlay, "LATEST"/"MOST POPULAR" label, and PLAY button. Only renders when not searching/filtering; grid shows `slice(1)` to avoid duplicate
+- **Swipe gestures (mobile)** — `useSwipe` hook detects left/right touch gestures (>50px threshold) on modal content div. Swipe left = next video, swipe right = previous
+- **Card glassmorphism** — `backdrop-filter: blur(8px)` on `.video-card` for frosted glass effect
+- **Badge glow pulse** — `.card-views-badge` animates box-shadow cyan glow on 2s cycle
+- **Now-playing pulse** — `.video-card.now-playing` gets animated cyan box-shadow pulse (2s cycle)
+- **Video #101** — Big Surp ft. Cutthroat - New Glock 30 (54K views)
+
 ## [3.2.0] - 2026-02-11
 
 ### Added

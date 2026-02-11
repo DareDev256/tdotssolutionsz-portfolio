@@ -807,6 +807,24 @@ body.mobile-mode {
     letter-spacing: 0.08em;
 }
 
+.spotlight-artist--clickable {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(5, 217, 232, 0.4);
+    transition: text-decoration-color 0.2s;
+}
+
+.spotlight-artist--clickable:hover {
+    text-decoration-color: var(--neon-cyan);
+}
+
 .spotlight-stat {
     font-family: var(--font-body);
     font-size: 0.7rem;
