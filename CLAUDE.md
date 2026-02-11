@@ -1,5 +1,14 @@
 # CLAUDE.md — DareDev256 System Directives
 
+## PROTECTED CONFIGURATION — DO NOT MODIFY
+
+These items have been broken by automated agents before. Do NOT change them:
+
+1. **No COEP header** — Do NOT add `Cross-Origin-Embedder-Policy` to `vercel.json`. It breaks YouTube embeds. This has been fixed TWICE already.
+2. **No iframe sandbox** — Do NOT add `sandbox` attribute to YouTube `<iframe>` elements. CSP headers provide sufficient security.
+3. **Photography is LOCKED** — The `/photos` route and Photography card on HubPage are intentionally disabled (Coming Soon). Do NOT re-enable without explicit owner approval.
+4. **videos.json integrity** — Do NOT modify `youtubeId` fields. Every `youtubeId` must be exactly 11 characters matching `[A-Za-z0-9_-]{11}`.
+
 ## CORE PRINCIPLE: TOOL-FIRST EXECUTION
 
 Before writing ANY code, making ANY plan, or assigning ANY agent task:

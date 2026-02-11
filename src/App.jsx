@@ -1680,7 +1680,6 @@ const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
                             height="100%"
                             src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${audioEnabled ? 0 : 1}&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1`}
                             style={{ border: 'none' }}
-                            sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             title={activeProject.title}

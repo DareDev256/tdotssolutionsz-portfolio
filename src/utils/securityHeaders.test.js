@@ -37,8 +37,8 @@ describe('vercel.json security headers', () => {
         expect(getHeader('X-Content-Type-Options')).toBe('nosniff')
     })
 
-    it('includes Cross-Origin-Embedder-Policy credentialless (Spectre isolation)', () => {
-        expect(getHeader('Cross-Origin-Embedder-Policy')).toBe('credentialless')
+    it('does NOT include Cross-Origin-Embedder-Policy (breaks YouTube embeds)', () => {
+        expect(getHeader('Cross-Origin-Embedder-Policy')).toBeNull()
     })
 
     it('includes Cross-Origin-Opener-Policy (COOP)', () => {

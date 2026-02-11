@@ -1,8 +1,9 @@
 /**
- * Application entry point — BrowserRouter wraps three routes:
- *   /        → HubPage (landing page linking to Videos and Photography)
+ * Application entry point — BrowserRouter wraps two active routes:
+ *   /        → HubPage (landing page)
  *   /videos  → Desktop 3D experience or Mobile grid view (device-aware)
- *   /photos  → Photography gallery with lightbox viewer
+ *
+ * /photos is intentionally DISABLED (Coming Soon). Do NOT re-enable without owner approval.
  *
  * All routes are lazy-loaded to keep initial bundle small.
  * Three.js (~1.1MB) only loads on /videos.
@@ -20,8 +21,8 @@ const HubPage = lazy(() => import('./components/HubPage.jsx'))
 const App = lazy(() => import('./App.jsx'))
 /** Mobile grid view — lightweight chunk without Three.js dependency */
 const MobileApp = lazy(() => import('./MobileApp.jsx'))
-/** Photography gallery — lightweight chunk (8.17KB) with lightbox viewer */
-const PhotoGallery = lazy(() => import('./components/PhotoGallery.jsx'))
+/** Photography gallery — DO NOT enable until owner explicitly requests it */
+// const PhotoGallery = lazy(() => import('./components/PhotoGallery.jsx'))
 
 /** Catches Three.js/WebGL crashes so the page doesn't blank out */
 class AppErrorBoundary extends Component {
@@ -123,7 +124,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Routes>
                         <Route path="/" element={<HubPage />} />
                         <Route path="/videos" element={<VideosRoute />} />
-                        <Route path="/photos" element={<PhotoGallery />} />
+                        {/* DO NOT enable /photos route — Photography is Coming Soon */}
                     </Routes>
                 </Suspense>
             </BrowserRouter>

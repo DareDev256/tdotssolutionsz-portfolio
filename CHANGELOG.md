@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.2.0] - 2026-02-11
+
+### Added
+- **13 new music videos** (IDs 88–100) — Dundas Dolla (Yuck, Foreign Cars Remix), Arez ft. BG (Hug The 3's), M & Hypa (The Ride), Cboz (Making Sales), Jr Tuffy (Trap Talk), JoJizzle (Check A Bag), Scooby Blacks (Ya Know), Young Blitz (Resume), Daz Dinero (Rockstar), M-Dot (I Don't Trust), Da Kid Bluntz (Back to Back Freestyle), K Getta (Who Dat). Portfolio now at **100 videos, 53 artists**
+- **Protected configuration section** in CLAUDE.md — Prevents automated agents from re-adding COEP headers, iframe sandbox, or unlocking Photography page
+- **Guard test** — `securityHeaders.test.js` now asserts COEP is absent, blocking accidental re-addition
+
+### Fixed
+- **YouTube video playback** — Removed `Cross-Origin-Embedder-Policy: credentialless` header from `vercel.json` and `sandbox` attribute from YouTube iframe in `App.jsx`. COEP was blocking YouTube embed credentialed requests (same issue as v2.2.7 fix, re-introduced in v3.0.3)
+- **Photography page re-locked** — Reverted HubPage to "Coming Soon" locked state and disabled `/photos` route. Passion Agent had re-enabled it in v3.1.0
+
 ## [3.1.1] - 2026-02-11
 
 ### Added

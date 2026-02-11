@@ -639,12 +639,372 @@
       "uploadDate": "2016-07-19",
       "viewCount": 115424,
       "thumbnail": "https://img.youtube.com/vi/Mh_8tGP5w_0/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "2qPhvy5G3N8",
+      "title": "Dundas Dolla - Holy Ghost",
+      "artist": "Dundas Dolla",
+      "description": "Holy Ghost",
+      "viewCount": 17012,
+      "uploadDate": "2012-10-24",
+      "id": 65,
+      "thumbnail": "https://img.youtube.com/vi/2qPhvy5G3N8/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "t-YqhrUi66I",
+      "title": "Casper TNG - In My City",
+      "artist": "Casper TNG",
+      "description": "In My City (GhostTown Volume 1)",
+      "viewCount": 192642,
+      "uploadDate": "2014-09-10",
+      "id": 66,
+      "thumbnail": "https://img.youtube.com/vi/t-YqhrUi66I/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "MWfvb1wjWe0",
+      "title": "Murda ft Big Money - Murda Shit",
+      "artist": "Murda",
+      "description": "ft. Big Money (Bobby Bitch Remix)",
+      "viewCount": 54328,
+      "uploadDate": "2014-11-24",
+      "id": 67,
+      "thumbnail": "https://img.youtube.com/vi/MWfvb1wjWe0/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "QW2UM8ggxSo",
+      "title": "Jose Guapo - Osama Bin Guapo Vlog 7",
+      "artist": "Jose Guapo",
+      "description": "Osama Bin Guapo Vlog 7",
+      "viewCount": 19827,
+      "uploadDate": "2015-03-24",
+      "id": 68,
+      "thumbnail": "https://img.youtube.com/vi/QW2UM8ggxSo/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "NdHBiO024hY",
+      "title": "Smiley X Fresh X Homie - Bumpin",
+      "artist": "Smiley",
+      "description": "ft. Fresh & Homie",
+      "viewCount": 178034,
+      "uploadDate": "2015-04-20",
+      "id": 69,
+      "thumbnail": "https://img.youtube.com/vi/NdHBiO024hY/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "4kC6wYSyfQY",
+      "title": "LV - Check Remix / Can't Bang Preview",
+      "artist": "LV",
+      "description": "ft. Bullet Fresh",
+      "viewCount": 282395,
+      "uploadDate": "2015-07-04",
+      "id": 70,
+      "thumbnail": "https://img.youtube.com/vi/4kC6wYSyfQY/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "hlmkyakpOyc",
+      "title": "Speng Don ft Jawz - Go Figure",
+      "artist": "Speng Don",
+      "description": "ft. Jawz",
+      "viewCount": 2633,
+      "uploadDate": "2014-12-02",
+      "id": 71,
+      "thumbnail": "https://img.youtube.com/vi/hlmkyakpOyc/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "W5OEOSwzNIs",
+      "title": "Daz Dinero - Road Runner",
+      "artist": "Daz Dinero",
+      "description": "Road Runner",
+      "viewCount": 21419,
+      "uploadDate": "2014-12-30",
+      "id": 72,
+      "thumbnail": "https://img.youtube.com/vi/W5OEOSwzNIs/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "BInnagVtz-A",
+      "title": "BG, Banks, LV, Arez, FreshBoy - Wanna Ball",
+      "artist": "BG, Banks, LV, Arez, FreshBoy",
+      "description": "Wanna Ball",
+      "viewCount": 190075,
+      "uploadDate": "2015-01-22",
+      "id": 73,
+      "thumbnail": "https://img.youtube.com/vi/BInnagVtz-A/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "HxdTm6WjoA4",
+      "title": "LV X YG X PURPLE - Locked Up",
+      "artist": "LV",
+      "description": "ft. YG & PURPLE",
+      "viewCount": 165332,
+      "uploadDate": "2015-04-24",
+      "id": 74,
+      "thumbnail": "https://img.youtube.com/vi/HxdTm6WjoA4/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "Yt3hJHb8GH4",
+      "title": "Blacka Da Don ft Smiley - Dead Homies",
+      "artist": "Blacka Da Don",
+      "description": "ft. Smiley",
+      "viewCount": 52255,
+      "uploadDate": "2015-07-20",
+      "id": 75,
+      "thumbnail": "https://img.youtube.com/vi/Yt3hJHb8GH4/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "NYfs0JUG9KY",
+      "title": "Chinkz Rrahh - All In",
+      "artist": "Chinkz Rrahh",
+      "description": "All In",
+      "viewCount": 9495,
+      "uploadDate": "2016-01-15",
+      "id": 76,
+      "thumbnail": "https://img.youtube.com/vi/NYfs0JUG9KY/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "d0v4LwIxlng",
+      "title": "Murda ft Moshine - The Sauce",
+      "artist": "Murda",
+      "description": "ft. Moshine",
+      "viewCount": 58795,
+      "uploadDate": "2016-02-10",
+      "id": 77,
+      "thumbnail": "https://img.youtube.com/vi/d0v4LwIxlng/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "d7DqCGOxxpI",
+      "title": "Shortiie Raw - Panda Freestyle",
+      "artist": "Shortiie Raw",
+      "description": "Panda Freestyle/Remix",
+      "viewCount": 18789,
+      "uploadDate": "2016-02-24",
+      "id": 78,
+      "thumbnail": "https://img.youtube.com/vi/d7DqCGOxxpI/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "XHrAXAfLElk",
+      "title": "Cboz X Moshine - Looking Rich",
+      "artist": "Cboz",
+      "description": "ft. Moshine (Prod. Jmak)",
+      "viewCount": 20401,
+      "uploadDate": "2016-04-01",
+      "id": 79,
+      "thumbnail": "https://img.youtube.com/vi/XHrAXAfLElk/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "PgNBpzcQkaY",
+      "title": "$ha ft Droop-E - We Here Now",
+      "artist": "$ha",
+      "description": "ft. Droop-E",
+      "viewCount": 7209,
+      "uploadDate": "2016-05-31",
+      "id": 80,
+      "thumbnail": "https://img.youtube.com/vi/PgNBpzcQkaY/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "eh-PSBZK8Vw",
+      "title": "Leiffy Luciano ft GGoodmoney - Hit it & Go",
+      "artist": "Leiffy Luciano",
+      "description": "ft. GGoodmoney",
+      "viewCount": 4113,
+      "uploadDate": "2016-07-09",
+      "id": 81,
+      "thumbnail": "https://img.youtube.com/vi/eh-PSBZK8Vw/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "E1NxeD1j6V0",
+      "title": "Jr Tuffy ft Major Lazer - Lean On Remix",
+      "artist": "Jr Tuffy",
+      "description": "Lean On Remix",
+      "viewCount": 3771,
+      "uploadDate": "2017-02-17",
+      "id": 82,
+      "thumbnail": "https://img.youtube.com/vi/E1NxeD1j6V0/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "qCBPEGZngqg",
+      "title": "Da Kid Bluntz - Fully Loaded Clip Freestyle",
+      "artist": "Da Kid Bluntz",
+      "description": "Fully Loaded Clip Freestyle",
+      "viewCount": 62650,
+      "uploadDate": "2017-05-21",
+      "id": 83,
+      "thumbnail": "https://img.youtube.com/vi/qCBPEGZngqg/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "yoVjPsHnz8k",
+      "title": "Casper TNG X K Money - Rich / Designer Preview",
+      "artist": "Casper TNG",
+      "description": "ft. K Money & RK",
+      "viewCount": 964361,
+      "uploadDate": "2016-06-04",
+      "id": 84,
+      "thumbnail": "https://img.youtube.com/vi/yoVjPsHnz8k/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "E5Bwb0DYH84",
+      "title": "Jose Guapo - Don't Believe the Hype (WSHH Exclusive)",
+      "artist": "Jose Guapo",
+      "description": "Don't Believe the Hype (WSHH Exclusive)",
+      "viewCount": 393782,
+      "uploadDate": "2015-02-23",
+      "id": 85,
+      "thumbnail": "https://img.youtube.com/vi/E5Bwb0DYH84/maxresdefault.jpg"
+    },
+    {
+      "youtubeId": "l0kNVJaF5as",
+      "title": "Jose Guapo - Where is the Love (WSHH Exclusive)",
+      "artist": "Jose Guapo",
+      "description": "Where is the Love (WSHH Exclusive)",
+      "viewCount": 430155,
+      "uploadDate": "2015-07-01",
+      "id": 86,
+      "thumbnail": "https://img.youtube.com/vi/l0kNVJaF5as/maxresdefault.jpg"
+    },
+    {
+      "id": 87,
+      "title": "Hypa ft Trouble Trouble, T-Dot, Fresh - On Fleek",
+      "artist": "Hypa",
+      "description": "ft. Trouble Trouble, T-Dot, Fresh",
+      "youtubeId": "XUgWB1Rl638",
+      "uploadDate": "2015-07-28",
+      "viewCount": 318000,
+      "thumbnail": "https://img.youtube.com/vi/XUgWB1Rl638/maxresdefault.jpg"
+    },
+    {
+      "id": 88,
+      "title": "Dundas Dolla - Yuck",
+      "artist": "Dundas Dolla",
+      "description": "Yuck",
+      "youtubeId": "62HLNuAGBv0",
+      "uploadDate": "2012-11-08",
+      "viewCount": 14572,
+      "thumbnail": "https://img.youtube.com/vi/62HLNuAGBv0/maxresdefault.jpg"
+    },
+    {
+      "id": 89,
+      "title": "Dundas Dolla - Foreign Cars Remix",
+      "artist": "Dundas Dolla",
+      "description": "Foreign Cars Remix",
+      "youtubeId": "uHMelzjjBOg",
+      "uploadDate": "2013-06-09",
+      "viewCount": 14558,
+      "thumbnail": "https://img.youtube.com/vi/uHMelzjjBOg/maxresdefault.jpg"
+    },
+    {
+      "id": 90,
+      "title": "Arez ft. BG - Hug The 3's",
+      "artist": "Arez",
+      "description": "ft. BG",
+      "youtubeId": "4En8HNY6Z9I",
+      "uploadDate": "2016-01-14",
+      "viewCount": 49122,
+      "thumbnail": "https://img.youtube.com/vi/4En8HNY6Z9I/maxresdefault.jpg"
+    },
+    {
+      "id": 91,
+      "title": "M & Hypa - The Ride",
+      "artist": "M",
+      "description": "ft. Hypa",
+      "youtubeId": "KnRl27ZuSuk",
+      "uploadDate": "2013-12-15",
+      "viewCount": 51788,
+      "thumbnail": "https://img.youtube.com/vi/KnRl27ZuSuk/maxresdefault.jpg"
+    },
+    {
+      "id": 92,
+      "title": "Cboz - Making Sales",
+      "artist": "Cboz",
+      "description": "Making Sales",
+      "youtubeId": "aJ70-2vEGYs",
+      "uploadDate": "2017-01-02",
+      "viewCount": 3912,
+      "thumbnail": "https://img.youtube.com/vi/aJ70-2vEGYs/maxresdefault.jpg"
+    },
+    {
+      "id": 93,
+      "title": "Jr Tuffy - Trap Talk",
+      "artist": "Jr Tuffy",
+      "description": "Trap Talk",
+      "youtubeId": "vrVYG0twJtw",
+      "uploadDate": "2016-06-06",
+      "viewCount": 6013,
+      "thumbnail": "https://img.youtube.com/vi/vrVYG0twJtw/maxresdefault.jpg"
+    },
+    {
+      "id": 94,
+      "title": "JoJizzle - Check A Bag",
+      "artist": "JoJizzle",
+      "description": "Check A Bag",
+      "youtubeId": "m5EtDEfS0zM",
+      "uploadDate": "2015-04-06",
+      "viewCount": 5402,
+      "thumbnail": "https://img.youtube.com/vi/m5EtDEfS0zM/maxresdefault.jpg"
+    },
+    {
+      "id": 95,
+      "title": "Scooby Blacks - Ya Know",
+      "artist": "Scooby Blacks",
+      "description": "Ya Know",
+      "youtubeId": "p4Zz57ahuYA",
+      "uploadDate": "2014-11-14",
+      "viewCount": 7836,
+      "thumbnail": "https://img.youtube.com/vi/p4Zz57ahuYA/maxresdefault.jpg"
+    },
+    {
+      "id": 96,
+      "title": "Young Blitz - Resume",
+      "artist": "Young Blitz",
+      "description": "Resume",
+      "youtubeId": "LfUtxs8uJJs",
+      "uploadDate": "2014-10-30",
+      "viewCount": 15468,
+      "thumbnail": "https://img.youtube.com/vi/LfUtxs8uJJs/maxresdefault.jpg"
+    },
+    {
+      "id": 97,
+      "title": "Daz Dinero - Rockstar",
+      "artist": "Daz Dinero",
+      "description": "Rockstar",
+      "youtubeId": "YktjZEivGKI",
+      "uploadDate": "2015-07-21",
+      "viewCount": 20815,
+      "thumbnail": "https://img.youtube.com/vi/YktjZEivGKI/maxresdefault.jpg"
+    },
+    {
+      "id": 98,
+      "title": "M-Dot - I Don't Trust",
+      "artist": "M-Dot",
+      "description": "Prod. Dennis X Jmak",
+      "youtubeId": "eND_IlhIG2k",
+      "uploadDate": "2016-07-22",
+      "viewCount": 6685,
+      "thumbnail": "https://img.youtube.com/vi/eND_IlhIG2k/maxresdefault.jpg"
+    },
+    {
+      "id": 99,
+      "title": "Da Kid Bluntz - Back to Back Freestyle",
+      "artist": "Da Kid Bluntz",
+      "description": "Back to Back Freestyle",
+      "youtubeId": "OsVQ2gAT6sU",
+      "uploadDate": "2017-05-31",
+      "viewCount": 24437,
+      "thumbnail": "https://img.youtube.com/vi/OsVQ2gAT6sU/maxresdefault.jpg"
+    },
+    {
+      "id": 100,
+      "title": "K Getta - Who Dat",
+      "artist": "K Getta",
+      "description": "Who Dat",
+      "youtubeId": "0Lx6a3c2YEg",
+      "uploadDate": "2016-08-10",
+      "viewCount": 8117,
+      "thumbnail": "https://img.youtube.com/vi/0Lx6a3c2YEg/maxresdefault.jpg"
     }
   ],
   "settings": {
     "popularThreshold": 60000,
     "chronologicalOrder": "newest-first"
   },
-  "lastFetched": "2026-01-27T16:43:30.787Z",
+  "lastFetched": "2026-02-11T20:17:39.772Z",
   "apiKeyUsed": false
 }

@@ -1,23 +1,16 @@
 # TdotsSolutionsz — Toronto Creative Production
 
-An immersive synthwave-themed creative portfolio showcasing **87 music videos** by **49 artists** and a **25-image photography gallery**, by TdotsSolutionsz — Toronto's premier hip-hop video production and photography company. Hub landing page links to a 3D neon cityscape for music videos and a categorized photo gallery.
+An immersive synthwave-themed creative portfolio showcasing **100 music videos** by **53 artists**, by TdotsSolutionsz — Toronto's premier hip-hop video production and photography company. Hub landing page links to a 3D neon cityscape for music videos. Photography gallery coming soon.
 
 **Live at [tdotssolutionsz.com](https://tdotssolutionsz.com)**
 
 ## Features
 
 ### Hub Landing Page (`/`)
-- **Split Navigation** — Two-card layout linking to Music Videos (`/videos`) and Photography (`/photos`)
-- **Both Sections Live** — Music Videos (87 videos, 49 artists) and Photography (25 photos, 4 categories) fully accessible
+- **Split Navigation** — Two-card layout: Music Videos (`/videos`) live, Photography coming soon
+- **Music Videos Live** — 100 videos, 53 artists fully accessible
 - **Synthwave Aesthetic** — Consistent neon-glow branding with animated gradient borders and backdrop blur
 - **Responsive** — Grid on desktop, stacked on mobile
-
-### Photography Gallery (`/photos`)
-- **25 Curated Photos** — Portraits, artist/music, events, and street photography in optimized WebP
-- **Category Tabs** — Filter by All, Portraits, Artist, Events, or Street
-- **Lightbox Viewer** — Full-size modal with prev/next navigation, keyboard support (Escape, Arrow keys)
-- **Lazy Loading** — IntersectionObserver-based image loading with 200px lookahead
-- **Photo Metadata** — Title, subject, category, and camera info for each image
 
 ### Music Videos (`/videos`)
 - **Tron-Style 3D Cityscape** — Drive through a neon metropolis with 200+ edge-lit buildings, highway arches, data stream pillars, and CN Towers bookending the journey
@@ -39,11 +32,11 @@ An immersive synthwave-themed creative portfolio showcasing **87 music videos** 
 - **Client-Side Routing** — React Router v7 with lazy-loaded routes; legacy `/?v=` deep links redirect to `/videos?v=`
 - **Responsive Design** — Full 3D on desktop, reduced effects on tablet, polished mobile grid
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject + ImageGallery structured data, geo-targeted meta tags, sitemap with video deep links and photo routes
-- **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, COEP (credentialless), CORP, Referrer-Policy, Permissions-Policy; YouTube ID validation at all entry points; localStorage hardening; social share host allowlist; build-time ID validation; no-store HTML cache policy
+- **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, CORP, Referrer-Policy, Permissions-Policy; YouTube ID validation at all entry points; localStorage hardening; social share host allowlist; build-time ID validation; no-store HTML cache policy
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL crashes; broken thumbnails gracefully fall back to SVG placeholder
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
-- **Stateless Hub** — HubPage is a pure functional component with zero state — both portfolio sections fully connected
+- **Hub Landing** — Music Videos live, Photography locked with "Coming Soon" toast
 - **Tested** — 153 unit tests via Vitest
 
 ## Tech Stack
