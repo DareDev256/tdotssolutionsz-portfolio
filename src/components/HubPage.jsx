@@ -40,7 +40,7 @@ export default function HubPage() {
         >
           <span className="hub-card-icon">🎬</span>
           <h2 className="hub-card-title">Music Videos</h2>
-          <span className="hub-card-subtitle">100 VIDEOS — 53 ARTISTS</span>
+          <span className="hub-card-subtitle">101 VIDEOS — 54 ARTISTS</span>
           <p className="hub-card-desc">Immersive 3D experience showcasing a decade of Toronto hip-hop videography</p>
           <span className="hub-card-cta">
             ENTER <span aria-hidden="true">→</span>
