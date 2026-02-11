@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.0.2] - 2026-02-11
+
+### Added
+- **9 photo data integrity tests** — New `src/data/photos.test.js` validates photos.json schema: required fields, unique IDs/filenames, valid categories, .webp extension enforcement, ID prefix convention (p/a/e/s), category coverage, and schema guard against unexpected fields
+- **5 lane processing tests** — Extended `videoData.test.js` with Z-position spacing formula verification, Y-height consistency, neon color palette cycling, popular lane ID uniqueness (`popular-{id}` format), and popular-lane subset validation
+- **Tests** — 114 total (up from 100): 9 photo data tests + 5 lane position/metadata tests
+
 ## [3.0.1] - 2026-02-10
 
 ### Security

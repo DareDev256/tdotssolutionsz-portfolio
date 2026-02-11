@@ -93,4 +93,42 @@ describe('processVideosIntoLanes', () => {
         }
         expect(all.length).toBe(chronological.length + popular.length)
     })
+
+    it('Z positions follow evenly-spaced billboard formula', () => {
+        for (let i = 0; i < chronological.length; i++) {
+            const expectedZ = LANE_CONFIG.BILLBOARD_Z_START - (i * LANE_CONFIG.BILLBOARD_Z_SPACING)
+            expect(chronological[i].position[2]).toBe(expectedZ)
+        }
+        for (let i = 0; i < popular.length; i++) {
+            const expectedZ = LANE_CONFIG.BILLBOARD_Z_START - (i * LANE_CONFIG.BILLBOARD_Z_SPACING)
+            expect(popular[i].position[2]).toBe(expectedZ)
+        }
+    })
+
+    it('all billboards sit at the configured Y height', () => {
+        for (const v of all) {
+            expect(v.position[1]).toBe(LANE_CONFIG.BILLBOARD_Y)
+        }
+    })
+
+    it('neon colors cycle through the palette for chronological lane', () => {
+        for (let i = 0; i < chronological.length; i++) {
+            expect(chronological[i].color).toBe(NEON_COLORS[i % NEON_COLORS.length])
+        }
+    })
+
+    it('popular lane entries have unique laneId prefixed with "popular-"', () => {
+        const laneIds = popular.map(v => v.laneId)
+        expect(new Set(laneIds).size).toBe(laneIds.length)
+        for (const v of popular) {
+            expect(v.laneId).toBe(`popular-${v.id}`)
+        }
+    })
+
+    it('popular entries are a strict subset of VIDEOS (no duplicated data)', () => {
+        const videoIds = new Set(VIDEOS.map(v => v.id))
+        for (const v of popular) {
+            expect(videoIds.has(v.id)).toBe(true)
+        }
+    })
 })

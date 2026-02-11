@@ -42,7 +42,7 @@ An immersive synthwave-themed creative portfolio showcasing **87 music videos** 
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL crashes with styled fallback
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
-- **Tested** — 100 unit tests via Vitest
+- **Tested** — 114 unit tests via Vitest
 
 ## Tech Stack
 
@@ -83,6 +83,9 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.0.2 (2026-02-11)
+- **Tests** — 114 total (up from 100): 9 photo data integrity tests (photos.json schema validation, uniqueness, category coverage) + 5 lane position/metadata tests (Z-spacing, Y-height, color cycling, popular lane IDs)
 
 ### v3.0.1 (2026-02-10)
 - **Security: CORP header** — Added `Cross-Origin-Resource-Policy: cross-origin` (Spectre isolation compatible with YouTube embeds)
