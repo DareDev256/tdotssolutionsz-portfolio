@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.1.1] - 2026-02-11
+
+### Added
+- **Architecture documentation** — Comprehensive `docs/ARCHITECTURE.md` covering system overview (ASCII diagrams), project structure, routing & code-splitting table, data flow pipeline, state management patterns, security model (headers, input validation, caching), setup & dev commands, deployment pipeline, testing matrix, and key architecture decisions with rationale
+- **README docs section** — New "Documentation" section linking to architecture guide
+
 ## [3.1.0] - 2026-02-11
 
 ### Added

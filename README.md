@@ -73,6 +73,10 @@ An immersive synthwave-themed creative portfolio showcasing **87 music videos** 
 
 Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, Da Kid Bluntz, Daz Dinero, Cboz, Scooby Blacks, OG Dre, Big Kitty, Purple, Soodope, H3RSH, ScaleBreakerBlo, Big Money, Yogi Savage, Flash Milla, Young Blitz, LP, Cuzzin Charlie, T-Dot, Baadass Bukk, Speng Don, Chinkz Rrahh, $ha, Leiffy Luciano, Jr Tuffy, and more — **49 artists** total.
 
+## Documentation
+
+- **[Architecture Guide](docs/ARCHITECTURE.md)** — System overview, project structure, data flow, security model, deployment pipeline, and key architecture decisions
+
 ## Development
 
 ```bash
@@ -85,6 +89,9 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.1.1 (2026-02-11)
+- **Architecture documentation** — Comprehensive `docs/ARCHITECTURE.md` covering system overview, project structure, data flow, security model, deployment pipeline, and key architecture decisions
 
 ### v3.1.0 (2026-02-11)
 - **Photography Gallery live** — Unlocked `/photos` route with full PhotoGallery component (25 photos, 4 categories, lightbox, lazy loading). Hub card upgraded from locked "Coming Soon" button to active navigation link
