@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.0.3] - 2026-02-11
+
+### Security
+- **Cross-Origin-Embedder-Policy header** — Added `credentialless` COEP header to vercel.json, completing the Spectre-class isolation trifecta (COOP + CORP + COEP). Uses `credentialless` instead of `require-corp` to remain compatible with YouTube embeds and Google Fonts. Previously removed in v2.3.0 when `same-origin` broke embeds; `credentialless` solves this
+- **Desktop iframe embed guard** — Added `isValidYouTubeId()` check before rendering the desktop video overlay iframe in App.jsx, preventing requests to `youtube.com/embed/` with empty or invalid IDs. Matches the existing guard pattern in YouTubePlayer.jsx (defense-in-depth)
+- **index.html Cache-Control hardened** — Changed from `public, max-age=0, must-revalidate` to `no-cache, no-store, must-revalidate`, ensuring browsers never serve stale HTML with outdated CSP or security headers
+
+### Added
+- **13 security header tests** — New `securityHeaders.test.js` validates vercel.json headers at test time: CSP enforcement (not report-only), HSTS with preload, X-Frame-Options DENY, COEP credentialless, COOP, CORP, Permissions-Policy, X-Permitted-Cross-Domain-Policies, CSP directives (object-src, frame-ancestors, upgrade-insecure-requests), index.html no-store cache, and immutable asset caching (127 total tests, up from 114)
+
 ## [3.0.2] - 2026-02-11
 
 ### Added

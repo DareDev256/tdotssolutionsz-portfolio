@@ -38,11 +38,11 @@ An immersive synthwave-themed creative portfolio showcasing **87 music videos** 
 - **Client-Side Routing** — React Router v7 with lazy-loaded routes; legacy `/?v=` deep links redirect to `/videos?v=`
 - **Responsive Design** — Full 3D on desktop, reduced effects on tablet, polished mobile grid
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject + ImageGallery structured data, geo-targeted meta tags, sitemap with video deep links and photo routes
-- **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, CORP, Referrer-Policy, Permissions-Policy; YouTube ID validation; localStorage hardening; social share host allowlist; build-time ID validation
+- **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, COEP (credentialless), CORP, Referrer-Policy, Permissions-Policy; YouTube ID validation at all entry points; localStorage hardening; social share host allowlist; build-time ID validation; no-store HTML cache policy
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL crashes with styled fallback
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
-- **Tested** — 114 unit tests via Vitest
+- **Tested** — 127 unit tests via Vitest
 
 ## Tech Stack
 
@@ -83,6 +83,12 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.0.3 (2026-02-11)
+- **Security: COEP header** — Added `Cross-Origin-Embedder-Policy: credentialless` completing Spectre isolation trifecta (COOP + CORP + COEP), compatible with YouTube embeds
+- **Security: Desktop iframe guard** — `isValidYouTubeId()` check before rendering desktop embed iframe (defense-in-depth)
+- **Security: HTML cache hardened** — `no-store` on index.html prevents serving stale security headers
+- **Tests** — 127 total (up from 114): 13 security header tests validating vercel.json configuration
 
 ### v3.0.2 (2026-02-11)
 - **Tests** — 114 total (up from 100): 9 photo data integrity tests (photos.json schema validation, uniqueness, category coverage) + 5 lane position/metadata tests (Z-spacing, Y-height, color cycling, popular lane IDs)

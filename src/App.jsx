@@ -1634,6 +1634,7 @@ const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
     if (!activeProject) return null
 
     const videoId = extractVideoId(activeProject.url)
+    const validId = isValidYouTubeId(videoId)
     const stats = ARTIST_STATS[activeProject.artist]
 
     const handleCopyLink = () => {
@@ -1672,17 +1673,19 @@ const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater }) => {
                     </span>
                 </div>
                 <div className="video-container">
-                    <iframe
-                        key={videoId}
-                        width="100%"
-                        height="100%"
-                        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${audioEnabled ? 0 : 1}&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1`}
-                        style={{ border: 'none' }}
-                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        title={activeProject.title}
-                    />
+                    {validId && (
+                        <iframe
+                            key={videoId}
+                            width="100%"
+                            height="100%"
+                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${audioEnabled ? 0 : 1}&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1`}
+                            style={{ border: 'none' }}
+                            sandbox="allow-scripts allow-same-origin allow-presentation allow-popups"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title={activeProject.title}
+                        />
+                    )}
                     {/* CRT Scanline Overlay */}
                     <div className="crt-overlay" />
                 </div>
