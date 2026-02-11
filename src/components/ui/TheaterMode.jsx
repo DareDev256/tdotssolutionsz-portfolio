@@ -1,7 +1,7 @@
 // src/components/ui/TheaterMode.jsx
 import { useEffect, useCallback } from 'react';
 import YouTubePlayer from '../YouTubePlayer';
-import { extractVideoId, getShareUrl } from '../../utils/youtube';
+import { extractVideoId, getShareUrl, openShareWindow } from '../../utils/youtube';
 import './TheaterMode.css';
 
 /**
@@ -136,7 +136,7 @@ export function TheaterMode({
             className="theater-share-btn"
             onClick={() => {
               const url = getShareUrl(project)
-              window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(project.title + ' — shot by TdotsSolutionsz 🎬')}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer,width=550,height=420')
+              openShareWindow(`https://twitter.com/intent/tweet?text=${encodeURIComponent(project.title + ' — shot by TdotsSolutionsz 🎬')}&url=${encodeURIComponent(url)}`, 'noopener,noreferrer,width=550,height=420')
             }}
           >
             𝕏 Post
@@ -145,7 +145,7 @@ export function TheaterMode({
             className="theater-share-btn"
             onClick={() => {
               const url = getShareUrl(project)
-              window.open(`https://wa.me/?text=${encodeURIComponent(project.title + ' — ' + url)}`, '_blank', 'noopener,noreferrer')
+              openShareWindow(`https://wa.me/?text=${encodeURIComponent(project.title + ' — ' + url)}`)
             }}
           >
             WA Share

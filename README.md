@@ -38,11 +38,11 @@ An immersive synthwave-themed creative portfolio showcasing **87 music videos** 
 - **Client-Side Routing** — React Router v7 with lazy-loaded routes; legacy `/?v=` deep links redirect to `/videos?v=`
 - **Responsive Design** — Full 3D on desktop, reduced effects on tablet, polished mobile grid
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject + ImageGallery structured data, geo-targeted meta tags, sitemap with video deep links and photo routes
-- **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, Referrer-Policy, Permissions-Policy; YouTube ID validation; localStorage hardening
+- **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, CORP, Referrer-Policy, Permissions-Policy; YouTube ID validation; localStorage hardening; social share host allowlist; build-time ID validation
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL crashes with styled fallback
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
-- **Tested** — 95 unit tests via Vitest
+- **Tested** — 100 unit tests via Vitest
 
 ## Tech Stack
 
@@ -83,6 +83,13 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.0.1 (2026-02-10)
+- **Security: CORP header** — Added `Cross-Origin-Resource-Policy: cross-origin` (Spectre isolation compatible with YouTube embeds)
+- **Security: X-Permitted-Cross-Domain-Policies** — Blocks Flash/Acrobat cross-domain policy lookups
+- **Security: Social share allowlist** — `openShareWindow()` validates target host before opening popups (prevents open redirect)
+- **Security: Build-time ID validation** — YouTube IDs validated at build time before reaching client bundle
+- **Tests** — 100 total (up from 95): 5 `openShareWindow` tests (host allowlist, protocol blocking, open redirect prevention)
 
 ### v3.0.0 (2026-02-10)
 - **Hub Landing Page** — New root route (`/`) with two-card navigation to Music Videos and Photography sections

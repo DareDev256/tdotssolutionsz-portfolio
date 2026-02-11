@@ -63,6 +63,31 @@ export function getShareUrl(video) {
     return `${window.location.origin}${window.location.pathname}?v=${vid}`
 }
 
+/** Allowed social share target hosts */
+const SHARE_HOSTS = new Set([
+    'twitter.com', 'x.com',
+    'wa.me', 'api.whatsapp.com',
+])
+
+/**
+ * Open a social share popup with host allowlisting.
+ * Only navigates to pre-approved share targets, preventing open redirect
+ * if share URLs are ever constructed from untrusted input.
+ * @param {string} url - Full share URL to open
+ * @param {string} [features] - window.open feature string
+ * @returns {boolean} true if the popup was opened, false if blocked
+ */
+export function openShareWindow(url, features = 'noopener,noreferrer') {
+    try {
+        const parsed = new URL(url)
+        if (!SHARE_HOSTS.has(parsed.hostname)) return false
+        window.open(url, '_blank', features)
+        return true
+    } catch {
+        return false
+    }
+}
+
 /** Allowed YouTube thumbnail quality presets */
 const VALID_QUALITIES = new Set([
     'default', 'mqdefault', 'hqdefault', 'sddefault', 'maxresdefault'

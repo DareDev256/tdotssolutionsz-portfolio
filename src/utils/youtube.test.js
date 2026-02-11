@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import { isValidYouTubeId, extractVideoId, getShareUrl, getThumbnailUrl } from './youtube.js'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { isValidYouTubeId, extractVideoId, getShareUrl, getThumbnailUrl, openShareWindow } from './youtube.js'
 
 describe('isValidYouTubeId', () => {
     it('accepts valid 11-char YouTube IDs', () => {
@@ -200,5 +200,51 @@ describe('getThumbnailUrl — consolidated callers (VideoCard + MobileApp)', () 
     it('blocks injection via tampered youtubeId in MobileApp related context', () => {
         expect(getThumbnailUrl('"><script>x</script>', 'default')).toBe('')
         expect(getThumbnailUrl(undefined, 'default')).toBe('')
+    })
+})
+
+describe('openShareWindow', () => {
+    let openSpy
+    beforeEach(() => {
+        openSpy = vi.fn()
+        globalThis.window = { open: openSpy }
+    })
+    afterEach(() => {
+        vi.restoreAllMocks()
+        delete globalThis.window
+    })
+
+    it('opens allowed share targets (twitter.com, wa.me)', () => {
+        expect(openShareWindow('https://twitter.com/intent/tweet?text=test')).toBe(true)
+        expect(openSpy).toHaveBeenCalledOnce()
+        openSpy.mockClear()
+        expect(openShareWindow('https://wa.me/?text=test')).toBe(true)
+        expect(openSpy).toHaveBeenCalledOnce()
+    })
+
+    it('blocks non-allowlisted hosts (open redirect prevention)', () => {
+        expect(openShareWindow('https://evil.com/redirect?to=malware')).toBe(false)
+        expect(openShareWindow('https://twitter.com.evil.com/fake')).toBe(false)
+        expect(openSpy).not.toHaveBeenCalled()
+    })
+
+    it('blocks javascript: and data: protocol URLs', () => {
+        expect(openShareWindow('javascript:alert(1)')).toBe(false)
+        expect(openShareWindow('data:text/html,<script>alert(1)</script>')).toBe(false)
+        expect(openSpy).not.toHaveBeenCalled()
+    })
+
+    it('returns false for malformed URLs', () => {
+        expect(openShareWindow('')).toBe(false)
+        expect(openShareWindow('not-a-url')).toBe(false)
+    })
+
+    it('passes custom features string to window.open', () => {
+        openShareWindow('https://twitter.com/intent/tweet', 'noopener,noreferrer,width=550')
+        expect(openSpy).toHaveBeenCalledWith(
+            'https://twitter.com/intent/tweet',
+            '_blank',
+            'noopener,noreferrer,width=550'
+        )
     })
 })

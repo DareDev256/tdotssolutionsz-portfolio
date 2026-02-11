@@ -24,6 +24,30 @@ const OUTPUT_FILE = path.join(PROJECT_ROOT, 'public/videos-enriched.json');
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/videos';
 
+/** YouTube video IDs are exactly 11 chars: alphanumeric plus - and _ */
+const YT_ID_RE = /^[A-Za-z0-9_-]{11}$/;
+
+/**
+ * Build-time validation: reject malformed YouTube IDs before they reach
+ * the API or get bundled into the client-side JSON payload.
+ */
+function validateVideoIds(videos) {
+    const invalid = videos.filter(v => !YT_ID_RE.test(v.youtubeId));
+    if (invalid.length > 0) {
+        console.error('❌ Invalid YouTube IDs detected at build time:');
+        for (const v of invalid) {
+            console.error(`   - id=${v.id} youtubeId="${v.youtubeId}" title="${v.title}"`);
+        }
+        process.exit(1);
+    }
+    const ids = videos.map(v => v.youtubeId);
+    const dupes = ids.filter((id, i) => ids.indexOf(id) !== i);
+    if (dupes.length > 0) {
+        console.error(`❌ Duplicate YouTube IDs: ${[...new Set(dupes)].join(', ')}`);
+        process.exit(1);
+    }
+}
+
 async function fetchVideoData(videoIds) {
     if (!YOUTUBE_API_KEY) {
         console.warn('⚠️  YOUTUBE_API_KEY not set - using placeholder data');
@@ -59,6 +83,10 @@ async function main() {
     const settings = inputData.settings;
 
     console.log(`📋 Found ${videos.length} videos to process`);
+
+    // Build-time security: validate all YouTube IDs before processing
+    validateVideoIds(videos);
+    console.log('✅ All YouTube IDs pass validation');
 
     // Extract YouTube IDs
     const videoIds = videos.map(v => v.youtubeId);

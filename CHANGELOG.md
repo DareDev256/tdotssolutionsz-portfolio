@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.0.1] - 2026-02-10
+
+### Security
+- **Cross-Origin-Resource-Policy header** — Added `cross-origin` CORP header to vercel.json, restoring Spectre-class isolation that was removed in v2.3.0 (previously `same-origin` which blocked YouTube embeds; `cross-origin` is compatible with third-party embeds)
+- **X-Permitted-Cross-Domain-Policies header** — Added `none` to block Flash/Acrobat cross-domain policy lookups, preventing legacy plugin exploitation
+- **Social share host allowlist** — New `openShareWindow()` utility validates target hostname against an allowlist (twitter.com, x.com, wa.me, api.whatsapp.com) before opening popups, preventing open redirect if share URLs are ever constructed from untrusted input. Replaces raw `window.open()` in MobileApp and TheaterMode
+- **Build-time YouTube ID validation** — `fetch-youtube-data.js` now validates all video IDs against the 11-char YouTube pattern and checks for duplicates before processing, catching data corruption before it reaches the client bundle
+
+### Added
+- **5 new `openShareWindow` tests** — Covers allowed hosts, blocked hosts (open redirect), javascript:/data: protocols, malformed URLs, and feature string passthrough (100 total tests, up from 95)
+
 ## [3.0.0] - 2026-02-10
 
 ### Added
