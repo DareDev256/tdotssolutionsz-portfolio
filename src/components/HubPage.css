@@ -232,37 +232,6 @@
   box-shadow: 0 0 20px rgba(255, 42, 109, 0.3);
 }
 
-/* Locked card */
-.hub-card--locked {
-  cursor: not-allowed;
-  opacity: 0.55;
-  filter: saturate(0.3);
-  border: none;
-  font: inherit;
-  text-align: center;
-  width: 100%;
-  max-width: 380px;
-}
-
-.hub-card--locked:hover {
-  transform: none;
-  opacity: 0.65;
-}
-
-.hub-card-lock {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 1.2rem;
-  opacity: 0.7;
-}
-
-.hub-card-cta--locked {
-  color: rgba(5, 217, 232, 0.4);
-  border: 1px solid rgba(5, 217, 232, 0.2);
-  font-size: 0.65rem;
-}
-
 .hub-card--cyan .hub-card-cta {
   color: #05d9e8;
   border: 1px solid rgba(5, 217, 232, 0.4);
@@ -271,32 +240,6 @@
 .hub-card--cyan:hover .hub-card-cta {
   background: rgba(5, 217, 232, 0.2);
   box-shadow: 0 0 20px rgba(5, 217, 232, 0.3);
-}
-
-/* Coming Soon toast */
-.hub-toast {
-  position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Orbitron', monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  color: #05d9e8;
-  background: rgba(5, 217, 232, 0.08);
-  border: 1px solid rgba(5, 217, 232, 0.3);
-  padding: 12px 32px;
-  border-radius: 8px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 0 30px rgba(5, 217, 232, 0.2);
-  z-index: 100;
-  animation: hub-toast-in 0.3s ease-out;
-}
-
-@keyframes hub-toast-in {
-  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* Footer */

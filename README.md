@@ -7,7 +7,8 @@ An immersive synthwave-themed creative portfolio showcasing **87 music videos** 
 ## Features
 
 ### Hub Landing Page (`/`)
-- **Split Navigation** — Two-card layout linking to Music Videos and Photography sections
+- **Split Navigation** — Two-card layout linking to Music Videos (`/videos`) and Photography (`/photos`)
+- **Both Sections Live** — Music Videos (87 videos, 49 artists) and Photography (25 photos, 4 categories) fully accessible
 - **Synthwave Aesthetic** — Consistent neon-glow branding with animated gradient borders and backdrop blur
 - **Responsive** — Grid on desktop, stacked on mobile
 
@@ -42,6 +43,7 @@ An immersive synthwave-themed creative portfolio showcasing **87 music videos** 
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL crashes; broken thumbnails gracefully fall back to SVG placeholder
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
+- **Stateless Hub** — HubPage is a pure functional component with zero state — both portfolio sections fully connected
 - **Tested** — 153 unit tests via Vitest
 
 ## Tech Stack
@@ -83,6 +85,10 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.1.0 (2026-02-11)
+- **Photography Gallery live** — Unlocked `/photos` route with full PhotoGallery component (25 photos, 4 categories, lightbox, lazy loading). Hub card upgraded from locked "Coming Soon" button to active navigation link
+- **Hub simplification** — HubPage is now stateless (removed toast, locked state, ~45 lines of dead CSS)
 
 ### v3.0.5 (2026-02-11)
 - **Tests** — 153 total (up from 127): 17 PhotoGallery logic tests (getPhotoSrc paths, category filtering, lightbox navigation wrapping, data consistency) + 9 imageFallback tests (SVG data URI validation, theme colors, self-containment, XSS safety)

@@ -1,15 +1,16 @@
 /**
- * Application entry point — BrowserRouter wraps two routes:
- *   /        → HubPage (landing page linking to Videos; Photography coming soon)
+ * Application entry point — BrowserRouter wraps three routes:
+ *   /        → HubPage (landing page linking to Videos and Photography)
  *   /videos  → Desktop 3D experience or Mobile grid view (device-aware)
+ *   /photos  → Photography gallery with lightbox viewer
  *
- * The desktop 3D experience (App.jsx) and MobileApp are lazy-loaded to
- * keep initial bundle small. Three.js (~1.1MB) only loads on /videos.
+ * All routes are lazy-loaded to keep initial bundle small.
+ * Three.js (~1.1MB) only loads on /videos.
  * @module main
  */
 import React, { Component, Suspense, lazy, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { useDeviceType } from './hooks/useDeviceType.js'
 import './index.css'
 
@@ -19,6 +20,8 @@ const HubPage = lazy(() => import('./components/HubPage.jsx'))
 const App = lazy(() => import('./App.jsx'))
 /** Mobile grid view — lightweight chunk without Three.js dependency */
 const MobileApp = lazy(() => import('./MobileApp.jsx'))
+/** Photography gallery — lightweight chunk (8.17KB) with lightbox viewer */
+const PhotoGallery = lazy(() => import('./components/PhotoGallery.jsx'))
 
 /** Catches Three.js/WebGL crashes so the page doesn't blank out */
 class AppErrorBoundary extends Component {
@@ -120,7 +123,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Routes>
                         <Route path="/" element={<HubPage />} />
                         <Route path="/videos" element={<VideosRoute />} />
-                        <Route path="/photos" element={<Navigate to="/" replace />} />
+                        <Route path="/photos" element={<PhotoGallery />} />
                     </Routes>
                 </Suspense>
             </BrowserRouter>

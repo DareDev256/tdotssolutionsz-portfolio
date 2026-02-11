@@ -1,16 +1,7 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './HubPage.css'
 
 export default function HubPage() {
-  const [showToast, setShowToast] = useState(false)
-
-  function handleLockedClick(e) {
-    e.preventDefault()
-    setShowToast(true)
-    setTimeout(() => setShowToast(false), 2500)
-  }
-
   return (
     <div className="hub-page">
       <div className="hub-bg-grid" aria-hidden="true" />
@@ -47,28 +38,20 @@ export default function HubPage() {
           </span>
         </Link>
 
-        <button
-          className="hub-card hub-card--cyan hub-card--locked"
-          onClick={handleLockedClick}
-          aria-label="Photography — Coming Soon"
-          type="button"
+        <Link
+          to="/photos"
+          className="hub-card hub-card--cyan"
+          aria-label="View Photography portfolio"
         >
-          <span className="hub-card-lock">🔒</span>
           <span className="hub-card-icon">📸</span>
           <h2 className="hub-card-title">Photography</h2>
-          <span className="hub-card-subtitle">COMING SOON</span>
+          <span className="hub-card-subtitle">25 PHOTOS — 4 CATEGORIES</span>
           <p className="hub-card-desc">Portraits, events, artist EPKs, and urban street photography</p>
-          <span className="hub-card-cta hub-card-cta--locked">
-            COMING SOON
+          <span className="hub-card-cta">
+            ENTER <span aria-hidden="true">→</span>
           </span>
-        </button>
+        </Link>
       </nav>
-
-      {showToast && (
-        <div className="hub-toast" role="status" aria-live="polite">
-          PHOTOGRAPHY — COMING SOON
-        </div>
-      )}
 
       <footer className="hub-footer">
         <span className="hub-footer-brand">TDOTSSOLUTIONSZ</span>

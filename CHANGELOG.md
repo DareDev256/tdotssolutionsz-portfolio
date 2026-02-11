@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.1.0] - 2026-02-11
+
+### Added
+- **Photography Gallery live** — Unlocked the `/photos` route, replacing the redirect-to-home with the full `PhotoGallery` component (25 photos, 4 categories, lightbox viewer, lazy loading, keyboard navigation). The gallery was fully built and tested in v3.0.0 but blocked behind a `<Navigate>` redirect; now accessible from the hub landing page
+- **Hub Photography card active** — Converted the "Coming Soon" locked button into a live `<Link to="/photos">` with "25 PHOTOS — 4 CATEGORIES" subtitle and matching "ENTER →" CTA, consistent with the Music Videos card
+
+### Changed
+- **Hub simplification** — Removed `useState` hook, toast notification, and locked card state from `HubPage.jsx` (component is now stateless). Removed corresponding CSS (~45 lines: locked card styles, toast animation)
+- **Route architecture** — `/photos` route now lazy-loads `PhotoGallery` directly instead of redirecting to `/`. Removed unused `Navigate` import from `react-router-dom`
+
 ## [3.0.5] - 2026-02-11
 
 ### Added
