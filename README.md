@@ -42,7 +42,7 @@ An immersive synthwave-themed creative portfolio showcasing **87 music videos** 
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL crashes; broken thumbnails gracefully fall back to SVG placeholder
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
-- **Tested** — 127 unit tests via Vitest
+- **Tested** — 153 unit tests via Vitest
 
 ## Tech Stack
 
@@ -83,6 +83,9 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.0.5 (2026-02-11)
+- **Tests** — 153 total (up from 127): 17 PhotoGallery logic tests (getPhotoSrc paths, category filtering, lightbox navigation wrapping, data consistency) + 9 imageFallback tests (SVG data URI validation, theme colors, self-containment, XSS safety)
 
 ### v3.0.4 (2026-02-11)
 - **Fix: Production build** — Resolved missing `react-router-dom` in `node_modules` that broke `npm run build`

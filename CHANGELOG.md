@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.0.5] - 2026-02-11
+
+### Added
+- **17 PhotoGallery logic tests** — New `PhotoGallery.test.js` covers `getPhotoSrc` path construction (per-category, full dataset validation), category filtering (all/individual, count summation, CATEGORIES↔CATEGORY_DIRS consistency), lightbox prev/next wrap-around navigation (forward/backward cycling, single-item edge case, full-cycle return), and data consistency checks (total count, non-empty tabs)
+- **9 imageFallback utility tests** — New `imageFallback.test.js` validates SVG data URI structure (format, 320×180 16:9 dimensions, play triangle, "No Preview" text), synthwave theme colors (#0a0a1a background, #ff6ec7 pink play icon), self-containment (no external references beyond SVG namespace), XSS safety (no script tags or event handlers), and HTML attribute compatibility
+- **Tests** — 153 total (up from 127): 17 PhotoGallery logic tests + 9 imageFallback tests, covering two previously untested modules
+
 ## [3.0.4] - 2026-02-11
 
 ### Fixed
