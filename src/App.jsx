@@ -2033,7 +2033,7 @@ export default function App({ reducedEffects = false }) {
         return currentLane === 'popular' ? LANES.popular : LANES.chronological
     }, [currentLane])
 
-    const { handleNext: handleTheaterNext, handlePrev: handleTheaterPrev } =
+    const { handleNext: handleTheaterNext, handlePrev: handleTheaterPrev, currentIndex: activeIndex } =
         useVideoNavigation(activeProject, currentLaneVideos, setActiveProject)
 
     // Keyboard shortcut: F to toggle theater mode
