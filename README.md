@@ -1,6 +1,6 @@
 # TdotsSolutionsz — Toronto Creative Production
 
-An immersive synthwave-themed creative portfolio showcasing **101 music videos** by **53 artists**, by TdotsSolutionsz — Toronto's premier hip-hop video production and photography company. Hub landing page links to a 3D neon cityscape for music videos. Photography gallery coming soon.
+An immersive synthwave-themed creative portfolio showcasing **101 music videos** by **54 artists**, by TdotsSolutionsz — Toronto's premier hip-hop video production and photography company. Hub landing page links to a 3D neon cityscape for music videos. Photography gallery coming soon.
 
 **Live at [tdotssolutionsz.com](https://tdotssolutionsz.com)**
 
@@ -8,7 +8,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 
 ### Hub Landing Page (`/`)
 - **Split Navigation** — Two-card layout: Music Videos (`/videos`) live, Photography coming soon
-- **Music Videos Live** — 101 videos, 53 artists fully accessible
+- **Music Videos Live** — 101 videos, 54 artists fully accessible
 - **Synthwave Aesthetic** — Consistent neon-glow branding with animated gradient borders and backdrop blur
 - **Responsive** — Grid on desktop, stacked on mobile
 
@@ -70,7 +70,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **Seanpane** — 6 videos including Only 1s (70K)
 - **Murda** — 4 videos including 6 God Remix (80K), The Sauce ft. Moshine (58K)
 
-Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, Da Kid Bluntz, Daz Dinero, Cboz, Scooby Blacks, OG Dre, Big Kitty, Purple, Soodope, H3RSH, ScaleBreakerBlo, Big Money, Yogi Savage, Flash Milla, Young Blitz, LP, Cuzzin Charlie, T-Dot, Baadass Bukk, Speng Don, Chinkz Rrahh, $ha, Leiffy Luciano, Jr Tuffy, Big Surp, and more — **53 artists** total.
+Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, Da Kid Bluntz, Daz Dinero, Cboz, Scooby Blacks, OG Dre, Big Kitty, Purple, Soodope, H3RSH, ScaleBreakerBlo, Big Money, Yogi Savage, Flash Milla, Young Blitz, LP, Cuzzin Charlie, T-Dot, Baadass Bukk, Speng Don, Chinkz Rrahh, $ha, Leiffy Luciano, Jr Tuffy, Big Surp, and more — **54 artists** total.
 
 ## Documentation
 
@@ -211,7 +211,7 @@ npm run test:watch # Run tests in watch mode
 ### v2.0.0 (2026-02-06)
 - **Favorites System** — Heart button on video cards and modal to save favorites to localStorage; dedicated "Favorites" tab on mobile
 - **Related Videos** — "More by this artist" section in mobile modal showing up to 4 videos with thumbnails and view counts
-- **SEO Overhaul** — Sitemap with all 87 video deep links, robots.txt, JSON-LD structured data, Open Graph image (1200x630), canonical URLs, optimized meta tags
+- **SEO Overhaul** — Sitemap with all 101 video deep links, robots.txt, JSON-LD structured data, Open Graph image (1200x630), canonical URLs, optimized meta tags
 - **Performance** — Toronto skyline compressed from 2.8MB PNG to 185KB WebP (93% reduction); OG image optimized to 42KB; Vercel caching headers for immutable assets
 - **Accessibility** — Skip-to-content link for keyboard users, `prefers-reduced-motion` support to disable animations, reduced mobile `backdrop-filter` for GPU savings
 - **PWA Manifest** — Web app manifest for home screen installability with themed icons

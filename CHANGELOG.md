@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.5.2] - 2026-02-12
+
+### Fixed
+- **Stale portfolio counts across SEO metadata** — Updated hardcoded "87 videos, 49 artists" to actual "101 videos, 54 artists" in 7 locations: `index.html` meta description, Open Graph, Twitter Card, LocalBusiness JSON-LD, ProfilePage JSON-LD, VideoObject ItemList `numberOfItems`, and `manifest.json` PWA description. Also corrected "53 artists" → "54 artists" in README.md (4 locations) and "87 entries" / "49 artists" in `docs/ARCHITECTURE.md` (3 locations). These counts drifted as videos were added in v3.2.0–v3.3.0 without updating the static metadata
+
 ## [3.5.1] - 2026-02-12
 
 ### Changed

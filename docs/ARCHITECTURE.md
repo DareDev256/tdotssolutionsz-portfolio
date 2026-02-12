@@ -44,7 +44,7 @@ src/
 │   ├── particles/           # Soft particle system
 │   └── ui/                  # TheaterMode fullscreen overlay
 ├── data/
-│   ├── videos.json          # 87 video entries (source of truth)
+│   ├── videos.json          # 101 video entries (source of truth)
 │   └── photos.json          # 25 photo entries with metadata
 ├── hooks/
 │   ├── useDeviceType.js     # phone/tablet/desktop breakpoints
@@ -80,7 +80,7 @@ scripts/
 ```
 ┌──────────────┐    Build Time     ┌──────────────────┐
 │ videos.json  │──────────────────▶│ fetch-youtube-    │
-│ (87 entries) │                   │ data.js           │
+│ (101 entries)│                   │ data.js           │
 └──────────────┘                   │ ↓ YouTube API v3  │
                                    │ ↓ validates IDs   │
                                    │ ↓ deduplicates    │
@@ -95,7 +95,7 @@ scripts/
 │              videoData.js (runtime)                   │
 │                                                      │
 │  VIDEOS         → Enriched video array               │
-│  ALL_ARTISTS    → 49 unique sorted artist names      │
+│  ALL_ARTISTS    → 54 unique sorted artist names      │
 │  ARTIST_STATS   → Per-artist { count, views, range } │
 │  PORTFOLIO_STATS→ Aggregate dashboard metrics         │
 │  LANE_CONFIG    → 3D positioning constants            │
