@@ -1,13 +1,16 @@
-import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
 import { ArtistPanel } from './components/ui'
 import useFavorites from './hooks/useFavorites'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from './utils/videoData'
-import { isValidYouTubeId, getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
+import { getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
 import { THUMBNAIL_FALLBACK } from './utils/imageFallback'
 import { formatViews } from './utils/formatters'
 import { searchAll } from './hooks/useSearch'
+import useVideoDeepLink from './hooks/useVideoDeepLink'
+import useVideoNavigation from './hooks/useVideoNavigation'
+import useCopyLink from './hooks/useCopyLink'
 import './MobileApp.css'
 
 /** Reveal cards as they scroll into view */
@@ -57,7 +60,6 @@ export default function MobileApp() {
     const [filterArtist, setFilterArtist] = useState(null)
     const [searchOpen, setSearchOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
-    const [copied, setCopied] = useState(false)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(LOAD_ERROR)
     const [artistPanelArtist, setArtistPanelArtist] = useState(null)
@@ -73,24 +75,8 @@ export default function MobileApp() {
         setLoading(false)
     }, [])
 
-    // Deep link: read ?v= on mount (validated)
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search)
-        const vId = params.get('v')
-        if (vId && isValidYouTubeId(vId)) {
-            const found = VIDEOS.find(v => v.youtubeId === vId)
-            if (found) setPlayingVideo(found)
-        }
-    }, [])
-
-    // Update URL on modal open/close
-    useEffect(() => {
-        if (playingVideo) {
-            window.history.replaceState(null, '', `?v=${playingVideo.youtubeId}`)
-        } else {
-            window.history.replaceState(null, '', window.location.pathname)
-        }
-    }, [playingVideo])
+    // Deep link: read ?v= on mount + sync URL with active video
+    useVideoDeepLink(playingVideo, setPlayingVideo)
 
     const filteredVideos = useMemo(() => {
         let vids = [...VIDEOS]
@@ -125,27 +111,9 @@ export default function MobileApp() {
         setPlayingVideo(null)
     }
 
-    const handleNextVideo = useCallback(() => {
-        if (!playingVideo) return
-        const idx = filteredVideos.findIndex(v => v.id === playingVideo.id)
-        const next = filteredVideos[(idx + 1) % filteredVideos.length]
-        if (next) setPlayingVideo(next)
-    }, [playingVideo, filteredVideos])
-
-    const handlePrevVideo = useCallback(() => {
-        if (!playingVideo) return
-        const idx = filteredVideos.findIndex(v => v.id === playingVideo.id)
-        const prev = filteredVideos[(idx - 1 + filteredVideos.length) % filteredVideos.length]
-        if (prev) setPlayingVideo(prev)
-    }, [playingVideo, filteredVideos])
-
-    const handleCopyLink = () => {
-        if (!playingVideo) return
-        navigator.clipboard.writeText(getShareUrl(playingVideo)).then(() => {
-            setCopied(true)
-            setTimeout(() => setCopied(false), 2000)
-        })
-    }
+    const { handleNext: handleNextVideo, handlePrev: handlePrevVideo } =
+        useVideoNavigation(playingVideo, filteredVideos, setPlayingVideo)
+    const { copied, handleCopyLink } = useCopyLink(playingVideo)
 
     // Related videos: other videos by same artist (exclude current)
     const relatedVideos = useMemo(() => {

@@ -40,6 +40,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, CORP, Referrer-Policy, Permissions-Policy; YouTube ID validation at all entry points; localStorage hardening; social share host allowlist; build-time ID validation; no-store HTML cache policy
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL crashes; broken thumbnails gracefully fall back to SVG placeholder
+- **Shared Hooks** — Deep-link URL sync, video navigation, and clipboard copy extracted into reusable hooks shared between desktop 3D and mobile grid experiences
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
 - **Hub Landing** — Music Videos live, Photography locked with "Coming Soon" toast
 - **Tested** — 177 unit tests via Vitest

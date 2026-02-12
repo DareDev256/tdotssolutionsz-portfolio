@@ -17,9 +17,12 @@ import { TheaterMode, ArtistPanel } from './components/ui'
 
 // Shared data & utilities (single source of truth with MobileApp)
 import { VIDEOS, NEON_COLORS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist } from './utils/videoData'
-import { isValidYouTubeId, extractVideoId, getShareUrl, getThumbnailUrl } from './utils/youtube'
+import { isValidYouTubeId, extractVideoId, getThumbnailUrl } from './utils/youtube'
 import { formatViews } from './utils/formatters'
 import { searchAll } from './hooks/useSearch'
+import useVideoDeepLink from './hooks/useVideoDeepLink'
+import useVideoNavigation from './hooks/useVideoNavigation'
+import useCopyLink from './hooks/useCopyLink'
 
 const LANES = processVideosIntoLanes()
 const PROJECTS = LANES.all // Backward compatibility
@@ -1640,15 +1643,10 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
 // ============================================
 const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArtistClick }) => {
     const [isVisible, setIsVisible] = useState(false)
-    const [copied, setCopied] = useState(false)
+    const { copied, handleCopyLink } = useCopyLink(activeProject)
 
     useEffect(() => {
-        if (activeProject) {
-            setIsVisible(true)
-            setCopied(false)
-        } else {
-            setIsVisible(false)
-        }
+        setIsVisible(!!activeProject)
     }, [activeProject])
 
     if (!activeProject) return null
@@ -1656,13 +1654,6 @@ const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArtistClic
     const videoId = extractVideoId(activeProject.url)
     const validId = isValidYouTubeId(videoId)
     const stats = ARTIST_STATS[activeProject.artist]
-
-    const handleCopyLink = () => {
-        navigator.clipboard.writeText(getShareUrl(activeProject)).then(() => {
-            setCopied(true)
-            setTimeout(() => setCopied(false), 2000)
-        })
-    }
 
     return (
         <div className={`video-overlay ${isVisible ? 'visible' : ''}`}>
@@ -2042,71 +2033,28 @@ export default function App({ reducedEffects = false }) {
         return currentLane === 'popular' ? LANES.popular : LANES.chronological
     }, [currentLane])
 
-    const activeIndex = useMemo(() => {
-        if (!activeProject) return -1
-        return currentLaneVideos.findIndex(v => v.id === activeProject.id)
-    }, [activeProject, currentLaneVideos])
-
-    const handleTheaterNext = useCallback(() => {
-        if (activeIndex < 0 || currentLaneVideos.length === 0) return
-        const next = currentLaneVideos[(activeIndex + 1) % currentLaneVideos.length]
-        setActiveProject(next)
-    }, [activeIndex, currentLaneVideos])
-
-    const handleTheaterPrev = useCallback(() => {
-        if (activeIndex < 0 || currentLaneVideos.length === 0) return
-        const prev = currentLaneVideos[(activeIndex - 1 + currentLaneVideos.length) % currentLaneVideos.length]
-        setActiveProject(prev)
-    }, [activeIndex, currentLaneVideos])
+    const { handleNext: handleTheaterNext, handlePrev: handleTheaterPrev } =
+        useVideoNavigation(activeProject, currentLaneVideos, setActiveProject)
 
     // Keyboard shortcut: F to toggle theater mode
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'f' || e.key === 'F') {
-                // Don't trigger if typing in an input
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
-
-                if (theaterMode) {
-                    setTheaterMode(false)
-                } else if (activeProject) {
-                    setTheaterMode(true)
-                }
+                if (theaterMode) setTheaterMode(false)
+                else if (activeProject) setTheaterMode(true)
             }
         }
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [theaterMode, activeProject])
 
-    // Feature 4: Deep link — read ?v= on mount (validated)
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search)
-        const vId = params.get('v')
-        if (vId && isValidYouTubeId(vId)) {
-            const found = VIDEOS.find(v => v.youtubeId === vId)
-            if (found) {
-                // Build a project-like object to open theater
-                const enriched = {
-                    ...found,
-                    url: `https://www.youtube.com/watch?v=${found.youtubeId}`,
-                    color: NEON_COLORS[0]
-                }
-                setActiveProject(enriched)
-                setTheaterMode(true)
-            }
-        }
-    }, [])
-
-    // Feature 4: Update URL when entering/exiting theater
-    useEffect(() => {
-        if (theaterMode && activeProject) {
-            const vid = activeProject.youtubeId || extractVideoId(activeProject.url)
-            if (vid) {
-                window.history.replaceState(null, '', `?v=${vid}`)
-            }
-        } else {
-            window.history.replaceState(null, '', window.location.pathname)
-        }
-    }, [theaterMode, activeProject])
+    // Deep link: read ?v= on mount + sync URL with theater state
+    useVideoDeepLink(activeProject, (found) => {
+        const enriched = { ...found, url: `https://www.youtube.com/watch?v=${found.youtubeId}`, color: NEON_COLORS[0] }
+        setActiveProject(enriched)
+        setTheaterMode(true)
+    }, theaterMode && !!activeProject)
 
     return (
         <>

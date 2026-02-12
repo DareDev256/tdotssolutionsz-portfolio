@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.5.1] - 2026-02-12
+
+### Changed
+- **Extract shared hooks** — Pulled duplicated logic out of App.jsx (2176 lines) and MobileApp.jsx (562 lines) into three reusable hooks:
+  - `useVideoDeepLink` — URL deep-link read (`?v=`) on mount + URL sync as active video changes. Replaces ~30 lines of duplicated `useEffect` logic
+  - `useVideoNavigation` — Circular next/prev navigation over a video list with memoized index tracking. Replaces ~20 lines duplicated across desktop lane navigation and mobile filtered list navigation
+  - `useCopyLink` — Clipboard copy with 2-second "copied" indicator and auto-reset on video change. Replaces ~12 lines duplicated in VideoOverlay (desktop) and MobileApp (mobile)
+- **Cleaner imports** — Removed unused `getShareUrl` import from App.jsx, unused `isValidYouTubeId`/`useCallback` imports from MobileApp.jsx
+- **Net reduction** — ~62 lines of duplicated imperative code replaced by 3 focused hooks (~65 lines total), establishing reusable primitives for future features
+
 ## [3.5.0] - 2026-02-11
 
 ### Added
