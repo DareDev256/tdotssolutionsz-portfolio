@@ -6,6 +6,7 @@ import useFavorites from './hooks/useFavorites'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from './utils/videoData'
 import { isValidYouTubeId, getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
 import { THUMBNAIL_FALLBACK } from './utils/imageFallback'
+import { formatViews } from './utils/formatters'
 import './MobileApp.css'
 
 /** Reveal cards as they scroll into view */
@@ -222,12 +223,6 @@ export default function MobileApp() {
                 </main>
             </div>
         )
-    }
-
-    const formatViews = (count) => {
-        if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`
-        if (count >= 1000) return `${(count / 1000).toFixed(0)}K`
-        return count.toString()
     }
 
     const heroVideo = (!filterArtist && !searchOpen && filteredVideos.length > 0) ? filteredVideos[0] : null

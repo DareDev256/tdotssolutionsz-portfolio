@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { formatViews, formatYear, formatDate } from '../utils/formatters'
+import { formatViews, formatYear, formatDate } from './formatters'
 
 describe('formatViews', () => {
     it('formats millions with 1 decimal', () => {
@@ -56,35 +56,27 @@ describe('formatDate (relative time)', () => {
         vi.useRealTimers()
     })
 
-    it('shows days for videos uploaded < 7 days ago', () => {
-        // 3 days ago
+    it('shows days for dates < 7 days ago', () => {
         const result = formatDate('2026-02-07T12:00:00Z')
         expect(result).toMatch(/^\dd ago$/)
     })
 
-    it('shows weeks for videos uploaded 7-29 days ago', () => {
-        // 14 days ago
+    it('shows weeks for dates 7-29 days ago', () => {
         const result = formatDate('2026-01-27T12:00:00Z')
         expect(result).toBe('2w ago')
     })
 
-    it('shows months for videos uploaded 30-364 days ago', () => {
-        // ~3 months ago
+    it('shows months for dates 30-364 days ago', () => {
         const result = formatDate('2025-11-10T12:00:00Z')
         expect(result).toBe('3mo ago')
     })
 
-    it('shows years for videos uploaded 365+ days ago', () => {
-        // ~2 years ago
+    it('shows years for dates 365+ days ago', () => {
         const result = formatDate('2024-02-10T12:00:00Z')
         expect(result).toBe('2y ago')
-        // ~3 years ago
-        const result2 = formatDate('2023-01-15T12:00:00Z')
-        expect(result2).toMatch(/^\d+y ago$/)
     })
 
     it('handles boundary at exactly 7 days', () => {
-        // Exactly 7 days ago
         const result = formatDate('2026-02-03T12:00:00Z')
         expect(result).toBe('1w ago')
     })

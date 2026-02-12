@@ -18,6 +18,7 @@ import { TheaterMode, ArtistPanel } from './components/ui'
 // Shared data & utilities (single source of truth with MobileApp)
 import { VIDEOS, NEON_COLORS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist } from './utils/videoData'
 import { isValidYouTubeId, extractVideoId, getShareUrl, getThumbnailUrl } from './utils/youtube'
+import { formatViews } from './utils/formatters'
 
 const LANES = processVideosIntoLanes()
 const PROJECTS = LANES.all // Backward compatibility
@@ -1925,12 +1926,6 @@ const SearchBar = ({ filterArtist, onFilterChange }) => {
 const PortfolioStats = ({ isOpen, onClose }) => {
     if (!isOpen) return null
 
-    const formatNumber = (n) => {
-        if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`
-        if (n >= 1000) return `${(n / 1000).toFixed(0)}K`
-        return n.toString()
-    }
-
     const yearRange = `${PORTFOLIO_STATS.earliestDate.slice(0, 4)}–${PORTFOLIO_STATS.latestDate.slice(0, 4)}`
 
     return (
@@ -1948,7 +1943,7 @@ const PortfolioStats = ({ isOpen, onClose }) => {
                         <span className="stat-label">Artists</span>
                     </div>
                     <div className="stat-card">
-                        <span className="stat-value">{formatNumber(PORTFOLIO_STATS.totalViews)}</span>
+                        <span className="stat-value">{formatViews(PORTFOLIO_STATS.totalViews)}</span>
                         <span className="stat-label">Total Views</span>
                     </div>
                     <div className="stat-card">
@@ -1962,7 +1957,7 @@ const PortfolioStats = ({ isOpen, onClose }) => {
                         <span className="top-artist-name">{PORTFOLIO_STATS.topArtist.name}</span>
                         <span className="top-artist-meta">
                             {PORTFOLIO_STATS.topArtist.count} video{PORTFOLIO_STATS.topArtist.count > 1 ? 's' : ''}
-                            {' · '}{formatNumber(PORTFOLIO_STATS.topArtist.totalViews)} views
+                            {' · '}{formatViews(PORTFOLIO_STATS.topArtist.totalViews)} views
                         </span>
                     </div>
                 )}

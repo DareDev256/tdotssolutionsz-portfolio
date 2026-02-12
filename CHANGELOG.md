@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.4.0] - 2026-02-11
+
+### Changed
+- **Extract shared formatters module** — Consolidated `formatViews`, `formatYear`, and `formatDate` from 3 separate files (App.jsx, MobileApp.jsx, VideoCard.jsx) into `src/utils/formatters.js`. Eliminates triple-maintained formatting logic and aligns with existing `src/utils/` convention
+- **App.jsx** — Removed inline `formatNumber` (duplicate of `formatViews`), now imports from shared module
+- **MobileApp.jsx** — Removed inline `formatViews`, now imports from shared module
+- **VideoCard.jsx** — Removed 33 lines of inline formatter definitions, now imports from shared module
+- **Test consolidation** — MobileApp.test.js no longer re-implements `formatViews` locally; imports from shared module. New `formatters.test.js` provides canonical unit tests (164 total tests, up from 153)
+
 ## [3.3.1] - 2026-02-11
 
 ### Fixed

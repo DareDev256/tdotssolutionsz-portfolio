@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS } from './utils/videoData'
+import { formatViews } from './utils/formatters'
 
 /**
  * Tests for MobileApp.jsx filtering, sorting, and search logic.
@@ -42,12 +43,6 @@ function getRelatedVideos(playingVideo) {
         .slice(0, 4)
 }
 
-// ── Replicate MobileApp's formatViews ──
-function formatViews(count) {
-    if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`
-    if (count >= 1000) return `${(count / 1000).toFixed(0)}K`
-    return count.toString()
-}
 
 describe('MobileApp: filteredVideos', () => {
     it('"latest" tab returns all videos sorted newest-first', () => {
