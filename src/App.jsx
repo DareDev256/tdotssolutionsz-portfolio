@@ -13,7 +13,7 @@ import * as THREE from 'three'
 // Phase 1 visual upgrade components
 import { SoftParticles } from './components/particles'
 import { GroundFog, DistanceHaze, EnhancedStarField, ProceduralNebula } from './components/atmosphere'
-import { TheaterMode, ArtistPanel } from './components/ui'
+import { TheaterMode, ArtistPanel, KeyboardGuide } from './components/ui'
 
 // Shared data & utilities (single source of truth with MobileApp)
 import { VIDEOS, NEON_COLORS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist } from './utils/videoData'
@@ -1991,6 +1991,7 @@ export default function App({ reducedEffects = false }) {
     const [theaterMode, setTheaterMode] = useState(false)
     const [filterArtist, setFilterArtist] = useState(null)
     const [statsOpen, setStatsOpen] = useState(false)
+    const [kbdGuideOpen, setKbdGuideOpen] = useState(false)
     const [artistPanel, setArtistPanel] = useState(null)
 
     const handleToggleAudio = useCallback(() => {
@@ -2048,6 +2049,18 @@ export default function App({ reducedEffects = false }) {
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [theaterMode, activeProject])
+
+    // Keyboard shortcut: ? to toggle keyboard guide
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === '?') {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+                setKbdGuideOpen(prev => !prev)
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [])
 
     // Deep link: read ?v= on mount + sync URL with theater state
     useVideoDeepLink(activeProject, (found) => {
@@ -2116,6 +2129,7 @@ export default function App({ reducedEffects = false }) {
                 onOpenStats={() => setStatsOpen(true)}
             />
             <PortfolioStats isOpen={statsOpen} onClose={() => setStatsOpen(false)} />
+            <KeyboardGuide isOpen={kbdGuideOpen} onClose={() => setKbdGuideOpen(false)} />
             <Suspense fallback={<LoadingScreen />}>
                 <div style={{ display: 'none' }}>Loaded</div>
             </Suspense>

@@ -25,6 +25,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **Artist Panel** — Slide-in sidebar (desktop right, mobile bottom sheet) showing all videos by an artist with stats; clickable from both desktop spotlight and mobile modal
 - **YouTube Integration** — Embedded playback with real view counts via YouTube IFrame API
 - **Theater Mode** — Fullscreen immersive viewing (press F), arrow keys to skip tracks, social sharing
+- **Keyboard Shortcuts Guide** — Press `?` to see all keyboard shortcuts; context-labeled with synthwave-styled keys
 - **Vehicle Selection** — Choose between Tron Light Cycle, DeLorean, or Cyber Bike
 - **Favorites** — Heart button to save videos; persist via localStorage with dedicated filter tab
 - **Mobile Atmosphere** — Floating CSS particles (cyan/pink), subtle scanline overlay, card entrance animations with staggered scroll reveal
@@ -88,6 +89,9 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.6.0 (2026-02-12)
+- **Keyboard shortcuts guide** — Press `?` anywhere to toggle a modal showing all keyboard shortcuts with context labels. Works on both desktop 3D and mobile grid views
 
 ### v3.3.0 (2026-02-11)
 - **Golden angel halos** — Deceased artists (Murda, BG) honored with golden torus halo, golden billboard border, and ambient golden light on 3D billboards; Bloom creates ethereal glow

@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.6.0] - 2026-02-12
+
+### Added
+- **Keyboard shortcuts guide** — Press `?` anywhere to toggle a modal showing all keyboard shortcuts (lane switching, theater mode, navigation, video playback). Matches existing overlay/glassmorphism design language with synthwave-styled `<kbd>` keys, context labels, and responsive layout. Integrated into both desktop 3D (`App.jsx`) and mobile grid (`MobileApp.jsx`) experiences. Closes on `Esc` or backdrop click
+- **New UI component** — `KeyboardGuide` added to `components/ui/` with dedicated CSS, exported via barrel (`index.js`)
+
 ## [3.5.3] - 2026-02-12
 
 ### Added

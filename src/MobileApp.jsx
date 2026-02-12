@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
-import { ArtistPanel } from './components/ui'
+import { ArtistPanel, KeyboardGuide } from './components/ui'
 import useFavorites from './hooks/useFavorites'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from './utils/videoData'
 import { getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
@@ -63,6 +63,7 @@ export default function MobileApp() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(LOAD_ERROR)
     const [artistPanelArtist, setArtistPanelArtist] = useState(null)
+    const [kbdGuideOpen, setKbdGuideOpen] = useState(false)
     const { favorites, toggleFavorite, isFavorite } = useFavorites()
 
     // Simulate loading state for initial data hydration
@@ -77,6 +78,17 @@ export default function MobileApp() {
 
     // Deep link: read ?v= on mount + sync URL with active video
     useVideoDeepLink(playingVideo, setPlayingVideo)
+
+    // Keyboard shortcut: ? to toggle keyboard guide
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === '?' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                setKbdGuideOpen(prev => !prev)
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [])
 
     const filteredVideos = useMemo(() => {
         let vids = [...VIDEOS]
@@ -517,6 +529,7 @@ export default function MobileApp() {
                 onClose={() => setArtistPanelArtist(null)}
                 mobileModal={Boolean(playingVideo)}
             />
+            <KeyboardGuide isOpen={kbdGuideOpen} onClose={() => setKbdGuideOpen(false)} />
 
             {/* Footer */}
             <footer className="mobile-footer">
