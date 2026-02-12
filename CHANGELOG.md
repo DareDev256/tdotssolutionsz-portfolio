@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.6.1] - 2026-02-12
+
+### Changed
+- **Extract vehicle components from App.jsx** — Moved TronLightCycle (136 lines), DeLorean (48 lines), CyberBike (55 lines), and Vehicle selector into `src/components/3d/vehicles/` with individual files and barrel export. Reduces App.jsx from 2138 → 1862 lines (−276). Removed dead `VEHICLES` constant that was never referenced. No behavior changes — pure structural refactor
+
 ## [3.6.0] - 2026-02-12
 
 ### Added

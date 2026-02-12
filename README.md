@@ -42,6 +42,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL crashes; broken thumbnails gracefully fall back to SVG placeholder
 - **Shared Hooks** — Deep-link URL sync, video navigation, and clipboard copy extracted into reusable hooks shared between desktop 3D and mobile grid experiences
+- **Modular 3D Components** — Vehicle system (TronLightCycle, DeLorean, CyberBike) extracted into `components/3d/vehicles/` with barrel exports
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
 - **Hub Landing** — Music Videos live, Photography locked with "Coming Soon" toast
 - **Tested** — 209 unit tests via Vitest
