@@ -354,9 +354,9 @@ export default function MobileApp() {
                 <div className="hero-card" onClick={() => handleVideoClick(heroVideo)} role="button" tabIndex={0} aria-label={`Play ${heroVideo.title}`}>
                     <img
                         className="hero-card__bg"
-                        src={getThumbnailUrl(heroVideo.youtubeId, 'maxresdefault')}
+                        src={getThumbnailUrl(heroVideo.youtubeId, 'hqdefault')}
                         alt={heroVideo.title}
-                        onError={(e) => { e.currentTarget.src = getThumbnailUrl(heroVideo.youtubeId, 'hqdefault') }}
+                        onError={(e) => { e.currentTarget.src = THUMBNAIL_FALLBACK }}
                     />
                     <div className="hero-card__overlay" />
                     <div className="hero-card__content">

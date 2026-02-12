@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.3.1] - 2026-02-11
+
+### Fixed
+- **Hero card thumbnail (mobile)** — Switched from `maxresdefault` to `hqdefault` thumbnail. YouTube returns a tiny 120x90 placeholder (HTTP 200) when `maxresdefault` doesn't exist, so `onError` never fires. `hqdefault` (480x360) is always available
+- **Theater mode crash ("3D rendering failed")** — ProximityTracker was overwriting `activeProject` every animation frame, racing with theater mode navigation. Added `theaterMode` guard to `handleActiveChange` so proximity detection pauses during theater/fullscreen playback. Also fixes the wrong-video-on-fullscreen bug (same root cause)
+- **RoadKidd "Back 2 Work" missing from popular lane** — Video has 58K views, threshold was 60K. Lowered `popularThreshold` from 60,000 to 55,000
+- **Desktop video controls** — VideoOverlay iframe had `controls=0`, preventing scrubbing/seeking outside fullscreen. Changed to `controls=1`
+- **Null safety for `isDeceasedArtist()`** — Added guard for undefined `artist` field to prevent TypeError
+
 ## [3.3.0] - 2026-02-11
 
 ### Added
@@ -10,7 +19,7 @@ All notable changes to TdotsSolutionsz Music Video Portfolio.
 - **Mobile floating particles** — 15 CSS-only particles (8 cyan, 7 pink) drifting upward with staggered durations (12-20s) and delays. Respects `prefers-reduced-motion: reduce`
 - **Mobile scanline overlay** — Subtle 4px repeating gradient scrolling downward over 8s. Respects `prefers-reduced-motion: reduce`
 - **Card entrance animations** — `useScrollReveal` hook (IntersectionObserver, threshold 0.1, rootMargin 50px) triggers `card-reveal` animation. Right column staggered 100ms via inline `animationDelay`
-- **Hero card (mobile)** — Full-width featured video card above the grid with `maxresdefault` thumbnail, gradient overlay, "LATEST"/"MOST POPULAR" label, and PLAY button. Only renders when not searching/filtering; grid shows `slice(1)` to avoid duplicate
+- **Hero card (mobile)** — Full-width featured video card above the grid with `hqdefault` thumbnail, gradient overlay, "LATEST"/"MOST POPULAR" label, and PLAY button. Only renders when not searching/filtering; grid shows `slice(1)` to avoid duplicate
 - **Swipe gestures (mobile)** — `useSwipe` hook detects left/right touch gestures (>50px threshold) on modal content div. Swipe left = next video, swipe right = previous
 - **Card glassmorphism** — `backdrop-filter: blur(8px)` on `.video-card` for frosted glass effect
 - **Badge glow pulse** — `.card-views-badge` animates box-shadow cyan glow on 2s cycle

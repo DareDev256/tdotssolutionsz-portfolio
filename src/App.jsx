@@ -1696,7 +1696,7 @@ const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArtistClic
                             key={videoId}
                             width="100%"
                             height="100%"
-                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${audioEnabled ? 0 : 1}&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&playsinline=1`}
+                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${audioEnabled ? 0 : 1}&loop=1&playlist=${videoId}&controls=1&modestbranding=1&rel=0&playsinline=1`}
                             style={{ border: 'none' }}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
@@ -1993,8 +1993,9 @@ export default function App({ reducedEffects = false }) {
     }, [])
 
     const handleActiveChange = useCallback((project) => {
+        if (theaterMode) return // Don't let proximity tracker override theater mode selection
         setActiveProject(project)
-    }, [])
+    }, [theaterMode])
 
     const handleVehicleChange = useCallback((type) => {
         setVehicleType(type)

@@ -51,6 +51,7 @@ export const DECEASED_ARTISTS = new Set(['Murda', 'BG'])
 
 /** Check if any part of a multi-artist string includes a deceased artist */
 export function isDeceasedArtist(artistField) {
+    if (!artistField) return false
     return artistField.split(',').some(a => DECEASED_ARTISTS.has(a.trim()))
 }
 

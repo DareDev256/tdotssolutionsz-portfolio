@@ -1012,9 +1012,9 @@
     }
   ],
   "settings": {
-    "popularThreshold": 60000,
+    "popularThreshold": 55000,
     "chronologicalOrder": "newest-first"
   },
-  "lastFetched": "2026-02-11T23:51:09.595Z",
+  "lastFetched": "2026-02-12T00:29:25.461Z",
   "apiKeyUsed": false
 }

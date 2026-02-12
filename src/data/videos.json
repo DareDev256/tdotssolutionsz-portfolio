@@ -911,7 +911,7 @@
     }
   ],
   "settings": {
-    "popularThreshold": 60000,
+    "popularThreshold": 55000,
     "chronologicalOrder": "newest-first"
   }
 }
