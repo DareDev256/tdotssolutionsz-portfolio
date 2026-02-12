@@ -11,6 +11,7 @@ import { searchAll } from './hooks/useSearch'
 import useVideoDeepLink from './hooks/useVideoDeepLink'
 import useVideoNavigation from './hooks/useVideoNavigation'
 import useCopyLink from './hooks/useCopyLink'
+import useShufflePlay from './hooks/useShufflePlay'
 import './MobileApp.css'
 
 /** Reveal cards as they scroll into view */
@@ -126,6 +127,12 @@ export default function MobileApp() {
     const { handleNext: handleNextVideo, handlePrev: handlePrevVideo } =
         useVideoNavigation(playingVideo, filteredVideos, setPlayingVideo)
     const { copied, handleCopyLink } = useCopyLink(playingVideo)
+    const { shufflePlay } = useShufflePlay()
+
+    const handleShuffle = () => {
+        const pick = shufflePlay()
+        if (pick) setPlayingVideo(pick)
+    }
 
     // Related videos: other videos by same artist (exclude current)
     const relatedVideos = useMemo(() => {
@@ -290,6 +297,13 @@ export default function MobileApp() {
                         🔍
                     </button>
                 )}
+                <button
+                    className="tab tab-shuffle"
+                    onClick={handleShuffle}
+                    aria-label="Shuffle — play a random video"
+                >
+                    🎲
+                </button>
             </nav>
 
             {/* Artist Search Dropdown */}

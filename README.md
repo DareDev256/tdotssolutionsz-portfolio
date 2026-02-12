@@ -27,6 +27,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **Theater Mode** — Fullscreen immersive viewing (press F), arrow keys to skip tracks, social sharing
 - **Keyboard Shortcuts Guide** — Press `?` to see all keyboard shortcuts; context-labeled with synthwave-styled keys
 - **Vehicle Selection** — Choose between Tron Light Cycle, DeLorean, or Cyber Bike
+- **Shuffle Play** — Discover random videos with no repeats; dice button on mobile, SHUFFLE button + `S` key on desktop. Sliding-window history avoids the last 10 picks
 - **Favorites** — Heart button to save videos; persist via localStorage with dedicated filter tab
 - **Mobile Atmosphere** — Floating CSS particles (cyan/pink), subtle scanline overlay, card entrance animations with staggered scroll reveal
 - **Hero Card** — Full-width featured video card at top of mobile grid with large thumbnail, gradient overlay, and PLAY button
@@ -45,7 +46,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **Modular 3D Components** — Vehicle system (TronLightCycle, DeLorean, CyberBike) extracted into `components/3d/vehicles/` with barrel exports
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
 - **Hub Landing** — Music Videos live, Photography locked with "Coming Soon" toast
-- **Tested** — 209 unit tests via Vitest
+- **Tested** — 215 unit tests via Vitest
 
 ## Tech Stack
 

@@ -8,6 +8,7 @@ const SHORTCUTS = [
     { keys: ['←', '→'], action: 'Previous / next video', context: 'Theater' },
     { keys: ['Scroll'], action: 'Drive through city', context: 'Desktop 3D' },
     { keys: ['Enter', 'Space'], action: 'Play selected video', context: 'Card focus' },
+    { keys: ['S'], action: 'Shuffle — random video', context: 'Desktop' },
     { keys: ['?'], action: 'Toggle this guide', context: 'Global' },
 ]
 

@@ -24,6 +24,7 @@ import { searchAll } from './hooks/useSearch'
 import useVideoDeepLink from './hooks/useVideoDeepLink'
 import useVideoNavigation from './hooks/useVideoNavigation'
 import useCopyLink from './hooks/useCopyLink'
+import useShufflePlay from './hooks/useShufflePlay'
 
 const LANES = processVideosIntoLanes()
 const PROJECTS = LANES.all // Backward compatibility
@@ -1502,7 +1503,7 @@ const VehicleSelector = ({ currentVehicle, onVehicleChange }) => {
 // ============================================
 // UI OVERLAY
 // ============================================
-const UIOverlay = ({ audioEnabled, onToggleAudio, currentLane, onLaneChange, currentVehicle, onVehicleChange, onOpenStats }) => {
+const UIOverlay = ({ audioEnabled, onToggleAudio, currentLane, onLaneChange, currentVehicle, onVehicleChange, onOpenStats, onShuffle }) => {
     return (
         <>
             <div className="title-container">
@@ -1551,6 +1552,15 @@ const UIOverlay = ({ audioEnabled, onToggleAudio, currentLane, onLaneChange, cur
                 aria-label="View portfolio stats"
             >
                 STATS
+            </button>
+
+            <button
+                type="button"
+                className="shuffle-btn"
+                onClick={onShuffle}
+                aria-label="Shuffle — play a random video"
+            >
+                SHUFFLE
             </button>
         </>
     )
@@ -1717,6 +1727,16 @@ export default function App({ reducedEffects = false }) {
     const [statsOpen, setStatsOpen] = useState(false)
     const [kbdGuideOpen, setKbdGuideOpen] = useState(false)
     const [artistPanel, setArtistPanel] = useState(null)
+    const { shufflePlay } = useShufflePlay()
+
+    const handleShuffle = useCallback(() => {
+        const pick = shufflePlay()
+        if (pick) {
+            const enriched = { ...pick, url: `https://www.youtube.com/watch?v=${pick.youtubeId}`, color: NEON_COLORS[Math.floor(Math.random() * NEON_COLORS.length)] }
+            setActiveProject(enriched)
+            setTheaterMode(true)
+        }
+    }, [shufflePlay])
 
     const handleToggleAudio = useCallback(() => {
         setAudioEnabled((prev) => !prev)
@@ -1786,6 +1806,18 @@ export default function App({ reducedEffects = false }) {
         return () => window.removeEventListener('keydown', handleKeyDown)
     }, [])
 
+    // Keyboard shortcut: S for shuffle play
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 's' || e.key === 'S') {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+                handleShuffle()
+            }
+        }
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    }, [handleShuffle])
+
     // Deep link: read ?v= on mount + sync URL with theater state
     useVideoDeepLink(activeProject, (found) => {
         const enriched = { ...found, url: `https://www.youtube.com/watch?v=${found.youtubeId}`, color: NEON_COLORS[0] }
@@ -1851,6 +1883,7 @@ export default function App({ reducedEffects = false }) {
                 currentVehicle={vehicleType}
                 onVehicleChange={handleVehicleChange}
                 onOpenStats={() => setStatsOpen(true)}
+                onShuffle={handleShuffle}
             />
             <PortfolioStats isOpen={statsOpen} onClose={() => setStatsOpen(false)} />
             <KeyboardGuide isOpen={kbdGuideOpen} onClose={() => setKbdGuideOpen(false)} />

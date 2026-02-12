@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.7.0] - 2026-02-12
+
+### Added
+- **Shuffle play** — Discover random videos with a single tap/click. Available on both mobile (dice button in filter tabs) and desktop (SHUFFLE button in UI overlay, or press `S`). Uses a sliding-window history to avoid repeating the last 10 picks, ensuring genuine discovery across the 101-video catalog
+- **New hook** — `useShufflePlay` in `hooks/` with configurable history size, sliding-window no-repeat logic, and automatic pool reset when history exhausts catalog
+- **6 new tests** (215 total) — Covers selection validity, no-repeat guarantees, diversity across multiple calls, graceful history exhaustion, sliding window maintenance, and null safety
+- **Keyboard shortcut `S`** — Shuffles to a random video and opens theater mode (desktop). Added to KeyboardGuide shortcuts list
+
 ## [3.6.1] - 2026-02-12
 
 ### Changed

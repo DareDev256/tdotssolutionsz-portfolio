@@ -672,6 +672,18 @@
     color: #fff !important;
 }
 
+.tab-shuffle {
+    border-color: rgba(255, 107, 53, 0.4) !important;
+    color: #ff6b35 !important;
+    font-size: 14px !important;
+    padding: 10px 14px;
+    transition: transform 0.15s ease, background 0.2s ease;
+}
+.tab-shuffle:active {
+    transform: scale(0.9);
+    background: rgba(255, 107, 53, 0.25) !important;
+}
+
 /* Favorite button in modal */
 .fav-modal-btn {
     border-color: rgba(255, 0, 128, 0.4) !important;

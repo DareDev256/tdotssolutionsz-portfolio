@@ -862,6 +862,17 @@ body.mobile-mode {
 }
 .stats-toggle-btn:hover { background: rgba(211, 0, 197, 0.25); box-shadow: 0 0 12px rgba(211, 0, 197, 0.4); }
 .stats-toggle-btn:focus-visible { outline: 2px solid var(--neon-purple, #d300c5); outline-offset: 2px; }
+.shuffle-btn {
+    position: fixed; bottom: 30px; right: 250px; padding: 8px 16px;
+    background: rgba(13, 2, 33, 0.8); border: 1px solid var(--neon-orange, #ff6b35);
+    border-radius: 4px; color: var(--neon-orange, #ff6b35); font-family: var(--font-display);
+    font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+    z-index: 1000; cursor: pointer; appearance: none;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.shuffle-btn:hover { background: rgba(255, 107, 53, 0.25); box-shadow: 0 0 12px rgba(255, 107, 53, 0.4); }
+.shuffle-btn:active { transform: scale(0.95); }
+.shuffle-btn:focus-visible { outline: 2px solid var(--neon-orange, #ff6b35); outline-offset: 2px; }
 .portfolio-stats-overlay {
     position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); z-index: 9000;
     display: flex; align-items: center; justify-content: center;
