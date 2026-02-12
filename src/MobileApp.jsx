@@ -159,7 +159,7 @@ export default function MobileApp() {
         window.location.reload()
     }
 
-    const revealed = useScrollReveal(filteredVideos)
+    const revealed = useScrollReveal(loading ? null : filteredVideos)
     const swipeHandlers = useSwipe(handleNextVideo, handlePrevVideo)
 
     const stats = playingVideo ? ARTIST_STATS[playingVideo.artist] : null
