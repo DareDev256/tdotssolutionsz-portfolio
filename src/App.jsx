@@ -12,9 +12,10 @@ import * as THREE from 'three'
 
 // Phase 1 visual upgrade components
 import { SoftParticles } from './components/particles'
-import { GroundFog, DistanceHaze, EnhancedStarField, ProceduralNebula } from './components/atmosphere'
+import { EnhancedStarField } from './components/atmosphere'
 import { TheaterMode, ArtistPanel, KeyboardGuide, SearchBar, PortfolioStats, VideoOverlay } from './components/ui'
 import { Vehicle } from './components/3d/vehicles'
+import { StarField, SynthwaveSun } from './components/3d/effects'
 
 // Shared data & utilities (single source of truth with MobileApp)
 import { NEON_COLORS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist } from './utils/videoData'
@@ -546,175 +547,7 @@ const SynthwaveRoad = () => {
     )
 }
 
-// ============================================
-// FLOATING NEON PARTICLES - Ambient atmosphere
-// ============================================
-const FloatingParticles = () => {
-    const particlesRef = useRef()
-    const count = 40 // Reduced for performance
 
-    const [positions, velocities, colors] = useMemo(() => {
-        const positions = new Float32Array(count * 3)
-        const velocities = new Float32Array(count * 3)
-        const colors = new Float32Array(count * 3)
-
-        const neonColors = [
-            [1.0, 0.16, 0.43],   // pink
-            [0.02, 0.85, 0.91],  // cyan
-            [0.47, 0, 1.0],      // purple
-            [1.0, 0.42, 0.21],   // orange
-        ]
-
-        for (let i = 0; i < count; i++) {
-            // Spread particles around the driving path
-            positions[i * 3] = (Math.random() - 0.5) * 40
-            positions[i * 3 + 1] = Math.random() * 15 + 2
-            positions[i * 3 + 2] = Math.random() * -600
-
-            // Random slow velocities for drifting
-            velocities[i * 3] = (Math.random() - 0.5) * 0.02
-            velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.01
-            velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.01
-
-            // Random neon color
-            const color = neonColors[Math.floor(Math.random() * neonColors.length)]
-            colors[i * 3] = color[0]
-            colors[i * 3 + 1] = color[1]
-            colors[i * 3 + 2] = color[2]
-        }
-        return [positions, velocities, colors]
-    }, [])
-
-    useFrame((state) => {
-        if (!particlesRef.current) return
-        const posArray = particlesRef.current.geometry.attributes.position.array
-        const time = state.clock.elapsedTime
-
-        for (let i = 0; i < count; i++) {
-            // Gentle floating motion
-            posArray[i * 3] += velocities[i * 3] + Math.sin(time * 0.5 + i) * 0.005
-            posArray[i * 3 + 1] += Math.sin(time * 0.3 + i * 0.5) * 0.01
-            posArray[i * 3 + 2] += velocities[i * 3 + 2]
-
-            // Reset particles that drift too far
-            if (posArray[i * 3 + 1] > 20) posArray[i * 3 + 1] = 2
-            if (posArray[i * 3 + 1] < 1) posArray[i * 3 + 1] = 15
-        }
-        particlesRef.current.geometry.attributes.position.needsUpdate = true
-    })
-
-    return (
-        <points ref={particlesRef}>
-            <bufferGeometry>
-                <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
-                <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
-            </bufferGeometry>
-            <pointsMaterial
-                size={0.3}
-                vertexColors
-                transparent
-                opacity={0.8}
-                sizeAttenuation
-                blending={THREE.AdditiveBlending}
-                depthWrite={false}
-            />
-        </points>
-    )
-}
-
-// ============================================
-// LASER BEAM SWEEPS - Classic synthwave spotlights
-// ============================================
-const LaserBeams = () => {
-    const beamsRef = useRef()
-
-    useFrame((state) => {
-        if (!beamsRef.current) return
-        const time = state.clock.elapsedTime
-
-        // Animate beam rotations
-        beamsRef.current.children.forEach((beam, i) => {
-            const baseAngle = (i / beamsRef.current.children.length) * Math.PI * 2
-            beam.rotation.z = Math.sin(time * 0.3 + baseAngle) * 0.5 + baseAngle
-            beam.rotation.x = Math.sin(time * 0.2 + i) * 0.3 - 0.2
-        })
-    })
-
-    const beamCount = 4 // Reduced from 6 for better performance
-
-    return (
-        <group ref={beamsRef} position={[0, 0, -400]}>
-            {[...Array(beamCount)].map((_, i) => (
-                <mesh
-                    key={i}
-                    position={[
-                        Math.sin((i / beamCount) * Math.PI * 2) * 50,
-                        0,
-                        Math.cos((i / beamCount) * Math.PI * 2) * 50
-                    ]}
-                    rotation={[0, 0, (i / beamCount) * Math.PI * 2]}
-                >
-                    <coneGeometry args={[8, 150, 4, 1, true]} />
-                    <meshBasicMaterial
-                        color={i % 2 === 0 ? '#ff2a6d' : '#05d9e8'}
-                        transparent
-                        opacity={0.15}
-                        side={THREE.DoubleSide}
-                        blending={THREE.AdditiveBlending}
-                        depthWrite={false}
-                    />
-                </mesh>
-            ))}
-        </group>
-    )
-}
-
-// ============================================
-// STAR FIELD - Optimized static stars (no per-frame updates)
-// ============================================
-const StarField = () => {
-    const count = 400 // Reduced from 2000
-
-    const [positions, colors] = useMemo(() => {
-        const positions = new Float32Array(count * 3)
-        const colors = new Float32Array(count * 3)
-
-        for (let i = 0; i < count; i++) {
-            const theta = Math.random() * Math.PI * 2
-            const phi = Math.random() * Math.PI * 0.4
-            const radius = 150 + Math.random() * 100
-
-            positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta)
-            positions[i * 3 + 1] = radius * Math.cos(phi) + 20
-            positions[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta) - 100
-
-            const colorChoice = Math.random()
-            if (colorChoice < 0.7) {
-                colors[i * 3] = 1; colors[i * 3 + 1] = 1; colors[i * 3 + 2] = 1
-            } else if (colorChoice < 0.85) {
-                colors[i * 3] = 0.02; colors[i * 3 + 1] = 0.85; colors[i * 3 + 2] = 0.91
-            } else {
-                colors[i * 3] = 1; colors[i * 3 + 1] = 0.16; colors[i * 3 + 2] = 0.43
-            }
-        }
-        return [positions, colors]
-    }, [])
-
-    // No useFrame - stars are static for performance
-    return (
-        <points>
-            <bufferGeometry>
-                <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
-                <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
-            </bufferGeometry>
-            <pointsMaterial size={0.6} vertexColors transparent opacity={0.9} sizeAttenuation />
-        </points>
-    )
-}
-
-// ============================================
-// CN TOWER - Toronto landmark (with pulsing beacon)
-// ============================================
 // ============================================
 // CN TOWER - Tron Energy Spire with orbiting rings
 // ============================================
@@ -1198,53 +1031,6 @@ const Cityscape = ({ cnTowerZ = -280 }) => {
     )
 }
 
-// ============================================
-// NEBULA CLOUDS - Static cosmic background (no per-frame updates)
-// ============================================
-const NebulaClouds = () => {
-    return (
-        <group position={[0, 50, -200]}>
-            <mesh position={[-40, 20, -50]} rotation={[0, 0.3, 0]}>
-                <planeGeometry args={[80, 50]} />
-                <meshBasicMaterial color="#7700ff" transparent opacity={0.1} side={THREE.DoubleSide} />
-            </mesh>
-            <mesh position={[30, 30, -80]} rotation={[0, -0.2, 0.1]}>
-                <planeGeometry args={[60, 40]} />
-                <meshBasicMaterial color="#ff2a6d" transparent opacity={0.08} side={THREE.DoubleSide} />
-            </mesh>
-            <mesh position={[0, 40, -100]} rotation={[0.1, 0, 0]}>
-                <planeGeometry args={[100, 60]} />
-                <meshBasicMaterial color="#05d9e8" transparent opacity={0.05} side={THREE.DoubleSide} />
-            </mesh>
-        </group>
-    )
-}
-
-// ============================================
-// SYNTHWAVE SUN - Positioned at end of journey
-// ============================================
-const SynthwaveSun = ({ zPosition = -300 }) => {
-    return (
-        <group position={[0, 15, zPosition - 50]}>
-            {[...Array(6)].map((_, i) => (
-                <mesh key={i} position={[0, -i * 1.5, -i * 0.01]}>
-                    <circleGeometry args={[22 - i * 0.6, 32]} />
-                    <meshBasicMaterial
-                        color={i < 3 ? '#ffcc00' : '#ff6600'}
-                        transparent
-                        opacity={0.95 - i * 0.1}
-                    />
-                </mesh>
-            ))}
-            {[...Array(5)].map((_, i) => (
-                <mesh key={`line-${i}`} position={[0, -4 - i * 2.5, 0.1]}>
-                    <planeGeometry args={[55, 1.2 + i * 0.3]} />
-                    <meshBasicMaterial color="#0d0221" />
-                </mesh>
-            ))}
-        </group>
-    )
-}
 
 // ============================================
 // MAIN SCENE

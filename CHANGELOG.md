@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.7.2] - 2026-02-12
+
+### Changed
+- **Extract 3D effects from App.jsx** — Moved StarField (39 lines) and SynthwaveSun (22 lines) into `src/components/3d/effects/` with barrel export, following the established `3d/vehicles/` pattern
+- **Remove dead Phase 1 components** — Deleted FloatingParticles (73 lines), LaserBeams (43 lines), and NebulaClouds (18 lines) which were superseded by Phase 2 atmosphere components (SoftParticles, EnhancedStarField, ProceduralNebula) but never cleaned up
+- **Remove dead imports** — Cleaned up unused GroundFog, DistanceHaze, ProceduralNebula imports from App.jsx (imported but never rendered in Scene)
+- **Fix duplicate comment header** — Removed stale "CN Tower - Toronto landmark" comment that duplicated the current "CN Tower - Tron Energy Spire" header
+- App.jsx reduced from 1648 → 1435 lines (−213)
+
 ## [3.7.1] - 2026-02-12
 
 ### Changed

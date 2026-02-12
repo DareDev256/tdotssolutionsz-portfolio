@@ -43,7 +43,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL crashes; broken thumbnails gracefully fall back to SVG placeholder
 - **Shared Hooks** — Deep-link URL sync, video navigation, and clipboard copy extracted into reusable hooks shared between desktop 3D and mobile grid experiences
-- **Modular 3D Components** — Vehicle system (TronLightCycle, DeLorean, CyberBike) extracted into `components/3d/vehicles/` with barrel exports
+- **Modular 3D Components** — Vehicle system (`components/3d/vehicles/`), scene effects (`components/3d/effects/` — StarField, SynthwaveSun) extracted with barrel exports
 - **Modular UI Overlays** — SearchBar, PortfolioStats, VideoOverlay extracted into `components/ui/` alongside TheaterMode, ArtistPanel, and KeyboardGuide
 - **Keyboard Shortcuts Hook** — Declarative `useKeyboardShortcuts` hook consolidates all keyboard bindings into a single listener with automatic input-field guards
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
