@@ -13,22 +13,18 @@ import * as THREE from 'three'
 // Phase 1 visual upgrade components
 import { SoftParticles } from './components/particles'
 import { GroundFog, DistanceHaze, EnhancedStarField, ProceduralNebula } from './components/atmosphere'
-import { TheaterMode, ArtistPanel, KeyboardGuide } from './components/ui'
+import { TheaterMode, ArtistPanel, KeyboardGuide, SearchBar, PortfolioStats, VideoOverlay } from './components/ui'
 import { Vehicle } from './components/3d/vehicles'
 
 // Shared data & utilities (single source of truth with MobileApp)
-import { VIDEOS, NEON_COLORS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist } from './utils/videoData'
-import { isValidYouTubeId, extractVideoId, getThumbnailUrl } from './utils/youtube'
-import { formatViews } from './utils/formatters'
-import { searchAll } from './hooks/useSearch'
+import { NEON_COLORS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist } from './utils/videoData'
+import { extractVideoId, getThumbnailUrl } from './utils/youtube'
 import useVideoDeepLink from './hooks/useVideoDeepLink'
 import useVideoNavigation from './hooks/useVideoNavigation'
-import useCopyLink from './hooks/useCopyLink'
 import useShufflePlay from './hooks/useShufflePlay'
+import useKeyboardShortcuts from './hooks/useKeyboardShortcuts'
 
 const LANES = processVideosIntoLanes()
-const PROJECTS = LANES.all // Backward compatibility
-
 // Filter context — lets nested 3D components read the current filter without prop drilling
 const FilterContext = createContext(null)
 
@@ -1364,87 +1360,6 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
 }
 
 // ============================================
-// VIDEO OVERLAY (Fixed HTML - Never floats!)
-// ============================================
-const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArtistClick }) => {
-    const [isVisible, setIsVisible] = useState(false)
-    const { copied, handleCopyLink } = useCopyLink(activeProject)
-
-    useEffect(() => {
-        setIsVisible(!!activeProject)
-    }, [activeProject])
-
-    if (!activeProject) return null
-
-    const videoId = extractVideoId(activeProject.url)
-    const validId = isValidYouTubeId(videoId)
-    const stats = ARTIST_STATS[activeProject.artist]
-
-    return (
-        <div className={`video-overlay ${isVisible ? 'visible' : ''}`}>
-            <div className="video-frame" style={{ borderColor: activeProject.color }}>
-                <div className="video-title" style={{ color: activeProject.color }}>
-                    {activeProject.title}
-                    <span style={{ display: 'flex', gap: '4px' }}>
-                        {/* Copy Link button */}
-                        <button
-                            className="theater-mode-btn"
-                            onClick={handleCopyLink}
-                            title="Copy Link"
-                            style={{ borderColor: activeProject.color }}
-                        >
-                            {copied ? '✓' : '🔗'}
-                        </button>
-                        {/* Fullscreen/Theater Mode button */}
-                        <button
-                            className="theater-mode-btn"
-                            onClick={onOpenTheater}
-                            title="Theater Mode (F)"
-                            style={{ borderColor: activeProject.color }}
-                        >
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
-                            </svg>
-                        </button>
-                    </span>
-                </div>
-                <div className="video-container">
-                    {validId && (
-                        <iframe
-                            key={videoId}
-                            width="100%"
-                            height="100%"
-                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${audioEnabled ? 0 : 1}&loop=1&playlist=${videoId}&controls=1&modestbranding=1&rel=0&playsinline=1`}
-                            style={{ border: 'none' }}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            title={activeProject.title}
-                        />
-                    )}
-                    {/* CRT Scanline Overlay */}
-                    <div className="crt-overlay" />
-                </div>
-                <div className="video-description">{activeProject.description}</div>
-                {/* Artist spotlight stats */}
-                {stats && (
-                    <div className="artist-spotlight">
-                        <button
-                            className="spotlight-artist spotlight-artist--clickable"
-                            onClick={() => onArtistClick(activeProject.artist)}
-                        >
-                            {activeProject.artist}
-                        </button>
-                        <span className="spotlight-stat">{stats.count} video{stats.count > 1 ? 's' : ''}</span>
-                        <span className="spotlight-stat">{(stats.totalViews / 1000).toFixed(0)}K views</span>
-                        <span className="spotlight-stat">{stats.earliest.slice(0, 4)}–{stats.latest.slice(0, 4)}</span>
-                    </div>
-                )}
-            </div>
-        </div>
-    )
-}
-
-// ============================================
 // LANE INDICATOR
 // ============================================
 const LaneIndicator = ({ currentLane, onLaneChange }) => {
@@ -1581,140 +1496,6 @@ const LoadingScreen = () => {
 }
 
 // ============================================
-// SEARCH BAR
-// ============================================
-const SearchBar = ({ filterArtist, onFilterChange, onVideoSelect }) => {
-    const [open, setOpen] = useState(false)
-    const [query, setQuery] = useState('')
-
-    const { artists: filteredArtists, videos: matchedVideos } = useMemo(() => {
-        if (!query || query.length < 2) return { artists: ALL_ARTISTS, videos: [] }
-        const { artists, videos } = searchAll(query)
-        return { artists: artists.length > 0 ? artists : ALL_ARTISTS.filter(a => a.toLowerCase().includes(query.toLowerCase())), videos }
-    }, [query])
-
-    const handleSelect = (artist) => {
-        onFilterChange(artist)
-        setOpen(false)
-        setQuery('')
-    }
-
-    const handleVideoSelect = (video) => {
-        onVideoSelect?.(video)
-        setOpen(false)
-        setQuery('')
-    }
-
-    const handleClear = () => {
-        onFilterChange(null)
-        setQuery('')
-        setOpen(false)
-    }
-
-    return (
-        <div className="search-bar-container">
-            {filterArtist ? (
-                <button className="search-active-filter" onClick={handleClear}>
-                    {filterArtist} ✕
-                </button>
-            ) : (
-                <button className="search-trigger" onClick={() => setOpen(!open)}>
-                    🔍 SEARCH
-                </button>
-            )}
-            {open && (
-                <div className="search-dropdown">
-                    <input
-                        className="search-input"
-                        type="text"
-                        placeholder="Search artists & videos..."
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        autoFocus
-                    />
-                    <div className="search-results">
-                        {matchedVideos.length > 0 && (
-                            <>
-                                <div className="search-section-label">VIDEOS</div>
-                                {matchedVideos.map(video => (
-                                    <button
-                                        key={`v-${video.id}`}
-                                        className="search-result-item search-result-video"
-                                        onClick={() => handleVideoSelect(video)}
-                                    >
-                                        <span className="search-video-title">{video.title}</span>
-                                        <span className="search-result-count">{video.artist}</span>
-                                    </button>
-                                ))}
-                                <div className="search-section-label">ARTISTS</div>
-                            </>
-                        )}
-                        {filteredArtists.map(artist => (
-                            <button
-                                key={artist}
-                                className="search-result-item"
-                                onClick={() => handleSelect(artist)}
-                            >
-                                {artist}
-                                <span className="search-result-count">
-                                    {ARTIST_STATS[artist]?.count || 0}
-                                </span>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            )}
-        </div>
-    )
-}
-
-// ============================================
-// PORTFOLIO STATS OVERLAY
-// ============================================
-const PortfolioStats = ({ isOpen, onClose }) => {
-    if (!isOpen) return null
-
-    const yearRange = `${PORTFOLIO_STATS.earliestDate.slice(0, 4)}–${PORTFOLIO_STATS.latestDate.slice(0, 4)}`
-
-    return (
-        <div className="portfolio-stats-overlay" onClick={onClose}>
-            <div className="portfolio-stats-panel" onClick={e => e.stopPropagation()}>
-                <button className="portfolio-stats-close" onClick={onClose} aria-label="Close stats">✕</button>
-                <h2 className="portfolio-stats-title">PORTFOLIO STATS</h2>
-                <div className="portfolio-stats-grid">
-                    <div className="stat-card">
-                        <span className="stat-value">{PORTFOLIO_STATS.totalVideos}</span>
-                        <span className="stat-label">Music Videos</span>
-                    </div>
-                    <div className="stat-card">
-                        <span className="stat-value">{PORTFOLIO_STATS.totalArtists}</span>
-                        <span className="stat-label">Artists</span>
-                    </div>
-                    <div className="stat-card">
-                        <span className="stat-value">{formatViews(PORTFOLIO_STATS.totalViews)}</span>
-                        <span className="stat-label">Total Views</span>
-                    </div>
-                    <div className="stat-card">
-                        <span className="stat-value">{yearRange}</span>
-                        <span className="stat-label">Year Range</span>
-                    </div>
-                </div>
-                {PORTFOLIO_STATS.topArtist && (
-                    <div className="portfolio-stats-top-artist">
-                        <span className="top-artist-label">Top Artist by Views</span>
-                        <span className="top-artist-name">{PORTFOLIO_STATS.topArtist.name}</span>
-                        <span className="top-artist-meta">
-                            {PORTFOLIO_STATS.topArtist.count} video{PORTFOLIO_STATS.topArtist.count > 1 ? 's' : ''}
-                            {' · '}{formatViews(PORTFOLIO_STATS.topArtist.totalViews)} views
-                        </span>
-                    </div>
-                )}
-            </div>
-        </div>
-    )
-}
-
-// ============================================
 // MAIN APP
 // ============================================
 export default function App({ reducedEffects = false }) {
@@ -1781,42 +1562,15 @@ export default function App({ reducedEffects = false }) {
     const { handleNext: handleTheaterNext, handlePrev: handleTheaterPrev, currentIndex: activeIndex } =
         useVideoNavigation(activeProject, currentLaneVideos, setActiveProject)
 
-    // Keyboard shortcut: F to toggle theater mode
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'f' || e.key === 'F') {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
-                if (theaterMode) setTheaterMode(false)
-                else if (activeProject) setTheaterMode(true)
-            }
-        }
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [theaterMode, activeProject])
-
-    // Keyboard shortcut: ? to toggle keyboard guide
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === '?') {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
-                setKbdGuideOpen(prev => !prev)
-            }
-        }
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [])
-
-    // Keyboard shortcut: S for shuffle play
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 's' || e.key === 'S') {
-                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
-                handleShuffle()
-            }
-        }
-        window.addEventListener('keydown', handleKeyDown)
-        return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [handleShuffle])
+    // Keyboard shortcuts — consolidated into a single listener
+    useKeyboardShortcuts({
+        f: () => {
+            if (theaterMode) setTheaterMode(false)
+            else if (activeProject) setTheaterMode(true)
+        },
+        '?': () => setKbdGuideOpen(prev => !prev),
+        s: () => handleShuffle(),
+    }, [theaterMode, activeProject, handleShuffle])
 
     // Deep link: read ?v= on mount + sync URL with theater state
     useVideoDeepLink(activeProject, (found) => {

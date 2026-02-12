@@ -44,9 +44,11 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **Error Resilient** — React Error Boundary catches WebGL crashes; broken thumbnails gracefully fall back to SVG placeholder
 - **Shared Hooks** — Deep-link URL sync, video navigation, and clipboard copy extracted into reusable hooks shared between desktop 3D and mobile grid experiences
 - **Modular 3D Components** — Vehicle system (TronLightCycle, DeLorean, CyberBike) extracted into `components/3d/vehicles/` with barrel exports
+- **Modular UI Overlays** — SearchBar, PortfolioStats, VideoOverlay extracted into `components/ui/` alongside TheaterMode, ArtistPanel, and KeyboardGuide
+- **Keyboard Shortcuts Hook** — Declarative `useKeyboardShortcuts` hook consolidates all keyboard bindings into a single listener with automatic input-field guards
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
 - **Hub Landing** — Music Videos live, Photography locked with "Coming Soon" toast
-- **Tested** — 215 unit tests via Vitest
+- **Tested** — 223 unit tests via Vitest
 
 ## Tech Stack
 
@@ -91,6 +93,9 @@ npm run test:watch # Run tests in watch mode
 ```
 
 ## Changelog
+
+### v3.7.1 (2026-02-12)
+- **UI overlay extraction** — Moved SearchBar, PortfolioStats, VideoOverlay out of App.jsx into `components/ui/`. New `useKeyboardShortcuts` hook consolidates 3 duplicate keyboard handlers into one declarative map. App.jsx reduced from 1895 → 1647 lines
 
 ### v3.6.0 (2026-02-12)
 - **Keyboard shortcuts guide** — Press `?` anywhere to toggle a modal showing all keyboard shortcuts with context labels. Works on both desktop 3D and mobile grid views

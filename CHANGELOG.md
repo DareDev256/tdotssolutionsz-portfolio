@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.7.1] - 2026-02-12
+
+### Changed
+- **Extract UI overlays from App.jsx** — Moved SearchBar (84 lines), PortfolioStats (42 lines), and VideoOverlay (76 lines) into `src/components/ui/` as standalone modules with barrel exports. Reduces App.jsx from 1895 → 1647 lines (-248). Each component now owns its own imports (videoData, youtube utils, formatters, useCopyLink) — no dependency on parent scope
+- **New `useKeyboardShortcuts` hook** — Consolidated 3 identical `useEffect` keyboard handlers (F, ?, S) into a single declarative hook that takes a key→action map. Eliminates duplicated input-field guard logic and reduces App.jsx by an additional 25 lines. Single `keydown` listener instead of 3
+- **Dead import cleanup** — Removed unused `VIDEOS`, `ALL_ARTISTS`, `ARTIST_STATS`, `PORTFOLIO_STATS`, `formatViews`, `searchAll`, `isValidYouTubeId`, `useCopyLink` imports and dead `PROJECTS` constant from App.jsx
+- **8 new tests** (223 total) — Keyboard shortcut dispatch logic: key mapping, case-insensitive matching, INPUT/TEXTAREA guard, unmapped key rejection, special characters, multi-handler dispatch, non-input element passthrough
+
 ## [3.7.0] - 2026-02-12
 
 ### Added

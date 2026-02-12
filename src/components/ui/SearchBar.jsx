@@ -1,0 +1,88 @@
+import { useState, useMemo } from 'react'
+import { ALL_ARTISTS, ARTIST_STATS } from '../../utils/videoData'
+import { searchAll } from '../../hooks/useSearch'
+
+export const SearchBar = ({ filterArtist, onFilterChange, onVideoSelect }) => {
+    const [open, setOpen] = useState(false)
+    const [query, setQuery] = useState('')
+
+    const { artists: filteredArtists, videos: matchedVideos } = useMemo(() => {
+        if (!query || query.length < 2) return { artists: ALL_ARTISTS, videos: [] }
+        const { artists, videos } = searchAll(query)
+        return { artists: artists.length > 0 ? artists : ALL_ARTISTS.filter(a => a.toLowerCase().includes(query.toLowerCase())), videos }
+    }, [query])
+
+    const handleSelect = (artist) => {
+        onFilterChange(artist)
+        setOpen(false)
+        setQuery('')
+    }
+
+    const handleVideoSelect = (video) => {
+        onVideoSelect?.(video)
+        setOpen(false)
+        setQuery('')
+    }
+
+    const handleClear = () => {
+        onFilterChange(null)
+        setQuery('')
+        setOpen(false)
+    }
+
+    return (
+        <div className="search-bar-container">
+            {filterArtist ? (
+                <button className="search-active-filter" onClick={handleClear}>
+                    {filterArtist} ✕
+                </button>
+            ) : (
+                <button className="search-trigger" onClick={() => setOpen(!open)}>
+                    🔍 SEARCH
+                </button>
+            )}
+            {open && (
+                <div className="search-dropdown">
+                    <input
+                        className="search-input"
+                        type="text"
+                        placeholder="Search artists & videos..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        autoFocus
+                    />
+                    <div className="search-results">
+                        {matchedVideos.length > 0 && (
+                            <>
+                                <div className="search-section-label">VIDEOS</div>
+                                {matchedVideos.map(video => (
+                                    <button
+                                        key={`v-${video.id}`}
+                                        className="search-result-item search-result-video"
+                                        onClick={() => handleVideoSelect(video)}
+                                    >
+                                        <span className="search-video-title">{video.title}</span>
+                                        <span className="search-result-count">{video.artist}</span>
+                                    </button>
+                                ))}
+                                <div className="search-section-label">ARTISTS</div>
+                            </>
+                        )}
+                        {filteredArtists.map(artist => (
+                            <button
+                                key={artist}
+                                className="search-result-item"
+                                onClick={() => handleSelect(artist)}
+                            >
+                                {artist}
+                                <span className="search-result-count">
+                                    {ARTIST_STATS[artist]?.count || 0}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
