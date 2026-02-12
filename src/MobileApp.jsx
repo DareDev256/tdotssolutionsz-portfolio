@@ -445,7 +445,6 @@ export default function MobileApp() {
                         </div>
                         <div className="video-container">
                             <YouTubePlayer
-                                key={playingVideo.youtubeId}
                                 videoId={playingVideo.youtubeId}
                                 onEnd={handleNextVideo}
                             />

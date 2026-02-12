@@ -1,4 +1,4 @@
-import { useEffect, useRef, useId } from 'react'
+import { useEffect, useRef } from 'react'
 import { isValidYouTubeId } from '../utils/youtube'
 
 // ── YouTube IFrame API loader (singleton) ──
@@ -30,7 +30,10 @@ function ensureYTApi() {
 
 /**
  * YouTube player with end-detection via IFrame API.
- * Use key={videoId} on parent to remount for new videos.
+ *
+ * Uses a ref-managed wrapper so React never tries to removeChild
+ * on the div that the YT API replaces with an iframe internally.
+ * Switches videos via loadVideoById() instead of destroy/recreate.
  */
 export default function YouTubePlayer({
     videoId,
@@ -39,49 +42,66 @@ export default function YouTubePlayer({
     muted = false,
     onEnd
 }) {
-    const uniqueId = useId().replace(/:/g, '_')
-    const containerId = `yt-player-${uniqueId}`
+    const wrapperRef = useRef(null)
     const playerRef = useRef(null)
     const onEndRef = useRef(onEnd)
+    const currentVideoRef = useRef(null)
     onEndRef.current = onEnd
 
     useEffect(() => {
         let destroyed = false
+        const wrapper = wrapperRef.current
+        if (!wrapper || !isValidYouTubeId(videoId)) return
 
-        if (isValidYouTubeId(videoId)) {
-            ensureYTApi().then(() => {
-                if (destroyed) return
-                const el = document.getElementById(containerId)
-                if (!el) return
-
-                playerRef.current = new window.YT.Player(containerId, {
-                    videoId,
-                    playerVars: {
-                        autoplay: autoplay ? 1 : 0,
-                        controls: controls ? 1 : 0,
-                        modestbranding: 1,
-                        rel: 0,
-                        playsinline: 1,
-                        mute: muted ? 1 : 0,
-                        enablejsapi: 1,
-                        origin: window.location.origin,
-                    },
-                    events: {
-                        onReady: () => {
-                            // Player initialized successfully
-                        },
-                        onStateChange: (event) => {
-                            if (event.data === window.YT.PlayerState.ENDED) {
-                                onEndRef.current?.()
-                            }
-                        },
-                        onError: () => {
-                            // Silently handle - video still plays, just no end detection
-                        }
-                    }
-                })
-            })
+        // If player already exists, just switch the video
+        if (playerRef.current && currentVideoRef.current !== videoId) {
+            try {
+                playerRef.current.loadVideoById(videoId)
+                currentVideoRef.current = videoId
+            } catch {
+                // Player in bad state — destroy and recreate below
+                playerRef.current = null
+            }
+            if (playerRef.current) return
         }
+
+        // Create a fresh target div for the YT API to consume
+        const targetDiv = document.createElement('div')
+        targetDiv.style.width = '100%'
+        targetDiv.style.height = '100%'
+        wrapper.innerHTML = ''
+        wrapper.appendChild(targetDiv)
+
+        ensureYTApi().then(() => {
+            if (destroyed) return
+
+            playerRef.current = new window.YT.Player(targetDiv, {
+                videoId,
+                playerVars: {
+                    autoplay: autoplay ? 1 : 0,
+                    controls: controls ? 1 : 0,
+                    modestbranding: 1,
+                    rel: 0,
+                    playsinline: 1,
+                    mute: muted ? 1 : 0,
+                    enablejsapi: 1,
+                    origin: window.location.origin,
+                },
+                events: {
+                    onReady: () => {
+                        currentVideoRef.current = videoId
+                    },
+                    onStateChange: (event) => {
+                        if (event.data === window.YT.PlayerState.ENDED) {
+                            onEndRef.current?.()
+                        }
+                    },
+                    onError: () => {
+                        // Silently handle - video still plays, just no end detection
+                    }
+                }
+            })
+        })
 
         return () => {
             destroyed = true
@@ -89,12 +109,15 @@ export default function YouTubePlayer({
                 if (playerRef.current?.destroy) {
                     playerRef.current.destroy()
                 }
-            } catch (e) {
+            } catch {
                 // Player may already be gone
             }
             playerRef.current = null
+            currentVideoRef.current = null
+            // Clean up the wrapper contents so React doesn't try removeChild
+            if (wrapper) wrapper.innerHTML = ''
         }
-    }, [containerId, videoId, autoplay, controls, muted])
+    }, [videoId, autoplay, controls, muted])
 
-    return <div id={containerId} style={{ width: '100%', height: '100%' }} />
+    return <div ref={wrapperRef} style={{ width: '100%', height: '100%' }} />
 }

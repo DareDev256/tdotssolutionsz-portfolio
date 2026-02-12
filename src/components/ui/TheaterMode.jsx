@@ -98,7 +98,6 @@ export function TheaterMode({
         {/* Video frame */}
         <div className="theater-video-frame" style={{ borderColor: project.color }}>
           <YouTubePlayer
-            key={videoId}
             videoId={videoId}
             autoplay
             controls
