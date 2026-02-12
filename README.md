@@ -43,7 +43,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **Shared Hooks** — Deep-link URL sync, video navigation, and clipboard copy extracted into reusable hooks shared between desktop 3D and mobile grid experiences
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
 - **Hub Landing** — Music Videos live, Photography locked with "Coming Soon" toast
-- **Tested** — 177 unit tests via Vitest
+- **Tested** — 209 unit tests via Vitest
 
 ## Tech Stack
 

@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.5.3] - 2026-02-12
+
+### Added
+- **Unit tests for shared hooks** — 32 new tests (209 total, up from 177) covering the three hooks extracted in v3.5.1:
+  - `useVideoNavigation` (14 tests) — Circular next/prev index math, wrap-around boundaries, single-item lists, empty/null edge cases. Extracted `findVideoIndex`, `getNextIndex`, `getPrevIndex` as named exports for direct testing
+  - `useVideoDeepLink` (14 tests) — Deep-link resolution (`?v=` → video lookup), XSS rejection, invalid/too-short/too-long IDs, empty catalog, URL building for history sync, fallback URL extraction
+  - `useCopyLink` (4 tests) — Clipboard write with mocked `navigator.clipboard`, null video guard, share URL generation
+
+### Changed
+- **Refactored hooks for testability** — Extracted pure logic from `useVideoNavigation` and `useVideoDeepLink` into named-exported functions (following existing `getDeviceType`/`readFavorites` pattern), keeping React hook wrappers thin
+
 ## [3.5.2] - 2026-02-12
 
 ### Fixed
