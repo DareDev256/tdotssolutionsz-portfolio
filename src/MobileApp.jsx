@@ -7,6 +7,7 @@ import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS }
 import { isValidYouTubeId, getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
 import { THUMBNAIL_FALLBACK } from './utils/imageFallback'
 import { formatViews } from './utils/formatters'
+import { searchAll } from './hooks/useSearch'
 import './MobileApp.css'
 
 /** Reveal cards as they scroll into view */
@@ -111,9 +112,9 @@ export default function MobileApp() {
     }, [activeTab, filterArtist, favorites])
 
     const searchResults = useMemo(() => {
-        if (!searchQuery) return ALL_ARTISTS
-        const q = searchQuery.toLowerCase()
-        return ALL_ARTISTS.filter(a => a.toLowerCase().includes(q))
+        if (!searchQuery || searchQuery.length < 2) return { artists: ALL_ARTISTS, videos: [] }
+        const { artists, videos } = searchAll(searchQuery)
+        return { artists: artists.length > 0 ? artists : ALL_ARTISTS.filter(a => a.toLowerCase().includes(searchQuery.toLowerCase())), videos }
     }, [searchQuery])
 
     const handleVideoClick = (video) => {
@@ -317,14 +318,36 @@ export default function MobileApp() {
                     <input
                         className="mobile-search-input"
                         type="text"
-                        placeholder="Search artist..."
+                        placeholder="Search artists & videos..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         autoFocus
-                        aria-label="Search for an artist"
+                        aria-label="Search artists and videos"
                     />
-                    <div className="mobile-search-results" role="listbox" aria-label="Artist search results">
-                        {searchResults.map(artist => (
+                    <div className="mobile-search-results" role="listbox" aria-label="Search results">
+                        {searchResults.videos.length > 0 && (
+                            <>
+                                <div className="mobile-search-section">VIDEOS</div>
+                                {searchResults.videos.map(video => (
+                                    <button
+                                        key={`v-${video.id}`}
+                                        className="mobile-search-item mobile-search-video"
+                                        role="option"
+                                        aria-selected={false}
+                                        onClick={() => {
+                                            handleVideoClick(video)
+                                            setSearchOpen(false)
+                                            setSearchQuery('')
+                                        }}
+                                    >
+                                        <span className="mobile-search-video-title">{video.title}</span>
+                                        <span className="mobile-search-count">{video.artist}</span>
+                                    </button>
+                                ))}
+                                <div className="mobile-search-section">ARTISTS</div>
+                            </>
+                        )}
+                        {searchResults.artists.map(artist => (
                             <button
                                 key={artist}
                                 className="mobile-search-item"

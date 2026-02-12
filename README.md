@@ -16,7 +16,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **Tron-Style 3D Cityscape** — Drive through a neon metropolis with 200+ edge-lit buildings, highway arches, data stream pillars, and CN Towers bookending the journey
 - **Dual Lane System** — Browse by date (chronological) or popular selections (60K+ views)
 - **Dynamic Road** — Road, grid, buildings, and arches scale to match total video count
-- **Search & Filter by Artist** — Dropdown search on desktop and mobile to filter videos by artist
+- **Fuzzy Search** — Search artists *and* video titles with typo-tolerant fuzzy matching; results categorized into VIDEOS and ARTISTS sections with relevance ranking
 - **Deep Links** — Share direct links to any video via `/videos?v=youtubeId` URL params
 - **Artist Spotlight** — View stats (video count, total views, date range) for each artist
 - **Portfolio Stats** — Aggregate dashboard showing total videos, artists, views, year range, and top artist
@@ -42,7 +42,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **Error Resilient** — React Error Boundary catches WebGL crashes; broken thumbnails gracefully fall back to SVG placeholder
 - **Code-Split Bundle** — HubPage (1.89KB), PhotoGallery (8.17KB), Three.js vendor (1.1MB) only loads on `/videos`
 - **Hub Landing** — Music Videos live, Photography locked with "Coming Soon" toast
-- **Tested** — 164 unit tests via Vitest
+- **Tested** — 177 unit tests via Vitest
 
 ## Tech Stack
 

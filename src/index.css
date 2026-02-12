@@ -786,6 +786,23 @@ body.mobile-mode {
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.4);
     font-family: var(--font-display);
+    flex-shrink: 0;
+}
+
+.search-section-label {
+    padding: 6px 14px 4px;
+    font-size: 0.65rem;
+    font-family: var(--font-display);
+    color: var(--neon-cyan);
+    letter-spacing: 0.12em;
+    border-bottom: 1px solid rgba(5, 217, 232, 0.15);
+}
+
+.search-result-video .search-video-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 160px;
 }
 
 /* ============================================

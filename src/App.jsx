@@ -19,6 +19,7 @@ import { TheaterMode, ArtistPanel } from './components/ui'
 import { VIDEOS, NEON_COLORS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist } from './utils/videoData'
 import { isValidYouTubeId, extractVideoId, getShareUrl, getThumbnailUrl } from './utils/youtube'
 import { formatViews } from './utils/formatters'
+import { searchAll } from './hooks/useSearch'
 
 const LANES = processVideosIntoLanes()
 const PROJECTS = LANES.all // Backward compatibility
@@ -1857,18 +1858,24 @@ const LoadingScreen = () => {
 // ============================================
 // SEARCH BAR
 // ============================================
-const SearchBar = ({ filterArtist, onFilterChange }) => {
+const SearchBar = ({ filterArtist, onFilterChange, onVideoSelect }) => {
     const [open, setOpen] = useState(false)
     const [query, setQuery] = useState('')
 
-    const filtered = useMemo(() => {
-        if (!query) return ALL_ARTISTS
-        const q = query.toLowerCase()
-        return ALL_ARTISTS.filter(a => a.toLowerCase().includes(q))
+    const { artists: filteredArtists, videos: matchedVideos } = useMemo(() => {
+        if (!query || query.length < 2) return { artists: ALL_ARTISTS, videos: [] }
+        const { artists, videos } = searchAll(query)
+        return { artists: artists.length > 0 ? artists : ALL_ARTISTS.filter(a => a.toLowerCase().includes(query.toLowerCase())), videos }
     }, [query])
 
     const handleSelect = (artist) => {
         onFilterChange(artist)
+        setOpen(false)
+        setQuery('')
+    }
+
+    const handleVideoSelect = (video) => {
+        onVideoSelect?.(video)
         setOpen(false)
         setQuery('')
     }
@@ -1887,7 +1894,7 @@ const SearchBar = ({ filterArtist, onFilterChange }) => {
                 </button>
             ) : (
                 <button className="search-trigger" onClick={() => setOpen(!open)}>
-                    🔍 ARTIST
+                    🔍 SEARCH
                 </button>
             )}
             {open && (
@@ -1895,13 +1902,29 @@ const SearchBar = ({ filterArtist, onFilterChange }) => {
                     <input
                         className="search-input"
                         type="text"
-                        placeholder="Search artist..."
+                        placeholder="Search artists & videos..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         autoFocus
                     />
                     <div className="search-results">
-                        {filtered.map(artist => (
+                        {matchedVideos.length > 0 && (
+                            <>
+                                <div className="search-section-label">VIDEOS</div>
+                                {matchedVideos.map(video => (
+                                    <button
+                                        key={`v-${video.id}`}
+                                        className="search-result-item search-result-video"
+                                        onClick={() => handleVideoSelect(video)}
+                                    >
+                                        <span className="search-video-title">{video.title}</span>
+                                        <span className="search-result-count">{video.artist}</span>
+                                    </button>
+                                ))}
+                                <div className="search-section-label">ARTISTS</div>
+                            </>
+                        )}
+                        {filteredArtists.map(artist => (
                             <button
                                 key={artist}
                                 className="search-result-item"
@@ -2134,7 +2157,7 @@ export default function App({ reducedEffects = false }) {
                 onSelectVideo={handleArtistPanelSelect}
                 onClose={() => setArtistPanel(null)}
             />
-            <SearchBar filterArtist={filterArtist} onFilterChange={setFilterArtist} />
+            <SearchBar filterArtist={filterArtist} onFilterChange={setFilterArtist} onVideoSelect={setActiveProject} />
             <UIOverlay
                 audioEnabled={audioEnabled}
                 onToggleAudio={handleToggleAudio}

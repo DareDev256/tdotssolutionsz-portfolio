@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.5.0] - 2026-02-11
+
+### Added
+- **Fuzzy search across artists & video titles** — Search now matches video titles (e.g. "Freestyle", "Glock") in addition to artist names. Custom zero-dependency fuzzy scoring algorithm handles typos via subsequence matching (e.g. "Msicka" finds "Masicka"). Results ranked by relevance with popular artists/videos weighted higher
+- **Unified search hook** (`src/hooks/useSearch.js`) — Shared `searchAll()` and `fuzzyScore()` utilities used by both desktop SearchBar and mobile search. Returns categorized `{ artists, videos }` results capped at 8 video matches for UI clarity
+- **Search result sections** — Dropdown now shows "VIDEOS" and "ARTISTS" sections when video title matches are found. Clicking a video result directly opens playback (desktop: activates billboard, mobile: opens modal)
+- **13 new unit tests** for fuzzy scoring edge cases and search behavior (177 total, up from 164)
+
 ## [3.4.0] - 2026-02-11
 
 ### Changed
