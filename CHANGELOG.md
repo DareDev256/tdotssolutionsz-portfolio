@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.7.3] - 2026-02-12
+
+### Security
+- **Secret-proof `.gitignore`** — Added `.env`, `.env.*`, `.env.local`, `.env.production` patterns to prevent accidental credential commits. No `.env` files exist today (API key loaded from Vercel environment), but this blocks future accidents
+- **Secret scanner script** — New `scripts/scan-secrets.js` scans source files for 10 high-confidence credential patterns (AWS keys, GitHub tokens, private keys, database URIs, etc.). Zero dependencies, supports `--staged` flag for pre-commit hooks. Run via `npm run prescan`
+- **Dependency audit script** — New `npm run audit:security` command runs `npm audit --audit-level=high` for CI/build-time vulnerability scanning
+- **Full security audit** — Verified: no secrets in git history, no `.env` files on disk, 0 npm vulnerabilities, all security headers enforced (CSP, HSTS, COOP, CORP), 55 security-focused tests passing, YouTube ID validation at all 5 entry points, localStorage hardened with 6 guards
+
 ## [3.7.2] - 2026-02-12
 
 ### Changed

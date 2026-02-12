@@ -39,7 +39,7 @@ An immersive synthwave-themed creative portfolio showcasing **101 music videos**
 - **Client-Side Routing** — React Router v7 with lazy-loaded routes; legacy `/?v=` deep links redirect to `/videos?v=`
 - **Responsive Design** — Full 3D on desktop, reduced effects on tablet, polished mobile grid
 - **Toronto-Targeted SEO** — LocalBusiness + VideoObject + ImageGallery structured data, geo-targeted meta tags, sitemap with video deep links and photo routes
-- **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, CORP, Referrer-Policy, Permissions-Policy; YouTube ID validation at all entry points; localStorage hardening; social share host allowlist; build-time ID validation; no-store HTML cache policy
+- **Security Hardened** — Enforced CSP, HSTS with preload, X-Frame-Options DENY, COOP, CORP, Referrer-Policy, Permissions-Policy; YouTube ID validation at all entry points; localStorage hardening; social share host allowlist; build-time ID validation; no-store HTML cache policy; secret scanning (`npm run prescan`); dependency audit (`npm run audit:security`)
 - **PWA Ready** — Web app manifest for installability
 - **Error Resilient** — React Error Boundary catches WebGL crashes; broken thumbnails gracefully fall back to SVG placeholder
 - **Shared Hooks** — Deep-link URL sync, video navigation, and clipboard copy extracted into reusable hooks shared between desktop 3D and mobile grid experiences
@@ -88,14 +88,16 @@ npm install
 npm run dev        # Start dev server
 npm run build      # Build for production (fetches YouTube data first)
 npm run preview    # Preview production build
-npm test           # Run unit tests
-npm run test:watch # Run tests in watch mode
+npm test              # Run unit tests
+npm run test:watch    # Run tests in watch mode
+npm run prescan       # Scan for leaked secrets
+npm run audit:security # Check dependencies for vulnerabilities
 ```
 
 ## Changelog
 
-### v3.7.1 (2026-02-12)
-- **UI overlay extraction** — Moved SearchBar, PortfolioStats, VideoOverlay out of App.jsx into `components/ui/`. New `useKeyboardShortcuts` hook consolidates 3 duplicate keyboard handlers into one declarative map. App.jsx reduced from 1895 → 1647 lines
+### v3.7.3 (2026-02-12)
+- **Security hardening** — Added `.env` patterns to `.gitignore`, secret scanner script (`scripts/scan-secrets.js`), dependency audit script. Full audit confirms zero secrets in history, zero npm vulnerabilities, all headers enforced
 
 ### v3.6.0 (2026-02-12)
 - **Keyboard shortcuts guide** — Press `?` anywhere to toggle a modal showing all keyboard shortcuts with context labels. Works on both desktop 3D and mobile grid views

@@ -1,7 +1,7 @@
 {
   "name": "infinite-drive-portfolio",
   "private": true,
-  "version": "3.7.2",
+  "version": "3.7.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,9 @@
     "fetch-data": "node scripts/fetch-youtube-data.js",
     "fix-ids": "node scripts/fix-video-ids.js",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "audit:security": "npm audit --audit-level=high",
+    "prescan": "node scripts/scan-secrets.js"
   },
   "dependencies": {
     "@react-three/drei": "^9.117.3",
