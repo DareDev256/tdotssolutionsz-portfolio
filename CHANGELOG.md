@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.7.5] - 2026-02-12
+
+### Added
+- **videos.json schema validation tests** — 9 tests enforcing raw JSON data integrity: required fields with correct types, unique positive integer IDs, YouTube ID format (`[A-Za-z0-9_-]{11}`), unique YouTube IDs, ISO date format (YYYY-MM-DD), non-negative view counts, non-empty title/artist strings, and schema guard against unexpected fields. Mirrors the established `photos.test.js` pattern
+- **isDeceasedArtist + DECEASED_ARTISTS tests** — 9 tests covering the deceased artist detection logic: Set integrity, cross-reference validation (every deceased name appears in at least one video), comma-separated multi-artist parsing, whitespace trimming, null/undefined/empty guards, partial name rejection (no substring matching), and case sensitivity. Protects the golden halo billboard feature from silent regressions
+- Test count: 223 → 241 (+18 tests across 2 new test files)
+
 ## [3.7.4] - 2026-02-12
 
 ### Changed
