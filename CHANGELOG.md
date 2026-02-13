@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.7.7] - 2026-02-13
+
+### Added
+- **useSwipe gesture detection tests** — 13 tests covering the mobile swipe handler's direction detection (left/right), 50px threshold boundary math, and the `changedTouches` null guard added in v3.7.6. Includes full touch lifecycle simulation (start → end) validating callback dispatch
+- **main.jsx routing logic tests** — 13 tests covering the `RouteCleanup` legacy deep-link redirect (`/?v=xxx → /videos?v=xxx`), body class cleanup on non-video routes, `VideosRoute` device-based component selection (phone → MobileApp, tablet → App with reduced effects, desktop → App full), and false-positive resistance for the `v=` param detection
+- Test count: 241 → 267 (+26 tests across 2 new test files, 23 total test files)
+
 ## [3.7.6] - 2026-02-13
 
 ### Fixed
