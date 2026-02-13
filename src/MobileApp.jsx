@@ -18,22 +18,42 @@ import './MobileApp.css'
 function useScrollReveal(deps) {
     const [revealed, setRevealed] = useState(new Set())
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                const newIds = []
-                entries.forEach(e => {
-                    if (e.isIntersecting) newIds.push(e.target.dataset.vid)
-                })
-                if (newIds.length) setRevealed(prev => {
-                    const next = new Set(prev)
-                    newIds.forEach(id => next.add(id))
-                    return next
-                })
-            },
-            { threshold: 0.1, rootMargin: '50px' }
-        )
-        document.querySelectorAll('[data-vid]').forEach(el => observer.observe(el))
-        return () => observer.disconnect()
+        if (deps === null) return // Still loading — skip until DOM has cards
+
+        // Defer to next frame so React has committed new [data-vid] elements
+        const raf = requestAnimationFrame(() => {
+            const elements = document.querySelectorAll('[data-vid]')
+            if (elements.length === 0) return
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    const newIds = []
+                    entries.forEach(e => {
+                        if (e.isIntersecting && e.target.dataset.vid) newIds.push(e.target.dataset.vid)
+                    })
+                    if (newIds.length) setRevealed(prev => {
+                        const next = new Set(prev)
+                        newIds.forEach(id => next.add(id))
+                        return next
+                    })
+                },
+                { threshold: 0.1, rootMargin: '50px' }
+            )
+            elements.forEach(el => observer.observe(el))
+
+            // Store for cleanup
+            cleanup.observer = observer
+            cleanup.elements = elements
+        })
+
+        const cleanup = { observer: null, elements: null }
+        return () => {
+            cancelAnimationFrame(raf)
+            if (cleanup.observer) {
+                cleanup.elements?.forEach(el => cleanup.observer.unobserve(el))
+                cleanup.observer.disconnect()
+            }
+        }
     }, [deps])
     return revealed
 }
@@ -44,7 +64,7 @@ function useSwipe(onLeft, onRight) {
     return {
         onTouchStart: (e) => { start.current = e.touches[0].clientX },
         onTouchEnd: (e) => {
-            if (start.current === null) return
+            if (start.current === null || !e.changedTouches?.length) return
             const diff = start.current - e.changedTouches[0].clientX
             if (Math.abs(diff) > 50) diff > 0 ? onLeft?.() : onRight?.()
             start.current = null

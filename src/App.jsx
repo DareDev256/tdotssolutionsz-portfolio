@@ -1290,6 +1290,8 @@ export default function App({ reducedEffects = false }) {
     const [currentLane, setCurrentLane] = useState('chronological')
     const [vehicleType, setVehicleType] = useState('tron') // tron, delorean, cyberbike
     const [theaterMode, setTheaterMode] = useState(false)
+    const theaterModeRef = useRef(theaterMode)
+    useEffect(() => { theaterModeRef.current = theaterMode }, [theaterMode])
     const [filterArtist, setFilterArtist] = useState(null)
     const [statsOpen, setStatsOpen] = useState(false)
     const [kbdGuideOpen, setKbdGuideOpen] = useState(false)
@@ -1313,10 +1315,11 @@ export default function App({ reducedEffects = false }) {
         setCurrentLane(lane)
     }, [])
 
+    // Use ref for instant read — prevents stale closure in useFrame-based ProximityTracker
     const handleActiveChange = useCallback((project) => {
-        if (theaterMode) return // Don't let proximity tracker override theater mode selection
+        if (theaterModeRef.current) return
         setActiveProject(project)
-    }, [theaterMode])
+    }, [])
 
     const handleVehicleChange = useCallback((type) => {
         setVehicleType(type)

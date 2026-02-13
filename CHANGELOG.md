@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.7.6] - 2026-02-13
+
+### Fixed
+- **YouTubePlayer race condition** — Rapid video switching could orphan player instances when `ensureYTApi()` promises resolved after cleanup. Now tracks each effect's player locally and only clears shared refs when they still point to the current instance. Also defers `currentVideoRef` update to `onReady` callback and guards `onStateChange`/`onReady` with `destroyed` flag
+- **Theater mode stale closure** — `handleActiveChange` callback captured `theaterMode` state in its closure, but the `useFrame`-based ProximityTracker could read a stale value during rapid toggles. Switched to a `useRef` mirror for instant reads without re-render dependency
+- **IntersectionObserver DOM timing** — `useScrollReveal` queried `[data-vid]` elements synchronously before React committed new cards to the DOM after filter/tab changes. Deferred observer setup to `requestAnimationFrame` and added proper per-element `unobserve()` cleanup to prevent observer accumulation
+- **Swipe gesture null guard** — Added optional chaining for `e.changedTouches` in mobile swipe handler to prevent `TypeError` on devices where `changedTouches` may be empty
+
 ## [3.7.5] - 2026-02-12
 
 ### Added

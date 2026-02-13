@@ -50,14 +50,20 @@ export default function YouTubePlayer({
 
     useEffect(() => {
         let destroyed = false
+        let localPlayer = null // Track THIS effect's player instance
         const wrapper = wrapperRef.current
         if (!wrapper || !isValidYouTubeId(videoId)) return
 
         // If player already exists, just switch the video
         if (playerRef.current && currentVideoRef.current !== videoId) {
             try {
-                playerRef.current.loadVideoById(videoId)
-                currentVideoRef.current = videoId
+                // Verify player is still functional before switching
+                if (typeof playerRef.current.getPlayerState === 'function') {
+                    playerRef.current.loadVideoById(videoId)
+                    // Don't update currentVideoRef here — wait for onReady
+                } else {
+                    playerRef.current = null
+                }
             } catch {
                 // Player in bad state — destroy and recreate below
                 playerRef.current = null
@@ -75,7 +81,7 @@ export default function YouTubePlayer({
         ensureYTApi().then(() => {
             if (destroyed) return
 
-            playerRef.current = new window.YT.Player(targetDiv, {
+            localPlayer = new window.YT.Player(targetDiv, {
                 videoId,
                 playerVars: {
                     autoplay: autoplay ? 1 : 0,
@@ -89,10 +95,10 @@ export default function YouTubePlayer({
                 },
                 events: {
                     onReady: () => {
-                        currentVideoRef.current = videoId
+                        if (!destroyed) currentVideoRef.current = videoId
                     },
                     onStateChange: (event) => {
-                        if (event.data === window.YT.PlayerState.ENDED) {
+                        if (!destroyed && event.data === window.YT.PlayerState.ENDED) {
                             onEndRef.current?.()
                         }
                     },
@@ -101,20 +107,21 @@ export default function YouTubePlayer({
                     }
                 }
             })
+            playerRef.current = localPlayer
         })
 
         return () => {
             destroyed = true
             try {
-                if (playerRef.current?.destroy) {
-                    playerRef.current.destroy()
-                }
+                if (localPlayer?.destroy) localPlayer.destroy()
             } catch {
                 // Player may already be gone
             }
-            playerRef.current = null
-            currentVideoRef.current = null
-            // Clean up the wrapper contents so React doesn't try removeChild
+            // Only clear shared ref if it still points to THIS effect's player
+            if (playerRef.current === localPlayer) {
+                playerRef.current = null
+                currentVideoRef.current = null
+            }
             if (wrapper) wrapper.innerHTML = ''
         }
     }, [videoId, autoplay, controls, muted])
