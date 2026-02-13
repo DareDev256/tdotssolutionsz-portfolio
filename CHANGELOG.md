@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.7.4] - 2026-02-12
+
+### Changed
+- **Portfolio-grade README overhaul** — Restructured README.md from feature-dump format to experience-first showcase. Added shields.io badges (live site, video count, test count, version), reorganized features into Desktop/Mobile/Hub experience sections, replaced artist bullet list with formatted table, added Tech Stack and Architecture Highlights tables, added project structure map with annotations, consolidated inline changelog into a link to CHANGELOG.md (eliminated ~160 lines of duplication). README now reads as a portfolio piece rather than a development log
+
 ## [3.7.3] - 2026-02-12
 
 ### Security
