@@ -100,16 +100,21 @@ export default function MobileApp() {
     // Deep link: read ?v= on mount + sync URL with active video
     useVideoDeepLink(playingVideo, setPlayingVideo)
 
-    // Keyboard shortcut: ? to toggle keyboard guide
+    // Keyboard shortcuts: ? for keyboard guide, Escape to close search
     useEffect(() => {
         const handleKeyDown = (e) => {
+            if (e.key === 'Escape' && searchOpen) {
+                setSearchOpen(false)
+                setSearchQuery('')
+                return
+            }
             if (e.key === '?' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
                 setKbdGuideOpen(prev => !prev)
             }
         }
         window.addEventListener('keydown', handleKeyDown)
         return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [])
+    }, [searchOpen])
 
     const filteredVideos = useMemo(() => {
         let vids = [...VIDEOS]
@@ -273,7 +278,6 @@ export default function MobileApp() {
                     onClick={() => setActiveTab('latest')}
                     role="tab"
                     aria-selected={activeTab === 'latest'}
-                    aria-pressed={activeTab === 'latest'}
                 >
                     Latest
                 </button>
@@ -282,7 +286,6 @@ export default function MobileApp() {
                     onClick={() => setActiveTab('popular')}
                     role="tab"
                     aria-selected={activeTab === 'popular'}
-                    aria-pressed={activeTab === 'popular'}
                 >
                     Popular
                 </button>
@@ -292,7 +295,6 @@ export default function MobileApp() {
                         onClick={() => setActiveTab('favorites')}
                         role="tab"
                         aria-selected={activeTab === 'favorites'}
-                        aria-pressed={activeTab === 'favorites'}
                     >
                         ♥ {favorites.length}
                     </button>
@@ -302,7 +304,6 @@ export default function MobileApp() {
                         className="tab artist-filter-active"
                         onClick={() => { setFilterArtist(null); setSearchQuery('') }}
                         aria-label={`Clear filter: ${filterArtist}`}
-                        aria-pressed={true}
                     >
                         {filterArtist} ✕
                     </button>
@@ -312,7 +313,6 @@ export default function MobileApp() {
                         onClick={() => setSearchOpen(!searchOpen)}
                         aria-expanded={searchOpen}
                         aria-label="Search artists"
-                        aria-pressed={searchOpen}
                     >
                         🔍
                     </button>
@@ -383,7 +383,7 @@ export default function MobileApp() {
 
             {/* Hero Card */}
             {heroVideo && (
-                <div className="hero-card" onClick={() => handleVideoClick(heroVideo)} role="button" tabIndex={0} aria-label={`Play ${heroVideo.title}`}>
+                <div className="hero-card" onClick={() => handleVideoClick(heroVideo)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleVideoClick(heroVideo) } }} role="button" tabIndex={0} aria-label={`Play ${heroVideo.title}`}>
                     <img
                         className="hero-card__bg"
                         src={getThumbnailUrl(heroVideo.youtubeId, 'hqdefault')}

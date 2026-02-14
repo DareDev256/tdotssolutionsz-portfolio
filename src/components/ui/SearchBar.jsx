@@ -1,10 +1,36 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { ALL_ARTISTS, ARTIST_STATS } from '../../utils/videoData'
 import { searchAll } from '../../hooks/useSearch'
 
 export const SearchBar = ({ filterArtist, onFilterChange, onVideoSelect }) => {
     const [open, setOpen] = useState(false)
     const [query, setQuery] = useState('')
+    const containerRef = useRef(null)
+
+    // Close dropdown on Escape key or click outside
+    useEffect(() => {
+        if (!open) return
+
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                setOpen(false)
+                setQuery('')
+            }
+        }
+        const handleClickOutside = (e) => {
+            if (containerRef.current && !containerRef.current.contains(e.target)) {
+                setOpen(false)
+                setQuery('')
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [open])
 
     const { artists: filteredArtists, videos: matchedVideos } = useMemo(() => {
         if (!query || query.length < 2) return { artists: ALL_ARTISTS, videos: [] }
@@ -31,7 +57,7 @@ export const SearchBar = ({ filterArtist, onFilterChange, onVideoSelect }) => {
     }
 
     return (
-        <div className="search-bar-container">
+        <div className="search-bar-container" ref={containerRef}>
             {filterArtist ? (
                 <button className="search-active-filter" onClick={handleClear}>
                     {filterArtist} ✕

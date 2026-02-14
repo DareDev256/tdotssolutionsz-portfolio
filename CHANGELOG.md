@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.8.1] - 2026-02-14
+
+### Fixed
+- **SearchBar click-outside dismiss** — Desktop search dropdown had no way to close except selecting a result. Added click-outside-to-close and Escape key dismiss with proper event listener cleanup
+- **Mobile search Escape key** — Mobile search dropdown now dismisses on Escape key press, matching standard dropdown behavior. Keyboard handler also resets the search query on dismiss
+- **Hero card keyboard activation (WCAG 2.1.1)** — Hero card had `role="button"` and `tabIndex={0}` but no `onKeyDown` handler, making it unreachable for keyboard-only users. Added Enter/Space activation with `preventDefault()` to block page scroll on Space
+- **Invalid dual ARIA on tabs** — Filter tabs used both `aria-selected` (correct for `role="tab"`) and `aria-pressed` (only valid on toggle buttons). Removed `aria-pressed` from all `role="tab"` elements and the search/filter buttons where it conflicted with `aria-expanded`. Fixes screen reader confusion where tabs were announced as both "selected" and "pressed"
+
 ## [3.8.0] - 2026-02-14
 
 ### Added
