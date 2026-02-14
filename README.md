@@ -3,7 +3,8 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Tests](https://img.shields.io/badge/TESTS-267_PASSING-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.8.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.8.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Security](https://img.shields.io/badge/HEADERS-11_ENFORCED-ff9900?style=for-the-badge)](vercel.json)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -11,19 +12,18 @@
 
 ## The Experience
 
-### Desktop — 3D Neon Cityscape (`/videos`)
+### 🏙️ Desktop — 3D Neon Cityscape (`/videos`)
 
 A Tron-inspired metropolis you scroll through on a light cycle. 200+ edge-lit buildings, highway arches, data stream pillars, and CN Towers bookend the journey. Video billboards line dual lanes — browse by date or by popularity (60K+ views). Click any billboard to watch.
 
 - **Vehicle Selection** — Tron Light Cycle, DeLorean, or Cyber Bike
-- **Theater Mode** — Press `F` for fullscreen immersive playback; arrow keys skip tracks
-- **Shuffle Play** — Press `S` for random discovery with no-repeat history
+- **Theater Mode** — Fullscreen immersive playback with arrow key navigation
+- **Shuffle Play** — Random discovery with no-repeat history
 - **Fuzzy Search** — Typo-tolerant search across artists and video titles
 - **Artist Panel** — Click any artist name for a slide-in sidebar with all their videos and stats
 - **Golden Angel Halos** — Deceased artists (Murda, BG) honored with golden halos and ethereal bloom glow
-- **Keyboard Shortcuts** — Press `?` to see all controls
 
-### Mobile — Polished Grid View
+### 📱 Mobile — Polished Grid View
 
 Synthwave-styled card grid with floating CSS particles, scanline overlay, and glassmorphism cards. Swipe gestures, hero card, staggered scroll-reveal animations.
 
@@ -32,13 +32,26 @@ Synthwave-styled card grid with floating CSS particles, scanline overlay, and gl
 - **Favorites** — Heart button saves to localStorage with a dedicated filter tab
 - **Shuffle & Search** — Same discovery tools as desktop
 
-### Hub Landing Page (`/`)
+### 🚀 Hub Landing Page (`/`)
 
 Split navigation — Music Videos (live) and Photography (coming soon). Animated gradient borders, backdrop blur, consistent neon branding.
 
 - **Artist Showcase Ticker** — Auto-scrolling marquee of top 12 artists with YouTube thumbnails, video counts, and total views
 - **Live Stats Counter** — Animated count-up showing 101 videos, 54 artists, 25.3M+ total views, and 14 years of production
 - **Hover to Pause** — Ticker pauses on mouse hover for closer inspection
+
+---
+
+## ⌨️ Keyboard Shortcuts
+
+| Key | Action | Context |
+|-----|--------|---------|
+| `?` | Show all keyboard shortcuts | Anywhere |
+| `F` | Toggle theater mode (fullscreen) | Video playing |
+| `S` | Shuffle play — random video | Anywhere |
+| `←` `→` | Previous / next video | Theater mode |
+| `Esc` | Exit theater mode or close panel | Modal open |
+| `Ctrl+K` | Focus search bar | Anywhere |
 
 ---
 
@@ -82,9 +95,29 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 - **Build-Time Data** — `fetch-youtube-data.js` pulls real view counts and upload dates from YouTube at build time, so the client bundle has zero API dependencies
 - **Modular 3D** — Vehicles (`components/3d/vehicles/`), effects (`components/3d/effects/`), atmosphere, and particles all extracted into focused modules with barrel exports
 - **10 Custom Hooks** — Deep linking, video navigation, shuffle play, favorites, copy-to-clipboard, keyboard shortcuts, search, device type, fresnel materials, scroll reveal
-- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy), YouTube ID validation at all entry points, localStorage hardening, secret scanning, dependency auditing
 
 > Full architecture details: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
+
+---
+
+## Security
+
+11 HTTP security headers enforced via `vercel.json` on every response:
+
+| Header | Value | Purpose |
+|--------|-------|---------|
+| `Content-Security-Policy` | Strict allowlist | Prevents XSS, limits script/style/frame sources |
+| `Strict-Transport-Security` | 2-year max-age + preload | Forces HTTPS, prevents downgrade attacks |
+| `X-Content-Type-Options` | `nosniff` | Blocks MIME-type sniffing |
+| `X-Frame-Options` | `DENY` | Prevents clickjacking |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | Controls referrer leakage |
+| `Permissions-Policy` | Camera, mic, geo disabled | Minimizes browser API surface |
+| `Cross-Origin-Opener-Policy` | `same-origin-allow-popups` | Isolates browsing context |
+| `Cross-Origin-Resource-Policy` | `cross-origin` | Controls resource sharing |
+
+**Additional hardening:** YouTube ID validation (11-char `[A-Za-z0-9_-]` regex) at all 5 entry points, localStorage integrity guards, secret scanning (`npm run prescan`), dependency auditing (`npm run audit:security`).
+
+> ⚠️ **No COEP header** — Intentionally omitted. `Cross-Origin-Embedder-Policy` breaks YouTube iframe embeds.
 
 ---
 
@@ -124,6 +157,12 @@ src/
 ├── hooks/                     # 10 custom hooks (shared between desktop + mobile)
 ├── utils/                     # videoData, youtube, formatters, imageFallback
 └── data/                      # videos.json (101 entries), photos.json (25 entries)
+scripts/
+├── fetch-youtube-data.js      # Build-time YouTube API enrichment
+├── scan-secrets.js            # Credential pattern scanner
+└── fix-video-ids.js           # YouTube ID repair utility
+docs/
+└── ARCHITECTURE.md            # Full system architecture reference
 ```
 
 ---
@@ -132,7 +171,7 @@ src/
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.7.8** (2026-02-13): Architecture docs refresh — accurate project structure, test counts, security model, and JSDoc on 3D vehicle components.
+**Latest — v3.8.1** (2026-02-14): Portfolio-grade README — keyboard shortcuts reference, security headers table, expanded project structure, version sync.
 
 ---
 

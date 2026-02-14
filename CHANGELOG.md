@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.8.1] - 2026-02-14
+
+### Changed
+- **Portfolio-grade README overhaul** — Added keyboard shortcuts quick-reference table (6 shortcuts with context), dedicated Security section with full HTTP headers table (8 headers with purpose explanations), COEP omission callout, new security badge in header row, expanded project structure to include `scripts/` and `docs/` directories, section emoji headers for visual scanning, fixed stale changelog reference (was pointing to v3.7.8 instead of v3.8.0), version synced across all references
+
 ## [3.8.0] - 2026-02-14
 
 ### Added
