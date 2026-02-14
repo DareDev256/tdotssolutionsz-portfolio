@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import ArtistShowcase from './ArtistShowcase'
 import './HubPage.css'
 
 export default function HubPage() {
@@ -63,6 +64,8 @@ export default function HubPage() {
           </span>
         </button>
       </nav>
+
+      <ArtistShowcase />
 
       {showToast && (
         <div className="hub-toast" role="status" aria-live="polite">

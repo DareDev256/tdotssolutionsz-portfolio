@@ -306,6 +306,12 @@
   }
 }
 
+/* Showcase spacing */
+.hub-page .artist-showcase {
+  margin-top: 40px;
+  margin-bottom: 8px;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .hub-logo {

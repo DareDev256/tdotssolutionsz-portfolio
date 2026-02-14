@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.8.0] - 2026-02-14
+
+### Added
+- **Artist Showcase Ticker** — New `ArtistShowcase` component on the HubPage featuring an infinite CSS marquee of top 12 artists with YouTube thumbnails, video counts, and total view stats. Hover to pause, seamless edge-fade masking, fully responsive
+- **Animated Stats Counter** — Four count-up stats (Videos, Artists, Total Views, Years Active) with ease-out cubic animation triggered by IntersectionObserver. Gradient text with synthwave glow effect
+- **`useCountUp` hook** — requestAnimationFrame-powered count animation with configurable duration and custom formatting
+
+### Changed
+- **HubPage** — Now imports and renders ArtistShowcase between the navigation cards and footer, transforming the static landing page into a dynamic portfolio showcase
+- README updated with Hub Landing Page feature list, version bumped to v3.8.0
+
 ## [3.7.8] - 2026-02-13
 
 ### Changed

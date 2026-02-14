@@ -3,7 +3,7 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Tests](https://img.shields.io/badge/TESTS-267_PASSING-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.7.8-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.8.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -35,6 +35,10 @@ Synthwave-styled card grid with floating CSS particles, scanline overlay, and gl
 ### Hub Landing Page (`/`)
 
 Split navigation — Music Videos (live) and Photography (coming soon). Animated gradient borders, backdrop blur, consistent neon branding.
+
+- **Artist Showcase Ticker** — Auto-scrolling marquee of top 12 artists with YouTube thumbnails, video counts, and total views
+- **Live Stats Counter** — Animated count-up showing 101 videos, 54 artists, 25.3M+ total views, and 14 years of production
+- **Hover to Pause** — Ticker pauses on mouse hover for closer inspection
 
 ---
 
