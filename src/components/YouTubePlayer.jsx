@@ -22,7 +22,6 @@ function ensureYTApi() {
         if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
             const script = document.createElement('script')
             script.src = 'https://www.youtube.com/iframe_api'
-            script.crossOrigin = 'anonymous'
             script.onerror = () => {
                 ytApiPromise = null // Allow retry on failure
                 reject(new Error('YouTube IFrame API failed to load'))
