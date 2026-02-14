@@ -33,31 +33,43 @@
 ```
 src/
 ├── main.jsx                 # Entry: BrowserRouter, lazy routes, Suspense
-├── App.jsx                  # Desktop 3D experience (2,119 lines)
+├── App.jsx                  # Desktop 3D experience (~2,100 lines)
 ├── MobileApp.jsx            # Mobile grid view (no Three.js)
 ├── components/
 │   ├── HubPage.jsx          # Landing page (stateless, two-card nav)
 │   ├── PhotoGallery.jsx     # Photo viewer with lightbox + categories
 │   ├── VideoCard.jsx        # Reusable video thumbnail card
-│   ├── YouTubePlayer.jsx    # YouTube IFrame API wrapper
-│   ├── atmosphere/          # Starfield, fog, nebula (3D scene)
-│   ├── particles/           # Soft particle system
-│   └── ui/                  # TheaterMode fullscreen overlay
+│   ├── YouTubePlayer.jsx    # YouTube IFrame API wrapper (race-condition safe)
+│   ├── 3d/
+│   │   ├── vehicles/        # TronLightCycle, DeLorean, CyberBike
+│   │   └── effects/         # StarField (static), SynthwaveSun (layered horizon)
+│   ├── atmosphere/          # EnhancedStarField (GPU shader), GroundFog, ProceduralNebula
+│   ├── particles/           # SoftParticles (instanced, billboarded sprites)
+│   └── ui/                  # TheaterMode, ArtistPanel, SearchBar, KeyboardGuide,
+│                            # PortfolioStats, VideoOverlay (barrel-exported)
 ├── data/
 │   ├── videos.json          # 101 video entries (source of truth)
 │   └── photos.json          # 25 photo entries with metadata
-├── hooks/
+├── hooks/                   # 9 custom hooks (all tested)
+│   ├── useVideoDeepLink.js  # URL ↔ state sync with history API
+│   ├── useVideoNavigation.js# Next/prev with lane-aware traversal
+│   ├── useShufflePlay.js    # Fisher-Yates shuffle with history stack
+│   ├── useFavorites.js      # localStorage with XSS validation, 500-item cap
+│   ├── useSearch.js         # Fuzzy search with 4-point scoring algorithm
 │   ├── useDeviceType.js     # phone/tablet/desktop breakpoints
-│   ├── useFavorites.js      # localStorage with XSS validation
-│   └── useFresnelMaterial.js
+│   ├── useKeyboardShortcuts.js # Global keyboard handler (vim-style + media)
+│   ├── useCopyLink.js       # Clipboard API with fallback
+│   └── useFresnelMaterial.js# Custom shader material for 3D vehicles
 ├── utils/
 │   ├── videoData.js         # Processes videos.json → lanes, stats, artists
 │   ├── youtube.js           # URL parsing, ID validation, share helpers
+│   ├── formatters.js        # View count formatting, date display
 │   ├── imageFallback.js     # SVG data-URI broken thumbnail placeholder
-│   └── proceduralTextures.js
+│   └── proceduralTextures.js# 5 procedural texture generators for 3D
 scripts/
 ├── fetch-youtube-data.js    # Build-time YouTube API enrichment
 ├── fix-video-ids.js         # ID correction utility
+├── secret-scanner.js        # Scans codebase for leaked credentials
 └── optimize-photos.sh       # JPG → WebP conversion
 ```
 
@@ -123,7 +135,7 @@ No external state library. React Context + custom hooks only:
 All responses get 11 security headers including:
 - **CSP** — Enforcing policy, allowlists YouTube/Google Fonts only
 - **HSTS** — 2-year max-age, includeSubDomains, preload-eligible
-- **COEP** — `credentialless` (Spectre isolation)
+- **No COEP** — Intentionally omitted; `Cross-Origin-Embedder-Policy` breaks YouTube embeds
 - **Frame protection** — `X-Frame-Options: DENY` + `frame-ancestors 'none'`
 - **Permissions-Policy** — camera, microphone, geolocation all disabled
 
@@ -156,11 +168,13 @@ Node.js 18+, npm 9+, and `YOUTUBE_API_KEY` (build-time only).
 ```bash
 npm install              # Install dependencies
 npm run dev              # Dev server on localhost:5175 (auto-opens)
-npm test                 # 153 tests (Vitest)
+npm test                 # 267 tests (Vitest)
 npm run test:watch       # Watch mode
 npm run build            # fetch-data → vite build (needs YOUTUBE_API_KEY)
 npm run preview          # Preview production build locally
 npm run fetch-data       # Refresh YouTube view counts/dates
+npm run prescan          # Scan for leaked secrets
+npm run audit:security   # Dependency vulnerability check
 ```
 
 ### Environment Variables
@@ -181,7 +195,7 @@ SPA rewrites in vercel.json: `/videos` and `/photos` → `/index.html` for clien
 
 ## Testing
 
-12 test suites, **153 tests** covering security headers, YouTube utilities, video/photo data integrity, image fallback, lane positioning, favorites validation, and device detection. Run `npm test` before every commit — all must pass.
+23 test suites, **267 tests** covering security headers, YouTube utilities, video/photo data integrity, image fallback, lane positioning, favorites validation, device detection, swipe gestures, routing logic, shuffle play, keyboard shortcuts, deep-link sync, and copy-link. Run `npm test` before every commit — all must pass.
 
 ## Key Architecture Decisions
 

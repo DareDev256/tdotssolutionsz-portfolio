@@ -1,5 +1,15 @@
 import * as THREE from 'three'
 
+/**
+ * Tron-inspired light cycle with neon glow accents.
+ * Built from primitive geometries — angular body, disc wheels with torus glow rings,
+ * emissive light strips along the chassis, and a multi-layered light trail effect
+ * using additive blending for depth. Includes a headlight point light.
+ *
+ * @param {Object} props
+ * @param {string} [props.color='#05d9e8'] - Primary neon color applied to windscreen,
+ *   wheel rings, body strips, and trail. Accepts any CSS color string.
+ */
 const TronLightCycle = ({ color = '#05d9e8' }) => {
     return (
         <group position={[0, 0.6, -5]} rotation={[0, 0, 0]}>

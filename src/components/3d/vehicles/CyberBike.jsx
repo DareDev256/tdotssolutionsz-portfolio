@@ -1,3 +1,12 @@
+/**
+ * Cyberpunk motorcycle with neon accent strips and aggressive geometry.
+ * Dark metallic frame with torus-ring wheels, dual emissive side strips,
+ * a rear tail light bar, and a forward-facing point light.
+ *
+ * @param {Object} props
+ * @param {string} [props.color='#ff2a6d'] - Primary neon accent applied to
+ *   side strips. Tail light uses fixed '#ff2a6d' regardless of this prop.
+ */
 const CyberBike = ({ color = '#ff2a6d' }) => {
     return (
         <group position={[0, 0.5, -5]}>

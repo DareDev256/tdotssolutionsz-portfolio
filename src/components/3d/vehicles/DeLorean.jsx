@@ -1,3 +1,12 @@
+/**
+ * DeLorean-inspired vehicle with flux capacitor glow and time circuit display.
+ * Brushed stainless steel body (high metalness, low roughness), cabin with
+ * emissive flux capacitor and red time circuits, plus a cyan underglow plane.
+ *
+ * @param {Object} props
+ * @param {string} [props.color='#05d9e8'] - Accent color for flux capacitor glow
+ *   and underglow. Red time circuits use a fixed '#ff2a6d'.
+ */
 const DeLorean = ({ color = '#05d9e8' }) => {
     return (
         <group position={[0, 0.5, -6]}>

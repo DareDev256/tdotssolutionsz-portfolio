@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.7.8] - 2026-02-13
+
+### Changed
+- **ARCHITECTURE.md refresh** — Fixed stale test count (153 → 267), updated project structure tree to include `3d/vehicles/`, `3d/effects/`, all 9 hooks with descriptions, `formatters.js`, `proceduralTextures.js`, and `secret-scanner.js`. Added `prescan` and `audit:security` to commands reference
+- **Security model correction** — Replaced incorrect COEP `credentialless` reference with accurate "No COEP" note explaining it breaks YouTube embeds (matches protected configuration in CLAUDE.md)
+- **Vehicle component JSDoc** — Added module-level documentation to TronLightCycle, DeLorean, and CyberBike describing geometry composition, material strategy, and `@param` for the color prop
+- **README sync** — Updated test count badges (223 → 267, 19 → 23 suites), version badge to v3.7.8, latest changelog reference
+
 ## [3.7.7] - 2026-02-13
 
 ### Added
