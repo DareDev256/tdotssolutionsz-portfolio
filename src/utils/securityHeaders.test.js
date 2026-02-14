@@ -74,6 +74,41 @@ describe('vercel.json security headers', () => {
     })
 })
 
+describe('CSP script-src hardening', () => {
+    it('does NOT allow blob: in script-src (XSS amplification vector)', () => {
+        const csp = getHeader('Content-Security-Policy')
+        // Extract just the script-src directive value
+        const scriptSrc = csp.match(/script-src\s+([^;]+)/)?.[1] || ''
+        expect(scriptSrc).not.toContain('blob:')
+    })
+
+    it('still allows blob: in worker-src for Three.js Web Workers', () => {
+        const csp = getHeader('Content-Security-Policy')
+        const workerSrc = csp.match(/worker-src\s+([^;]+)/)?.[1] || ''
+        expect(workerSrc).toContain('blob:')
+    })
+})
+
+describe('Permissions-Policy hardening', () => {
+    it('blocks hardware access APIs (usb, bluetooth, serial, hid)', () => {
+        const pp = getHeader('Permissions-Policy')
+        expect(pp).toContain('usb=()')
+        expect(pp).toContain('bluetooth=()')
+        expect(pp).toContain('serial=()')
+        expect(pp).toContain('hid=()')
+    })
+
+    it('blocks payment API', () => {
+        const pp = getHeader('Permissions-Policy')
+        expect(pp).toContain('payment=()')
+    })
+
+    it('restricts autoplay to same-origin only', () => {
+        const pp = getHeader('Permissions-Policy')
+        expect(pp).toContain('autoplay=(self)')
+    })
+})
+
 describe('vercel.json cache control', () => {
     it('prevents caching of index.html (stale CSP prevention)', () => {
         const htmlRule = vercelConfig.headers.find(h => h.source === '/index.html')

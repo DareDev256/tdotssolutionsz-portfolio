@@ -11,7 +11,7 @@ function ensureYTApi() {
     }
     if (ytApiPromise) return ytApiPromise
 
-    ytApiPromise = new Promise((resolve) => {
+    ytApiPromise = new Promise((resolve, reject) => {
         // The API may already be loading from a previous attempt
         const existingCb = window.onYouTubeIframeAPIReady
         window.onYouTubeIframeAPIReady = () => {
@@ -22,6 +22,11 @@ function ensureYTApi() {
         if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
             const script = document.createElement('script')
             script.src = 'https://www.youtube.com/iframe_api'
+            script.crossOrigin = 'anonymous'
+            script.onerror = () => {
+                ytApiPromise = null // Allow retry on failure
+                reject(new Error('YouTube IFrame API failed to load'))
+            }
             document.head.appendChild(script)
         }
     })
@@ -108,6 +113,8 @@ export default function YouTubePlayer({
                 }
             })
             playerRef.current = localPlayer
+        }).catch(() => {
+            // YouTube API failed to load — video still shows via iframe fallback
         })
 
         return () => {

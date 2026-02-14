@@ -8,6 +8,8 @@ export default defineConfig({
         open: true
     },
     build: {
+        // Prevent source maps from exposing original source in production
+        sourcemap: false,
         rollupOptions: {
             output: {
                 manualChunks: {

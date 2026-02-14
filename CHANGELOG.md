@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.8.2] - 2026-02-14
+
+### Security
+- **CSP script-src hardening** — Removed `blob:` from `script-src` directive, closing an XSS amplification vector where injected code could construct executable Blob URLs. `worker-src` retains `blob:` for Three.js Web Workers
+- **Permissions-Policy expansion** — Added `usb=(), bluetooth=(), serial=(), hid=(), payment=()` to block hardware/payment API abuse, plus `autoplay=(self)` to restrict autoplay to same-origin only
+- **YouTube iframe referrer leak** — Added `referrerPolicy="no-referrer"` to VideoOverlay iframe, preventing deep-link URLs from leaking to YouTube as Referer headers
+- **Production source map suppression** — Explicitly set `build.sourcemap: false` in Vite config, preventing original source code exposure in production builds
+- **YouTube API script error handling** — Added `crossOrigin="anonymous"` and `onerror` handler to YouTube IFrame API script tag with retry capability on load failure
+- **Security header tests** — 5 new tests validating CSP blob: removal, Permissions-Policy hardware API blocks, payment block, and autoplay restriction (267 → 272 tests)
+
 ## [3.8.1] - 2026-02-14
 
 ### Fixed
