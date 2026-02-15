@@ -3,7 +3,7 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Tests](https://img.shields.io/badge/TESTS-272_PASSING-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.8.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.8.3-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -82,6 +82,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 - **Build-Time Data** — `fetch-youtube-data.js` pulls real view counts and upload dates from YouTube at build time, so the client bundle has zero API dependencies
 - **Modular 3D** — Vehicles (`components/3d/vehicles/`), effects (`components/3d/effects/`), atmosphere, and particles all extracted into focused modules with barrel exports
 - **10 Custom Hooks** — Deep linking, video navigation, shuffle play, favorites, copy-to-clipboard, keyboard shortcuts, search, device type, fresnel materials, scroll reveal
+- **JSDoc Coverage** — All hooks, utilities, 3D components, and core scene internals (CameraRig, ProximityTracker, Cityscape, BillboardFrame) documented with parameter types and architectural rationale
 - **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy with hardware/payment API blocks), YouTube ID validation at all entry points, iframe referrer suppression, production source map suppression, secret scanning, dependency auditing
 
 > Full architecture details: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
@@ -132,7 +133,7 @@ src/
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.8.2** (2026-02-14): Security hardening — CSP blob: removal, expanded Permissions-Policy, iframe referrer suppression, source map suppression, YouTube API error handling.
+**Latest — v3.8.3** (2026-02-15): JSDoc documentation pass — module-level docs on App.jsx (desktop 3D scene), component docs for BillboardFrame/CameraRig/ProximityTracker/Cityscape, SearchBar props, fuzzy search scoring formula, MobileApp hooks.
 
 ---
 

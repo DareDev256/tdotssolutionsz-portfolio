@@ -31,7 +31,15 @@ function fuzzyScore(query, text) {
 
     if (qi < q.length) return 0 // not all chars matched
 
-    // Score based on: coverage (query length / text length) + consecutive bonus
+    // Scoring formula breakdown:
+    //   0.30 = base floor — any subsequence match gets at least 0.3 (ensures it
+    //          ranks above 0 but well below exact substring matches which score 1.0)
+    //   0.35 × coverage — rewards shorter texts (query "drake" in "Drake" = 1.0
+    //          coverage vs in "Drake ft. Future" = 0.33 coverage)
+    //   0.35 × consecutiveBonus — rewards matches where query chars appear in runs
+    //          (typing "dra" matching "Dra-ke" consecutively scores higher than
+    //          "D...r...a" scattered across the text)
+    // Max possible: 0.3 + 0.35 + 0.35 = 1.0 (but only exact substrings hit 1.0)
     const coverage = q.length / t.length
     const consecutiveBonus = maxConsecutive / q.length
     return 0.3 + (coverage * 0.35) + (consecutiveBonus * 0.35)

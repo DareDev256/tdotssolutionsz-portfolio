@@ -2,6 +2,21 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.8.3] - 2026-02-15
+
+### Added
+- **App.jsx module-level JSDoc** — File header documenting the desktop 3D "Infinite Drive" architecture: ScrollControls → CameraRig → ProximityTracker flow, FilterContext purpose, and Cityscape procedural generation strategy
+- **BillboardFrame JSDoc** — Component docs with prop types, explains deceased artist halo logic and artist filter dimming behavior
+- **CameraRig JSDoc** — Documents scroll-driven Z-axis movement, lateral lane switching via lerp, and why a ref (not state) is used for targetX to avoid per-frame re-renders
+- **ProximityTracker JSDoc** — Explains the every-2nd-frame throttle strategy (30 checks/sec at 60fps) and lane-aware billboard scanning
+- **Cityscape JSDoc** — Documents the seeded PRNG (sin-hash trick from GPU shader tradition), why deterministic generation prevents layout shifts, and dynamic building count scaling
+- **Scene constants documentation** — Inline rationale for all magic numbers: SCROLL_PAGES divisor, ACTIVE_RANGE, AUDIO_SILENCE_DISTANCE, AUDIO_MAX_VOLUME, CANVAS_GL_OPTIONS, DPR caps, LANE_SWITCH_SPEED
+- **getVolumeFromDistance JSDoc** — Parameter types and quadratic easing rationale
+- **SearchBar JSDoc** — Component-level docs with prop types, dropdown behavior, and fuzzy-to-substring fallback logic
+- **fuzzyScore formula documentation** — Breakdown of the 0.3/0.35/0.35 weighting: base floor, coverage ratio, and consecutive match bonus
+- **useScrollReveal JSDoc** — Explains the `deps === null` guard, requestAnimationFrame DOM timing trick, and IntersectionObserver cleanup
+- **useSwipe JSDoc** — Documents 50px threshold rationale and return type
+
 ## [3.8.2] - 2026-02-14
 
 ### Security

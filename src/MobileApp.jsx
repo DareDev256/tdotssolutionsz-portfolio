@@ -14,7 +14,21 @@ import useCopyLink from './hooks/useCopyLink'
 import useShufflePlay from './hooks/useShufflePlay'
 import './MobileApp.css'
 
-/** Reveal cards as they scroll into view */
+/**
+ * useScrollReveal — Triggers CSS reveal animations as video cards enter the viewport.
+ *
+ * Uses IntersectionObserver on all `[data-vid]` elements. The `deps` parameter
+ * controls when to re-scan the DOM for new cards (e.g., after tab switch).
+ * Passing `null` skips observation entirely — used during initial render before
+ * card elements exist in the DOM.
+ *
+ * The `requestAnimationFrame` wrapper ensures we query the DOM *after* React
+ * has committed the new elements from the latest render, avoiding a race
+ * condition where querySelectorAll runs before cards are painted.
+ *
+ * @param {*} deps - Dependency value that triggers re-observation. Pass null to skip.
+ * @returns {Set<string>} Set of video IDs that have been revealed
+ */
 function useScrollReveal(deps) {
     const [revealed, setRevealed] = useState(new Set())
     useEffect(() => {
@@ -58,7 +72,18 @@ function useScrollReveal(deps) {
     return revealed
 }
 
-/** Swipe left/right gesture detection */
+/**
+ * useSwipe — Lightweight horizontal swipe gesture detection for mobile navigation.
+ *
+ * Returns `onTouchStart` and `onTouchEnd` handlers to spread onto a container.
+ * A swipe is registered when the horizontal distance exceeds 50px — this
+ * threshold prevents accidental triggers from vertical scrolling or taps while
+ * still being reachable with a deliberate thumb swipe.
+ *
+ * @param {function} onLeft - Called on left swipe (finger moves right-to-left)
+ * @param {function} onRight - Called on right swipe (finger moves left-to-right)
+ * @returns {{ onTouchStart: function, onTouchEnd: function }}
+ */
 function useSwipe(onLeft, onRight) {
     const start = useRef(null)
     return {
@@ -66,6 +91,7 @@ function useSwipe(onLeft, onRight) {
         onTouchEnd: (e) => {
             if (start.current === null || !e.changedTouches?.length) return
             const diff = start.current - e.changedTouches[0].clientX
+            // 50px threshold — wide enough to avoid false positives from scroll jitter
             if (Math.abs(diff) > 50) diff > 0 ? onLeft?.() : onRight?.()
             start.current = null
         }

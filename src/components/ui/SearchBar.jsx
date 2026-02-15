@@ -2,6 +2,21 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { ALL_ARTISTS, ARTIST_STATS } from '../../utils/videoData'
 import { searchAll } from '../../hooks/useSearch'
 
+/**
+ * SearchBar — Dropdown search/filter for artists and videos.
+ *
+ * When no filter is active, shows a "SEARCH" trigger button. When a filter is
+ * active, shows the artist name with a dismiss (✕) button. The dropdown
+ * provides fuzzy search across both artists and video titles, with results
+ * ranked by relevance score. If fuzzy search returns no artist matches, falls
+ * back to simple substring matching so the user always sees some results.
+ *
+ * Dismisses on: Escape key, click outside, or selecting a result.
+ *
+ * @param {string|null} props.filterArtist - Currently active artist filter, or null
+ * @param {function} props.onFilterChange - Called with artist name (or null to clear)
+ * @param {function} [props.onVideoSelect] - Called with video object when a video result is clicked
+ */
 export const SearchBar = ({ filterArtist, onFilterChange, onVideoSelect }) => {
     const [open, setOpen] = useState(false)
     const [query, setQuery] = useState('')

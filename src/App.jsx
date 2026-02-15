@@ -1,3 +1,23 @@
+/**
+ * App.jsx — Desktop 3D "Infinite Drive" Experience
+ *
+ * The main desktop view: a scroll-driven Three.js scene where the user rides
+ * down a synthwave highway, passing billboard-style video frames arranged in
+ * two lanes (Popular / Chronological). Scrolling moves the camera forward along
+ * the Z-axis; arrow keys switch lanes laterally.
+ *
+ * Architecture overview:
+ * - ScrollControls (drei) → CameraRig → ProximityTracker + Scene
+ * - ProximityTracker detects the nearest billboard every 2nd frame and fires
+ *   onActiveChange, which surfaces the video to the HTML UI layer (VideoOverlay).
+ * - FilterContext provides the current artist filter to all 3D children without
+ *   prop-drilling through the R3F scene graph.
+ * - Cityscape generates a procedural skyline using a seeded PRNG so building
+ *   placement is deterministic across renders (no layout shift on hot-reload).
+ *
+ * @see /docs/ARCHITECTURE.md for full system design
+ * @see /src/MobileApp.jsx for the mobile-responsive counterpart
+ */
 import React, { Suspense, useRef, useState, useMemo, useCallback, useEffect, createContext, useContext } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import {
@@ -26,32 +46,52 @@ import useShufflePlay from './hooks/useShufflePlay'
 import useKeyboardShortcuts from './hooks/useKeyboardShortcuts'
 
 const LANES = processVideosIntoLanes()
-// Filter context — lets nested 3D components read the current filter without prop drilling
+
+/**
+ * FilterContext — Shares the active artist filter with all 3D scene children.
+ * Using Context (not props) because R3F scene graphs can be deeply nested and
+ * passing filterArtist through every 3D component would be unwieldy.
+ * @type {React.Context<string|null>}
+ */
 const FilterContext = createContext(null)
 
-// Calculate total distance based on longest lane
+// --- Scene geometry constants ---
+// Total scrollable distance = (longest lane × spacing between billboards) + 50 unit buffer
 const TOTAL_DISTANCE = Math.max(LANES.chronological.length, LANES.popular.length) * LANE_CONFIG.BILLBOARD_Z_SPACING + 50
-const SCROLL_PAGES = Math.ceil(TOTAL_DISTANCE / 100) // Dynamic page count
-const ACTIVE_RANGE = 30 // Slightly increased for dual lanes
+// ScrollControls "pages" ≈ how many viewport-heights the scroll range spans.
+// Dividing by 100 gives ~1 page per 100 world units — tuned for comfortable scroll speed.
+const SCROLL_PAGES = Math.ceil(TOTAL_DISTANCE / 100)
+// How far (in world units) a billboard can be from the camera and still be considered "active".
+// 30 is wide enough to cover both lanes when the camera is centered between them.
+const ACTIVE_RANGE = 30
 
-// Audio tuning for active billboard
-const AUDIO_SILENCE_DISTANCE = 35
-const AUDIO_MAX_VOLUME = 80
-const AUDIO_UPDATE_INTERVAL = 0.1
-const AUDIO_VOLUME_EPSILON = 1
-// Higher quality rendering settings
+// --- Audio distance attenuation ---
+// Volume fades quadratically from AUDIO_MAX_VOLUME (at distance 0) to 0 (at SILENCE_DISTANCE).
+// Quadratic easing (t²) makes the fade feel natural — rapid dropoff near silence, gentle near source.
+const AUDIO_SILENCE_DISTANCE = 35   // World units — beyond this, volume is 0
+const AUDIO_MAX_VOLUME = 80         // YouTube volume (0-100). 80 avoids clipping on loud tracks
+const AUDIO_UPDATE_INTERVAL = 0.1   // Seconds between volume updates (avoids hammering YT API)
+const AUDIO_VOLUME_EPSILON = 1      // Minimum change to trigger a YT setVolume call
+
+// --- Rendering quality ---
 const CANVAS_GL_OPTIONS = {
     antialias: true,
-    alpha: false,
+    alpha: false,               // Opaque background — saves compositing cost
     powerPreference: 'high-performance',
-    stencil: false
+    stencil: false              // No stencil buffer needed — saves GPU memory
 }
-const CANVAS_DPR_DESKTOP = [1, 1.5] // Capped for performance
-const CANVAS_DPR_TABLET = [1, 1] // Fixed 1x for tablets
+const CANVAS_DPR_DESKTOP = [1, 1.5] // Cap at 1.5× to balance quality vs GPU load on HiDPI
+const CANVAS_DPR_TABLET = [1, 1]    // Fixed 1× on tablets — postprocessing is heavy at 2×
 
-// Lane switching animation
+// Lane switching lerp factor — lower = smoother but slower. 0.08 gives ~12 frames to settle.
 const LANE_SWITCH_SPEED = 0.08
 
+/**
+ * Maps camera-to-billboard distance → YouTube volume (0–80).
+ * Uses quadratic easing (t²) for a natural audio falloff curve.
+ * @param {number} distance - World-space distance between camera and billboard
+ * @returns {number} Integer volume 0–AUDIO_MAX_VOLUME
+ */
 const getVolumeFromDistance = (distance) => {
     if (!Number.isFinite(distance)) return 0
     const clamped = Math.min(distance, AUDIO_SILENCE_DISTANCE)
@@ -60,9 +100,16 @@ const getVolumeFromDistance = (distance) => {
     return Math.round(eased * AUDIO_MAX_VOLUME)
 }
 
-// ============================================
-// 3D BILLBOARD FRAME (With YouTube thumbnail)
-// ============================================
+/**
+ * BillboardFrame — A 3D video billboard placed along the highway.
+ * Renders a YouTube thumbnail as a textured plane with neon border,
+ * title/description text, and optional golden halo for deceased artists.
+ * Dimmed to 85% opacity when an artist filter is active and this billboard
+ * doesn't match, creating a visual focus effect.
+ *
+ * @param {Object} props.project - Video data (title, description, position, color, url, artist)
+ * @param {boolean} props.isActive - Whether this is the closest billboard to the camera
+ */
 const BillboardFrame = ({ project, isActive }) => {
     const { title, description, position, color, url } = project
     const filterArtist = useContext(FilterContext)
@@ -199,13 +246,24 @@ const BillboardFrame = ({ project, isActive }) => {
 }
 
 
-// ============================================
-// CAMERA RIG - Moves with scroll + lane switching
-// ============================================
+/**
+ * CameraRig — Scroll-driven camera movement with smooth lane switching.
+ *
+ * Z-axis (forward): driven by drei's ScrollControls offset, lerped at 0.15
+ * for a snappy-but-smooth feel at 60fps.
+ * X-axis (lateral): lerped toward the target lane position at LANE_SWITCH_SPEED.
+ * Uses a ref (not state) for targetX because it updates every frame in useFrame
+ * and triggering a React re-render each frame would kill performance.
+ *
+ * @param {React.ReactNode} props.children - Scene contents that move with the camera
+ * @param {'popular'|'chronological'} props.currentLane - Active lane
+ * @param {function} props.onLaneChange - Callback when user presses ←/→ arrow keys
+ */
 const CameraRig = ({ children, currentLane, onLaneChange }) => {
     const scroll = useScroll()
     const rigRef = useRef()
-    const targetXRef = useRef(LANE_CONFIG.CHRONOLOGICAL.x * 0.5) // Start slightly toward chrono lane
+    // Start slightly toward chrono lane so user sees both lanes on load
+    const targetXRef = useRef(LANE_CONFIG.CHRONOLOGICAL.x * 0.5)
 
     // Handle keyboard lane switching
     useEffect(() => {
@@ -337,9 +395,20 @@ const SpeedLines = ({ reducedEffects }) => {
     )
 }
 
-// ============================================
-// PROXIMITY TRACKER - Determines closest billboard (lane-aware)
-// ============================================
+/**
+ * ProximityTracker — Finds the nearest billboard in the active lane each frame.
+ *
+ * Runs inside useFrame (the R3F render loop) but throttled to every 2nd frame
+ * to halve the cost of iterating all billboards. At 60fps this still updates
+ * proximity 30×/sec which is imperceptible to the user.
+ *
+ * Fires onActiveChange when a different billboard becomes closest, and
+ * onActiveUpdate with the distance for volume attenuation.
+ *
+ * @param {function} props.onActiveChange - Called with (project, distance) when active billboard changes
+ * @param {function} props.onActiveUpdate - Called with (distance) every check for volume updates
+ * @param {'popular'|'chronological'} props.currentLane - Which lane to scan
+ */
 const ProximityTracker = ({ onActiveChange, onActiveUpdate, currentLane }) => {
     const scroll = useScroll()
     const lastActiveRef = useRef(null)
@@ -890,10 +959,25 @@ const DataStream = ({ position, height = 30, color = '#05d9e8' }) => {
 // ============================================
 // CITYSCAPE - Tron-style metropolis
 // ============================================
+/**
+ * Cityscape — Procedurally generated synthwave skyline flanking the highway.
+ *
+ * Uses a seeded PRNG (not Math.random) so the city layout is identical across
+ * renders and hot-reloads — preventing jarring building position shifts.
+ * Building count scales with TOTAL_DISTANCE so the skyline always fills the
+ * full scrollable road length. Also places HighwayArch and DataStream elements
+ * at regular intervals for visual rhythm.
+ *
+ * @param {number} [props.cnTowerZ=-280] - Z position for the CN Tower landmark
+ */
 const Cityscape = ({ cnTowerZ = -280 }) => {
     const cityData = useMemo(() => {
+        // Deterministic PRNG — sin-hash trick (from GPU shader tradition).
+        // The magic constants (127.1, 43758.5453) produce a well-distributed
+        // pseudo-random sequence when fed sequential integers as seeds.
+        // Using this instead of Math.random() ensures identical city layout
+        // across renders without needing to save/restore random state.
         const seed = (n) => {
-            // Simple seeded pseudo-random for deterministic generation
             let x = Math.sin(n * 127.1) * 43758.5453
             return x - Math.floor(x)
         }
