@@ -10,6 +10,8 @@
  * @module main
  */
 import React, { Component, Suspense, lazy, useEffect } from 'react'
+// eslint-disable-next-line no-unused-vars
+import { logError, ErrorCategory } from './utils/errorHandling'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { useDeviceType } from './hooks/useDeviceType.js'
@@ -30,6 +32,12 @@ class AppErrorBoundary extends Component {
 
     static getDerivedStateFromError() {
         return { hasError: true }
+    }
+
+    componentDidCatch(error, errorInfo) {
+        logError(ErrorCategory.RENDER, 'AppErrorBoundary', error, {
+            componentStack: errorInfo?.componentStack,
+        })
     }
 
     render() {

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { isValidYouTubeId } from '../utils/youtube'
+import { logError, ErrorCategory } from '../utils/errorHandling'
 
 // ── YouTube IFrame API loader (singleton) ──
 let ytApiPromise = null
@@ -68,8 +69,8 @@ export default function YouTubePlayer({
                 } else {
                     playerRef.current = null
                 }
-            } catch {
-                // Player in bad state — destroy and recreate below
+            } catch (error) {
+                logError(ErrorCategory.PLAYER, 'switchVideo', error, { videoId })
                 playerRef.current = null
             }
             if (playerRef.current) return
@@ -106,22 +107,23 @@ export default function YouTubePlayer({
                             onEndRef.current?.()
                         }
                     },
-                    onError: () => {
-                        // Silently handle - video still plays, just no end detection
+                    onError: (event) => {
+                        logError(ErrorCategory.PLAYER, 'onPlayerError', event?.data,
+                            { videoId, code: event?.data })
                     }
                 }
             })
             playerRef.current = localPlayer
-        }).catch(() => {
-            // YouTube API failed to load — video still shows via iframe fallback
+        }).catch((error) => {
+            logError(ErrorCategory.NETWORK, 'ensureYTApi', error, { videoId })
         })
 
         return () => {
             destroyed = true
             try {
                 if (localPlayer?.destroy) localPlayer.destroy()
-            } catch {
-                // Player may already be gone
+            } catch (error) {
+                logError(ErrorCategory.PLAYER, 'destroyPlayer', error, { videoId })
             }
             // Only clear shared ref if it still points to THIS effect's player
             if (playerRef.current === localPlayer) {

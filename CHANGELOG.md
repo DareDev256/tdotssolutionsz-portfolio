@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.9.0] - 2026-02-15
+
+### Changed
+- **Centralized error handling** — New `src/utils/errorHandling.js` module with `logError()` and `withRecovery()` utilities. Categorized errors (storage, network, player, render, parse) with structured context for DevTools debugging
+- **YouTubePlayer error recovery** — All 5 silent catch blocks now log with actionable context: video ID, error codes, and component state. Player errors, API load failures, and cleanup failures are all observable
+- **useFavorites structured logging** — localStorage read/write failures log category, key, and item count instead of swallowing silently. Read uses `withRecovery()` pattern for consistent fallback handling
+- **YouTube URL utilities** — `extractVideoId()` and `openShareWindow()` catch blocks now log parse/network errors with input context
+- **AppErrorBoundary logging** — Added `componentDidCatch` to root error boundary, logging render crashes with React component stack traces via `logError()`
+- **10 new tests** — Full coverage for `ErrorCategory`, `logError()` structured output, `withRecovery()` success/failure paths, null/undefined handling, and context propagation (272 → 282 tests)
+
 ## [3.8.2] - 2026-02-14
 
 ### Security

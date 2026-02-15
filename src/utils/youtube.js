@@ -3,6 +3,8 @@
  * and shareable link generation across desktop, mobile, and theater mode.
  */
 
+import { logError, ErrorCategory } from './errorHandling'
+
 /** YouTube video IDs are exactly 11 chars: alphanumeric plus - and _ */
 const YT_ID_RE = /^[A-Za-z0-9_-]{11}$/
 
@@ -46,8 +48,8 @@ export function extractVideoId(urlOrId) {
         // Standard ?v= parameter
         const candidate = url.searchParams.get('v') || ''
         return isValidYouTubeId(candidate) ? candidate : ''
-    } catch {
-        // Not a valid URL and not a bare ID — reject
+    } catch (error) {
+        logError(ErrorCategory.PARSE, 'extractVideoId', error, { input: urlOrId })
         return ''
     }
 }
@@ -83,7 +85,8 @@ export function openShareWindow(url, features = 'noopener,noreferrer') {
         if (!SHARE_HOSTS.has(parsed.hostname)) return false
         window.open(url, '_blank', features)
         return true
-    } catch {
+    } catch (error) {
+        logError(ErrorCategory.NETWORK, 'openShareWindow', error, { url })
         return false
     }
 }

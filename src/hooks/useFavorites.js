@@ -5,6 +5,7 @@
  */
 import { useState, useCallback } from 'react'
 import { isValidYouTubeId } from '../utils/youtube'
+import { logError, withRecovery, ErrorCategory } from '../utils/errorHandling'
 
 /** localStorage key for persisted favorites array */
 const STORAGE_KEY = 'tdots-favorites'
@@ -18,16 +19,17 @@ const MAX_FAVORITES = 500
  * @returns {string[]} Array of validated YouTube video IDs
  */
 export function readFavorites() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY)
-        if (!raw) return []
-        const parsed = JSON.parse(raw)
-        if (!Array.isArray(parsed)) return []
-        // Only keep valid YouTube IDs, cap at MAX_FAVORITES
-        return parsed.filter(isValidYouTubeId).slice(0, MAX_FAVORITES)
-    } catch {
-        return []
-    }
+    return withRecovery(
+        ErrorCategory.STORAGE, 'readFavorites',
+        () => {
+            const raw = localStorage.getItem(STORAGE_KEY)
+            if (!raw) return []
+            const parsed = JSON.parse(raw)
+            if (!Array.isArray(parsed)) return []
+            return parsed.filter(isValidYouTubeId).slice(0, MAX_FAVORITES)
+        },
+        [], { key: STORAGE_KEY }
+    )
 }
 
 /**
@@ -37,7 +39,10 @@ export function readFavorites() {
 function writeFavorites(ids) {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(ids))
-    } catch { /* quota exceeded — fail silently */ }
+    } catch (error) {
+        logError(ErrorCategory.STORAGE, 'writeFavorites', error,
+            { key: STORAGE_KEY, count: ids.length })
+    }
 }
 
 /**
