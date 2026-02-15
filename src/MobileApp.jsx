@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
-import { ArtistPanel, KeyboardGuide } from './components/ui'
+import { ArtistPanel, KeyboardGuide, ScrollToTop } from './components/ui'
 import useFavorites from './hooks/useFavorites'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from './utils/videoData'
 import { getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
@@ -564,6 +564,9 @@ export default function MobileApp() {
                 mobileModal={Boolean(playingVideo)}
             />
             <KeyboardGuide isOpen={kbdGuideOpen} onClose={() => setKbdGuideOpen(false)} />
+
+            {/* Scroll to Top FAB */}
+            <ScrollToTop />
 
             {/* Footer */}
             <footer className="mobile-footer">

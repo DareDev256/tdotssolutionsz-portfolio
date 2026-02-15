@@ -3,7 +3,7 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Tests](https://img.shields.io/badge/TESTS-272_PASSING-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.8.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.9.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -31,6 +31,7 @@ Synthwave-styled card grid with floating CSS particles, scanline overlay, and gl
 - **Swipe Navigation** — Left/right in the video modal
 - **Favorites** — Heart button saves to localStorage with a dedicated filter tab
 - **Shuffle & Search** — Same discovery tools as desktop
+- **Scroll-to-Top FAB** — Floating button with neon progress ring showing scroll depth; smooth-scrolls back to top
 
 ### Hub Landing Page (`/`)
 

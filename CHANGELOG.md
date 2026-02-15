@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.9.0] - 2026-02-15
+
+### Added
+- **Scroll-to-Top FAB with Progress Ring** — Floating action button appears after scrolling 400px on mobile. Features an SVG progress ring that fills with neon cyan as the user scrolls deeper through the 101-video grid, providing spatial awareness. Smooth-scrolls back to top on tap. `requestAnimationFrame`-throttled scroll handler with passive listener for 60fps performance. Hidden during video modal playback. WCAG-accessible with dynamic aria-label showing scroll percentage
+
 ## [3.8.2] - 2026-02-14
 
 ### Security
