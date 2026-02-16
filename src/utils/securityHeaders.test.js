@@ -75,11 +75,12 @@ describe('vercel.json security headers', () => {
 })
 
 describe('CSP script-src hardening', () => {
-    it('does NOT allow blob: in script-src (XSS amplification vector)', () => {
+    it('allows blob: in script-src (required for Three.js worker importScripts)', () => {
         const csp = getHeader('Content-Security-Policy')
-        // Extract just the script-src directive value
+        // Three.js workers use importScripts() with blob: URLs, which is governed
+        // by script-src, not worker-src. Removing blob: from script-src breaks the 3D scene.
         const scriptSrc = csp.match(/script-src\s+([^;]+)/)?.[1] || ''
-        expect(scriptSrc).not.toContain('blob:')
+        expect(scriptSrc).toContain('blob:')
     })
 
     it('still allows blob: in worker-src for Three.js Web Workers', () => {
