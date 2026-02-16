@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.12.0] - 2026-02-16
+
+### Added
+- **Video Spotlight** — New `VideoSpotlight` component on the HubPage showcasing a featured video from the top 20 most-viewed. Cinematic thumbnail card with play button overlay, vignette gradient, artist name, view count, and year. Clicking navigates to `/videos?v=` deep link for that video
+- **Shuffle Pick button** — Rotates the spotlight to a different random top video with a smooth fade transition (no repeats). Disabled during transition to prevent rapid-fire clicks
+- **Scroll-reveal animation** — Spotlight fades in and slides up when scrolled into view via IntersectionObserver, with full `prefers-reduced-motion` support
+- **Responsive design** — Adapts to mobile with full-width layout and smaller play button
+- **WCAG accessible** — Proper `aria-label` on all interactive elements, `focus-visible` outline on shuffle button, section landmark with descriptive label
+
 ## [3.11.1] - 2026-02-16
 
 ### Added

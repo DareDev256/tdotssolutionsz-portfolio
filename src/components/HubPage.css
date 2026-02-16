@@ -312,6 +312,12 @@
   margin-bottom: 8px;
 }
 
+/* Spotlight spacing */
+.hub-page .video-spotlight {
+  margin-top: 32px;
+  margin-bottom: 8px;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .hub-logo {

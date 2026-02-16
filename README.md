@@ -3,7 +3,7 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Tests](https://img.shields.io/badge/TESTS-309_PASSING-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.11.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.12.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -40,6 +40,7 @@ Split navigation — Music Videos (live) and Photography (coming soon). Animated
 - **Live Stats Counter** — Animated count-up showing 101 videos, 54 artists, 25.3M+ total views, and 14 years of production
 - **Hover to Pause** — Ticker pauses on mouse hover for closer inspection
 - **Production Pulse Chart** — Interactive year-by-year neon bar chart showing production volume from 2010–2026 with hover details (video count, total views, artist count per year), staggered scroll-reveal animation, and `prefers-reduced-motion` support
+- **Video Spotlight** — Featured video card showcasing a random top-20 video with cinematic thumbnail, play overlay, and a shuffle button to rotate picks. Clicks deep-link directly into the 3D experience
 - **Production Era Timeline** — Horizontal scroll cards grouping 101 videos into four eras (Origins, Rise, Peak, New Wave) with top video thumbnails, per-era stats, and staggered scroll-reveal animations
 
 ---
