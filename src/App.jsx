@@ -46,6 +46,7 @@ import useVideoDeepLink from './hooks/useVideoDeepLink'
 import useVideoNavigation from './hooks/useVideoNavigation'
 import useShufflePlay from './hooks/useShufflePlay'
 import useKeyboardShortcuts from './hooks/useKeyboardShortcuts'
+import { getVolumeFromDistance, AUDIO_SILENCE_DISTANCE, AUDIO_MAX_VOLUME, AUDIO_UPDATE_INTERVAL, AUDIO_VOLUME_EPSILON } from './utils/audioAttenuation'
 
 const LANES = processVideosIntoLanes()
 
@@ -67,13 +68,7 @@ const SCROLL_PAGES = Math.ceil(TOTAL_DISTANCE / 100)
 // 30 is wide enough to cover both lanes when the camera is centered between them.
 const ACTIVE_RANGE = 30
 
-// --- Audio distance attenuation ---
-// Volume fades quadratically from AUDIO_MAX_VOLUME (at distance 0) to 0 (at SILENCE_DISTANCE).
-// Quadratic easing (t²) makes the fade feel natural — rapid dropoff near silence, gentle near source.
-const AUDIO_SILENCE_DISTANCE = 35   // World units — beyond this, volume is 0
-const AUDIO_MAX_VOLUME = 80         // YouTube volume (0-100). 80 avoids clipping on loud tracks
-const AUDIO_UPDATE_INTERVAL = 0.1   // Seconds between volume updates (avoids hammering YT API)
-const AUDIO_VOLUME_EPSILON = 1      // Minimum change to trigger a YT setVolume call
+// Audio constants imported from ./utils/audioAttenuation
 
 // --- Rendering quality ---
 const CANVAS_GL_OPTIONS = {
@@ -88,19 +83,7 @@ const CANVAS_DPR_TABLET = [1, 1]    // Fixed 1× on tablets — postprocessing i
 // Lane switching lerp factor — lower = smoother but slower. 0.08 gives ~12 frames to settle.
 const LANE_SWITCH_SPEED = 0.08
 
-/**
- * Maps camera-to-billboard distance → YouTube volume (0–80).
- * Uses quadratic easing (t²) for a natural audio falloff curve.
- * @param {number} distance - World-space distance between camera and billboard
- * @returns {number} Integer volume 0–AUDIO_MAX_VOLUME
- */
-const getVolumeFromDistance = (distance) => {
-    if (!Number.isFinite(distance)) return 0
-    const clamped = Math.min(distance, AUDIO_SILENCE_DISTANCE)
-    const t = 1 - clamped / AUDIO_SILENCE_DISTANCE
-    const eased = t * t
-    return Math.round(eased * AUDIO_MAX_VOLUME)
-}
+// getVolumeFromDistance imported from ./utils/audioAttenuation
 
 /**
  * BillboardFrame — A 3D video billboard placed along the highway.

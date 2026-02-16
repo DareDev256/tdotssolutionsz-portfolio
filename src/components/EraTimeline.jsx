@@ -62,7 +62,7 @@ function PrismIcon({ color }) {
 const ERA_ICONS = { origins: VinylIcon, rise: ClapboardIcon, peak: WaveformIcon, modern: PrismIcon }
 
 /** Era definitions — each represents a chapter in the production journey */
-const ERA_DEFS = [
+export const ERA_DEFS = [
   { id: 'origins', label: 'THE ORIGINS', range: [2010, 2014], color: '#7700ff', pinnedVideoId: 'L1ECRyART6o' },
   { id: 'rise', label: 'THE RISE', range: [2015, 2017], color: '#ff2a6d' },
   { id: 'peak', label: 'NEW ERA', range: [2018, 2020], color: '#05d9e8' },
@@ -70,7 +70,7 @@ const ERA_DEFS = [
 ]
 
 /** Pre-compute era stats from video data */
-const ERAS = ERA_DEFS.map(era => {
+export const ERAS = ERA_DEFS.map(era => {
   const videos = VIDEOS.filter(v => {
     const year = new Date(v.uploadDate).getFullYear()
     return year >= era.range[0] && year <= era.range[1]

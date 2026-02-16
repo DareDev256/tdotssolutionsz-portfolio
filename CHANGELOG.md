@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.11.1] - 2026-02-16
+
+### Added
+- **Audio attenuation tests** — 14 tests for `getVolumeFromDistance()` covering quadratic falloff curve, boundary values, monotonicity, integer output, and edge cases (NaN, Infinity, null, negative distances)
+- **Production Pulse tests** — 9 tests for `buildYearData()` verifying year aggregation accuracy, chronological sorting, view count totals, artist count per year, and Set cleanup
+- **Era Timeline tests** — 14 tests for era computation logic verifying video-to-era assignment, year range boundaries, view sort order, pinned video overrides, contiguous era ranges, and stat accuracy
+- **Extracted `audioAttenuation.js`** — Pure audio math extracted from App.jsx into testable utility module
+
+### Fixed
+- **Negative distance audio bug** — `getVolumeFromDistance()` now clamps negative distances to 0 (previously produced volume > 80, exceeding YouTube API max). Could occur from floating-point imprecision in 3D distance calculations
+
 ## [3.11.0] - 2026-02-16
 
 ### Changed

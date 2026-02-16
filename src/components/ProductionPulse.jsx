@@ -11,7 +11,7 @@ import { formatViews } from '../utils/formatters'
 import './ProductionPulse.css'
 
 /** Aggregate videos by year with stats */
-function buildYearData() {
+export function buildYearData() {
   const byYear = {}
   for (const v of VIDEOS) {
     const year = v.uploadDate?.slice(0, 4)
