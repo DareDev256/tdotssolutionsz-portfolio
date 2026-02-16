@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.11.0] - 2026-02-16
+
+### Changed
+- **Cityscape module extraction** — Extracted 5 tightly-coupled 3D scene components (CNTower, TronBuilding, HighwayArch, DataStream, Cityscape) from monolithic `App.jsx` into dedicated files under `src/components/3d/scene/` with barrel exports. App.jsx reduced from 1,533 → 1,039 lines (32% reduction) with zero behavior changes
+- **Cityscape prop injection** — Converted Cityscape from reading module-scoped `TOTAL_DISTANCE` to accepting it via `totalDistance` prop, improving testability and eliminating implicit coupling to App.jsx internals
+- **Seeded PRNG hoisted** — Moved the deterministic sin-hash PRNG function to module scope in Cityscape.jsx (was inside useMemo closure), making it reusable and easier to test independently
+
 ## [3.10.0] - 2026-02-16
 
 ### Added
