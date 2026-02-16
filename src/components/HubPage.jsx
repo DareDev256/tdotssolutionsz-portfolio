@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ArtistShowcase from './ArtistShowcase'
+import EraTimeline from './EraTimeline'
 import './HubPage.css'
 
 export default function HubPage() {
@@ -66,6 +67,7 @@ export default function HubPage() {
       </nav>
 
       <ArtistShowcase />
+      <EraTimeline />
 
       {showToast && (
         <div className="hub-toast" role="status" aria-live="polite">

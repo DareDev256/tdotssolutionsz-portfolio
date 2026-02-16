@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.9.0] - 2026-02-15
+
+### Added
+- **Production Era Timeline** — New `EraTimeline` component on the HubPage grouping the 101-video catalog into four distinct eras (Origins 2010–2014, The Rise 2015–2017, Peak Era 2018–2020, New Wave 2021–2026). Each era card shows top video thumbnail, video count, unique artist count, and total views
+- **Horizontal scroll era cards** — Swipeable/scrollable card track with scroll-snap alignment, thin custom scrollbar, and per-era color theming (purple → pink → cyan → green)
+- **Timeline connector dots** — Visual timeline dots below the cards connecting the eras with color-coded glow effects
+- **Scroll-reveal animations** — IntersectionObserver-triggered staggered fade-in for era cards with `prefers-reduced-motion` respect
+- **Era top video showcase** — Each era card features the highest-viewed video with thumbnail, title, and view count overlay
+
 ## [3.8.3] - 2026-02-15
 
 ### Added
