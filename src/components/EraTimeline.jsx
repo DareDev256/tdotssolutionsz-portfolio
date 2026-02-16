@@ -14,9 +14,9 @@ import './EraTimeline.css'
 
 /** Era definitions — each represents a chapter in the production journey */
 const ERA_DEFS = [
-  { id: 'origins', label: 'THE ORIGINS', range: [2010, 2014], color: '#7700ff', icon: '🌱' },
+  { id: 'origins', label: 'THE ORIGINS', range: [2010, 2014], color: '#7700ff', icon: '🌱', pinnedVideoId: 'L1ECRyART6o' },
   { id: 'rise', label: 'THE RISE', range: [2015, 2017], color: '#ff2a6d', icon: '🔥' },
-  { id: 'peak', label: 'PEAK ERA', range: [2018, 2020], color: '#05d9e8', icon: '⚡' },
+  { id: 'peak', label: 'NEW ERA', range: [2018, 2020], color: '#05d9e8', icon: '⚡' },
   { id: 'modern', label: 'NEW WAVE', range: [2021, 2026], color: '#00ff88', icon: '🚀' },
 ]
 
@@ -29,7 +29,9 @@ const ERAS = ERA_DEFS.map(era => {
 
   const totalViews = videos.reduce((sum, v) => sum + v.viewCount, 0)
   const uniqueArtists = new Set(videos.map(v => v.artist)).size
-  const topVideo = videos[0] || null
+  const topVideo = era.pinnedVideoId
+    ? videos.find(v => v.youtubeId === era.pinnedVideoId) ?? videos[0]
+    : videos[0] || null
 
   return { ...era, videos, totalViews, uniqueArtists, topVideo, count: videos.length }
 }).filter(era => era.count > 0)
