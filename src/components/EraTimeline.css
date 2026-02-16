@@ -1,48 +1,165 @@
-.era-timeline { position: relative; z-index: 1; width: 100%; max-width: 900px; margin-top: 40px; }
-.era-timeline-header { display: flex; align-items: center; gap: 16px; margin-bottom: 4px; }
-.era-timeline-title { font-family: 'Orbitron', monospace; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.25em; color: rgba(255,255,255,0.5); white-space: nowrap; margin: 0; }
-.era-timeline-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); }
-.era-timeline-sub { text-align: center; font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.3); margin: 0 0 20px; letter-spacing: 0.05em; }
+/* ============================================
+   ERA TIMELINE — Film Credits Editorial Style
+   Bebas Neue for labels, custom SVG icons,
+   no gradient glow, stark contrast.
+   ============================================ */
 
+.era-timeline { position: relative; z-index: 1; width: 100%; max-width: 900px; margin-top: 40px; }
+
+/* ---- Section Header ---- */
+.era-timeline-header { display: flex; align-items: center; gap: 16px; margin-bottom: 4px; }
+.era-timeline-title {
+  font-family: 'Bebas Neue', 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  color: rgba(255,255,255,0.45);
+  white-space: nowrap;
+  margin: 0;
+}
+.era-timeline-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); }
+.era-timeline-sub { text-align: center; font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.25); margin: 0 0 20px; letter-spacing: 0.05em; }
+
+/* ---- Scrollable Track ---- */
 .era-track { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 4px 0 16px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent; }
 .era-track::-webkit-scrollbar { height: 4px; }
 .era-track::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
 
-.era-card { flex: 0 0 220px; scroll-snap-align: start; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); overflow: hidden; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; opacity: 0; transform: translateY(16px); }
-.era-card--visible { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease var(--era-delay), transform 0.5s ease var(--era-delay), box-shadow 0.3s ease; }
-.era-card:hover { transform: translateY(-3px); box-shadow: 0 0 24px color-mix(in srgb, var(--era-color) 25%, transparent), 0 4px 20px rgba(0,0,0,0.3); border-color: color-mix(in srgb, var(--era-color) 30%, transparent); }
+/* ---- Era Card ---- */
+.era-card {
+  flex: 0 0 220px;
+  scroll-snap-align: start;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  transform: translateY(16px);
+}
+.era-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease var(--era-delay), transform 0.5s ease var(--era-delay), box-shadow 0.3s ease;
+}
+.era-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--era-color) 20%, transparent), 0 4px 20px rgba(0,0,0,0.3);
+  border-color: color-mix(in srgb, var(--era-color) 25%, transparent);
+}
 
+/* ---- Accent Line (top of card) ---- */
 .era-accent { height: 2px; background: linear-gradient(90deg, transparent, var(--era-color), transparent); opacity: 0.6; }
 
+/* ---- Thumbnail ---- */
 .era-thumb-wrap { position: relative; aspect-ratio: 16/9; overflow: hidden; }
 .era-thumb { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.7) saturate(1.2); transition: filter 0.3s ease; }
 .era-card:hover .era-thumb { filter: brightness(0.85) saturate(1.3); }
 .era-thumb-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 8px 10px; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%); }
-.era-thumb-label { font-family: 'Orbitron', monospace; font-size: 0.5rem; letter-spacing: 0.15em; color: var(--era-color); opacity: 0.8; }
+.era-thumb-label { font-family: 'Orbitron', monospace; font-size: 0.45rem; letter-spacing: 0.15em; color: var(--era-color); opacity: 0.7; text-transform: uppercase; }
 .era-thumb-title { font-family: 'Rajdhani', sans-serif; font-size: 0.75rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3; }
 .era-thumb-views { font-family: 'Rajdhani', sans-serif; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
 
-.era-info { padding: 12px 12px 8px; text-align: center; }
-.era-icon { font-size: 1.2rem; display: block; margin-bottom: 4px; }
-.era-label { font-family: 'Orbitron', monospace; font-size: 0.85rem; font-weight: 700; color: var(--era-color); margin: 0; letter-spacing: 0.1em; text-shadow: 0 0 12px color-mix(in srgb, var(--era-color) 40%, transparent); }
-.era-range { font-family: 'Orbitron', monospace; font-size: 0.55rem; color: rgba(255,255,255,0.35); letter-spacing: 0.15em; }
+/* ---- Era Info (icon + label + range) ---- */
+.era-info {
+  padding: 12px 12px 8px;
+  text-align: center;
+  position: relative;
+}
 
+/* Ghost era number — editorial watermark */
+.era-info::before {
+  content: attr(data-era-num);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  color: var(--era-color);
+  opacity: 0.06;
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Custom SVG icons */
+.era-icon-svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  margin: 0 auto 6px;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--era-color) 40%, transparent));
+}
+
+/* Era label — Bebas Neue, film credits feel, no gradient */
+.era-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 0.2em;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+/* Colored underline accent — replaces glow */
+.era-label::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 1px;
+  background: var(--era-color);
+  opacity: 0.5;
+}
+
+.era-range {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.5rem;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.15em;
+  display: block;
+  margin-top: 2px;
+}
+
+/* ---- Stats Row ---- */
 .era-stats { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px 14px; }
 .era-stat { text-align: center; }
-.era-stat-val { display: block; font-family: 'Orbitron', monospace; font-size: 0.8rem; font-weight: 700; color: #fff; }
-.era-stat-key { font-family: 'Rajdhani', sans-serif; font-size: 0.6rem; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.05em; }
+.era-stat-val {
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+.era-stat-key {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
 .era-stat-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.08); }
 
+/* ---- Timeline Connector Dots ---- */
 .era-connector { display: flex; align-items: center; justify-content: center; margin-top: 8px; padding: 0 20px; }
 .era-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--era-color); box-shadow: 0 0 8px color-mix(in srgb, var(--era-color) 50%, transparent); position: relative; flex-shrink: 0; }
 .era-dot::after { content: ''; position: absolute; top: 50%; left: 100%; width: 60px; height: 1px; background: linear-gradient(90deg, var(--era-color), transparent); opacity: 0.3; }
 .era-dot:last-child::after { display: none; }
 
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (max-width: 640px) {
   .era-timeline { margin-top: 32px; }
   .era-card { flex: 0 0 180px; }
-  .era-label { font-size: 0.75rem; }
+  .era-label { font-size: 0.95rem; }
   .era-connector { display: none; }
+  .era-info::before { font-size: 2.2rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
