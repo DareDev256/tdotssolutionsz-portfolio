@@ -4,6 +4,10 @@
  * view count, and a "Shuffle Pick" button that rotates through
  * the top-viewed videos. Clicking the card navigates to /videos
  * with a deep link to that specific video.
+ *
+ * Uses a sliding-window history buffer (same pattern as useShufflePlay)
+ * to guarantee diverse picks — users see the full top-20 rotation
+ * before any video repeats.
  */
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -17,16 +21,38 @@ const SPOTLIGHT_POOL = [...VIDEOS]
   .sort((a, b) => b.viewCount - a.viewCount)
   .slice(0, 20)
 
-/** Pick a random index different from the current one */
-function randomIndex(current, max) {
-  if (max <= 1) return 0
-  let next
-  do { next = Math.floor(Math.random() * max) } while (next === current)
-  return next
+/**
+ * How many recent picks to exclude from candidates.
+ * Set to pool - 1 so every video shows before any repeats.
+ */
+const HISTORY_SIZE = Math.max(1, SPOTLIGHT_POOL.length - 1)
+
+/**
+ * Pick a diverse random video from the pool, excluding recently shown IDs.
+ * Returns the new index into SPOTLIGHT_POOL.
+ *
+ * @param {string[]} history - Array of recently shown youtubeId values
+ * @returns {number} Index into SPOTLIGHT_POOL
+ */
+function diversePick(history) {
+  const historySet = new Set(history)
+  const candidates = SPOTLIGHT_POOL
+    .map((v, i) => ({ v, i }))
+    .filter(({ v }) => !historySet.has(v.youtubeId))
+
+  // If history exhausted the entire pool, allow all (shouldn't happen with HISTORY_SIZE = pool - 1)
+  const pool = candidates.length > 0 ? candidates : SPOTLIGHT_POOL.map((v, i) => ({ v, i }))
+  return pool[Math.floor(Math.random() * pool.length)].i
 }
 
 export default function VideoSpotlight() {
-  const [index, setIndex] = useState(() => Math.floor(Math.random() * SPOTLIGHT_POOL.length))
+  const historyRef = useRef([])
+  const [index, setIndex] = useState(() => {
+    const initial = Math.floor(Math.random() * SPOTLIGHT_POOL.length)
+    // Seed history with the first pick so it's excluded from the next shuffle
+    historyRef.current.push(SPOTLIGHT_POOL[initial].youtubeId)
+    return initial
+  })
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [isRevealed, setIsRevealed] = useState(false)
   const sectionRef = useRef(null)
@@ -50,7 +76,12 @@ export default function VideoSpotlight() {
     setIsTransitioning(true)
     // Brief fade-out, swap, fade-in
     setTimeout(() => {
-      setIndex(prev => randomIndex(prev, SPOTLIGHT_POOL.length))
+      const nextIdx = diversePick(historyRef.current)
+      const history = historyRef.current
+      history.push(SPOTLIGHT_POOL[nextIdx].youtubeId)
+      // Maintain sliding window — trim oldest when exceeding HISTORY_SIZE
+      if (history.length > HISTORY_SIZE) history.shift()
+      setIndex(nextIdx)
       setIsTransitioning(false)
     }, 300)
   }, [isTransitioning])

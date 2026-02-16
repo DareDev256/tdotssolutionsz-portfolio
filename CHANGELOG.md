@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.12.1] - 2026-02-16
+
+### Fixed
+- **VideoSpotlight diversity** — Replaced naive `randomIndex()` (only avoided immediate repeat) with a sliding-window history buffer matching the `useShufflePlay` pattern. Users now see all 20 top videos before any repeats, instead of potentially cycling through the same 3–4 picks. History seeds the initial pick so the very first shuffle is always fresh
+
 ## [3.12.0] - 2026-02-16
 
 ### Added
