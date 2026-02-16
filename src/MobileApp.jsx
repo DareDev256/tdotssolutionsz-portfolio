@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
 import { ArtistPanel, KeyboardGuide } from './components/ui'
@@ -112,6 +113,15 @@ export default function MobileApp() {
     const [artistPanelArtist, setArtistPanelArtist] = useState(null)
     const [kbdGuideOpen, setKbdGuideOpen] = useState(false)
     const { favorites, toggleFavorite, isFavorite } = useFavorites()
+    const [searchParams] = useSearchParams()
+
+    // Read ?artist= param from URL (e.g. from HubPage artist ticker)
+    useEffect(() => {
+        const artistParam = searchParams.get('artist')
+        if (artistParam && ALL_ARTISTS.includes(artistParam)) {
+            setFilterArtist(artistParam)
+        }
+    }, [searchParams])
 
     // Simulate loading state for initial data hydration
     useEffect(() => {

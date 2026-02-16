@@ -6,6 +6,7 @@
  * Also includes an animated stats counter that counts up on mount.
  */
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { VIDEOS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
@@ -127,7 +128,12 @@ export default function ArtistShowcase() {
       >
         <div className={`showcase-ticker ${isPaused ? 'paused' : ''}`}>
           {tickerItems.map((artist, i) => (
-            <div className="showcase-artist-card" key={`${artist.name}-${i}`}>
+            <Link
+              to={`/videos?artist=${encodeURIComponent(artist.name)}`}
+              className="showcase-artist-card"
+              key={`${artist.name}-${i}`}
+              aria-label={`View ${artist.name}'s videos`}
+            >
               <div className="showcase-thumb-wrap">
                 <img
                   src={getThumbnailUrl(artist.topVideo.youtubeId, 'mqdefault')}
@@ -145,7 +151,7 @@ export default function ArtistShowcase() {
                   {artist.count} video{artist.count !== 1 ? 's' : ''} · {formatViews(artist.totalViews)} views
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

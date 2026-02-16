@@ -19,6 +19,7 @@
  * @see /src/MobileApp.jsx for the mobile-responsive counterpart
  */
 import React, { Suspense, useRef, useState, useMemo, useCallback, useEffect, createContext, useContext } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Canvas, useFrame } from '@react-three/fiber'
 import {
     PerspectiveCamera,
@@ -38,7 +39,7 @@ import { Vehicle } from './components/3d/vehicles'
 import { StarField, SynthwaveSun } from './components/3d/effects'
 
 // Shared data & utilities (single source of truth with MobileApp)
-import { NEON_COLORS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist } from './utils/videoData'
+import { NEON_COLORS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist, ALL_ARTISTS } from './utils/videoData'
 import { extractVideoId, getThumbnailUrl } from './utils/youtube'
 import useVideoDeepLink from './hooks/useVideoDeepLink'
 import useVideoNavigation from './hooks/useVideoNavigation'
@@ -1377,6 +1378,16 @@ export default function App({ reducedEffects = false }) {
     const theaterModeRef = useRef(theaterMode)
     useEffect(() => { theaterModeRef.current = theaterMode }, [theaterMode])
     const [filterArtist, setFilterArtist] = useState(null)
+    const [searchParams] = useSearchParams()
+
+    // Read ?artist= param from URL (e.g. from HubPage artist ticker)
+    useEffect(() => {
+        const artistParam = searchParams.get('artist')
+        if (artistParam && ALL_ARTISTS.includes(artistParam)) {
+            setFilterArtist(artistParam)
+        }
+    }, [searchParams])
+
     const [statsOpen, setStatsOpen] = useState(false)
     const [kbdGuideOpen, setKbdGuideOpen] = useState(false)
     const [artistPanel, setArtistPanel] = useState(null)
