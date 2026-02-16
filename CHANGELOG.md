@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.10.0] - 2026-02-16
+
+### Added
+- **Production Pulse Chart** — New `ProductionPulse` component on the HubPage showing an interactive year-by-year neon bar chart of video production volume. Each bar represents one year (2010–2026) with staggered scroll-reveal animation using IntersectionObserver
+- **Hover detail strip** — Hovering or focusing any year bar reveals video count, total views (formatted), and unique artist count for that year via an `aria-live` polite region
+- **Keyboard accessible bars** — Each bar is focusable with `role="button"`, proper `aria-label`, and `:focus-visible` outline for WCAG 2.1 compliance
+- **Dynamic neon theming** — Bars cycle through the portfolio's NEON_COLORS palette with CSS custom property–driven gradients and `color-mix()` glow shadows
+- **Responsive layout** — Chart scales down on mobile (100px height, tighter gaps, smaller labels) with full `prefers-reduced-motion` support
+
 ## [3.9.0] - 2026-02-15
 
 ### Added

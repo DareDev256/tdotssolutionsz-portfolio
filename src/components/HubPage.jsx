@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ArtistShowcase from './ArtistShowcase'
 import EraTimeline from './EraTimeline'
+import ProductionPulse from './ProductionPulse'
 import './HubPage.css'
 
 export default function HubPage() {
@@ -67,6 +68,7 @@ export default function HubPage() {
       </nav>
 
       <ArtistShowcase />
+      <ProductionPulse />
       <EraTimeline />
 
       {showToast && (

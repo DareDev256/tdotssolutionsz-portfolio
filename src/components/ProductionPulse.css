@@ -1,0 +1,193 @@
+/* ============================================
+   PRODUCTION PULSE — Year-by-year activity chart
+   Synthwave neon bars with hover detail strip
+   ============================================ */
+
+.pulse-section {
+  width: 100%;
+  max-width: 700px;
+  margin: 32px auto 0;
+  padding: 28px 24px 20px;
+  position: relative;
+  z-index: 1;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pulse-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  margin: 0 0 4px;
+}
+
+.pulse-subtitle {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+  margin: 0 0 20px;
+  letter-spacing: 0.05em;
+}
+
+/* Chart container */
+.pulse-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  height: 140px;
+  padding: 0 4px;
+}
+
+/* Each bar column */
+.pulse-bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 48px;
+  height: 100%;
+  justify-content: flex-end;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.pulse-bar-group:focus-visible .pulse-bar {
+  outline: 2px solid rgba(5, 217, 232, 0.8);
+  outline-offset: 2px;
+}
+
+/* Hover count above bar */
+.pulse-count {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+  transition: opacity 0.2s ease;
+  min-height: 16px;
+}
+
+/* The actual bar */
+.pulse-bar {
+  width: 100%;
+  min-width: 12px;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, var(--bar-color), rgba(0, 0, 0, 0.3));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--bar-color) 40%, transparent);
+  height: var(--bar-height);
+  transition: height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) var(--bar-delay);
+  position: relative;
+}
+
+.pulse-bar-group--active .pulse-bar {
+  box-shadow:
+    0 0 16px color-mix(in srgb, var(--bar-color) 60%, transparent),
+    0 0 32px color-mix(in srgb, var(--bar-color) 30%, transparent);
+  filter: brightness(1.3);
+}
+
+/* Year label below bar */
+.pulse-year {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.55rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 6px;
+  letter-spacing: 0.05em;
+  transition: color 0.2s ease;
+}
+
+.pulse-bar-group--active .pulse-year {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Hover detail strip */
+.pulse-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  min-height: 24px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.pulse-detail--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pulse-detail-year {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #05d9e8;
+  text-shadow: 0 0 8px rgba(5, 217, 232, 0.5);
+}
+
+.pulse-detail-stat {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.pulse-detail-divider {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.6rem;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 640px) {
+  .pulse-section {
+    margin: 24px auto 0;
+    padding: 20px 12px 16px;
+  }
+
+  .pulse-chart {
+    height: 100px;
+    gap: 3px;
+  }
+
+  .pulse-count {
+    font-size: 0.55rem;
+  }
+
+  .pulse-year {
+    font-size: 0.45rem;
+  }
+
+  .pulse-detail {
+    gap: 6px;
+  }
+
+  .pulse-detail-year {
+    font-size: 0.7rem;
+  }
+
+  .pulse-detail-stat {
+    font-size: 0.7rem;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .pulse-bar {
+    transition: none;
+  }
+
+  .pulse-detail {
+    transition: none;
+  }
+}
