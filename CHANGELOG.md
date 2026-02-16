@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.12.2] - 2026-02-16
+
+### Fixed
+- **VideoSpotlight StrictMode safety** — Moved history buffer seed from `useState` initializer (impure side effect, double-invoked in StrictMode) into a guarded `useEffect` with `null` sentinel. Prevents potential double-seeding in development and future React concurrent features
+- **Shuffle transition guard race condition** — Replaced `isTransitioning` state dependency in `handleShuffle` with a `transitionRef` for instant reads. The `setTimeout` callback previously closed over a potentially stale `isTransitioning` value; ref reads are always current. Also stabilizes `handleShuffle` identity (`[]` deps) so downstream consumers don't re-render on transition toggles
+
 ## [3.12.1] - 2026-02-16
 
 ### Fixed

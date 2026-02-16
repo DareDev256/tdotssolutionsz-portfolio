@@ -46,18 +46,24 @@ function diversePick(history) {
 }
 
 export default function VideoSpotlight() {
-  const historyRef = useRef([])
+  const historyRef = useRef(null)
+  const transitionRef = useRef(false)
   const [index, setIndex] = useState(() => {
-    const initial = Math.floor(Math.random() * SPOTLIGHT_POOL.length)
-    // Seed history with the first pick so it's excluded from the next shuffle
-    historyRef.current.push(SPOTLIGHT_POOL[initial].youtubeId)
-    return initial
+    // Pure — compute initial index without side effects
+    return Math.floor(Math.random() * SPOTLIGHT_POOL.length)
   })
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [isRevealed, setIsRevealed] = useState(false)
   const sectionRef = useRef(null)
 
   const video = SPOTLIGHT_POOL[index]
+
+  // Seed history buffer once after mount (safe for StrictMode + concurrent)
+  useEffect(() => {
+    if (historyRef.current === null) {
+      historyRef.current = [SPOTLIGHT_POOL[index].youtubeId]
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Scroll-reveal via IntersectionObserver
   useEffect(() => {
@@ -72,19 +78,22 @@ export default function VideoSpotlight() {
   }, [])
 
   const handleShuffle = useCallback(() => {
-    if (isTransitioning) return
+    if (transitionRef.current) return
+    transitionRef.current = true
     setIsTransitioning(true)
     // Brief fade-out, swap, fade-in
     setTimeout(() => {
-      const nextIdx = diversePick(historyRef.current)
-      const history = historyRef.current
+      const history = historyRef.current || []
+      const nextIdx = diversePick(history)
       history.push(SPOTLIGHT_POOL[nextIdx].youtubeId)
       // Maintain sliding window — trim oldest when exceeding HISTORY_SIZE
       if (history.length > HISTORY_SIZE) history.shift()
+      historyRef.current = history
       setIndex(nextIdx)
+      transitionRef.current = false
       setIsTransitioning(false)
     }, 300)
-  }, [isTransitioning])
+  }, [])
 
   const year = video.uploadDate ? new Date(video.uploadDate).getFullYear() : ''
 
