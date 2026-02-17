@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.14.1] - 2026-02-17
+
+### Added
+- **VideoSpotlight tests** (9 tests) — Validates SPOTLIGHT_POOL construction (top-20 by views, sorted descending, valid youtubeIds), sliding-window diversity buffer guarantees (exclusion of recent picks, full 20-video rotation before repeats, graceful fallback on exhausted pool, window trimming at HISTORY_SIZE)
+- **CollabWeb tests** (12 tests) — Validates `buildCollabGraph` ft. regex parsing (non-empty output, required fields, multi-artist splitting on comma/ampersand, trimmed names) and `buildNetwork` graph integrity (node structure, descending sort by collabCount, edge→node referential integrity, valid youtubeIds, `2× edges` structural invariant)
+- **SectionLabel tests** (8 tests) — Validates prop-driven rendering logic: default span vs h2 element selection, CSS variable passthrough, className composition with proper trimming, text content preservation
+
 ## [3.14.0] - 2026-02-17
 
 ### Changed
