@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.12.3] - 2026-02-16
+
+### Changed
+- **Portfolio-grade README refresh** — Corrected 8 stale data points: test count (267→309), test suites (23→26), hook count (10→9 shared + 3 inline), App.jsx line count (~1,040→~1,022), latest changelog reference (v3.11.0→v3.12.2). Expanded project structure tree to show all HubPage components (VideoSpotlight, ProductionPulse, EraTimeline, ArtistShowcase) and added `audioAttenuation` to utils listing. Rewrote Hub Landing Page section from flat bullet list to narrative analytics dashboard description with implementation details (IntersectionObserver, requestAnimationFrame, CSS custom properties, scroll-snap). Added suite count to test badge
+
 ## [3.12.2] - 2026-02-16
 
 ### Fixed

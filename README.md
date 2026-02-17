@@ -2,8 +2,8 @@
 
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
-[![Tests](https://img.shields.io/badge/TESTS-309_PASSING-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.12.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/TESTS-309_PASSING_(26_SUITES)-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.12.3-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -34,14 +34,14 @@ Synthwave-styled card grid with floating CSS particles, scanline overlay, and gl
 
 ### Hub Landing Page (`/`)
 
-Split navigation — Music Videos (live) and Photography (coming soon). Animated gradient borders, backdrop blur, consistent neon branding.
+The landing page doubles as a production analytics dashboard — five interactive sections that tell the story of 14 years of Toronto hip-hop video production.
 
-- **Artist Showcase Ticker** — Auto-scrolling marquee of top 12 artists with YouTube thumbnails, video counts, and total views
-- **Live Stats Counter** — Animated count-up showing 101 videos, 54 artists, 25.3M+ total views, and 14 years of production
-- **Hover to Pause** — Ticker pauses on mouse hover for closer inspection
-- **Production Pulse Chart** — Interactive year-by-year neon bar chart showing production volume from 2010–2026 with hover details (video count, total views, artist count per year), staggered scroll-reveal animation, and `prefers-reduced-motion` support
-- **Video Spotlight** — Featured video card showcasing a random top-20 video with cinematic thumbnail, play overlay, and a shuffle button with sliding-window history that guarantees all 20 videos appear before any repeat. Clicks deep-link directly into the 3D experience
-- **Production Era Timeline** — Horizontal scroll cards grouping 101 videos into four eras (Origins, Rise, Peak, New Wave) with top video thumbnails, per-era stats, and staggered scroll-reveal animations
+- **Artist Showcase Ticker** — Infinite CSS marquee of top 12 artists with YouTube thumbnails, video counts, and total views. Hover to pause, seamless edge-fade masking
+- **Live Stats Counter** — Animated count-up (requestAnimationFrame + ease-out cubic) showing 101 videos, 54 artists, 25.3M+ total views, and 14 years of production. Triggered by IntersectionObserver on scroll
+- **Video Spotlight** — Featured video card showcasing a random top-20 video with cinematic thumbnail, vignette gradient, and play overlay. Shuffle button uses a sliding-window history buffer (same algorithm as `useShufflePlay`) guaranteeing all 20 videos appear before any repeat. Clicks deep-link directly into the 3D experience at `/videos?v=`
+- **Production Pulse Chart** — Interactive year-by-year neon bar chart (2010–2026) with hover detail strip showing video count, formatted views, and unique artist count per year. Dynamic neon theming via CSS custom properties, keyboard-accessible bars (`role="button"`, `aria-label`, `focus-visible`), `prefers-reduced-motion` support
+- **Production Era Timeline** — Horizontal scroll cards grouping 101 videos into four eras (Origins 2010–2014, Rise 2015–2017, Peak 2018–2020, New Wave 2021–2026) with per-era color theming, top video thumbnails, scroll-snap alignment, and timeline connector dots with glow effects
+- **Split Navigation** — Two-card entry to Music Videos (live) and Photography (coming soon) with animated gradient borders and backdrop blur
 
 ---
 
@@ -72,7 +72,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 | **3D Engine** | Three.js 0.170 / React Three Fiber / Drei |
 | **Post-Processing** | Bloom, Vignette, Noise, Scanline, Chromatic Aberration |
 | **Video** | YouTube IFrame API (playback control, auto-advance, end detection) |
-| **Testing** | Vitest — 267 unit tests across 23 test suites |
+| **Testing** | Vitest — 309 unit tests across 26 test suites |
 | **Hosting** | Vercel with custom domain (tdotssolutionsz.com) |
 | **Build Pipeline** | YouTube API enrichment at build time (zero runtime API costs) |
 
@@ -84,7 +84,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 - **Dual Lane System** — Videos processed into chronological and popular lanes with dynamic road scaling to match the catalog size
 - **Build-Time Data** — `fetch-youtube-data.js` pulls real view counts and upload dates from YouTube at build time, so the client bundle has zero API dependencies
 - **Modular 3D** — Vehicles (`components/3d/vehicles/`), effects (`components/3d/effects/`), scene (`components/3d/scene/` — CNTower, Cityscape, TronBuilding, HighwayArch, DataStream), atmosphere, and particles all extracted into focused modules with barrel exports
-- **10 Custom Hooks** — Deep linking, video navigation, shuffle play, favorites, copy-to-clipboard, keyboard shortcuts, search, device type, fresnel materials, scroll reveal
+- **9 Shared Hooks** — Deep linking (`useVideoDeepLink`), video navigation (`useVideoNavigation`), shuffle play (`useShufflePlay`), favorites (`useFavorites`), copy-to-clipboard (`useCopyLink`), keyboard shortcuts (`useKeyboardShortcuts`), search (`useSearch`), device type (`useDeviceType`), fresnel materials (`useFresnelMaterial`) — plus 3 inline hooks (`useScrollReveal`, `useCountUp`, `useSwipe`) colocated with their components
 - **JSDoc Coverage** — All hooks, utilities, 3D components, and core scene internals (CameraRig, ProximityTracker, Cityscape, BillboardFrame) documented with parameter types and architectural rationale
 - **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy with hardware/payment API blocks), YouTube ID validation at all entry points, iframe referrer suppression, production source map suppression, secret scanning, dependency auditing
 
@@ -99,7 +99,7 @@ npm install
 npm run dev              # Start dev server (http://localhost:5173)
 npm run build            # Fetch YouTube data + production build
 npm run preview          # Preview production build locally
-npm test                 # Run 267 unit tests
+npm test                 # Run 309 unit tests
 npm run test:watch       # Tests in watch mode
 npm run prescan          # Scan for leaked secrets
 npm run audit:security   # Dependency vulnerability check
@@ -117,17 +117,24 @@ npm run audit:security   # Dependency vulnerability check
 
 ```
 src/
-├── App.jsx                    # Desktop 3D experience (~1,040 lines)
+├── App.jsx                    # Desktop 3D experience (~1,022 lines)
 ├── MobileApp.jsx              # Mobile grid view
 ├── components/
+│   ├── HubPage.jsx            # Landing page — navigation + analytics dashboard
+│   ├── ArtistShowcase.jsx     # Infinite marquee ticker of top 12 artists
+│   ├── ProductionPulse.jsx    # Year-by-year neon bar chart (2010–2026)
+│   ├── VideoSpotlight.jsx     # Featured video card with shuffle history
+│   ├── EraTimeline.jsx        # Four-era horizontal scroll timeline
+│   ├── VideoCard.jsx          # Mobile video card with glassmorphism
+│   ├── YouTubePlayer.jsx      # YouTube IFrame API wrapper
 │   ├── 3d/vehicles/           # TronLightCycle, DeLorean, CyberBike
 │   ├── 3d/scene/              # CNTower, Cityscape, TronBuilding, HighwayArch, DataStream
 │   ├── 3d/effects/            # StarField, SynthwaveSun
 │   ├── atmosphere/            # EnhancedStarField, GroundFog, ProceduralNebula
 │   ├── particles/             # SoftParticles
 │   └── ui/                    # SearchBar, ArtistPanel, TheaterMode, KeyboardGuide
-├── hooks/                     # 10 custom hooks (shared between desktop + mobile)
-├── utils/                     # videoData, youtube, formatters, imageFallback
+├── hooks/                     # 9 shared hooks (+ 3 inline hooks in components)
+├── utils/                     # videoData, youtube, formatters, audioAttenuation, imageFallback
 └── data/                      # videos.json (101 entries), photos.json (25 entries)
 ```
 
@@ -137,7 +144,7 @@ src/
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.11.0** (2026-02-16): Extracted Cityscape cluster (5 components, 493 lines) from monolithic App.jsx into `components/3d/scene/` with barrel exports. Zero behavior changes, 32% line reduction.
+**Latest — v3.12.2** (2026-02-16): Video Spotlight featured card with sliding-window shuffle history, Production Pulse interactive bar chart, 37 new tests for audio attenuation / year aggregation / era computation, StrictMode safety fix for spotlight initialization.
 
 ---
 
