@@ -73,15 +73,17 @@ const SHARE_HOSTS = new Set([
  * Open a social share popup with host allowlisting.
  * Only navigates to pre-approved share targets, preventing open redirect
  * if share URLs are ever constructed from untrusted input.
+ * Always enforces noopener,noreferrer regardless of caller input to prevent
+ * reverse tabnapping (window.opener access from opened page).
  * @param {string} url - Full share URL to open
- * @param {string} [features] - window.open feature string
  * @returns {boolean} true if the popup was opened, false if blocked
  */
-export function openShareWindow(url, features = 'noopener,noreferrer') {
+export function openShareWindow(url) {
     try {
         const parsed = new URL(url)
         if (!SHARE_HOSTS.has(parsed.hostname)) return false
-        window.open(url, '_blank', features)
+        // Enforce noopener,noreferrer — never allow caller to weaken this
+        window.open(url, '_blank', 'noopener,noreferrer')
         return true
     } catch {
         return false

@@ -239,12 +239,14 @@ describe('openShareWindow', () => {
         expect(openShareWindow('not-a-url')).toBe(false)
     })
 
-    it('passes custom features string to window.open', () => {
-        openShareWindow('https://twitter.com/intent/tweet', 'noopener,noreferrer,width=550')
+    it('always enforces noopener,noreferrer (reverse tabnapping prevention)', () => {
+        // Even if callers pass extra arguments, the function signature
+        // no longer accepts a features override — always hardcoded
+        openShareWindow('https://twitter.com/intent/tweet')
         expect(openSpy).toHaveBeenCalledWith(
             'https://twitter.com/intent/tweet',
             '_blank',
-            'noopener,noreferrer,width=550'
+            'noopener,noreferrer'
         )
     })
 })

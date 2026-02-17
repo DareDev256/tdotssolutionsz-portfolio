@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.14.2] - 2026-02-17
+
+### Security
+- **Remove `'unsafe-inline'` from CSP `script-src`** — Vite production builds use external module scripts only; `unsafe-inline` was unnecessary and weakened XSS protection. `style-src` retains `unsafe-inline` for React inline styles
+- **Harden `openShareWindow` against reverse tabnapping** — Remove configurable `features` parameter; `noopener,noreferrer` is now always enforced, preventing callers from accidentally weakening the security posture
+- **Cap search input length at 100 chars** — Both HTML `maxLength` attribute and server-side truncation in `searchAll()` prevent performance abuse via long fuzzy-match queries
+- **Disable autocomplete on search input** — Prevents browser credential managers from populating the search field
+
+### Added
+- **CSP `unsafe-inline` regression test** — New test in `securityHeaders.test.js` asserts `script-src` never contains `'unsafe-inline'`, preventing future regressions
+
 ## [3.14.1] - 2026-02-17
 
 ### Added

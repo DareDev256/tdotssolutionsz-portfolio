@@ -45,11 +45,16 @@ function fuzzyScore(query, text) {
     return 0.3 + (coverage * 0.35) + (consecutiveBonus * 0.35)
 }
 
+/** Hard cap on query length to prevent performance abuse via long fuzzy inputs */
+const MAX_QUERY_LENGTH = 100
+
 /**
  * Search across artists and video titles with fuzzy matching.
  * Returns { artists: [...], videos: [...] } ranked by relevance.
+ * Truncates queries beyond MAX_QUERY_LENGTH to prevent performance abuse.
  */
-function searchAll(query) {
+function searchAll(rawQuery) {
+    const query = rawQuery?.slice(0, MAX_QUERY_LENGTH)
     if (!query || query.length < 2) return { artists: [], videos: [] }
 
     const artistResults = ALL_ARTISTS

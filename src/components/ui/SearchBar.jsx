@@ -90,6 +90,9 @@ export const SearchBar = ({ filterArtist, onFilterChange, onVideoSelect }) => {
                         placeholder="Search artists & videos..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
+                        maxLength={100}
+                        autoComplete="off"
+                        spellCheck="false"
                         autoFocus
                     />
                     <div className="search-results">

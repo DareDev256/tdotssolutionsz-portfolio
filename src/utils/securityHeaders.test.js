@@ -75,6 +75,14 @@ describe('vercel.json security headers', () => {
 })
 
 describe('CSP script-src hardening', () => {
+    it('does NOT allow unsafe-inline in script-src (XSS prevention)', () => {
+        const csp = getHeader('Content-Security-Policy')
+        const scriptSrc = csp.match(/script-src\s+([^;]+)/)?.[1] || ''
+        // Vite production builds use external module scripts, not inline.
+        // unsafe-inline in script-src defeats the purpose of CSP against XSS.
+        expect(scriptSrc).not.toContain("'unsafe-inline'")
+    })
+
     it('allows blob: in script-src (required for Three.js worker importScripts)', () => {
         const csp = getHeader('Content-Security-Policy')
         // Three.js workers use importScripts() with blob: URLs, which is governed
