@@ -1,0 +1,278 @@
+/* ============================================
+   COLLAB WEB — Artist collaboration network
+   Interactive node map with neon synthwave style
+   ============================================ */
+
+.collab-web {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.collab-web.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- Section Label ---- */
+.collab-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  justify-content: center;
+}
+
+.collab-label-text {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: rgba(0, 255, 136, 0.6);
+  white-space: nowrap;
+}
+
+.collab-label-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+}
+
+.collab-subtitle {
+  text-align: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 0 20px;
+}
+
+/* ---- Node Grid ---- */
+.collab-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.collab-node {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--node-color);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid color-mix(in srgb, var(--node-color) 25%, transparent);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.collab-node:hover {
+  background: color-mix(in srgb, var(--node-color) 8%, transparent);
+  border-color: color-mix(in srgb, var(--node-color) 50%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--node-color) 20%, transparent);
+}
+
+.collab-node:focus-visible {
+  outline: 2px solid var(--node-color);
+  outline-offset: 3px;
+}
+
+.collab-node.active {
+  background: color-mix(in srgb, var(--node-color) 15%, transparent);
+  border-color: var(--node-color);
+  box-shadow:
+    0 0 16px color-mix(in srgb, var(--node-color) 30%, transparent),
+    inset 0 0 8px color-mix(in srgb, var(--node-color) 10%, transparent);
+  transform: scale(1.05);
+}
+
+.collab-node.connected {
+  border-color: color-mix(in srgb, var(--node-color) 60%, transparent);
+  background: color-mix(in srgb, var(--node-color) 8%, transparent);
+}
+
+.collab-node.dimmed {
+  opacity: 0.25;
+  filter: grayscale(0.6);
+}
+
+.collab-node-name {
+  line-height: 1;
+}
+
+.collab-node-count {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.5rem;
+  font-weight: 700;
+  opacity: 0.5;
+  letter-spacing: 0.05em;
+}
+
+/* ---- Detail Panel ---- */
+.collab-detail {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(0, 255, 136, 0.03);
+  border: 1px solid rgba(0, 255, 136, 0.12);
+  animation: collab-detail-in 0.3s ease;
+}
+
+@keyframes collab-detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.collab-detail-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.collab-detail-artist {
+  color: #00ff88;
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+}
+
+.collab-detail-sep {
+  color: rgba(255, 255, 255, 0.2);
+  font-weight: 400;
+}
+
+.collab-detail-count {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ---- Track Cards ---- */
+.collab-detail-tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.collab-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.collab-track:hover {
+  background: rgba(0, 255, 136, 0.05);
+  border-color: rgba(0, 255, 136, 0.2);
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.1);
+}
+
+.collab-track:focus-visible {
+  outline: 2px solid #00ff88;
+  outline-offset: 2px;
+}
+
+.collab-track-thumb {
+  width: 64px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.collab-track-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.collab-track-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.collab-track-views {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  color: rgba(5, 217, 232, 0.6);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 640px) {
+  .collab-web {
+    max-width: 100%;
+  }
+
+  .collab-node {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+
+  .collab-track-thumb {
+    width: 52px;
+    height: 39px;
+  }
+
+  .collab-track-title {
+    font-size: 0.8rem;
+  }
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .collab-web {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .collab-node {
+    transition: none;
+  }
+
+  .collab-detail {
+    animation: none;
+  }
+
+  .collab-track {
+    transition: none;
+  }
+}

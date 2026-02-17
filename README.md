@@ -3,7 +3,7 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Tests](https://img.shields.io/badge/TESTS-309_PASSING_(26_SUITES)-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.12.3-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.13.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -34,11 +34,12 @@ Synthwave-styled card grid with floating CSS particles, scanline overlay, and gl
 
 ### Hub Landing Page (`/`)
 
-The landing page doubles as a production analytics dashboard — five interactive sections that tell the story of 14 years of Toronto hip-hop video production.
+The landing page doubles as a production analytics dashboard — six interactive sections that tell the story of 14 years of Toronto hip-hop video production.
 
 - **Artist Showcase Ticker** — Infinite CSS marquee of top 12 artists with YouTube thumbnails, video counts, and total views. Hover to pause, seamless edge-fade masking
 - **Live Stats Counter** — Animated count-up (requestAnimationFrame + ease-out cubic) showing 101 videos, 54 artists, 25.3M+ total views, and 14 years of production. Triggered by IntersectionObserver on scroll
 - **Video Spotlight** — Featured video card showcasing a random top-20 video with cinematic thumbnail, vignette gradient, and play overlay. Shuffle button uses a sliding-window history buffer (same algorithm as `useShufflePlay`) guaranteeing all 20 videos appear before any repeat. Clicks deep-link directly into the 3D experience at `/videos?v=`
+- **Collab Web** — Interactive artist collaboration network parsed from `ft.` credits in video titles/descriptions. Neon-colored node tags show each collaborating artist with connection count. Click any node to highlight connections, dim unrelated artists, and reveal collaboration tracks with thumbnails and deep-links. 30+ collaborations across the roster
 - **Production Pulse Chart** — Interactive year-by-year neon bar chart (2010–2026) with hover detail strip showing video count, formatted views, and unique artist count per year. Dynamic neon theming via CSS custom properties, keyboard-accessible bars (`role="button"`, `aria-label`, `focus-visible`), `prefers-reduced-motion` support
 - **Production Era Timeline** — Horizontal scroll cards grouping 101 videos into four eras (Origins 2010–2014, Rise 2015–2017, Peak 2018–2020, New Wave 2021–2026) with per-era color theming, top video thumbnails, scroll-snap alignment, and timeline connector dots with glow effects
 - **Split Navigation** — Two-card entry to Music Videos (live) and Photography (coming soon) with animated gradient borders and backdrop blur

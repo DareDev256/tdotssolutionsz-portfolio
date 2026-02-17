@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.13.0] - 2026-02-17
+
+### Added
+- **Collab Web** — New `CollabWeb` component on the HubPage visualizing artist collaboration networks. Parses `ft.` credits from video titles and descriptions to build an interactive node map of 30+ collaborations across the roster
+- **Interactive node filtering** — Click any artist node to highlight their connections and dim unrelated artists. Active state shows collaboration count and linked videos with thumbnails
+- **Deep-link integration** — Each collaboration track card links directly to `/videos?v=` for instant playback in the 3D experience
+- **Scroll-reveal animation** — Fades in on scroll via IntersectionObserver with full `prefers-reduced-motion` support
+- **WCAG accessible** — `aria-pressed` toggle states, `focus-visible` outlines, `role="list"` semantics, descriptive `aria-label` on all interactive elements
+- **Responsive design** — Adapts node sizing and thumbnail layout for mobile viewports
+
 ## [3.12.3] - 2026-02-16
 
 ### Changed
