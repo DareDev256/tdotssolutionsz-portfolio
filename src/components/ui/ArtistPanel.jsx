@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { VIDEOS, ARTIST_STATS } from '../../utils/videoData'
 import { getThumbnailUrl } from '../../utils/youtube'
+import useBodyScrollLock from '../../hooks/useBodyScrollLock'
 import './ArtistPanel.css'
 
 export function ArtistPanel({ artist, activeVideoId, onSelectVideo, onClose, mobileModal }) {
@@ -27,12 +28,7 @@ export function ArtistPanel({ artist, activeVideoId, onSelectVideo, onClose, mob
     }, [isOpen, onClose])
 
     // Lock body scroll when open
-    useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden'
-        }
-        return () => { document.body.style.overflow = '' }
-    }, [isOpen])
+    useBodyScrollLock(isOpen)
 
     return (
         <>

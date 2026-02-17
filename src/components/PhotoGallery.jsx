@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import photos from '../data/photos.json'
+import useBodyScrollLock from '../hooks/useBodyScrollLock'
 import './PhotoGallery.css'
 
 const CATEGORIES = [
@@ -56,6 +57,8 @@ function LazyImage({ src, alt, onClick }) {
 
 /** Lightbox modal for full-size photo viewing */
 function Lightbox({ photo, onClose, onPrev, onNext }) {
+  useBodyScrollLock(true)
+
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === 'Escape') onClose()
@@ -63,11 +66,7 @@ function Lightbox({ photo, onClose, onPrev, onNext }) {
       if (e.key === 'ArrowRight') onNext()
     }
     window.addEventListener('keydown', handleKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', handleKey)
-      document.body.style.overflow = ''
-    }
+    return () => window.removeEventListener('keydown', handleKey)
   }, [onClose, onPrev, onNext])
 
   return (

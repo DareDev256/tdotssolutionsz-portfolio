@@ -4,11 +4,12 @@
  * connections, displayed as clickable neon nodes with animated connection lines.
  * Clicking a node highlights that artist's collaborations.
  */
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { VIDEOS } from '../utils/videoData'
+import { VIDEOS, NEON_COLORS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
+import useScrollReveal from '../hooks/useScrollReveal'
 import SectionLabel from './ui/SectionLabel'
 import './CollabWeb.css'
 
@@ -51,27 +52,13 @@ function buildNetwork(collabs) {
   return { nodes, edges }
 }
 
-const NEON = ['#ff2a6d', '#05d9e8', '#d300c5', '#7700ff', '#ff6b35', '#ffcc00', '#00ff88']
-
 export default function CollabWeb() {
   const [activeNode, setActiveNode] = useState(null)
-  const [isRevealed, setIsRevealed] = useState(false)
   const sectionRef = useRef(null)
+  const isRevealed = useScrollReveal(sectionRef, 0.15)
 
   const collabs = useMemo(() => buildCollabGraph(), [])
   const { nodes, edges } = useMemo(() => buildNetwork(collabs), [collabs])
-
-  // Scroll-reveal
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setIsRevealed(true) },
-      { threshold: 0.15 }
-    )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
 
   const activeEdges = activeNode
     ? edges.filter(e => e.from === activeNode || e.to === activeNode)
@@ -89,7 +76,7 @@ export default function CollabWeb() {
 
       <div className="collab-nodes" role="list" aria-label="Artists with collaborations">
         {nodes.map((node, i) => {
-          const color = NEON[i % NEON.length]
+          const color = NEON_COLORS[i % NEON_COLORS.length]
           const isActive = activeNode === node.name
           const isConnected = activeNode && connectedNames.has(node.name)
           const isDimmed = activeNode && !isConnected && !isActive

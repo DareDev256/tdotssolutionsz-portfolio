@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.15.0] - 2026-02-17
+
+### Changed
+- **Extract `useScrollReveal` hook** — New `src/hooks/useScrollReveal.js` replaces 6 identical IntersectionObserver copy-paste blocks across VideoSpotlight, ProductionPulse, CollabWeb, and EraTimeline. Accepts ref and threshold, fires once, auto-disconnects
+- **Extract `useBodyScrollLock` hook** — New `src/hooks/useBodyScrollLock.js` replaces 3 duplicated body overflow toggle effects across TheaterMode, ArtistPanel, and PhotoGallery
+- **Deduplicate CollabWeb color palette** — Replaced local `NEON` array with canonical `NEON_COLORS` import from `videoData.js`, eliminating a drifted copy missing `#ff00ff`
+- **Remove unused imports** — Cleaned up `useEffect` imports from ProductionPulse and CollabWeb where the hook extraction made them unnecessary
+
 ## [3.14.2] - 2026-02-17
 
 ### Security

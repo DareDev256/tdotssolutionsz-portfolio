@@ -5,9 +5,10 @@
  *
  * Data is derived from videos.json upload dates — zero API cost.
  */
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { VIDEOS, NEON_COLORS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
+import useScrollReveal from '../hooks/useScrollReveal'
 import './ProductionPulse.css'
 
 /** Aggregate videos by year with stats */
@@ -31,19 +32,8 @@ const MAX_COUNT = Math.max(...YEAR_DATA.map(d => d.count))
 
 export default function ProductionPulse() {
   const [hoveredYear, setHoveredYear] = useState(null)
-  const [visible, setVisible] = useState(false)
   const sectionRef = useRef(null)
-
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-      { threshold: 0.2 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
+  const visible = useScrollReveal(sectionRef)
 
   const hovered = hoveredYear ? YEAR_DATA.find(d => d.year === hoveredYear) : null
 

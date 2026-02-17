@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
+import useScrollReveal from '../hooks/useScrollReveal'
 import SectionLabel from './ui/SectionLabel'
 import './VideoSpotlight.css'
 
@@ -54,8 +55,8 @@ export default function VideoSpotlight() {
     return Math.floor(Math.random() * SPOTLIGHT_POOL.length)
   })
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [isRevealed, setIsRevealed] = useState(false)
   const sectionRef = useRef(null)
+  const isRevealed = useScrollReveal(sectionRef)
 
   const video = SPOTLIGHT_POOL[index]
 
@@ -65,18 +66,6 @@ export default function VideoSpotlight() {
       historyRef.current = [SPOTLIGHT_POOL[index].youtubeId]
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Scroll-reveal via IntersectionObserver
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setIsRevealed(true) },
-      { threshold: 0.2 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
 
   const handleShuffle = useCallback(() => {
     if (transitionRef.current) return

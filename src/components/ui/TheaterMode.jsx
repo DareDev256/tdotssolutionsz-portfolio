@@ -2,6 +2,7 @@
 import { useEffect, useCallback } from 'react';
 import YouTubePlayer from '../YouTubePlayer';
 import { extractVideoId, getShareUrl, openShareWindow } from '../../utils/youtube';
+import useBodyScrollLock from '../../hooks/useBodyScrollLock';
 import './TheaterMode.css';
 
 /**
@@ -39,16 +40,7 @@ export function TheaterMode({
   }, [handleKeyDown]);
 
   // Prevent body scroll when open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  useBodyScrollLock(isOpen);
 
   if (!isOpen || !project) return null;
 
