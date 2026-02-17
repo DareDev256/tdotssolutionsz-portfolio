@@ -54,27 +54,9 @@
   background: linear-gradient(180deg, transparent, rgba(5, 217, 232, 0.3), transparent);
 }
 
-/* ---- Section Label ---- */
-.showcase-label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.showcase-label-line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 42, 109, 0.3), transparent);
-}
-
-.showcase-label-text {
-  font-family: 'Orbitron', monospace;
-  font-size: 0.55rem;
-  color: rgba(255, 42, 109, 0.6);
-  letter-spacing: 0.3em;
-  white-space: nowrap;
-}
+/* ---- Section Label (shared via SectionLabel component) ---- */
+.showcase-label { margin-bottom: 14px; }
+.showcase-label .section-label__text { font-size: 0.55rem; }
 
 /* ---- Ticker Wrap (masks edges) ---- */
 .showcase-ticker-wrap {

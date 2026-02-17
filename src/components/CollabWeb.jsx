@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
+import SectionLabel from './ui/SectionLabel'
 import './CollabWeb.css'
 
 /** Extract collaborations from video data */
@@ -83,11 +84,7 @@ export default function CollabWeb() {
       ref={sectionRef}
       aria-label="Artist collaboration network"
     >
-      <div className="collab-label">
-        <span className="collab-label-line" />
-        <span className="collab-label-text">COLLAB WEB</span>
-        <span className="collab-label-line" />
-      </div>
+      <SectionLabel text="COLLAB WEB" color="rgba(0, 255, 136, 0.6)" className="collab-label" />
       <p className="collab-subtitle">{edges.length} collaborations across {nodes.length} artists</p>
 
       <div className="collab-nodes" role="list" aria-label="Artists with collaborations">

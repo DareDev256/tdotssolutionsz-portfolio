@@ -3,7 +3,7 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Tests](https://img.shields.io/badge/TESTS-309_PASSING_(26_SUITES)-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.13.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.14.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -133,7 +133,7 @@ src/
 │   ├── 3d/effects/            # StarField, SynthwaveSun
 │   ├── atmosphere/            # EnhancedStarField, GroundFog, ProceduralNebula
 │   ├── particles/             # SoftParticles
-│   └── ui/                    # SearchBar, ArtistPanel, TheaterMode, KeyboardGuide
+│   └── ui/                    # SearchBar, ArtistPanel, TheaterMode, KeyboardGuide, SectionLabel
 ├── hooks/                     # 9 shared hooks (+ 3 inline hooks in components)
 ├── utils/                     # videoData, youtube, formatters, audioAttenuation, imageFallback
 └── data/                      # videos.json (101 entries), photos.json (25 entries)
@@ -145,7 +145,7 @@ src/
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.12.2** (2026-02-16): Video Spotlight featured card with sliding-window shuffle history, Production Pulse interactive bar chart, 37 new tests for audio attenuation / year aggregation / era computation, StrictMode safety fix for spotlight initialization.
+**Latest — v3.14.0** (2026-02-17): Extract shared `SectionLabel` UI component — eliminates duplicated neon divider markup and CSS across four HubPage sections.
 
 ---
 

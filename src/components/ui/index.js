@@ -5,3 +5,4 @@ export { KeyboardGuide } from './KeyboardGuide';
 export { SearchBar } from './SearchBar';
 export { PortfolioStats } from './PortfolioStats';
 export { VideoOverlay } from './VideoOverlay';
+export { default as SectionLabel } from './SectionLabel';

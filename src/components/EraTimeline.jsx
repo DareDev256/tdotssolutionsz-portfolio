@@ -10,6 +10,7 @@ import { useEffect, useRef } from 'react'
 import { VIDEOS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
+import SectionLabel from './ui/SectionLabel'
 import './EraTimeline.css'
 
 /** Custom SVG icons — culturally rooted, not generic */
@@ -109,11 +110,7 @@ export default function EraTimeline() {
 
   return (
     <section className="era-timeline" aria-label="Production era timeline">
-      <div className="era-timeline-header">
-        <span className="era-timeline-line" />
-        <h2 className="era-timeline-title">PRODUCTION ERAS</h2>
-        <span className="era-timeline-line" />
-      </div>
+      <SectionLabel text="PRODUCTION ERAS" color="rgba(255, 255, 255, 0.45)" as="h2" className="era-timeline-header" />
       <p className="era-timeline-sub">14 years of Toronto hip-hop videography</p>
 
       <div className="era-track" ref={trackRef}>

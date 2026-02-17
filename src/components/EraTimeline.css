@@ -6,18 +6,8 @@
 
 .era-timeline { position: relative; z-index: 1; width: 100%; max-width: 900px; margin-top: 40px; }
 
-/* ---- Section Header ---- */
-.era-timeline-header { display: flex; align-items: center; gap: 16px; margin-bottom: 4px; }
-.era-timeline-title {
-  font-family: 'Bebas Neue', 'Orbitron', sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
-  letter-spacing: 0.35em;
-  color: rgba(255,255,255,0.45);
-  white-space: nowrap;
-  margin: 0;
-}
-.era-timeline-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); }
+/* ---- Section Header (shared via SectionLabel component) ---- */
+.era-timeline-header { gap: 16px; margin-bottom: 4px; }
 .era-timeline-sub { text-align: center; font-family: 'Rajdhani', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.25); margin: 0 0 20px; letter-spacing: 0.05em; }
 
 /* ---- Scrollable Track ---- */

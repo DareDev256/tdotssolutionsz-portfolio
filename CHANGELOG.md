@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.14.0] - 2026-02-17
+
+### Changed
+- **Extract `SectionLabel` UI component** — New shared `src/components/ui/SectionLabel.jsx` replaces duplicated "line / text / line" neon divider pattern across VideoSpotlight, CollabWeb, ArtistShowcase, and EraTimeline. Accepts `text`, `color`, and `as` (element type) props with CSS custom property theming (`--label-color`). Eliminates ~55 lines of duplicated CSS and 16 lines of duplicated JSX across four components
+- **CSS deduplication** — Removed identical `.{prefix}-label`, `.{prefix}-label-text`, and `.{prefix}-label-line` rule blocks from four component stylesheets. Per-component overrides (margin-bottom, font-size) retained as lightweight single-property rules
+- **Barrel export** — `SectionLabel` added to `src/components/ui/index.js` for consistent import patterns
+
 ## [3.13.0] - 2026-02-17
 
 ### Added

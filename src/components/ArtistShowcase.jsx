@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 import { VIDEOS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
+import SectionLabel from './ui/SectionLabel'
 import './ArtistShowcase.css'
 
 /** Top artists sorted by total views, take top 12 for the ticker */
@@ -112,11 +113,7 @@ export default function ArtistShowcase() {
       </div>
 
       {/* Section Label */}
-      <div className="showcase-label">
-        <span className="showcase-label-line" />
-        <span className="showcase-label-text">TOP ARTISTS</span>
-        <span className="showcase-label-line" />
-      </div>
+      <SectionLabel text="TOP ARTISTS" color="rgba(255, 42, 109, 0.6)" className="showcase-label" />
 
       {/* Infinite Marquee Ticker */}
       <div

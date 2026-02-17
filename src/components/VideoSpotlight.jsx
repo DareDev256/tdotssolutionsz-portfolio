@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
+import SectionLabel from './ui/SectionLabel'
 import './VideoSpotlight.css'
 
 /** Top 20 videos by view count — the spotlight pool */
@@ -103,11 +104,7 @@ export default function VideoSpotlight() {
       ref={sectionRef}
       aria-label="Featured video spotlight"
     >
-      <div className="spotlight-label">
-        <span className="spotlight-label-line" />
-        <span className="spotlight-label-text">SPOTLIGHT</span>
-        <span className="spotlight-label-line" />
-      </div>
+      <SectionLabel text="SPOTLIGHT" color="rgba(255, 0, 128, 0.6)" className="spotlight-label" />
 
       <div className={`spotlight-card ${isTransitioning ? 'transitioning' : ''}`}>
         <Link
