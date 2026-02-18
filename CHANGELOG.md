@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.19.0] - 2026-02-18
+
+### Changed
+- **Extracted `useSwipe` hook** — Moved the horizontal swipe gesture detection hook from an inline definition in `MobileApp.jsx` to its own reusable module at `src/hooks/useSwipe.js`. Same API, same 50px threshold, now importable by any component that needs touch gesture navigation
+- **Extracted `useBatchReveal` hook** — Moved the batch IntersectionObserver scroll-reveal logic from `MobileApp.jsx` to `src/hooks/useBatchReveal.js`. This is distinct from the existing single-ref `useScrollReveal` hook — it observes all `[data-vid]` elements in the DOM at once and returns a `Set` of revealed IDs, making it purpose-built for grid/list reveal animations
+- **MobileApp.jsx reduced by ~75 lines** — Component now imports both hooks instead of defining them inline, improving readability and establishing clear module boundaries
+
 ## [3.18.2] - 2026-02-18
 
 ### Security

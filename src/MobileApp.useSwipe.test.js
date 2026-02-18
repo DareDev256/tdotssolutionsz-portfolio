@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
 
 /**
- * Tests for the useSwipe gesture detection logic (inline in MobileApp.jsx).
+ * Tests for the useSwipe gesture detection logic (src/hooks/useSwipe.js).
  *
- * Extracts and tests the core touch-distance algorithm:
+ * Tests the core touch-distance algorithm:
  * - Swipe must exceed 50px threshold to trigger
  * - Positive diff (start > end) = swipe left
  * - Negative diff (start < end) = swipe right

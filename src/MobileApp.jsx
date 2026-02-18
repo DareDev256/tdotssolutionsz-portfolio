@@ -4,6 +4,8 @@ import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
 import { ArtistPanel, KeyboardGuide } from './components/ui'
 import useFavorites from './hooks/useFavorites'
+import useBatchReveal from './hooks/useBatchReveal'
+import useSwipe from './hooks/useSwipe'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from './utils/videoData'
 import { getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
 import { THUMBNAIL_FALLBACK } from './utils/imageFallback'
@@ -14,90 +16,6 @@ import useVideoNavigation from './hooks/useVideoNavigation'
 import useCopyLink from './hooks/useCopyLink'
 import useShufflePlay from './hooks/useShufflePlay'
 import './MobileApp.css'
-
-/**
- * useScrollReveal — Triggers CSS reveal animations as video cards enter the viewport.
- *
- * Uses IntersectionObserver on all `[data-vid]` elements. The `deps` parameter
- * controls when to re-scan the DOM for new cards (e.g., after tab switch).
- * Passing `null` skips observation entirely — used during initial render before
- * card elements exist in the DOM.
- *
- * The `requestAnimationFrame` wrapper ensures we query the DOM *after* React
- * has committed the new elements from the latest render, avoiding a race
- * condition where querySelectorAll runs before cards are painted.
- *
- * @param {*} deps - Dependency value that triggers re-observation. Pass null to skip.
- * @returns {Set<string>} Set of video IDs that have been revealed
- */
-function useScrollReveal(deps) {
-    const [revealed, setRevealed] = useState(new Set())
-    useEffect(() => {
-        if (deps === null) return // Still loading — skip until DOM has cards
-
-        // Defer to next frame so React has committed new [data-vid] elements
-        const raf = requestAnimationFrame(() => {
-            const elements = document.querySelectorAll('[data-vid]')
-            if (elements.length === 0) return
-
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    const newIds = []
-                    entries.forEach(e => {
-                        if (e.isIntersecting && e.target.dataset.vid) newIds.push(e.target.dataset.vid)
-                    })
-                    if (newIds.length) setRevealed(prev => {
-                        const next = new Set(prev)
-                        newIds.forEach(id => next.add(id))
-                        return next
-                    })
-                },
-                { threshold: 0.1, rootMargin: '50px' }
-            )
-            elements.forEach(el => observer.observe(el))
-
-            // Store for cleanup
-            cleanup.observer = observer
-            cleanup.elements = elements
-        })
-
-        const cleanup = { observer: null, elements: null }
-        return () => {
-            cancelAnimationFrame(raf)
-            if (cleanup.observer) {
-                cleanup.elements?.forEach(el => cleanup.observer.unobserve(el))
-                cleanup.observer.disconnect()
-            }
-        }
-    }, [deps])
-    return revealed
-}
-
-/**
- * useSwipe — Lightweight horizontal swipe gesture detection for mobile navigation.
- *
- * Returns `onTouchStart` and `onTouchEnd` handlers to spread onto a container.
- * A swipe is registered when the horizontal distance exceeds 50px — this
- * threshold prevents accidental triggers from vertical scrolling or taps while
- * still being reachable with a deliberate thumb swipe.
- *
- * @param {function} onLeft - Called on left swipe (finger moves right-to-left)
- * @param {function} onRight - Called on right swipe (finger moves left-to-right)
- * @returns {{ onTouchStart: function, onTouchEnd: function }}
- */
-function useSwipe(onLeft, onRight) {
-    const start = useRef(null)
-    return {
-        onTouchStart: (e) => { start.current = e.touches[0].clientX },
-        onTouchEnd: (e) => {
-            if (start.current === null || !e.changedTouches?.length) return
-            const diff = start.current - e.changedTouches[0].clientX
-            // 50px threshold — wide enough to avoid false positives from scroll jitter
-            if (Math.abs(diff) > 50) diff > 0 ? onLeft?.() : onRight?.()
-            start.current = null
-        }
-    }
-}
 
 // Validate shared data loaded correctly
 const LOAD_ERROR = (!VIDEOS || VIDEOS.length === 0) ? 'Failed to load video data' : null
@@ -209,7 +127,7 @@ export default function MobileApp() {
         window.location.reload()
     }
 
-    const revealed = useScrollReveal(loading ? null : filteredVideos)
+    const revealed = useBatchReveal(loading ? null : filteredVideos)
     const swipeHandlers = useSwipe(handleNextVideo, handlePrevVideo)
 
     const stats = playingVideo ? ARTIST_STATS[playingVideo.artist] : null
