@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.17.0] - 2026-02-17
+
+### Added
+- **Now Playing Overlay** — Astroworld-inspired persistent bottom bar on the HubPage featuring a glowing portal thumbnail with equalizer animation, track title, artist name, and a looping progress bar that auto-rotates through the top 8 most-viewed videos every 30 seconds. Dismissible with close button, cycling neon accent colors per track, deep-link WATCH CTA to `/videos?v=`. Reduced-motion support, mobile-responsive layout, `role="complementary"` with dynamic `aria-label`
+
 ## [3.16.0] - 2026-02-17
 
 ### Added

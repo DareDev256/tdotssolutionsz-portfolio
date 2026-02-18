@@ -6,6 +6,7 @@ import CultureQueue from './CultureQueue'
 import CollabWeb from './CollabWeb'
 import ProductionPulse from './ProductionPulse'
 import EraTimeline from './EraTimeline'
+import NowPlayingOverlay from './NowPlayingOverlay'
 import './HubPage.css'
 
 export default function HubPage() {
@@ -82,6 +83,8 @@ export default function HubPage() {
           PHOTOGRAPHY — COMING SOON
         </div>
       )}
+
+      <NowPlayingOverlay />
 
       <footer className="hub-footer">
         <span className="hub-footer-brand">TDOTSSOLUTIONSZ</span>
