@@ -17,6 +17,8 @@ import './index.css'
 
 /** Hub landing page — lightweight, no heavy deps */
 const HubPage = lazy(() => import('./components/HubPage.jsx'))
+/** Standalone video detail page — lightweight, shareable, no Three.js */
+const VideoPage = lazy(() => import('./components/VideoPage.jsx'))
 /** Desktop 3D cityscape — lazy-loaded to separate chunk (~1.1MB with Three.js) */
 const App = lazy(() => import('./App.jsx'))
 /** Mobile grid view — lightweight chunk without Three.js dependency */
@@ -55,6 +57,30 @@ class AppErrorBoundary extends Component {
         }
         return this.props.children
     }
+}
+
+/** Branded 404 page — synthwave glitch aesthetic */
+function NotFoundPage() {
+    return (
+        <div className="loading-screen" style={{ gap: '16px' }}>
+            <div style={{
+                fontFamily: "'Orbitron', monospace", fontSize: '5rem', fontWeight: 900,
+                color: '#ff2a6d',
+                textShadow: '0 0 20px rgba(255, 42, 109, 0.6), 0 0 60px rgba(255, 42, 109, 0.3)',
+                animation: 'loading-blink 1.5s ease-in-out infinite'
+            }}>404</div>
+            <p style={{
+                fontFamily: "'Rajdhani', sans-serif", color: 'rgba(255,255,255,0.5)',
+                fontSize: '1.1rem', textAlign: 'center'
+            }}>This page doesn't exist.</p>
+            <a href="/" style={{
+                fontFamily: "'Orbitron', monospace", fontSize: '0.75rem', fontWeight: 700,
+                letterSpacing: '0.15em', color: '#05d9e8', textDecoration: 'none',
+                padding: '12px 28px', border: '1px solid rgba(5, 217, 232, 0.4)',
+                borderRadius: '24px', transition: 'all 0.3s ease'
+            }}>← BACK TO HUB</a>
+        </div>
+    )
 }
 
 /** Synthwave-styled loading screen shown during chunk download */
@@ -123,8 +149,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Suspense fallback={<LoadingScreen />}>
                     <Routes>
                         <Route path="/" element={<HubPage />} />
+                        <Route path="/video/:youtubeId" element={<VideoPage />} />
                         <Route path="/videos" element={<VideosRoute />} />
                         {/* DO NOT enable /photos route — Photography is Coming Soon */}
+                        <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </Suspense>
             </BrowserRouter>

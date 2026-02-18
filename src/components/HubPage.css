@@ -248,6 +248,15 @@
   text-align: center;
   position: relative;
   z-index: 1;
+  width: 100%;
+  max-width: 800px;
+}
+
+.hub-footer-line-bar {
+  width: 80px;
+  height: 1px;
+  margin: 0 auto 20px;
+  background: linear-gradient(90deg, transparent, rgba(5, 217, 232, 0.4), rgba(255, 0, 128, 0.4), transparent);
 }
 
 .hub-footer-brand {
@@ -257,6 +266,44 @@
   color: rgba(5, 217, 232, 0.5);
   letter-spacing: 0.3em;
   font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.hub-footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.hub-footer-link {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.hub-footer-link:hover {
+  color: var(--neon-pink, #ff2a6d);
+  text-shadow: 0 0 8px rgba(255, 42, 109, 0.4);
+}
+
+.hub-footer-link--cta {
+  color: rgba(255, 42, 109, 0.6);
+  border: 1px solid rgba(255, 42, 109, 0.25);
+  padding: 4px 14px;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.hub-footer-link--cta:hover {
+  background: rgba(255, 42, 109, 0.12);
+  border-color: rgba(255, 42, 109, 0.5);
+  box-shadow: 0 0 12px rgba(255, 42, 109, 0.2);
 }
 
 .hub-footer-loc {

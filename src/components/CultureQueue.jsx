@@ -57,7 +57,7 @@ export default function CultureQueue() {
             return (
               <Link
                 key={video.id}
-                to={`/videos?v=${video.youtubeId}`}
+                to={`/video/${video.youtubeId}`}
                 className={`cq-card ${isHovered ? 'cq-card--active' : ''}`}
                 role="listitem"
                 aria-label={`Watch ${video.title} by ${video.artist}`}

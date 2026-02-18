@@ -3,7 +3,7 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Tests](https://img.shields.io/badge/TESTS-339_PASSING_(29_SUITES)-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.17.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.18.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -45,6 +45,19 @@ The landing page doubles as a production analytics dashboard — seven interacti
 - **Production Era Timeline** — Horizontal scroll cards grouping 101 videos into four eras (Origins 2010–2014, Rise 2015–2017, Peak 2018–2020, New Wave 2021–2026) with per-era color theming, top video thumbnails, scroll-snap alignment, and timeline connector dots with glow effects
 - **Now Playing Overlay** — Persistent bottom bar with Astroworld-inspired glowing portal thumbnail, animated equalizer bars, track title/artist, and a progress bar that auto-rotates through the top 8 most-viewed videos every 30 seconds. Dismissible, mobile-responsive, with deep-link WATCH button
 - **Split Navigation** — Two-card entry to Music Videos (live) and Photography (coming soon) with animated gradient borders and backdrop blur
+- **Social Footer** — YouTube, Instagram, and "Book a Session" CTA links in the footer
+
+### Video Detail Page (`/video/:youtubeId`) — **NEW in v3.18.0**
+
+Every video now has its own shareable, SEO-friendly page at `/video/{youtubeId}`. Lightweight (6 kB gzipped, zero Three.js), fast-loading, and independently linkable.
+
+- **Embedded Player** — Privacy-enhanced YouTube embed with neon-bordered frame and CRT scanline overlay
+- **Metadata Display** — Artist, title, views, year, and artist video count in stat pills
+- **Share Bar** — Copy link, share to X/Twitter, share to WhatsApp
+- **Related Videos** — Grid of up to 6 related videos (same artist first, then popular picks)
+- **3D CTA** — "Watch in 3D" link to the full synthwave highway experience at `/videos?v=`
+- **Branded 404** — Glitch-animated 404 page for invalid video IDs or unknown routes
+- **Full Responsive** — 3-column → 2-column → 1-column related grid across breakpoints
 
 ---
 
@@ -71,7 +84,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 | Layer | Technology |
 |-------|-----------|
 | **Frontend** | React 18 + Vite 6 (code-split with React.lazy + manual chunks) |
-| **Routing** | React Router v7 (lazy-loaded `/`, `/videos`, `/photos`) |
+| **Routing** | React Router v7 (lazy-loaded `/`, `/video/:youtubeId`, `/videos`, `/photos`) |
 | **3D Engine** | Three.js 0.170 / React Three Fiber / Drei |
 | **Post-Processing** | Bloom, Vignette, Noise, Scanline, Chromatic Aberration |
 | **Video** | YouTube IFrame API (playback control, auto-advance, end detection) |
@@ -124,6 +137,7 @@ src/
 ├── MobileApp.jsx              # Mobile grid view
 ├── components/
 │   ├── HubPage.jsx            # Landing page — navigation + analytics dashboard
+│   ├── VideoPage.jsx          # Standalone video detail page (shareable, no Three.js)
 │   ├── ArtistShowcase.jsx     # Infinite marquee ticker of top 12 artists
 │   ├── ProductionPulse.jsx    # Year-by-year neon bar chart (2010–2026)
 │   ├── VideoSpotlight.jsx     # Featured video card with shuffle history
@@ -147,7 +161,7 @@ src/
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.14.0** (2026-02-17): Extract shared `SectionLabel` UI component — eliminates duplicated neon divider markup and CSS across four HubPage sections.
+**Latest — v3.18.0** (2026-02-17): Standalone video detail pages at `/video/:youtubeId` — every video is now independently shareable without loading Three.js. Upgraded footer with social links and booking CTA. Branded 404 page.
 
 ---
 

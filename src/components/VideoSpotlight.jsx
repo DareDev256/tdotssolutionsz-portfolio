@@ -97,7 +97,7 @@ export default function VideoSpotlight() {
 
       <div className={`spotlight-card ${isTransitioning ? 'transitioning' : ''}`}>
         <Link
-          to={`/videos?v=${video.youtubeId}`}
+          to={`/video/${video.youtubeId}`}
           className="spotlight-thumb-link"
           aria-label={`Watch ${video.title} by ${video.artist}`}
         >

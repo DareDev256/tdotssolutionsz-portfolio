@@ -2,6 +2,20 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.18.0] - 2026-02-17
+
+### Added
+- **Video Detail Page** — New `VideoPage` component at `/video/:youtubeId` gives every video its own shareable, SEO-friendly page. Embedded YouTube player (privacy-enhanced `youtube-nocookie.com`), neon-bordered frame with CRT scanline overlay, metadata display (artist, title, views, year, artist video count), share bar (copy link, X/Twitter, WhatsApp), related videos grid (same-artist first, then popular), and "Watch in 3D" CTA linking to the synthwave highway. Only 6 kB gzipped — 150x lighter than loading the full Three.js experience
+- **Branded 404 Page** — Glitch-animated 404 screen with neon text effect for invalid URLs and unknown routes. Inline in `main.jsx` for zero additional bundle cost
+- **Social Footer on HubPage** — Upgraded minimal footer with YouTube channel link, Instagram link, and "Book a Session" email CTA with neon pill styling
+- **Video Detail Footer** — Full footer on VideoPage with YouTube, Instagram, booking CTA, and gradient separator
+
+### Changed
+- **CultureQueue cards** now link to `/video/:youtubeId` (lightweight) instead of `/videos?v=` (heavy 3D). Users can still reach the 3D experience via the "Watch in 3D" CTA on the video page
+- **VideoSpotlight card** similarly updated to link to the new video detail page
+- **CSP updated** — Added `https://www.youtube-nocookie.com` to `frame-src` for privacy-enhanced embeds
+- **Vercel rewrites** — Added `/video/:youtubeId` rewrite for SPA routing
+
 ## [3.17.0] - 2026-02-17
 
 ### Added

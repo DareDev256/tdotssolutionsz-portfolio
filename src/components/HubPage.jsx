@@ -87,7 +87,13 @@ export default function HubPage() {
       <NowPlayingOverlay />
 
       <footer className="hub-footer">
+        <div className="hub-footer-line-bar" aria-hidden="true" />
         <span className="hub-footer-brand">TDOTSSOLUTIONSZ</span>
+        <div className="hub-footer-links">
+          <a href="https://www.youtube.com/@Tdotssolutionsz" target="_blank" rel="noopener noreferrer" className="hub-footer-link">YouTube</a>
+          <a href="https://www.instagram.com/tdotssolutionsz" target="_blank" rel="noopener noreferrer" className="hub-footer-link">Instagram</a>
+          <a href="mailto:tdotssolutionsz@gmail.com" className="hub-footer-link hub-footer-link--cta">Book a Session</a>
+        </div>
         <span className="hub-footer-loc">TORONTO, CANADA</span>
       </footer>
     </div>
