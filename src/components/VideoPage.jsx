@@ -115,7 +115,7 @@ export default function VideoPage() {
                             src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?rel=0&modestbranding=1`}
                             title={`${video.artist} — ${video.title}`}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            referrerPolicy="no-referrer"
+                            referrerPolicy="strict-origin-when-cross-origin"
                             allowFullScreen
                             loading="lazy"
                             onLoad={() => setPlayerLoaded(true)}

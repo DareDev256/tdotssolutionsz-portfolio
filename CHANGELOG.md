@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.20.1] - 2026-02-18
+
+### Fixed
+- **YouTube Error 153 resolved** — Changed `referrerPolicy` from `"no-referrer"` to `"strict-origin-when-cross-origin"` on YouTube iframe embeds in VideoOverlay and VideoPage. YouTube requires the `Referer` header since late 2025 — stripping it entirely caused "Error 153: Video player configuration error" on all embedded videos. This was the second breakage from Passion's security hardening (first was Trusted Types CSP in v3.18.2)
+
+> *"Fall seven times, stand up eight."* — Japanese proverb
+
 ## [3.20.0] - 2026-02-18
 
 ### Fixed
