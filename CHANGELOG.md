@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.18.2] - 2026-02-18
+
+### Security
+- **Trusted Types CSP directive** — Added `require-trusted-types-for 'script'` to Content-Security-Policy. This is the strongest browser-level DOM XSS prevention available — it forces all dangerous DOM sinks (`innerHTML`, `document.write`, `eval`) to go through a Trusted Types policy instead of accepting raw strings. Any code (including third-party scripts) that tries to inject raw HTML into the DOM will throw a TypeError. Supported in Chrome 83+, Edge 83+, with graceful fallback in other browsers
+- **Expanded secret scanner** — Added 7 new credential patterns to `scripts/scan-secrets.js`: GitHub fine-grained PATs (`github_pat_`), Anthropic API keys (`sk-ant-`), Vercel tokens (`verc_`), npm tokens (`npm_`), Discord webhooks, Discord bot tokens, and Supabase JWT keys. Total coverage: 17 patterns (up from 10)
+- **4 new CSP regression tests** — Trusted Types enforcement, `form-action 'self'` restriction, `base-uri 'self'` restriction, and `unsafe-eval` absence guard. All 4 tests prevent future agents or contributors from accidentally weakening CSP. Total test count: 343 (29 suites)
+
 ## [3.18.1] - 2026-02-18
 
 ### Security

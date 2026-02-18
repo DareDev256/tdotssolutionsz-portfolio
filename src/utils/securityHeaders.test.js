@@ -72,6 +72,32 @@ describe('vercel.json security headers', () => {
         const csp = getHeader('Content-Security-Policy')
         expect(csp).toContain('upgrade-insecure-requests')
     })
+
+    it('CSP enforces Trusted Types for script sinks (DOM XSS prevention)', () => {
+        const csp = getHeader('Content-Security-Policy')
+        // Trusted Types block innerHTML, document.write, and eval sinks at the browser level.
+        // If any code (including third-party) tries to assign a raw string to a DOM sink,
+        // the browser throws a TypeError instead of executing. This is the strongest
+        // defense-in-depth against DOM XSS available in modern browsers.
+        expect(csp).toContain("require-trusted-types-for 'script'")
+    })
+
+    it('CSP restricts form-action to same-origin (form hijack prevention)', () => {
+        const csp = getHeader('Content-Security-Policy')
+        expect(csp).toContain("form-action 'self'")
+    })
+
+    it('CSP restricts base-uri to same-origin (base tag hijack prevention)', () => {
+        const csp = getHeader('Content-Security-Policy')
+        // Prevents <base href="https://evil.com"> injection which would redirect
+        // all relative URLs to an attacker-controlled domain.
+        expect(csp).toContain("base-uri 'self'")
+    })
+
+    it('CSP does NOT contain unsafe-eval anywhere', () => {
+        const csp = getHeader('Content-Security-Policy')
+        expect(csp).not.toContain("'unsafe-eval'")
+    })
 })
 
 describe('CSP script-src hardening', () => {

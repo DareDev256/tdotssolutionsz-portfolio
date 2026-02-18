@@ -23,13 +23,20 @@ const SECRET_PATTERNS = [
   { name: 'AWS Access Key',        re: /AKIA[0-9A-Z]{16}/ },
   { name: 'GitHub Token',          re: /ghp_[A-Za-z0-9]{36}/ },
   { name: 'GitHub OAuth',          re: /gho_[A-Za-z0-9]{36}/ },
+  { name: 'GitHub Fine-Grained',   re: /github_pat_[A-Za-z0-9_]{82}/ },
   { name: 'OpenAI API Key',        re: /sk-[A-Za-z0-9]{20}T3BlbkFJ[A-Za-z0-9]{20}/ },
+  { name: 'Anthropic API Key',     re: /sk-ant-[A-Za-z0-9\-_]{80,}/ },
+  { name: 'Vercel Token',          re: /verc_[A-Za-z0-9]{24}/ },
+  { name: 'npm Token',             re: /npm_[A-Za-z0-9]{36}/ },
+  { name: 'Discord Webhook',       re: /discord(?:app)?\.com\/api\/webhooks\/\d+\/[A-Za-z0-9_-]+/ },
+  { name: 'Discord Bot Token',     re: /[MN][A-Za-z\d]{23,}\.[\w-]{6}\.[\w-]{27,}/ },
   { name: 'Slack Token',           re: /xox[baprs]-[0-9a-zA-Z-]{10,}/ },
   { name: 'Slack Webhook',         re: /hooks\.slack\.com\/services\/T[A-Z0-9]+\/B[A-Z0-9]+\/[A-Za-z0-9]+/ },
   { name: 'Private Key',           re: /-----BEGIN (?:RSA |EC |DSA )?PRIVATE KEY-----/ },
   { name: 'Generic Secret Assign', re: /(?:password|secret|token|apikey|api_key)\s*[:=]\s*['"][A-Za-z0-9+/=]{16,}['"]/i },
   { name: 'Bearer Token',          re: /Bearer\s+[A-Za-z0-9\-._~+/]+=*/  },
   { name: 'Database URI',          re: /(?:mongodb|postgres|mysql|redis):\/\/[^\s'"]+:[^\s'"]+@/ },
+  { name: 'Supabase Key',          re: /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[A-Za-z0-9_-]{30,}/ },
 ];
 
 // Files to skip
