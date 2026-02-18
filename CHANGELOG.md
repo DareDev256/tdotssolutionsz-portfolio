@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.16.0] - 2026-02-17
+
+### Added
+- **Culture Queue** — New `CultureQueue` component on the HubPage: a horizontal scroll-snap video strip showcasing the top 12 most-viewed videos. Each card features a cinematic thumbnail with hover-activated neon purple glow, CRT scanline overlay, play icon reveal, and smooth scale-up transitions. Arrow navigation buttons for keyboard/mouse users, responsive layout (cards shrink on mobile, nav arrows hide for touch scrolling). Clicking any card deep-links to `/videos?v=` for instant 3D playback
+- **Scroll-reveal animation** — Fades in and slides up when scrolled into view via `useScrollReveal`, with full `prefers-reduced-motion` support
+- **WCAG accessible** — `role="list"` semantics, descriptive `aria-label` on all interactive elements, `focus-visible` outlines on cards and nav buttons, keyboard-navigable scroll track
+
 ## [3.15.0] - 2026-02-17
 
 ### Changed

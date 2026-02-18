@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ArtistShowcase from './ArtistShowcase'
 import VideoSpotlight from './VideoSpotlight'
+import CultureQueue from './CultureQueue'
 import CollabWeb from './CollabWeb'
 import ProductionPulse from './ProductionPulse'
 import EraTimeline from './EraTimeline'
@@ -71,6 +72,7 @@ export default function HubPage() {
 
       <ArtistShowcase />
       <VideoSpotlight />
+      <CultureQueue />
       <CollabWeb />
       <ProductionPulse />
       <EraTimeline />
