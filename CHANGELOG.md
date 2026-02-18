@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.20.2] - 2026-02-18
+
+### Added
+- **Video playback guardrail tests** — 18 new tests in `videoPlayback.test.js` that catch every way video playback has been broken before: Trusted Types CSP, referrer policy, COEP, iframe sandbox, YouTube embed URLs, and video data integrity. If any agent's change fails these tests, the change is wrong — not the test
+- **CLAUDE.md workflow guardrails** — Added protected configuration rules (#3–#8) documenting Trusted Types, referrer policy, removed features, and mandatory video playback test protocol. Any agent working on this project now sees the rules before writing code
+
+### Changed
+- Test count: 340 passing (28 suites)
+
+> *"Quality is not an act, it is a habit."* — Aristotle
+
 ## [3.20.1] - 2026-02-18
 
 ### Fixed

@@ -2,8 +2,8 @@
 
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
-[![Tests](https://img.shields.io/badge/TESTS-322_PASSING_(27_SUITES)-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.20.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/TESTS-340_PASSING_(28_SUITES)-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.20.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -84,7 +84,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 | **3D Engine** | Three.js 0.170 / React Three Fiber / Drei |
 | **Post-Processing** | Bloom, Vignette, Noise, Scanline, Chromatic Aberration |
 | **Video** | YouTube IFrame API (playback control, auto-advance, end detection) |
-| **Testing** | Vitest — 322 unit tests across 27 test suites |
+| **Testing** | Vitest — 340 unit tests across 28 test suites |
 | **Hosting** | Vercel with custom domain (tdotssolutionsz.com) |
 | **Build Pipeline** | YouTube API enrichment at build time (zero runtime API costs) |
 
@@ -111,7 +111,7 @@ npm install
 npm run dev              # Start dev server (http://localhost:5173)
 npm run build            # Fetch YouTube data + production build
 npm run preview          # Preview production build locally
-npm test                 # Run 322 unit tests
+npm test                 # Run 340 unit tests
 npm run test:watch       # Tests in watch mode
 npm run prescan          # Scan for leaked secrets
 npm run audit:security   # Dependency vulnerability check
@@ -156,7 +156,7 @@ src/
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.20.0** (2026-02-18): Fixed video playback (removed Trusted Types CSP that broke YouTube API + Three.js). Removed CultureQueue, CollabWeb, ProductionPulse, NowPlayingOverlay from hub — cleaner landing page, 40% smaller bundle.
+**Latest — v3.20.2** (2026-02-18): Video playback guardrail tests (18 tests) to prevent agents from breaking YouTube embeds again. Updated CLAUDE.md with project-specific workflow rules.
 
 ---
 
