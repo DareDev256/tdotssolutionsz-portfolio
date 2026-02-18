@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.18.1] - 2026-02-18
+
+### Security
+- **VideoPage iframe defense-in-depth** — iframe `src` now uses validated `video.youtubeId` (from catalog lookup) instead of raw `useParams()` value, ensuring only catalog-verified IDs ever reach the YouTube embed URL
+- **Referrer suppression on all iframes** — Added `referrerPolicy="no-referrer"` to VideoPage iframe (was missing entirely) and corrected VideoOverlay from `"origin"` to `"no-referrer"`, preventing the portfolio domain from leaking as a Referer header to YouTube
+- **Share URL hardening** — `handleShare` and "Watch in 3D" CTA in VideoPage now use validated `video.youtubeId` instead of raw route param, closing a theoretical URL injection vector in share links
+
 ## [3.18.0] - 2026-02-17
 
 ### Added

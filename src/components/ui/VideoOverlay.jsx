@@ -54,7 +54,7 @@ export const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArt
                             src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${audioEnabled ? 0 : 1}&loop=1&playlist=${videoId}&controls=1&modestbranding=1&rel=0&playsinline=1`}
                             style={{ border: 'none' }}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            referrerPolicy="origin"
+                            referrerPolicy="no-referrer"
                             allowFullScreen
                             title={activeProject.title}
                         />

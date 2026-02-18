@@ -62,7 +62,7 @@ export default function VideoPage() {
     }, [video])
 
     const handleShare = useCallback((platform) => {
-        const url = `${window.location.origin}/video/${youtubeId}`
+        const url = `${window.location.origin}/video/${video.youtubeId}`
         const text = `${video.artist} — ${video.title} | TdotsSolutionsz`
         if (platform === 'copy') {
             navigator.clipboard.writeText(url).then(() => {
@@ -74,7 +74,7 @@ export default function VideoPage() {
         } else if (platform === 'whatsapp') {
             openShareWindow(`https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`)
         }
-    }, [video, youtubeId])
+    }, [video])
 
     // 404 state
     if (!video) {
@@ -112,9 +112,10 @@ export default function VideoPage() {
                 <div className="vp-player-wrap">
                     <div className={`vp-player ${playerLoaded ? 'vp-player--loaded' : ''}`}>
                         <iframe
-                            src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0&modestbranding=1`}
+                            src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?rel=0&modestbranding=1`}
                             title={`${video.artist} — ${video.title}`}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            referrerPolicy="no-referrer"
                             allowFullScreen
                             loading="lazy"
                             onLoad={() => setPlayerLoaded(true)}
@@ -182,7 +183,7 @@ export default function VideoPage() {
 
                     {/* Watch in 3D CTA */}
                     <Link
-                        to={`/videos?v=${youtubeId}`}
+                        to={`/videos?v=${video.youtubeId}`}
                         className="vp-immersive-cta"
                     >
                         <span className="vp-cta-icon">🏙️</span>
