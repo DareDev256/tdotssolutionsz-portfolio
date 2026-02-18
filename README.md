@@ -2,8 +2,8 @@
 
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
-[![Tests](https://img.shields.io/badge/TESTS-343_PASSING_(29_SUITES)-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.19.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/TESTS-322_PASSING_(27_SUITES)-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.20.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -34,16 +34,12 @@ Synthwave-styled card grid with floating CSS particles, scanline overlay, and gl
 
 ### Hub Landing Page (`/`)
 
-The landing page doubles as a production analytics dashboard — seven interactive sections that tell the story of 14 years of Toronto hip-hop video production.
+The landing page showcases the story of 14 years of Toronto hip-hop video production.
 
 - **Artist Showcase Ticker** — Infinite CSS marquee of top 12 artists with YouTube thumbnails, video counts, and total views. Hover to pause, seamless edge-fade masking
 - **Live Stats Counter** — Animated count-up (requestAnimationFrame + ease-out cubic) showing 101 videos, 54 artists, 25.3M+ total views, and 14 years of production. Triggered by IntersectionObserver on scroll
 - **Video Spotlight** — Featured video card showcasing a random top-20 video with cinematic thumbnail, vignette gradient, and play overlay. Shuffle button uses a sliding-window history buffer (same algorithm as `useShufflePlay`) guaranteeing all 20 videos appear before any repeat. Clicks deep-link directly into the 3D experience at `/videos?v=`
-- **Culture Queue** — Horizontal scroll-snap strip of the top 12 most-viewed videos with hover-activated neon purple glow, CRT scanline overlays, and play icon reveals. Arrow navigation buttons, responsive card sizing, and deep-link integration for instant 3D playback
-- **Collab Web** — Interactive artist collaboration network parsed from `ft.` credits in video titles/descriptions. Neon-colored node tags show each collaborating artist with connection count. Click any node to highlight connections, dim unrelated artists, and reveal collaboration tracks with thumbnails and deep-links. 30+ collaborations across the roster
-- **Production Pulse Chart** — Interactive year-by-year neon bar chart (2010–2026) with hover detail strip showing video count, formatted views, and unique artist count per year. Dynamic neon theming via CSS custom properties, keyboard-accessible bars (`role="button"`, `aria-label`, `focus-visible`), `prefers-reduced-motion` support
 - **Production Era Timeline** — Horizontal scroll cards grouping 101 videos into four eras (Origins 2010–2014, Rise 2015–2017, Peak 2018–2020, New Wave 2021–2026) with per-era color theming, top video thumbnails, scroll-snap alignment, and timeline connector dots with glow effects
-- **Now Playing Overlay** — Persistent bottom bar with Astroworld-inspired glowing portal thumbnail, animated equalizer bars, track title/artist, and a progress bar that auto-rotates through the top 8 most-viewed videos every 30 seconds. Dismissible, mobile-responsive, with deep-link WATCH button
 - **Split Navigation** — Two-card entry to Music Videos (live) and Photography (coming soon) with animated gradient borders and backdrop blur
 - **Social Footer** — YouTube, Instagram, and "Book a Session" CTA links in the footer
 
@@ -88,7 +84,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 | **3D Engine** | Three.js 0.170 / React Three Fiber / Drei |
 | **Post-Processing** | Bloom, Vignette, Noise, Scanline, Chromatic Aberration |
 | **Video** | YouTube IFrame API (playback control, auto-advance, end detection) |
-| **Testing** | Vitest — 309 unit tests across 26 test suites |
+| **Testing** | Vitest — 322 unit tests across 27 test suites |
 | **Hosting** | Vercel with custom domain (tdotssolutionsz.com) |
 | **Build Pipeline** | YouTube API enrichment at build time (zero runtime API costs) |
 
@@ -115,7 +111,7 @@ npm install
 npm run dev              # Start dev server (http://localhost:5173)
 npm run build            # Fetch YouTube data + production build
 npm run preview          # Preview production build locally
-npm test                 # Run 309 unit tests
+npm test                 # Run 322 unit tests
 npm run test:watch       # Tests in watch mode
 npm run prescan          # Scan for leaked secrets
 npm run audit:security   # Dependency vulnerability check
@@ -139,7 +135,6 @@ src/
 │   ├── HubPage.jsx            # Landing page — navigation + analytics dashboard
 │   ├── VideoPage.jsx          # Standalone video detail page (shareable, no Three.js)
 │   ├── ArtistShowcase.jsx     # Infinite marquee ticker of top 12 artists
-│   ├── ProductionPulse.jsx    # Year-by-year neon bar chart (2010–2026)
 │   ├── VideoSpotlight.jsx     # Featured video card with shuffle history
 │   ├── EraTimeline.jsx        # Four-era horizontal scroll timeline
 │   ├── VideoCard.jsx          # Mobile video card with glassmorphism
@@ -161,7 +156,7 @@ src/
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.18.0** (2026-02-17): Standalone video detail pages at `/video/:youtubeId` — every video is now independently shareable without loading Three.js. Upgraded footer with social links and booking CTA. Branded 404 page.
+**Latest — v3.20.0** (2026-02-18): Fixed video playback (removed Trusted Types CSP that broke YouTube API + Three.js). Removed CultureQueue, CollabWeb, ProductionPulse, NowPlayingOverlay from hub — cleaner landing page, 40% smaller bundle.
 
 ---
 

@@ -2,6 +2,25 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.20.0] - 2026-02-18
+
+### Fixed
+- **Video playback restored** — Removed `require-trusted-types-for 'script'` from CSP. This directive was blocking YouTube IFrame API (dynamic script injection in `ensureYTApi()`) and Three.js (innerHTML operations), causing videos to not play and the 3D experience to crash with "3D rendering failed"
+
+### Removed
+- **Culture Queue** — Horizontal scroll-snap video strip removed from hub page
+- **Collab Web** — Artist collaboration network graph removed from hub page
+- **Production Pulse** — Year-by-year neon bar chart removed from hub page
+- **Now Playing Overlay** — Auto-rotating featured video bar removed from hub page (had no audio due to CSP blocking YouTube API)
+- Deleted 10 files: 4 components (.jsx), 4 stylesheets (.css), 2 test files (.test.js)
+
+### Changed
+- **Hub page bundle reduced ~40%** — JS: 23.14KB → 13.83KB, CSS: 29.91KB → 16.30KB
+- **Security test updated** — CSP test now asserts Trusted Types is absent (intentionally incompatible with YouTube + Three.js)
+- Test count: 322 passing (27 suites), down from 343 (29 suites) after removing dead test files
+
+> *"Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away."* — Antoine de Saint-Exupery
+
 ## [3.19.0] - 2026-02-18
 
 ### Changed

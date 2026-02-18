@@ -73,13 +73,11 @@ describe('vercel.json security headers', () => {
         expect(csp).toContain('upgrade-insecure-requests')
     })
 
-    it('CSP enforces Trusted Types for script sinks (DOM XSS prevention)', () => {
+    it('CSP does NOT use Trusted Types (incompatible with YouTube IFrame API + Three.js)', () => {
         const csp = getHeader('Content-Security-Policy')
-        // Trusted Types block innerHTML, document.write, and eval sinks at the browser level.
-        // If any code (including third-party) tries to assign a raw string to a DOM sink,
-        // the browser throws a TypeError instead of executing. This is the strongest
-        // defense-in-depth against DOM XSS available in modern browsers.
-        expect(csp).toContain("require-trusted-types-for 'script'")
+        // Trusted Types blocks innerHTML and dynamic script insertion, which breaks
+        // YouTube IFrame API (ensureYTApi) and Three.js internals. Removed intentionally.
+        expect(csp).not.toContain("require-trusted-types-for")
     })
 
     it('CSP restricts form-action to same-origin (form hijack prevention)', () => {

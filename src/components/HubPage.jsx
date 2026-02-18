@@ -2,11 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ArtistShowcase from './ArtistShowcase'
 import VideoSpotlight from './VideoSpotlight'
-import CultureQueue from './CultureQueue'
-import CollabWeb from './CollabWeb'
-import ProductionPulse from './ProductionPulse'
 import EraTimeline from './EraTimeline'
-import NowPlayingOverlay from './NowPlayingOverlay'
 import './HubPage.css'
 
 export default function HubPage() {
@@ -73,9 +69,6 @@ export default function HubPage() {
 
       <ArtistShowcase />
       <VideoSpotlight />
-      <CultureQueue />
-      <CollabWeb />
-      <ProductionPulse />
       <EraTimeline />
 
       {showToast && (
@@ -83,8 +76,6 @@ export default function HubPage() {
           PHOTOGRAPHY — COMING SOON
         </div>
       )}
-
-      <NowPlayingOverlay />
 
       <footer className="hub-footer">
         <div className="hub-footer-line-bar" aria-hidden="true" />
