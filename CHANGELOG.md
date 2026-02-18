@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.18.2] - 2026-02-18
+
+### Fixed
+- **VideoSpotlight ghost shuffle** — `diversePick` now excludes the currently displayed video in addition to the history buffer, preventing the card from fading out and back with the same video when the current pick aged out of the sliding window
+- **History initialization race condition** — Replaced `useEffect`-based history seeding with synchronous `useRef` initializer, eliminating a window where rapid shuffle clicks before the first paint could find an empty history and repeat the initial video
+- **Functional state updater** — `handleShuffle` now uses `setIndex(prev => ...)` to read the current index, avoiding stale closure references in the timeout callback
+
+### Changed
+- **2 new diversity tests** — Added explicit coverage for ghost-shuffle prevention (`never returns the currently displayed video`) and empty-history-with-currentId exclusion. Test suite now at 341 passing (29 suites)
+
 ## [3.18.1] - 2026-02-18
 
 ### Security

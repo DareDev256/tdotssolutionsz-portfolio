@@ -9,7 +9,7 @@
  * to guarantee diverse picks — users see the full top-20 rotation
  * before any video repeats.
  */
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
@@ -30,42 +30,46 @@ const SPOTLIGHT_POOL = [...VIDEOS]
 const HISTORY_SIZE = Math.max(1, SPOTLIGHT_POOL.length - 1)
 
 /**
- * Pick a diverse random video from the pool, excluding recently shown IDs.
- * Returns the new index into SPOTLIGHT_POOL.
+ * Pick a diverse random video from the pool, excluding recently shown IDs
+ * AND the currently displayed video (prevents "ghost shuffles" where the
+ * card fades out and back with the same content).
  *
  * @param {string[]} history - Array of recently shown youtubeId values
+ * @param {string}   currentId - youtubeId of the currently displayed video
  * @returns {number} Index into SPOTLIGHT_POOL
  */
-function diversePick(history) {
-  const historySet = new Set(history)
+function diversePick(history, currentId) {
+  const excludeSet = new Set(history)
+  // Always exclude the current video even if it aged out of the window
+  if (currentId) excludeSet.add(currentId)
+
   const candidates = SPOTLIGHT_POOL
     .map((v, i) => ({ v, i }))
-    .filter(({ v }) => !historySet.has(v.youtubeId))
+    .filter(({ v }) => !excludeSet.has(v.youtubeId))
 
-  // If history exhausted the entire pool, allow all (shouldn't happen with HISTORY_SIZE = pool - 1)
-  const pool = candidates.length > 0 ? candidates : SPOTLIGHT_POOL.map((v, i) => ({ v, i }))
+  // If history + current exhausted the entire pool, allow all except current
+  const pool = candidates.length > 0
+    ? candidates
+    : SPOTLIGHT_POOL
+        .map((v, i) => ({ v, i }))
+        .filter(({ v }) => v.youtubeId !== currentId)
   return pool[Math.floor(Math.random() * pool.length)].i
 }
 
 export default function VideoSpotlight() {
-  const historyRef = useRef(null)
-  const transitionRef = useRef(false)
   const [index, setIndex] = useState(() => {
-    // Pure — compute initial index without side effects
     return Math.floor(Math.random() * SPOTLIGHT_POOL.length)
   })
+  // Eagerly seed history with the initial pick — no useEffect race condition.
+  // useRef initializer runs synchronously, so history is never null/empty
+  // when handleShuffle fires, even before the first paint.
+  const historyRef = useRef([SPOTLIGHT_POOL[index]?.youtubeId].filter(Boolean))
+  const transitionRef = useRef(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const sectionRef = useRef(null)
   const isRevealed = useScrollReveal(sectionRef)
 
   const video = SPOTLIGHT_POOL[index]
-
-  // Seed history buffer once after mount (safe for StrictMode + concurrent)
-  useEffect(() => {
-    if (historyRef.current === null) {
-      historyRef.current = [SPOTLIGHT_POOL[index].youtubeId]
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleShuffle = useCallback(() => {
     if (transitionRef.current) return
@@ -73,13 +77,15 @@ export default function VideoSpotlight() {
     setIsTransitioning(true)
     // Brief fade-out, swap, fade-in
     setTimeout(() => {
-      const history = historyRef.current || []
-      const nextIdx = diversePick(history)
-      history.push(SPOTLIGHT_POOL[nextIdx].youtubeId)
-      // Maintain sliding window — trim oldest when exceeding HISTORY_SIZE
-      if (history.length > HISTORY_SIZE) history.shift()
-      historyRef.current = history
-      setIndex(nextIdx)
+      setIndex(prev => {
+        const currentId = SPOTLIGHT_POOL[prev]?.youtubeId
+        const history = historyRef.current
+        const nextIdx = diversePick(history, currentId)
+        history.push(SPOTLIGHT_POOL[nextIdx].youtubeId)
+        // Maintain sliding window — trim oldest when exceeding HISTORY_SIZE
+        if (history.length > HISTORY_SIZE) history.shift()
+        return nextIdx
+      })
       transitionRef.current = false
       setIsTransitioning(false)
     }, 300)
