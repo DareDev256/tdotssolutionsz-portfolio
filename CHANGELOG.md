@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.22.0] - 2026-02-19
+
+### Added
+- **"Now Playing" cinematic hero** — VideoSpotlight redesigned as a full-bleed, ultra-wide (21:9) hero section on the HubPage. Hover triggers an auto-playing YouTube preview (muted by default) with a cinematic dual-gradient overlay, pulsing NOW PLAYING badge, mute/unmute toggle, and a prominent WATCH NOW CTA. Shuffle rotates through top-20 videos with the existing no-repeat history buffer. Responsive breakpoints step down to 16:9 (tablet) and 16:10 (mobile). Respects `prefers-reduced-motion`
+
+### Changed
+- Thumbnail quality upgraded from `hqdefault` (480×360) to `maxresdefault` (1920×1080) for the spotlight hero
+- Spotlight section uses BEM-style `.now-playing__*` class naming instead of `.spotlight-*`
+
 ## [3.21.2] - 2026-02-19
 
 ### Security
