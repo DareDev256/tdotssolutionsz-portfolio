@@ -120,6 +120,13 @@ describe('CSP script-src hardening', () => {
         const workerSrc = csp.match(/worker-src\s+([^;]+)/)?.[1] || ''
         expect(workerSrc).toContain('blob:')
     })
+
+    it('connect-src does NOT include broad CDN origins (data exfiltration surface)', () => {
+        const csp = getHeader('Content-Security-Policy')
+        const connectSrc = csp.match(/connect-src\s+([^;]+)/)?.[1] || ''
+        // cdn.jsdelivr.net was included but never used in source — unnecessary fetch target
+        expect(connectSrc).not.toContain('cdn.jsdelivr.net')
+    })
 })
 
 describe('Permissions-Policy hardening', () => {
@@ -139,6 +146,13 @@ describe('Permissions-Policy hardening', () => {
     it('restricts autoplay to same-origin only', () => {
         const pp = getHeader('Permissions-Policy')
         expect(pp).toContain('autoplay=(self)')
+    })
+
+    it('blocks screen capture and XR tracking APIs', () => {
+        const pp = getHeader('Permissions-Policy')
+        expect(pp).toContain('display-capture=()')
+        expect(pp).toContain('screen-wake-lock=()')
+        expect(pp).toContain('xr-spatial-tracking=()')
     })
 })
 

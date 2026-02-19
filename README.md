@@ -100,7 +100,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 - **Modular 3D** — Vehicles (`components/3d/vehicles/`), effects (`components/3d/effects/`), scene (`components/3d/scene/` — CNTower, Cityscape, TronBuilding, HighwayArch, DataStream), atmosphere, and particles all extracted into focused modules with barrel exports
 - **9 Shared Hooks** — Deep linking (`useVideoDeepLink`), video navigation (`useVideoNavigation`), shuffle play (`useShufflePlay`), favorites (`useFavorites`), copy-to-clipboard (`useCopyLink`), keyboard shortcuts (`useKeyboardShortcuts`), search (`useSearch`), device type (`useDeviceType`), fresnel materials (`useFresnelMaterial`) — plus 3 inline hooks (`useScrollReveal`, `useCountUp`, `useSwipe`) colocated with their components
 - **JSDoc Coverage** — All hooks, utilities, 3D components, and core scene internals (CameraRig, ProximityTracker, Cityscape, BillboardFrame) documented with parameter types and architectural rationale
-- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy with hardware/payment API blocks), YouTube ID validation at all entry points, iframe referrer suppression, production source map suppression, secret scanning, dependency auditing
+- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy with hardware/payment/screen-capture/XR API blocks), YouTube ID validation at all entry points, HTTPS-enforced share windows, iframe referrer suppression, production source map suppression, 24-pattern secret scanning, dependency auditing
 
 > Full architecture details: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 
@@ -113,7 +113,7 @@ npm install
 npm run dev              # Start dev server (http://localhost:5173)
 npm run build            # Fetch YouTube data + production build
 npm run preview          # Preview production build locally
-npm test                 # Run 340 unit tests
+npm test                 # Run 343 unit tests
 npm run test:watch       # Tests in watch mode
 npm run prescan          # Scan for leaked secrets
 npm run audit:security   # Dependency vulnerability check

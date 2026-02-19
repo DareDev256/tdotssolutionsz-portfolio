@@ -81,6 +81,8 @@ const SHARE_HOSTS = new Set([
 export function openShareWindow(url) {
     try {
         const parsed = new URL(url)
+        // Enforce HTTPS — block http:, javascript:, data:, and other protocol attacks
+        if (parsed.protocol !== 'https:') return false
         if (!SHARE_HOSTS.has(parsed.hostname)) return false
         // Enforce noopener,noreferrer — never allow caller to weaken this
         window.open(url, '_blank', 'noopener,noreferrer')

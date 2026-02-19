@@ -37,6 +37,13 @@ const SECRET_PATTERNS = [
   { name: 'Bearer Token',          re: /Bearer\s+[A-Za-z0-9\-._~+/]+=*/  },
   { name: 'Database URI',          re: /(?:mongodb|postgres|mysql|redis):\/\/[^\s'"]+:[^\s'"]+@/ },
   { name: 'Supabase Key',          re: /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[A-Za-z0-9_-]{30,}/ },
+  { name: 'Stripe Secret Key',    re: /sk_live_[0-9a-zA-Z]{24,}/ },
+  { name: 'Stripe Restricted Key', re: /rk_live_[0-9a-zA-Z]{24,}/ },
+  { name: 'Google API Key',       re: /AIza[0-9A-Za-z\-_]{35}/ },
+  { name: 'Google OAuth Secret',  re: /GOCSPX-[A-Za-z0-9\-_]{28}/ },
+  { name: 'SendGrid API Key',     re: /SG\.[A-Za-z0-9\-_]{22}\.[A-Za-z0-9\-_]{43}/ },
+  { name: 'Twilio Auth Token',    re: /SK[0-9a-fA-F]{32}/ },
+  { name: 'Mailgun API Key',      re: /key-[0-9a-zA-Z]{32}/ },
 ];
 
 // Files to skip

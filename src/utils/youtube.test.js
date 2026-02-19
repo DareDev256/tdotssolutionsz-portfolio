@@ -234,6 +234,13 @@ describe('openShareWindow', () => {
         expect(openSpy).not.toHaveBeenCalled()
     })
 
+    it('blocks HTTP downgrade on share targets (HTTPS enforced)', () => {
+        // Even valid share hosts must use HTTPS — HTTP allows MITM interception
+        expect(openShareWindow('http://twitter.com/intent/tweet?text=test')).toBe(false)
+        expect(openShareWindow('http://wa.me/?text=test')).toBe(false)
+        expect(openSpy).not.toHaveBeenCalled()
+    })
+
     it('returns false for malformed URLs', () => {
         expect(openShareWindow('')).toBe(false)
         expect(openShareWindow('not-a-url')).toBe(false)

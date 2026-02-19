@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.21.2] - 2026-02-19
+
+### Security
+- **CSP `connect-src` tightened** — Removed `cdn.jsdelivr.net` from allowed fetch origins. It was never used in source code but created an unnecessary data exfiltration surface via `fetch()` to any jsdelivr-hosted endpoint
+- **HTTPS protocol enforcement on share windows** — `openShareWindow()` now rejects non-HTTPS URLs at the protocol level before hostname checking. Previously, `http://twitter.com/...` would pass the host allowlist but allow MITM interception of the share payload
+- **Permissions-Policy expanded** — Added `display-capture=()`, `screen-wake-lock=()`, `xr-spatial-tracking=()` to block screen capture, wake lock, and XR tracking APIs that have no legitimate use in a video portfolio
+- **Secret scanner expanded** — Added detection patterns for Stripe secret/restricted keys, Google API keys, Google OAuth secrets, SendGrid API keys, Twilio auth tokens, and Mailgun API keys (7 new patterns, 24 total)
+
+### Changed
+- Test count: 343 passing (28 suites) — added 3 new security regression tests (CSP connect-src, Permissions-Policy expansion, HTTPS share enforcement)
+
 ## [3.21.1] - 2026-02-19
 
 ### Changed
