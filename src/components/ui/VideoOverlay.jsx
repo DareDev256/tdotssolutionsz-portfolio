@@ -2,13 +2,29 @@ import { useState, useEffect } from 'react'
 import { ARTIST_STATS } from '../../utils/videoData'
 import { isValidYouTubeId, extractVideoId } from '../../utils/youtube'
 import useCopyLink from '../../hooks/useCopyLink'
+import AudioVisualizer from './AudioVisualizer'
 
 export const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArtistClick }) => {
     const [isVisible, setIsVisible] = useState(false)
+    const [vizActive, setVizActive] = useState(false)
     const { copied, handleCopyLink } = useCopyLink(activeProject)
 
     useEffect(() => {
         setIsVisible(!!activeProject)
+        if (!activeProject) setVizActive(false) // Reset on video change
+    }, [activeProject])
+
+    // V key toggles visualizer when a video is active
+    useEffect(() => {
+        if (!activeProject) return
+        const handleKey = (e) => {
+            if (e.key === 'v' || e.key === 'V') {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+                setVizActive(v => !v)
+            }
+        }
+        window.addEventListener('keydown', handleKey)
+        return () => window.removeEventListener('keydown', handleKey)
     }, [activeProject])
 
     if (!activeProject) return null
@@ -23,6 +39,23 @@ export const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArt
                 <div className="video-title" style={{ color: activeProject.color }}>
                     {activeProject.title}
                     <span style={{ display: 'flex', gap: '4px' }}>
+                        {/* Visualizer toggle */}
+                        <button
+                            className={`viz-toggle-btn ${vizActive ? 'active' : ''}`}
+                            onClick={() => setVizActive(v => !v)}
+                            title="Visualizer (V)"
+                            aria-pressed={vizActive}
+                            aria-label="Toggle audio visualizer"
+                            style={{ borderColor: activeProject.color }}
+                        >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="1" y="8" width="3" height="8" rx="1" />
+                                <rect x="6" y="4" width="3" height="16" rx="1" />
+                                <rect x="11" y="6" width="3" height="12" rx="1" />
+                                <rect x="16" y="2" width="3" height="20" rx="1" />
+                                <rect x="21" y="9" width="3" height="6" rx="1" />
+                            </svg>
+                        </button>
                         {/* Copy Link button */}
                         <button
                             className="theater-mode-btn"
@@ -78,6 +111,7 @@ export const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArt
                     </div>
                 )}
             </div>
+            <AudioVisualizer active={vizActive} color={activeProject.color} />
         </div>
     )
 }

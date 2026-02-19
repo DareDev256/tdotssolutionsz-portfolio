@@ -2,6 +2,23 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.21.1] - 2026-02-19
+
+### Changed
+- **AudioVisualizer refactored** — Decomposed monolithic render loop into four isolated draw functions (`drawBars`, `drawParticles`, `drawBassRing`, `drawScanner`) each wrapped in `ctx.save()`/`ctx.restore()` for proper canvas state isolation. Eliminates cross-contamination of `globalAlpha` between visual layers
+- **Bass ring redesigned** — Replaced minimal two-circle ring with concentric speaker-cone rings and 32 slowly rotating radial tick marks, evoking a bass speaker membrane / vinyl record aesthetic
+- **Scanner sweep added** — Subtle horizontal sweep line moves down the canvas with a soft glow halo, adding a VHS tracking line / moody lighting feel aligned with the cinematic aesthetic
+- **`prefers-reduced-motion` support** — Visualizer now respects the OS accessibility setting: static bars at fixed amplitude with no particles or scanner. CSS animations (fade-in, button glow, hover transform) also disabled under reduced motion
+- **Configurable BPM** — New `bpm` prop (default 128) allows per-track tempo matching instead of hardcoded 128 BPM
+- **JSDoc added** — Full `@param` documentation for the component and all draw functions
+
+## [3.21.0] - 2026-02-19
+
+### Added
+- **Audio Visualizer Mode** — Toggle a procedural beat-synced visualizer overlay while watching any video. 48 frequency bars pulse with layered sine waves at 128 BPM, floating neon particles drift upward, and a center ring beats in time. Uses the synthwave palette (cyan → pink → purple → blue → orange). Activate via the equalizer button in the video overlay or press `V`
+- Visualizer button with neon glow animation when active, integrated alongside Theater Mode and Copy Link controls
+- `V` keyboard shortcut to toggle visualizer from anywhere when a video is playing
+
 ## [3.20.2] - 2026-02-18
 
 ### Added

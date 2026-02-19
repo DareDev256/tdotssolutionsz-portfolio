@@ -1,0 +1,79 @@
+/* AudioVisualizer — fullscreen canvas behind the video overlay */
+.visualizer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9; /* Below video-overlay (z:10) but above canvas-container (z:1) */
+  pointer-events: none;
+  background: rgba(3, 3, 8, 0.65);
+  animation: viz-fade-in 0.4s ease-out;
+}
+
+.visualizer-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Reduced motion: disable the entrance animation */
+@media (prefers-reduced-motion: reduce) {
+  .visualizer-overlay {
+    animation: none;
+  }
+}
+
+/* Visualizer toggle button — sits alongside theater/copy buttons */
+.viz-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+}
+
+.viz-toggle-btn:hover {
+  background: rgba(5, 217, 232, 0.15);
+  transform: scale(1.1);
+}
+
+.viz-toggle-btn:focus-visible {
+  outline: 2px solid var(--neon-cyan, #05d9e8);
+  outline-offset: 2px;
+}
+
+.viz-toggle-btn.active {
+  background: rgba(5, 217, 232, 0.25);
+  box-shadow: 0 0 12px rgba(5, 217, 232, 0.5), inset 0 0 8px rgba(5, 217, 232, 0.2);
+  animation: viz-glow 1.5s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viz-toggle-btn {
+    transition: none;
+  }
+  .viz-toggle-btn:hover {
+    transform: none;
+  }
+  .viz-toggle-btn.active {
+    animation: none;
+    box-shadow: 0 0 12px rgba(5, 217, 232, 0.5), inset 0 0 8px rgba(5, 217, 232, 0.2);
+  }
+}
+
+@keyframes viz-glow {
+  from { box-shadow: 0 0 8px rgba(5, 217, 232, 0.4), inset 0 0 6px rgba(5, 217, 232, 0.15); }
+  to   { box-shadow: 0 0 18px rgba(255, 42, 109, 0.5), inset 0 0 10px rgba(255, 42, 109, 0.2); }
+}
+
+@keyframes viz-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

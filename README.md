@@ -3,7 +3,7 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Tests](https://img.shields.io/badge/TESTS-340_PASSING_(28_SUITES)-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.20.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.21.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -17,10 +17,12 @@ A Tron-inspired metropolis you scroll through on a light cycle. 200+ edge-lit bu
 
 - **Vehicle Selection** — Tron Light Cycle, DeLorean, or Cyber Bike
 - **Theater Mode** — Press `F` for fullscreen immersive playback; arrow keys skip tracks
+- **Audio Visualizer** — Press `V` to toggle a procedural beat-synced visualizer with frequency bars, floating particles, and pulsing ring — all in the synthwave neon palette
 - **Shuffle Play** — Press `S` for random discovery with no-repeat history
 - **Fuzzy Search** — Typo-tolerant search across artists and video titles
 - **Artist Panel** — Click any artist name for a slide-in sidebar with all their videos and stats
 - **Golden Angel Halos** — Deceased artists (Murda, BG) honored with golden halos and ethereal bloom glow
+- **Audio Visualizer** — Press `V` for a beat-synced procedural visualizer with frequency bars, floating particles, speaker-cone bass ring, and VHS scanner sweep
 - **Keyboard Shortcuts** — Press `?` to see all controls
 
 ### Mobile — Polished Grid View
@@ -144,7 +146,7 @@ src/
 │   ├── 3d/effects/            # StarField, SynthwaveSun
 │   ├── atmosphere/            # EnhancedStarField, GroundFog, ProceduralNebula
 │   ├── particles/             # SoftParticles
-│   └── ui/                    # SearchBar, ArtistPanel, TheaterMode, KeyboardGuide, SectionLabel
+│   └── ui/                    # SearchBar, ArtistPanel, TheaterMode, KeyboardGuide, SectionLabel, AudioVisualizer
 ├── hooks/                     # 9 shared hooks (+ 3 inline hooks in components)
 ├── utils/                     # videoData, youtube, formatters, audioAttenuation, imageFallback
 └── data/                      # videos.json (101 entries), photos.json (25 entries)
@@ -156,7 +158,7 @@ src/
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.20.2** (2026-02-18): Video playback guardrail tests (18 tests) to prevent agents from breaking YouTube embeds again. Updated CLAUDE.md with project-specific workflow rules.
+**Latest — v3.21.1** (2026-02-19): AudioVisualizer refactored — decomposed into isolated draw functions with canvas state isolation, speaker-cone bass ring, VHS scanner sweep, prefers-reduced-motion support, and configurable BPM prop.
 
 ---
 
