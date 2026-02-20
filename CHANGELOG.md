@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.22.1] - 2026-02-20
+
+### Added
+- **Prompt caching research brief** — New `docs/PROMPT-CACHING-RESEARCH.md` documenting how Anthropic's prompt caching powers the AI agent workflows used to build and maintain this project. Covers KV caching mechanics, pricing math (90% cost reduction on cache reads), cache hierarchy (`tools` -> `system` -> `messages`), TTL options (5-min default / 1-hour extended), workspace isolation, and concrete savings estimates for multi-turn agent sessions operating on this repo
+
 ## [3.22.0] - 2026-02-19
 
 ### Added
