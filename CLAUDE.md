@@ -12,6 +12,7 @@ These items have been broken by automated agents before. Do NOT change them:
 6. **Photography is LOCKED** — The `/photos` route and Photography card on HubPage are intentionally disabled (Coming Soon). Do NOT re-enable without explicit owner approval.
 7. **videos.json integrity** — Do NOT modify `youtubeId` fields. Every `youtubeId` must be exactly 11 characters matching `[A-Za-z0-9_-]{11}`.
 8. **Removed features — do NOT re-add** — CultureQueue, CollabWeb, ProductionPulse, NowPlayingOverlay were removed from HubPage in v3.20.0 per owner request.
+9. **CSP `connect-src` MUST include `cdn.jsdelivr.net`** — Troika (drei's `<Text>` component) fetches fonts from jsdelivr inside Web Workers at runtime. Worker `fetch()` calls are governed by `connect-src`, not `font-src`. Removing jsdelivr breaks ALL 3D text labels. This has now been broken and fixed TWICE (v3.16.0 added it, v3.22.0 wrongly removed it). Do NOT remove it again regardless of "not found in source code" reasoning — it's a runtime dependency loaded by a third-party library inside a Worker.
 
 ## VIDEO PLAYBACK — THE #1 PRIORITY
 

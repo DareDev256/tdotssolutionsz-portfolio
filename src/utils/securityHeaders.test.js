@@ -121,11 +121,13 @@ describe('CSP script-src hardening', () => {
         expect(workerSrc).toContain('blob:')
     })
 
-    it('connect-src does NOT include broad CDN origins (data exfiltration surface)', () => {
+    it('connect-src includes cdn.jsdelivr.net (required by Troika font loading in drei Text)', () => {
         const csp = getHeader('Content-Security-Policy')
         const connectSrc = csp.match(/connect-src\s+([^;]+)/)?.[1] || ''
-        // cdn.jsdelivr.net was included but never used in source — unnecessary fetch target
-        expect(connectSrc).not.toContain('cdn.jsdelivr.net')
+        // Troika (drei's Text component) fetches fonts from jsdelivr inside Web Workers.
+        // Worker fetch() calls are governed by connect-src, not font-src.
+        // Removing this breaks 3D text labels. Do NOT remove.
+        expect(connectSrc).toContain('cdn.jsdelivr.net')
     })
 })
 
