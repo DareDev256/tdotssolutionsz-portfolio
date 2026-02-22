@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.23.3] - 2026-02-22
+
+### Added
+- **Claude vs ChatGPT programming research brief** — New `docs/CLAUDE-VS-CHATGPT-PROGRAMMING.md` analyzing Claude Code's 5.5× token efficiency advantage over competing AI coding tools, head-to-head benchmark data (SWE-bench 80.9%, 4/5 real-world tasks won), pricing breakdown across Haiku/Sonnet/Opus tiers, and how three-tier model routing + prompt caching delivers 90%+ cost savings on this project's autonomous agent workflows. Includes honest assessment of ChatGPT's strengths (math precision, IDE integrations)
+
 ## [3.23.2] - 2026-02-22
 
 ### Fixed
