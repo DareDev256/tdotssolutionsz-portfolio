@@ -7,6 +7,9 @@
  *   1. Trusted Types CSP (v3.18.2) — blocked YouTube IFrame API + Three.js
  *   2. referrerPolicy="no-referrer" (v3.18.1) — YouTube Error 153
  *
+ * VideoSpotlight.jsx was added to guardrails in v3.23.2 — its hover-to-play
+ * iframe was previously unguarded despite using the same YouTube embed pattern.
+ *
  * Every test here guards a specific configuration that, if changed, will
  * silently break video playback in production. YouTube shows no console
  * errors for most of these — the video just doesn't play.
@@ -116,12 +119,20 @@ describe('iframe referrerPolicy: must NOT be no-referrer', () => {
         expect(src).toContain('referrerPolicy="strict-origin-when-cross-origin"')
     })
 
+    it('VideoSpotlight iframe uses strict-origin-when-cross-origin', () => {
+        const src = readSrc('components/VideoSpotlight.jsx')
+        // Spotlight hover-to-play iframe was unguarded — same Error 153 risk.
+        expect(src).not.toContain('referrerPolicy="no-referrer"')
+        expect(src).toContain('referrerPolicy="strict-origin-when-cross-origin"')
+    })
+
     it('no iframe anywhere in src/ uses referrerPolicy="no-referrer"', () => {
         // Broad sweep — catch any new iframe that might get added with the wrong policy.
         // Read all .jsx files that contain iframes.
         const files = [
             'components/ui/VideoOverlay.jsx',
             'components/VideoPage.jsx',
+            'components/VideoSpotlight.jsx',
         ]
         for (const file of files) {
             const src = readSrc(file)
@@ -149,6 +160,11 @@ describe('iframe sandbox: must NOT be present on YouTube embeds', () => {
         const src = readSrc('components/VideoPage.jsx')
         expect(src).not.toMatch(/sandbox[=\s>]/)
     })
+
+    it('VideoSpotlight iframe has no sandbox attribute', () => {
+        const src = readSrc('components/VideoSpotlight.jsx')
+        expect(src).not.toMatch(/sandbox[=\s>]/)
+    })
 })
 
 // ════════════════════════════════════════════════
@@ -159,6 +175,12 @@ describe('YouTube embed URLs: correct format', () => {
     it('VideoOverlay uses youtube.com/embed/ (not youtube-nocookie for autoplay)', () => {
         const src = readSrc('components/ui/VideoOverlay.jsx')
         // VideoOverlay needs autoplay=1 which works more reliably on youtube.com
+        expect(src).toContain('https://www.youtube.com/embed/')
+    })
+
+    it('VideoSpotlight uses youtube.com/embed/ (hover-to-play needs autoplay)', () => {
+        const src = readSrc('components/VideoSpotlight.jsx')
+        // Spotlight hover preview relies on autoplay=1 — must use youtube.com, not nocookie
         expect(src).toContain('https://www.youtube.com/embed/')
     })
 

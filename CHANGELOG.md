@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.23.2] - 2026-02-22
+
+### Fixed
+- **Video playback guardrail gap** — VideoSpotlight.jsx's hover-to-play iframe was missing from the `videoPlayback.test.js` regression suite. Added 3 new tests: referrerPolicy validation, sandbox attribute guard, and embed URL format check. All 3 iframe-bearing components (VideoOverlay, VideoPage, VideoSpotlight) are now fully covered. The broad-sweep no-referrer check also now includes VideoSpotlight. Test count: 18 → 21
+
 ## [3.23.1] - 2026-02-22
 
 ### Added
