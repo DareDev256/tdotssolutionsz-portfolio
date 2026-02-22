@@ -10,6 +10,7 @@ import { VIDEOS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
 import useScrollReveal from '../hooks/useScrollReveal'
+import useCinematicScroll from '../hooks/useCinematicScroll'
 import './VideoSpotlight.css'
 
 const SPOTLIGHT_POOL = [...VIDEOS]
@@ -36,6 +37,7 @@ export default function VideoSpotlight() {
   const [isMuted, setIsMuted] = useState(true)
   const sectionRef = useRef(null)
   const isRevealed = useScrollReveal(sectionRef)
+  const scrollProgress = useCinematicScroll(sectionRef)
   const video = SPOTLIGHT_POOL[index]
   const year = video.uploadDate ? new Date(video.uploadDate).getFullYear() : ''
 
@@ -65,10 +67,19 @@ export default function VideoSpotlight() {
 
   const embedUrl = `https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&mute=${isMuted ? 1 : 0}&controls=0&showinfo=0&rel=0&modestbranding=1&loop=1&playlist=${video.youtubeId}&enablejsapi=1`
 
+  // CSS custom properties drive the cinematic parallax + dolly zoom
+  const cinematicStyle = {
+    '--scroll-progress': scrollProgress,
+    '--parallax-y': `${(1 - scrollProgress) * 20}px`,
+    '--dolly-scale': 1 + scrollProgress * 0.04,
+    '--info-offset': `${(1 - scrollProgress) * 15}px`,
+  }
+
   return (
     <section
       className={`now-playing ${isRevealed ? 'revealed' : ''}`}
       ref={sectionRef}
+      style={cinematicStyle}
       aria-label="Now Playing — Featured video"
     >
       <div

@@ -1,15 +1,21 @@
 /* ============================================
    NOW PLAYING — Full-bleed cinematic hero
    Migos Culture meets Netflix UI
+   Scroll-driven cinematic parallax system
    ============================================ */
 
 .now-playing {
+  --scroll-progress: 0;
+  --parallax-y: 20px;
+  --dolly-scale: 1;
+  --info-offset: 15px;
   width: 100%;
   position: relative;
   z-index: 1;
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   margin: 3rem 0;
 }
 
@@ -18,7 +24,7 @@
   transform: translateY(0);
 }
 
-/* ---- Viewport (full-bleed container) ---- */
+/* ---- Viewport (full-bleed container, scroll-driven aura) ---- */
 .now-playing__viewport {
   position: relative;
   width: 100%;
@@ -26,8 +32,11 @@
   overflow: hidden;
   border-radius: 6px;
   cursor: pointer;
-  border: 1px solid rgba(255, 42, 109, 0.12);
-  transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.5s ease;
+  border: 1px solid rgba(255, 42, 109, calc(0.05 + var(--scroll-progress) * 0.15));
+  box-shadow:
+    0 0 calc(var(--scroll-progress) * 40px) rgba(255, 42, 109, calc(var(--scroll-progress) * 0.08)),
+    0 calc(var(--scroll-progress) * 12px) 40px rgba(0, 0, 0, 0.4);
+  transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.5s ease, box-shadow 0.3s ease;
 }
 
 .now-playing__viewport.is-playing {
@@ -40,18 +49,20 @@
   transform: scale(0.98);
 }
 
-/* ---- Thumbnail ---- */
+/* ---- Thumbnail (scroll-driven dolly zoom + parallax) ---- */
 .now-playing__thumb {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s ease, filter 0.5s ease;
+  transform: translateY(var(--parallax-y)) scale(var(--dolly-scale));
+  transition: filter 0.5s ease;
+  will-change: transform;
 }
 
 .now-playing__viewport:hover .now-playing__thumb {
-  transform: scale(1.03);
+  transform: translateY(var(--parallax-y)) scale(calc(var(--dolly-scale) + 0.02));
   filter: brightness(0.6);
 }
 
@@ -147,7 +158,7 @@
   outline-offset: 2px;
 }
 
-/* ---- Info overlay (bottom-left, Netflix style) ---- */
+/* ---- Info overlay (bottom-left, Netflix style, scroll-staggered) ---- */
 .now-playing__info {
   position: absolute;
   bottom: 0;
@@ -156,6 +167,7 @@
   z-index: 3;
   padding: 24px 24px 20px;
   pointer-events: none;
+  transform: translateY(var(--info-offset));
 }
 
 .now-playing__info > * { pointer-events: auto; }
@@ -170,6 +182,8 @@
   text-transform: uppercase;
   margin: 0 0 6px;
   display: block;
+  opacity: var(--scroll-progress);
+  transition: opacity 0.3s ease;
 }
 
 .now-playing__title {
@@ -283,8 +297,13 @@
 
 /* ---- Reduced Motion ---- */
 @media (prefers-reduced-motion: reduce) {
-  .now-playing { opacity: 1; transform: none; transition: none; }
+  .now-playing {
+    opacity: 1; transform: none; transition: none;
+    --parallax-y: 0px; --dolly-scale: 1; --info-offset: 0px; --scroll-progress: 1;
+  }
   .now-playing__viewport.transitioning { opacity: 1; transform: none; }
-  .now-playing__thumb { transition: none; }
+  .now-playing__thumb { transition: none; transform: none; will-change: auto; }
+  .now-playing__info { transform: none; }
+  .now-playing__artist { opacity: 1; }
   .now-playing__dot { animation: none; opacity: 1; }
 }

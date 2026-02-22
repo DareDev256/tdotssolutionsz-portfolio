@@ -3,7 +3,7 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Tests](https://img.shields.io/badge/TESTS-340_PASSING_(28_SUITES)-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.22.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.23.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -40,7 +40,7 @@ The landing page showcases the story of 14 years of Toronto hip-hop video produc
 
 - **Artist Showcase Ticker** — Infinite CSS marquee of top 12 artists with YouTube thumbnails, video counts, and total views. Hover to pause, seamless edge-fade masking
 - **Live Stats Counter** — Animated count-up (requestAnimationFrame + ease-out cubic) showing 101 videos, 54 artists, 25.3M+ total views, and 14 years of production. Triggered by IntersectionObserver on scroll
-- **"Now Playing" Hero** — Full-bleed cinematic hero section with ultra-wide (21:9) viewport showcasing a random top-20 video. Hover triggers auto-playing YouTube preview (muted by default) with a dual-gradient cinematic overlay, pulsing NOW PLAYING badge, mute/unmute toggle, and WATCH NOW CTA. Shuffle rotates through all 20 videos with a no-repeat history buffer. Responsive: 16:9 on tablet, 16:10 on mobile
+- **"Now Playing" Hero** — Full-bleed cinematic hero section with ultra-wide (21:9) viewport showcasing a random top-20 video. Hover triggers auto-playing YouTube preview (muted by default) with a dual-gradient cinematic overlay, pulsing NOW PLAYING badge, mute/unmute toggle, and WATCH NOW CTA. Shuffle rotates through all 20 videos with a no-repeat history buffer. **Scroll-driven cinematic animations**: parallax thumbnail shift, dolly zoom scale, staggered info reveal, and a reactive neon aura glow that intensifies as the section enters focus. Responsive: 16:9 on tablet, 16:10 on mobile. Respects `prefers-reduced-motion`
 - **Production Era Timeline** — Horizontal scroll cards grouping 101 videos into four eras (Origins 2010–2014, Rise 2015–2017, Peak 2018–2020, New Wave 2021–2026) with per-era color theming, top video thumbnails, scroll-snap alignment, and timeline connector dots with glow effects
 - **Split Navigation** — Two-card entry to Music Videos (live) and Photography (coming soon) with animated gradient borders and backdrop blur
 - **Social Footer** — YouTube, Instagram, and "Book a Session" CTA links in the footer

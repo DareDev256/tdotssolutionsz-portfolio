@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.23.0] - 2026-02-21
+
+### Added
+- **Scroll-driven cinematic animation system** — New `useCinematicScroll` hook provides continuous scroll progress (0→1) for any element, gated by IntersectionObserver to avoid unnecessary scroll listeners. The VideoSpotlight "Now Playing" hero now features: parallax thumbnail shift (20px travel), dolly zoom scale (1→1.04×), staggered info panel slide-up, and a reactive neon aura border glow that intensifies as the section enters the viewport. All effects are driven by CSS custom properties (`--scroll-progress`, `--parallax-y`, `--dolly-scale`, `--info-offset`) for GPU-accelerated performance. Fully respects `prefers-reduced-motion`. Zero new dependencies
+
 ## [3.22.1] - 2026-02-20
 
 ### Added
