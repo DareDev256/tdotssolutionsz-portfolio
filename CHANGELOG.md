@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.23.1] - 2026-02-22
+
+### Added
+- **System prompts research brief** — New `docs/SYSTEM-PROMPTS-RESEARCH.md` analyzing the `x1xhlol/system-prompts-and-models-of-ai-tools` repository (117K+ stars, 30+ AI tools documented). Covers system prompt architecture patterns, tool definition schemas, competitive intelligence across Claude Code / Cursor / Devin, and how this project's `CLAUDE.md` aligns with the emerging industry-standard prompt layering structure. Validates that the repo-level agent configuration powering this portfolio follows the same patterns used by all major AI coding tools
+
 ## [3.23.0] - 2026-02-21
 
 ### Added
