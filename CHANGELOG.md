@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.23.7] - 2026-02-23
+
+### Added
+- **AI weekly intel brief** — New `docs/research/what-to-watch-ai.md` covering three signals for the week of Feb 23: Samsung Galaxy S26 on-device AI launch (Tuesday), Claude 5 frontier model race (prediction markets at 83% Anthropic leads), and Agenti live agent intelligence platform (relevance score 75). Each signal analyzed for direct impact on this project's autonomous AI pipeline — from mobile video consumption patterns to Claude Code upgrade implications to Passion Agent intel feed expansion
+
 ## [3.23.6] - 2026-02-23
 
 ### Changed
