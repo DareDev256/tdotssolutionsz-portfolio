@@ -44,6 +44,12 @@ const SECRET_PATTERNS = [
   { name: 'SendGrid API Key',     re: /SG\.[A-Za-z0-9\-_]{22}\.[A-Za-z0-9\-_]{43}/ },
   { name: 'Twilio Auth Token',    re: /SK[0-9a-fA-F]{32}/ },
   { name: 'Mailgun API Key',      re: /key-[0-9a-zA-Z]{32}/ },
+  { name: 'Cloudflare API Token', re: /CF_(?:API_TOKEN|API_KEY)\s*[:=]\s*['"][A-Za-z0-9_-]{37,}['"]/i },
+  { name: 'Firebase Server Key', re: /AAAA[A-Za-z0-9_-]{7}:[A-Za-z0-9_-]{140}/ },
+  { name: 'Azure Connection',    re: /AccountKey=[A-Za-z0-9+/=]{86,}/ },
+  { name: 'Heroku API Key',      re: /HEROKU_API_KEY\s*[:=]\s*['"][0-9a-fA-F-]{36,}['"]/i },
+  { name: 'DigitalOcean Token',  re: /dop_v1_[a-f0-9]{64}/ },
+  { name: 'Datadog API Key',     re: /dd(?:api|app)_[A-Za-z0-9]{32,40}/ },
 ];
 
 // Files to skip

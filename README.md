@@ -2,8 +2,8 @@
 
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel)](https://tdotssolutionsz.com)
 [![Videos](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
-[![Tests](https://img.shields.io/badge/TESTS-346_PASSING_(28_SUITES)-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.23.4-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/TESTS-350_PASSING_(28_SUITES)-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.23.5-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > An immersive synthwave-themed portfolio showcasing **101 music videos** by **54 artists** — produced by TdotsSolutionsz, Toronto's premier hip-hop video production company. Drive through a neon 3D cityscape on desktop. Browse a polished mobile grid on phone.
 
@@ -100,7 +100,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 - **Modular 3D** — Vehicles (`components/3d/vehicles/`), effects (`components/3d/effects/`), scene (`components/3d/scene/` — CNTower, Cityscape, TronBuilding, HighwayArch, DataStream), atmosphere, and particles all extracted into focused modules with barrel exports
 - **9 Shared Hooks** — Deep linking (`useVideoDeepLink`), video navigation (`useVideoNavigation`), shuffle play (`useShufflePlay`), favorites (`useFavorites`), copy-to-clipboard (`useCopyLink`), keyboard shortcuts (`useKeyboardShortcuts`), search (`useSearch`), device type (`useDeviceType`), fresnel materials (`useFresnelMaterial`) — plus 3 inline hooks (`useScrollReveal`, `useCountUp`, `useSwipe`) colocated with their components
 - **JSDoc Coverage** — All hooks, utilities, 3D components, and core scene internals (CameraRig, ProximityTracker, Cityscape, BillboardFrame) documented with parameter types and architectural rationale
-- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy with hardware/payment/screen-capture/XR API blocks), YouTube ID validation at all entry points, HTTPS-enforced share windows, iframe referrer suppression, production source map suppression, 24-pattern secret scanning, dependency auditing
+- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy blocking 18 browser APIs including device sensors, fingerprinting vectors, and hardware access), YouTube ID validation at all entry points, HTTPS-enforced share windows, iframe referrer suppression, production source map suppression, 30-pattern secret scanning (AWS, GitHub, Stripe, Firebase, Azure, Cloudflare, DigitalOcean, and more), dependency auditing
 
 > Full architecture details: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 

@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.23.5] - 2026-02-23
+
+### Security
+- **Permissions-Policy: block device sensor fingerprinting** — Added `accelerometer=()`, `gyroscope=()`, `magnetometer=()`, `ambient-light-sensor=()`, `idle-detection=()`, and `clipboard-read=()` to Permissions-Policy header. Motion/orientation sensors enable cross-origin device fingerprinting via hardware noise patterns — particularly dangerous with embedded YouTube iframes that load third-party scripts. Idle detection reveals user presence patterns. Clipboard read could exfiltrate clipboard contents. None of these APIs have any legitimate use in a video portfolio
+- **Secret scanner: 6 new cloud provider patterns** — Added detection for Cloudflare API tokens, Firebase server keys, Azure connection strings, Heroku API keys, DigitalOcean personal access tokens, and Datadog API keys (30 total patterns, up from 24). These are common in Node.js projects and were blind spots in the previous scanner
+- **CSP `style-src` guard test** — New regression test explicitly documents why `unsafe-inline` must stay in `style-src` (React inline styles + Three.js canvas sizing). Prevents future agents from removing it in the name of hardening, which would break all rendering
+
+### Changed
+- Test count: 350 passing (28 suites) — added 4 new Permissions-Policy regression tests + 1 CSP style-src documentation test
+
 ## [3.23.4] - 2026-02-23
 
 ### Changed

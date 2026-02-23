@@ -98,6 +98,18 @@ describe('vercel.json security headers', () => {
     })
 })
 
+describe('CSP style-src: unsafe-inline intentionally allowed', () => {
+    it('style-src includes unsafe-inline (required by React inline styles + Three.js)', () => {
+        const csp = getHeader('Content-Security-Policy')
+        const styleSrc = csp.match(/style-src\s+([^;]+)/)?.[1] || ''
+        // React's style prop generates inline styles. Three.js and drei also inject
+        // inline styles for canvas sizing. Removing unsafe-inline breaks rendering.
+        // This is a conscious tradeoff documented here to prevent future agents
+        // from removing it in the name of "security hardening".
+        expect(styleSrc).toContain("'unsafe-inline'")
+    })
+})
+
 describe('CSP script-src hardening', () => {
     it('does NOT allow unsafe-inline in script-src (XSS prevention)', () => {
         const csp = getHeader('Content-Security-Policy')
@@ -155,6 +167,30 @@ describe('Permissions-Policy hardening', () => {
         expect(pp).toContain('display-capture=()')
         expect(pp).toContain('screen-wake-lock=()')
         expect(pp).toContain('xr-spatial-tracking=()')
+    })
+
+    it('blocks device sensor APIs used for fingerprinting (accelerometer, gyroscope, magnetometer)', () => {
+        const pp = getHeader('Permissions-Policy')
+        // Motion/orientation sensors enable device fingerprinting by correlating
+        // hardware noise patterns. No video portfolio needs accelerometer data.
+        expect(pp).toContain('accelerometer=()')
+        expect(pp).toContain('gyroscope=()')
+        expect(pp).toContain('magnetometer=()')
+    })
+
+    it('blocks ambient light sensor and idle detection APIs', () => {
+        const pp = getHeader('Permissions-Policy')
+        // Ambient light sensor can leak screen content via luminance side-channel.
+        // Idle detection reveals user presence patterns — privacy risk.
+        expect(pp).toContain('ambient-light-sensor=()')
+        expect(pp).toContain('idle-detection=()')
+    })
+
+    it('blocks clipboard-read (clipboard-write allowed for copy link feature)', () => {
+        const pp = getHeader('Permissions-Policy')
+        // Clipboard read could exfiltrate user clipboard data.
+        // Clipboard write is needed for the "Copy Link" feature.
+        expect(pp).toContain('clipboard-read=()')
     })
 })
 
