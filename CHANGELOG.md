@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.24.0] - 2026-02-23
+
+### Changed
+- **CSS design token system** — Added RGB channel custom properties (`--neon-pink-rgb`, `--neon-cyan-rgb`, `--neon-purple-rgb`, `--dark-bg-rgb`, `--dark-surface-rgb`) to `:root`, enabling alpha compositing via `rgb(var(--token) / α)` instead of hardcoded `rgba()` values. Added `--dark-surface` token for the `#0a0015` background variant used across pages
+- **VideoSpotlight.css token migration** — Replaced all 10 hardcoded `#ff2a6d`/`#05d9e8` hex values and `rgba(255, 42, 109, ...)` / `rgba(5, 217, 232, ...)` patterns with design token references. Replaced 5 raw `font-family: 'Orbitron'` declarations with `var(--font-display)` and 2 `'Rajdhani'` with `var(--font-body)`. Overlay gradients now use `--dark-surface-rgb` token
+- **VideoPage.css token migration** — Replaced 9 hardcoded color values and 15 raw `font-family` declarations with design system tokens. Background, nav bar, player border glow, section titles, footer, glitch animation, and 404 state all now reference the centralized palette
+- **HubPage.css token migration** — Replaced 4 hardcoded hex colors and all raw `font-family` stacks with token references. Card background/hover states, glow effects, and footer links now use RGB channel tokens for alpha variants
+- **KeyboardGuide.css token migration** — Replaced all `rgba(5, 217, 232, ...)` and `rgba(13, 2, 33, ...)` patterns with `rgb(var(--neon-cyan-rgb) / α)` and `rgb(var(--dark-bg-rgb) / α)` token syntax
+- All 350 tests passing (28 suites), including 21 video playback guardrails
+
 ## [3.23.7] - 2026-02-23
 
 ### Added

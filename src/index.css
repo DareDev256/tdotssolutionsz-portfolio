@@ -33,9 +33,17 @@
     --neon-blue: #7700ff;
     --neon-orange: #ff6b35;
     --dark-bg: #0d0221;
+    --dark-surface: #0a0015;
     --grid-color: rgba(255, 42, 109, 0.3);
     --sun-yellow: #ffcc00;
     --sun-orange: #ff6600;
+
+    /* RGB channels — enables alpha compositing via rgb(var(--token) / α) */
+    --neon-pink-rgb: 255 42 109;
+    --neon-cyan-rgb: 5 217 232;
+    --neon-purple-rgb: 211 0 197;
+    --dark-bg-rgb: 13 2 33;
+    --dark-surface-rgb: 10 0 21;
 
     /* Typography */
     --font-display: 'Orbitron', monospace;
