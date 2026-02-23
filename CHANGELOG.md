@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.23.6] - 2026-02-23
+
+### Changed
+- **Portfolio-grade README rewrite** — Transformed README from technical documentation into a cinematic portfolio piece that matches the site's dark aesthetic. New creative tagline ("If a music video label had its own streaming platform"), Design Philosophy section documenting visual references (Migos Culture III, Travis Scott Astroworld, Director X, Thriller-era visuals) and implementation principles (cinematic dark, vibrant accents, full-bleed media, hover-to-play, moody lighting). Section headers use block element markers (▌) for editorial rhythm. Added 25.3M+ views badge, ✝ markers for deceased artists in roster table, and expanded footer with career stats. Reframed every section description to emphasize the streaming-platform experience over technical implementation
+
 ## [3.23.5] - 2026-02-23
 
 ### Security
