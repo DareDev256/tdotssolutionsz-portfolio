@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.23.4] - 2026-02-23
+
+### Changed
+- **Architecture guide overhaul** — Updated `docs/ARCHITECTURE.md` to reflect the current state of the codebase: added 4 missing hooks (`useCinematicScroll`, `useScrollReveal`, `useBatchReveal`, `useSwipe`) bringing documented count from 9 to 13; added 4 missing HubPage sub-components (`VideoSpotlight`, `ArtistShowcase`, `EraTimeline`, `VideoPage`) to the project structure tree; added `/video/:id` route to the routing table; corrected test count from 267 to 346 (28 suites); updated system overview diagram to show the full HubPage component hierarchy
+- **Scroll-driven animation docs** — New architecture section documenting the `useCinematicScroll` → CSS custom property pipeline: IntersectionObserver gating, passive scroll listeners, compositor-thread animation via `--scroll-progress`/`--parallax-y`/`--dolly-scale`/`--info-offset`, and `prefers-reduced-motion` handling
+- **Architecture decisions expanded** — Added JS→CSS scroll bridge rationale and IO-gated scroll listener pattern to the key decisions table
+
 ## [3.23.3] - 2026-02-22
 
 ### Added

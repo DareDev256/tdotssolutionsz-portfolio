@@ -12,14 +12,18 @@
 ├─────────────────────────────────────────────────────────────┤
 │                     Client (Browser)                        │
 │                                                             │
-│  ┌──────────┐   ┌──────────────┐   ┌────────────────────┐  │
-│  │ HubPage  │──▶│ Videos Route │──▶│ Three.js Canvas    │  │
-│  │   (/)    │   │  (/videos)   │   │ (Desktop only)     │  │
-│  └──────────┘   └──────────────┘   └────────────────────┘  │
-│       │         ┌──────────────┐   ┌────────────────────┐  │
-│       └────────▶│ Photos Route │──▶│ PhotoGallery       │  │
-│                 │  (/photos)   │   │ (Lightbox viewer)  │  │
-│                 └──────────────┘   └────────────────────┘  │
+│  ┌──────────────────────────┐                              │
+│  │ HubPage (/)              │                              │
+│  │  ├─ VideoSpotlight       │   ┌────────────────────┐    │
+│  │  ├─ ArtistShowcase       │──▶│ Videos Route        │    │
+│  │  ├─ EraTimeline          │   │ (/videos)           │    │
+│  │  └─ Split Nav            │   │  ├─ App (Desktop)   │    │
+│  └──────────────────────────┘   │  └─ MobileApp       │    │
+│       │                         └────────────────────┘    │
+│       │  ┌──────────────┐   ┌────────────────────┐        │
+│       └─▶│ Video Detail  │   │ PhotoGallery       │        │
+│          │ (/video/:id)  │   │ (/photos)          │        │
+│          └──────────────┘   └────────────────────┘        │
 ├─────────────────────────────────────────────────────────────┤
 │                   Build Pipeline                            │
 │  YouTube Data API v3 → videos-enriched.json → Vite Bundle  │
@@ -36,7 +40,12 @@ src/
 ├── App.jsx                  # Desktop 3D experience (~2,100 lines)
 ├── MobileApp.jsx            # Mobile grid view (no Three.js)
 ├── components/
-│   ├── HubPage.jsx          # Landing page (stateless, two-card nav)
+│   ├── HubPage.jsx          # Landing page: spotlight, showcase, timeline, nav
+│   ├── VideoSpotlight.jsx   # "Now Playing" cinematic hero (hover-to-play, shuffle)
+│   ├── VideoSpotlight.css   # Scroll-driven parallax, dolly zoom, neon aura
+│   ├── ArtistShowcase.jsx   # Infinite marquee ticker of top-12 artists
+│   ├── EraTimeline.jsx      # Horizontal scroll timeline (4 production eras)
+│   ├── VideoPage.jsx        # Shareable video detail page (/video/:youtubeId)
 │   ├── PhotoGallery.jsx     # Photo viewer with lightbox + categories
 │   ├── VideoCard.jsx        # Reusable video thumbnail card
 │   ├── YouTubePlayer.jsx    # YouTube IFrame API wrapper (race-condition safe)
@@ -50,7 +59,7 @@ src/
 ├── data/
 │   ├── videos.json          # 101 video entries (source of truth)
 │   └── photos.json          # 25 photo entries with metadata
-├── hooks/                   # 9 custom hooks (all tested)
+├── hooks/                   # 13 custom hooks
 │   ├── useVideoDeepLink.js  # URL ↔ state sync with history API
 │   ├── useVideoNavigation.js# Next/prev with lane-aware traversal
 │   ├── useShufflePlay.js    # Fisher-Yates shuffle with history stack
@@ -59,7 +68,11 @@ src/
 │   ├── useDeviceType.js     # phone/tablet/desktop breakpoints
 │   ├── useKeyboardShortcuts.js # Global keyboard handler (vim-style + media)
 │   ├── useCopyLink.js       # Clipboard API with fallback
-│   └── useFresnelMaterial.js# Custom shader material for 3D vehicles
+│   ├── useFresnelMaterial.js# Custom shader material for 3D vehicles
+│   ├── useCinematicScroll.js# Scroll progress 0→1 with IO gate + reduced-motion
+│   ├── useScrollReveal.js   # One-shot intersection reveal trigger
+│   ├── useBatchReveal.js    # Staggered multi-element scroll reveal
+│   └── useSwipe.js          # Touch swipe gesture detection (mobile)
 ├── utils/
 │   ├── videoData.js         # Processes videos.json → lanes, stats, artists
 │   ├── youtube.js           # URL parsing, ID validation, share helpers
@@ -77,8 +90,9 @@ scripts/
 
 | Route      | Component      | Bundle Size | Notes                          |
 |------------|---------------|-------------|--------------------------------|
-| `/`        | HubPage       | ~1.9 KB     | Stateless landing, two cards   |
+| `/`        | HubPage       | ~1.9 KB     | Spotlight, showcase, timeline, nav |
 | `/videos`  | App / MobileApp| ~1.1 MB*   | Device-aware: 3D or grid view  |
+| `/video/:id`| VideoPage    | ~6 KB       | Shareable detail page (no WebGL) |
 | `/photos`  | PhotoGallery  | ~8.2 KB     | Lightbox, categories, lazy img |
 
 *Three.js bundle only loads on desktop `/videos`. Mobile gets `MobileApp` (no WebGL).
@@ -168,7 +182,7 @@ Node.js 18+, npm 9+, and `YOUTUBE_API_KEY` (build-time only).
 ```bash
 npm install              # Install dependencies
 npm run dev              # Dev server on localhost:5175 (auto-opens)
-npm test                 # 267 tests (Vitest)
+npm test                 # 346 tests (Vitest)
 npm run test:watch       # Watch mode
 npm run build            # fetch-data → vite build (needs YOUTUBE_API_KEY)
 npm run preview          # Preview production build locally
@@ -195,7 +209,32 @@ SPA rewrites in vercel.json: `/videos` and `/photos` → `/index.html` for clien
 
 ## Testing
 
-23 test suites, **267 tests** covering security headers, YouTube utilities, video/photo data integrity, image fallback, lane positioning, favorites validation, device detection, swipe gestures, routing logic, shuffle play, keyboard shortcuts, deep-link sync, and copy-link. Run `npm test` before every commit — all must pass.
+28 test suites, **346 tests** covering security headers, YouTube utilities, video/photo data integrity, video playback guardrails (CSP, referrer policy, iframe sandbox), image fallback, lane positioning, favorites validation, device detection, swipe gestures, routing logic, shuffle play, keyboard shortcuts, deep-link sync, and copy-link. Run `npm test` before every commit — all must pass.
+
+## Scroll-Driven Animation System
+
+The "Now Playing" hero (VideoSpotlight) uses a custom scroll-driven animation pipeline that avoids CSS Scroll-Driven Animations API (limited browser support) in favor of a performant JS→CSS custom property bridge:
+
+```
+useCinematicScroll(ref)
+    │
+    ├─ IntersectionObserver (rootMargin: 100px)
+    │   └─ Gates scroll listener on/off (no idle CPU cost)
+    │
+    ├─ scroll handler (passive: true)
+    │   └─ Computes raw progress: 1 - (rect.top / (windowH × 0.8))
+    │   └─ Clamps to 0–1
+    │
+    └─ Sets CSS custom properties on the section element:
+        --scroll-progress  → neon aura border glow intensity
+        --parallax-y       → thumbnail vertical offset (20px → 0px)
+        --dolly-scale      → thumbnail zoom (1× → 1.04×)
+        --info-offset      → info panel slide-up (15px → 0px)
+```
+
+**Why CSS custom properties?** All animated properties (`transform`, `box-shadow`, `opacity`) stay on the compositor thread. JavaScript only writes four numbers per scroll frame — the GPU handles the actual rendering. This avoids layout thrashing that direct style manipulation would cause.
+
+**Reduced motion:** `prefers-reduced-motion: reduce` returns `progress = 1` immediately (all content visible, no animation), and CSS resets all transforms/transitions to `none`.
 
 ## Key Architecture Decisions
 
@@ -208,3 +247,5 @@ SPA rewrites in vercel.json: `/videos` and `/photos` → `/index.html` for clien
 | CSP in enforcing mode | Production security — no `unsafe-eval`, YouTube/Fonts allowlisted only |
 | Build-time YouTube fetch | One API call per build, not per user visit — zero runtime API costs |
 | SVG data-URI fallbacks | Inline SVG can't fail to load (unlike external images) |
+| JS→CSS scroll bridge | CSS Scroll-Driven Animations API has <75% support; custom properties give same GPU perf with full compat |
+| IO-gated scroll listeners | Scroll handlers only active when element is near viewport — zero CPU cost when offscreen |
