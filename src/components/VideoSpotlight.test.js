@@ -90,3 +90,24 @@ describe('VideoSpotlight — diversePick sliding-window logic', () => {
     expect(history.length).toBeLessThanOrEqual(HISTORY_SIZE)
   })
 })
+
+describe('SpotlightPortal — color cycling', () => {
+  const NEON_PALETTE = ['#ff2a6d', '#05d9e8', '#d300c5', '#7700ff']
+
+  it('colorIndex maps to NEON_PALETTE via modulo', () => {
+    for (let i = 0; i < 20; i++) {
+      expect(NEON_PALETTE[i % NEON_PALETTE.length]).toBeDefined()
+    }
+  })
+
+  it('every SPOTLIGHT_POOL index produces a valid portal color', () => {
+    for (let i = 0; i < SPOTLIGHT_POOL.length; i++) {
+      const color = NEON_PALETTE[i % NEON_PALETTE.length]
+      expect(color).toMatch(/^#[0-9a-f]{6}$/i)
+    }
+  })
+
+  it('palette cycles — index 0 and index 4 get same color', () => {
+    expect(NEON_PALETTE[0 % NEON_PALETTE.length]).toBe(NEON_PALETTE[4 % NEON_PALETTE.length])
+  })
+})

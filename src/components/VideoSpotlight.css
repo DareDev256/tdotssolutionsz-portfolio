@@ -24,6 +24,22 @@
   transform: translateY(0);
 }
 
+/* ---- 3D Portal backdrop (neon rings behind viewport) ---- */
+.now-playing__portal {
+  position: absolute;
+  inset: -40px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease-out;
+  filter: blur(1px);
+}
+.now-playing.revealed .now-playing__portal { opacity: 0.7; }
+.now-playing:has(.is-playing) .now-playing__portal { opacity: 0; transition: opacity 0.4s ease; }
+
+@media (max-width: 768px) { .now-playing__portal { display: none; } }
+@media (prefers-reduced-motion: reduce) { .now-playing__portal { display: none; } }
+
 /* ---- Viewport (full-bleed container, scroll-driven aura) ---- */
 .now-playing__viewport {
   position: relative;

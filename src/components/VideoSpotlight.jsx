@@ -11,6 +11,7 @@ import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
 import useScrollReveal from '../hooks/useScrollReveal'
 import useCinematicScroll from '../hooks/useCinematicScroll'
+import SpotlightPortal from './SpotlightPortal'
 import './VideoSpotlight.css'
 
 const SPOTLIGHT_POOL = [...VIDEOS]
@@ -82,6 +83,7 @@ export default function VideoSpotlight() {
       style={cinematicStyle}
       aria-label="Now Playing — Featured video"
     >
+      <SpotlightPortal colorIndex={index} />
       <div
         className={`now-playing__viewport ${isTransitioning ? 'transitioning' : ''} ${isHovering ? 'is-playing' : ''}`}
         onMouseEnter={() => setIsHovering(true)}

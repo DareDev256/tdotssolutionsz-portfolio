@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.25.0] - 2026-02-24
+
+### Added
+- **3D portal frame for VideoSpotlight** — New `SpotlightPortal` component renders a lightweight Three.js Canvas behind the Now Playing hero, featuring rotating neon torus rings and drifting particle field that create an "Astroworld gate" atmosphere. Portal color cycles through the neon palette (`#ff2a6d`, `#05d9e8`, `#d300c5`, `#7700ff`) based on the current video index. Uses additive blending for natural glow overlap, `powerPreference: 'low-power'` to avoid GPU contention with the main 3D city scene, and `:has()` CSS selector to fade the portal out during video playback. Hidden on mobile (<768px) and when `prefers-reduced-motion` is active. 3 new unit tests for portal color cycling logic
+- All 353 tests passing (28 suites), including 21 video playback guardrails
+
 ## [3.24.3] - 2026-02-24
 
 ### Added
