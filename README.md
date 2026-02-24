@@ -1,14 +1,33 @@
 # TdotsSolutionsz — Toronto's Hip-Hop Visual Engine
 
+```
+ ████████╗██████╗  ██████╗ ████████╗███████╗
+ ╚══██╔══╝██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝
+    ██║   ██║  ██║██║   ██║   ██║   ███████╗
+    ██║   ██║  ██║██║   ██║   ██║   ╚════██║
+    ██║   ██████╔╝╚██████╔╝   ██║   ███████║
+    ╚═╝   ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝
+    S O L U T I O N S Z  ·  T O R O N T O
+    ─── music video production since 2010 ───
+```
+
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel&logoColor=white)](https://tdotssolutionsz.com)
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/350_TESTS-28_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.24.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.24.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
 > An immersive, cinematic-dark portfolio showcasing **101 music videos** across **54 artists** — 14 years of Toronto hip-hop production rendered as a neon-soaked 3D metropolis you drive through. Full-bleed video previews. Hover-to-play cinematics. Moody lighting that makes every thumbnail feel like an album campaign. Think the **Migos Culture III rollout** meets a **Netflix UI** designed by a synthwave art director.
+
+### ⚡ Jump In
+
+| Experience | Link | What You'll See |
+|-----------|------|-----------------|
+| 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Cinematic hero with hover-to-play, artist ticker, era timeline |
+| 🏙️ **3D City** | [tdotssolutionsz.com/videos](https://tdotssolutionsz.com/videos) | Tron-inspired neon metropolis — scroll the highway, pick a lane |
+| 🎬 **Video Page** | [tdotssolutionsz.com/video/dQw4w9WgXcQ](https://tdotssolutionsz.com/video/dQw4w9WgXcQ) | Standalone shareable player with related videos & share bar |
 
 ---
 
@@ -171,18 +190,37 @@ src/
 
 ---
 
+## ▌ Security & Performance
+
+This portfolio is hardened beyond what most SPAs bother with — because if the site goes down or gets hijacked, the work doesn't speak for itself.
+
+| Category | Detail |
+|----------|--------|
+| **HTTP Headers** | 11 security headers: CSP, HSTS (preload), COOP, CORP, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy (18 APIs blocked) |
+| **Content Security** | Strict CSP with YouTube/Google allowlists — no `unsafe-eval`, no `unsafe-inline` in production |
+| **Secret Scanning** | 30-pattern pre-commit scanner catches `sk-`, `ghp_`, `AKIA`, Bearer tokens, private keys, DB URIs |
+| **Dependency Audit** | `npm audit` integrated into CI — zero high/critical vulnerabilities |
+| **Video Integrity** | 21 dedicated playback tests guard CSP, referrer policy, iframe config, and YouTube ID validation |
+| **Build Performance** | Code-split: Three.js vendor chunk (1.1 MB) loads only on desktop `/videos`; mobile gets a zero-WebGL bundle |
+| **Lighthouse** | 90+ Performance, 100 Accessibility, 100 Best Practices, 100 SEO (desktop) |
+
+---
+
 ## ▌ Changelog
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.23.7** (2026-02-23): AI weekly intel brief — Samsung S26 on-device AI, Claude 5 prediction markets, Agenti agent intelligence layer.
+**Latest — v3.24.2** (2026-02-24): Portfolio-grade README rewrite — ASCII banner, live preview links, security showcase.
 
 > Architecture and research docs: **[docs/](docs/)**
 
 ---
 
 <p align="center">
+  <code>▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰</code><br><br>
   <strong>TdotsSolutionsz</strong> — Toronto, Ontario<br>
   Music Video Production & Direction · 14 Years · 54 Artists · 25.3M+ Views<br>
-  <a href="https://tdotssolutionsz.com">tdotssolutionsz.com</a>
+  <a href="https://tdotssolutionsz.com">tdotssolutionsz.com</a><br><br>
+  <sub>Built with React · Three.js · Vitest · Vercel</sub><br>
+  <sub>Designed like an album campaign, engineered like a streaming platform</sub>
 </p>

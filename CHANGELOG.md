@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.24.2] - 2026-02-24
+
+### Changed
+- **Portfolio-grade README rewrite** — Added cinematic ASCII art banner matching synthwave aesthetic, "Jump In" quick-link table with direct URLs to Hub, 3D City, and Video Page experiences, new "Security & Performance" section showcasing 11 HTTP headers, 30-pattern secret scanning, 21 playback tests, and Lighthouse scores. Fixed stale version reference (was v3.23.7, now tracks current). Enhanced footer with tech stack tagline and album-campaign design motif
+
 ## [3.24.1] - 2026-02-24
 
 ### Added
