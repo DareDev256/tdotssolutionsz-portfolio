@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.24.3] - 2026-02-24
+
+### Added
+- **AnythingLLM RAG platform research brief** — New `docs/research/anythingllm-rag-platform.md` analyzing Mintplex-Labs' 54,900-star open-source AI application: self-hosted RAG with 30+ LLM providers, built-in agent framework with MCP compatibility, LanceDB default vector storage for privacy-by-architecture, and embeddable chat widget. Competitive positioning mapped against LangChain, Flowise, and Open WebUI. Five relevance signals assessed for this project's autonomous pipeline — including local-first knowledge base, MCP agent interop, workspace isolation per repo, and an interactive portfolio chat concept using the embed module
+
 ## [3.24.2] - 2026-02-24
 
 ### Changed
