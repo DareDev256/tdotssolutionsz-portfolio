@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.24.1] - 2026-02-24
+
+### Added
+- **AI coding tools market intel brief** — New `docs/research/cursor-devin-market-shift.md` analyzing the competitive reshuffling across Cursor ($29.3B valuation, Graphite acquisition), Devin/Cognition (Windsurf acquisition, 30-person layoff, 15% task success rate), Claude Code ($2.5B ARR, 4% of GitHub commits), and OpenAI Codex (macOS app launch, multi-agent architecture). Each player assessed on strategy, vulnerability, and direct relevance to this project's autonomous AI pipeline. Five actionable signals mapped to specific pipeline decisions
+
 ## [3.24.0] - 2026-02-23
 
 ### Changed
