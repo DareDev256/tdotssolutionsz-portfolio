@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.25.1] - 2026-02-24
+
+### Changed
+- **Refactor MobileApp.jsx — eliminate inline IIFEs and conditional hooks** — Replaced two inline IIFE patterns in JSX (grid playback index computation and queue indicator) with named `useMemo` hooks (`queuePosition`, `gridPlayingIndex`). Hoisted `heroVideo` and `gridVideos` from render body to `useMemo` hooks above early returns, fixing a latent Rules of Hooks violation. Extracted inline styles on share actions row and artist spotlight button into CSS classes (`modal-share-actions`, updated `mobile-spotlight-artist`). Removed unused `useRef` import. All 353 tests passing (28 suites), 21 video playback guardrails green
+
 ## [3.25.0] - 2026-02-24
 
 ### Added

@@ -644,11 +644,22 @@
     border-top: 1px solid rgba(0, 255, 255, 0.15);
 }
 
+/* Modal share actions row */
+.modal-share-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
 .mobile-spotlight-artist {
     font-family: 'Orbitron', sans-serif;
     font-size: 11px;
     color: #00ffff;
     letter-spacing: 0.05em;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
 .mobile-spotlight-stat {

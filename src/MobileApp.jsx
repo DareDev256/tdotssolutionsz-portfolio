@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
@@ -113,6 +113,16 @@ export default function MobileApp() {
         if (pick) setPlayingVideo(pick)
     }
 
+    // Hero + grid split — hero is first video when not filtering/searching
+    const heroVideo = useMemo(() =>
+        (!filterArtist && !searchOpen && filteredVideos.length > 0) ? filteredVideos[0] : null,
+        [filterArtist, searchOpen, filteredVideos]
+    )
+    const gridVideos = useMemo(() =>
+        heroVideo ? filteredVideos.slice(1) : filteredVideos,
+        [heroVideo, filteredVideos]
+    )
+
     // Related videos: other videos by same artist (exclude current)
     const relatedVideos = useMemo(() => {
         if (!playingVideo) return []
@@ -120,6 +130,24 @@ export default function MobileApp() {
             .sort((a, b) => b.viewCount - a.viewCount)
             .slice(0, 4)
     }, [playingVideo])
+
+    // Queue position — drives "Now Playing" indicator + "Up Next" label
+    const queuePosition = useMemo(() => {
+        if (!playingVideo) return { index: -1, total: 0, nextVideo: null }
+        const idx = filteredVideos.findIndex(v => v.id === playingVideo.id)
+        const next = idx >= 0 ? filteredVideos[(idx + 1) % filteredVideos.length] : null
+        return {
+            index: idx,
+            total: filteredVideos.length,
+            nextVideo: next && next.id !== playingVideo.id ? next : null,
+        }
+    }, [playingVideo, filteredVideos])
+
+    // Grid playback index — highlights "Now Playing" and "Up Next" cards
+    const gridPlayingIndex = useMemo(() => {
+        if (!playingVideo) return -1
+        return gridVideos.findIndex(v => v.id === playingVideo.id)
+    }, [playingVideo, gridVideos])
 
     const handleRetry = () => {
         setError(null)
@@ -191,9 +219,6 @@ export default function MobileApp() {
             </div>
         )
     }
-
-    const heroVideo = (!filterArtist && !searchOpen && filteredVideos.length > 0) ? filteredVideos[0] : null
-    const gridVideos = heroVideo ? filteredVideos.slice(1) : filteredVideos
 
     return (
         <div className="mobile-app">
@@ -359,9 +384,9 @@ export default function MobileApp() {
 
             {/* Video Grid */}
             <main className="video-grid" role="list" aria-label="Music videos">
-                {(() => { const currentIdx = playingVideo ? gridVideos.findIndex(v => v.id === playingVideo.id) : -1; return gridVideos.map((video, index) => {
+                {gridVideos.map((video, index) => {
                     const isNowPlaying = playingVideo && video.id === playingVideo.id
-                    const isUpNext = currentIdx >= 0 && index === (currentIdx + 1) % gridVideos.length && !isNowPlaying
+                    const isUpNext = gridPlayingIndex >= 0 && index === (gridPlayingIndex + 1) % gridVideos.length && !isNowPlaying
                     const isRevealed = revealed.has(String(video.id))
                     return (
                         <div
@@ -380,7 +405,7 @@ export default function MobileApp() {
                             />
                         </div>
                     )
-                })})()}
+                })}
                 {filteredVideos.length === 0 && (
                     <p style={{ textAlign: 'center', opacity: 0.5, padding: '2rem', gridColumn: '1 / -1' }}>
                         No videos match this filter.
@@ -393,7 +418,7 @@ export default function MobileApp() {
                 <div className="video-modal" onClick={handleClosePlayer} role="dialog" aria-modal="true" aria-label={`Now playing: ${playingVideo.title}`}>
                     <div className="modal-content" onClick={e => e.stopPropagation()} {...swipeHandlers}>
                         <div className="modal-top-bar">
-                            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                            <div className="modal-share-actions">
                                 <button className="copy-link-btn" onClick={handleCopyLink}>
                                     {copied ? '✓ Copied' : '🔗 Copy'}
                                 </button>
@@ -437,21 +462,15 @@ export default function MobileApp() {
                         </div>
                         <div className="video-info">
                             {/* Queue indicator */}
-                            {(() => {
-                                const idx = filteredVideos.findIndex(v => v.id === playingVideo.id)
-                                const nextVideo = idx >= 0 ? filteredVideos[(idx + 1) % filteredVideos.length] : null
-                                return (
-                                    <div className="queue-indicator">
-                                        <span className="queue-now">
-                                            <span className="now-playing-bars-small"><span></span><span></span><span></span></span>
-                                            Now Playing ({idx + 1}/{filteredVideos.length})
-                                        </span>
-                                        {nextVideo && nextVideo.id !== playingVideo.id && (
-                                            <span className="queue-next">Up Next: {nextVideo.title}</span>
-                                        )}
-                                    </div>
-                                )
-                            })()}
+                            <div className="queue-indicator">
+                                <span className="queue-now">
+                                    <span className="now-playing-bars-small"><span></span><span></span><span></span></span>
+                                    Now Playing ({queuePosition.index + 1}/{queuePosition.total})
+                                </span>
+                                {queuePosition.nextVideo && (
+                                    <span className="queue-next">Up Next: {queuePosition.nextVideo.title}</span>
+                                )}
+                            </div>
                             <div className="video-nav-row">
                                 <button className="video-nav-btn" onClick={handlePrevVideo} aria-label="Previous video">
                                     <svg viewBox="0 0 24 24" width="18" height="18"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -467,7 +486,6 @@ export default function MobileApp() {
                                     <button
                                         className="mobile-spotlight-artist"
                                         onClick={() => setArtistPanelArtist(playingVideo.artist)}
-                                        style={{ cursor: 'pointer', background: 'none', border: 'none', padding: 0 }}
                                     >
                                         {playingVideo.artist} ›
                                     </button>
