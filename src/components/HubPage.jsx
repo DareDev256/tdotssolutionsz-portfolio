@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ArtistShowcase from './ArtistShowcase'
 import VideoSpotlight from './VideoSpotlight'
+import TopHits from './TopHits'
 import EraTimeline from './EraTimeline'
 import './HubPage.css'
 
@@ -69,6 +70,7 @@ export default function HubPage() {
 
       <ArtistShowcase />
       <VideoSpotlight />
+      <TopHits />
       <EraTimeline />
 
       {showToast && (

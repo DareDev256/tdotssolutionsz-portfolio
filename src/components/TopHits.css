@@ -1,0 +1,285 @@
+/* ============================================
+   TOP HITS — Netflix Top 10 Ranked Showcase
+   Oversized neon rank numbers, cinematic thumbs,
+   horizontal scroll with snap points.
+   ============================================ */
+
+.top-hits {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 40px;
+}
+
+/* ---- Section Header ---- */
+.top-hits-header { gap: 16px; margin-bottom: 4px; }
+.top-hits-sub {
+  text-align: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.25);
+  margin: 0 0 20px;
+  letter-spacing: 0.05em;
+}
+
+/* ---- Scrollable Track ---- */
+.top-hits-track {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0 16px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 204, 0, 0.2) transparent;
+}
+
+.top-hits-track::-webkit-scrollbar { height: 4px; }
+.top-hits-track::-webkit-scrollbar-thumb {
+  background: rgba(255, 204, 0, 0.2);
+  border-radius: 2px;
+}
+
+/* ---- Card ---- */
+.top-hit-card {
+  flex: 0 0 200px;
+  scroll-snap-align: start;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: visible;
+  position: relative;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+
+  /* Staggered reveal animation */
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+}
+
+.top-hit-card--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) var(--reveal-delay),
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) var(--reveal-delay),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.top-hit-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow:
+    0 0 30px color-mix(in srgb, var(--rank-color) 25%, transparent),
+    0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: color-mix(in srgb, var(--rank-color) 30%, transparent);
+}
+
+/* ---- Oversized Rank Number ---- */
+.top-hit-rank {
+  position: absolute;
+  top: -8px;
+  left: -6px;
+  font-family: 'Orbitron', monospace;
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1;
+  z-index: 3;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--rank-color);
+  text-shadow:
+    0 0 20px color-mix(in srgb, var(--rank-color) 40%, transparent),
+    0 0 40px color-mix(in srgb, var(--rank-color) 20%, transparent);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
+  pointer-events: none;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.top-hit-card:hover .top-hit-rank {
+  transform: scale(1.1) translateY(-2px);
+  filter: drop-shadow(0 4px 16px color-mix(in srgb, var(--rank-color) 50%, transparent));
+  -webkit-text-stroke: 2.5px var(--rank-color);
+}
+
+/* Two-digit rank numbers need smaller font */
+.top-hit-card:nth-child(n+10) .top-hit-rank {
+  font-size: 2.8rem;
+  left: -4px;
+}
+
+/* ---- Thumbnail ---- */
+.top-hit-thumb-wrap {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+}
+
+.top-hit-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.75) saturate(1.3);
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.top-hit-card:hover .top-hit-thumb {
+  filter: brightness(0.9) saturate(1.4);
+  transform: scale(1.05);
+}
+
+.top-hit-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(10, 0, 21, 0.95) 0%, rgba(10, 0, 21, 0.3) 40%, transparent 70%),
+    linear-gradient(135deg, color-mix(in srgb, var(--rank-color) 8%, transparent) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* ---- View Count Badge ---- */
+.top-hit-views-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--rank-color);
+  background: rgba(10, 0, 21, 0.85);
+  border: 1px solid color-mix(in srgb, var(--rank-color) 30%, transparent);
+  padding: 3px 8px;
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+  z-index: 2;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--rank-color) 40%, transparent);
+}
+
+.top-hit-play-icon {
+  width: 10px;
+  height: 10px;
+  opacity: 0.8;
+}
+
+/* ---- Info Section ---- */
+.top-hit-info {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.top-hit-artist {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--rank-color);
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.top-hit-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.top-hit-year {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.45rem;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ---- Bottom Accent Line (hover glow) ---- */
+.top-hit-accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--rank-color), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0 0 12px 12px;
+}
+
+.top-hit-card:hover .top-hit-accent {
+  opacity: 0.7;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 640px) {
+  .top-hits {
+    margin-top: 32px;
+  }
+
+  .top-hit-card {
+    flex: 0 0 160px;
+  }
+
+  .top-hit-rank {
+    font-size: 2.5rem;
+    top: -6px;
+    left: -4px;
+  }
+
+  .top-hit-card:nth-child(n+10) .top-hit-rank {
+    font-size: 2rem;
+  }
+
+  .top-hit-info {
+    padding: 8px 10px 10px;
+  }
+
+  .top-hit-artist {
+    font-size: 0.5rem;
+  }
+
+  .top-hit-title {
+    font-size: 0.75rem;
+  }
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .top-hit-card {
+    opacity: 1;
+    transform: none;
+  }
+
+  .top-hit-card--visible {
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .top-hit-card:hover {
+    transform: none;
+  }
+
+  .top-hit-card:hover .top-hit-rank {
+    transform: none;
+  }
+
+  .top-hit-thumb {
+    transition: none;
+  }
+
+  .top-hit-card:hover .top-hit-thumb {
+    transform: none;
+  }
+}

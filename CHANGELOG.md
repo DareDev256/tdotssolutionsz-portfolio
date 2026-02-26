@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.26.0] - 2026-02-25
+
+### Added
+- **Top Hits — Netflix Top 10-style ranked showcase** — New `TopHits` component on the Hub landing page displays the 10 most-viewed productions in a horizontally scrollable strip. Features oversized hollow neon rank numbers with `-webkit-text-stroke` and per-rank color theming (#1 gold, #2 neon pink, #3 cyan, etc.), cinematic YouTube thumbnails with hover zoom + tinted glow shadows via `color-mix()`, animated view count badges with play icon, and staggered IntersectionObserver reveal animations with CSS custom property delays. Each card links to `/video/:youtubeId` for instant deep-linking. Responsive: 200px cards on desktop, 160px on mobile. Respects `prefers-reduced-motion`. 12 new tests guard ranking order, data integrity, and format correctness
+- All 365 tests passing (29 suites), including 21 video playback guardrails
+
 ## [3.25.1] - 2026-02-24
 
 ### Changed

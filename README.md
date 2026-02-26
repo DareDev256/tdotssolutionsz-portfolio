@@ -14,8 +14,8 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel&logoColor=white)](https://tdotssolutionsz.com)
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
-[![Tests](https://img.shields.io/badge/353_TESTS-28_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.25.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/365_TESTS-29_SUITES-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.26.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -64,6 +64,7 @@ The front door. Moody, atmospheric, and designed to showcase 14 years of Toronto
 - **"Now Playing" Cinematic Hero** — Full-bleed ultra-wide (21:9) viewport showcasing a random top-20 video. Hover triggers auto-playing YouTube preview (muted) with dual-gradient cinematic overlay, pulsing NOW PLAYING badge, mute/unmute toggle, and WATCH NOW CTA. **3D Portal Frame**: rotating neon torus rings and drifting particles behind the viewport create an Astroworld-inspired gate effect, color-cycling through the neon palette per video. **Scroll-driven animations**: parallax thumbnail shift, dolly zoom scale, staggered info reveal, and reactive neon aura glow that intensifies as you scroll. Responsive: 16:9 tablet, 16:10 mobile. Respects `prefers-reduced-motion`
 - **Artist Showcase Ticker** — Infinite CSS marquee of top 12 artists with YouTube thumbnails, video counts, and total views. Hover to pause, seamless edge-fade masking
 - **Live Stats Counter** — Animated count-up (requestAnimationFrame + ease-out cubic): 101 videos, 54 artists, 25.3M+ views, 14 years
+- **Top Hits — Ranked Showcase** — Netflix Top 10-style horizontally scrollable strip of the most-viewed productions. Oversized hollow neon rank numbers with per-rank color theming (#1 gold, #2 pink, #3 cyan...), cinematic thumbnail cards with hover zoom + glow, animated view count badges, and staggered scroll-reveal animations. Each card links directly to the video detail page. 12 tests guard ranking integrity and data validation
 - **Production Era Timeline** — Horizontal scroll cards grouping 101 videos into four eras (Origins 2010–2014, Rise 2015–2017, Peak 2018–2020, New Wave 2021–2026) with per-era color theming, top video thumbnails, scroll-snap, and timeline connector dots with glow effects
 - **Split Navigation** — Two-card entry to Music Videos (live) and Photography (coming soon) with animated gradient borders and backdrop blur
 

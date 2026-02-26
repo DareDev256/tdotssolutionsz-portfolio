@@ -365,6 +365,12 @@
   margin-bottom: 8px;
 }
 
+/* Top Hits spacing */
+.hub-page .top-hits {
+  margin-top: 32px;
+  margin-bottom: 8px;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .hub-logo {
