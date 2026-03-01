@@ -1,5 +1,6 @@
 // src/components/ui/TheaterMode.jsx
 import { useEffect, useCallback } from 'react';
+import Icon from './Icon';
 import YouTubePlayer from '../YouTubePlayer';
 import { extractVideoId, getShareUrl, openShareWindow } from '../../utils/youtube';
 import useBodyScrollLock from '../../hooks/useBodyScrollLock';
@@ -121,7 +122,7 @@ export function TheaterMode({
             className="theater-share-btn"
             onClick={() => navigator.clipboard.writeText(getShareUrl(project))}
           >
-            🔗 Copy Link
+            <Icon name="link" size={14} /> Copy Link
           </button>
           <button
             className="theater-share-btn"

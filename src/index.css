@@ -640,7 +640,30 @@ body.mobile-mode {
 }
 
 .vehicle-icon {
-    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vehicle-icon .icon {
+    filter: drop-shadow(0 0 6px currentColor);
+}
+
+/* Inline SVG icons (e.g. maple leaf in footer text) */
+.inline-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+}
+
+/* Global SVG icon glow for share/action buttons */
+.vp-share-btn .icon,
+.vp-cta-icon .icon,
+.vp-memorial-icon .icon,
+.theater-share-btn .icon,
+.theater-mode-btn .icon,
+.search-trigger .icon {
+    filter: drop-shadow(0 0 6px currentColor);
 }
 
 .vehicle-label {

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
 import { ArtistPanel, KeyboardGuide } from './components/ui'
+import Icon from './components/ui/Icon'
 import useFavorites from './hooks/useFavorites'
 import useBatchReveal from './hooks/useBatchReveal'
 import useSwipe from './hooks/useSwipe'
@@ -293,7 +294,7 @@ export default function MobileApp() {
                         aria-expanded={searchOpen}
                         aria-label="Search artists"
                     >
-                        🔍
+                        <Icon name="search" size={18} />
                     </button>
                 )}
                 <button
@@ -301,7 +302,7 @@ export default function MobileApp() {
                     onClick={handleShuffle}
                     aria-label="Shuffle — play a random video"
                 >
-                    🎲
+                    <Icon name="dice" size={18} />
                 </button>
             </nav>
 
@@ -420,7 +421,7 @@ export default function MobileApp() {
                         <div className="modal-top-bar">
                             <div className="modal-share-actions">
                                 <button className="copy-link-btn" onClick={handleCopyLink}>
-                                    {copied ? '✓ Copied' : '🔗 Copy'}
+                                    {copied ? '✓ Copied' : <><Icon name="link" size={14} /> Copy</>}
                                 </button>
                                 <button
                                     className="copy-link-btn share-social-btn"
@@ -540,7 +541,7 @@ export default function MobileApp() {
             {/* Footer */}
             <footer className="mobile-footer">
                 <p className="footer-brand">TdotsSolutionsz</p>
-                <p className="footer-location">Toronto, Ontario 🇨🇦</p>
+                <p className="footer-location">Toronto, Ontario <Icon name="maple" size={14} className="inline-icon" /></p>
                 <p className="footer-tagline">Music Video Production &amp; Direction</p>
                 <p>&copy; {new Date().getFullYear()} TdotsSolutionsz</p>
             </footer>

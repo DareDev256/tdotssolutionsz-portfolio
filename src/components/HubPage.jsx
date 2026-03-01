@@ -4,6 +4,7 @@ import ArtistShowcase from './ArtistShowcase'
 import VideoSpotlight from './VideoSpotlight'
 import TopHits from './TopHits'
 import EraTimeline from './EraTimeline'
+import Icon from './ui/Icon'
 import './HubPage.css'
 
 export default function HubPage() {
@@ -42,7 +43,7 @@ export default function HubPage() {
           className="hub-card hub-card--pink"
           aria-label="View Music Videos portfolio"
         >
-          <span className="hub-card-icon">🎬</span>
+          <span className="hub-card-icon"><Icon name="film" size={28} /></span>
           <h2 className="hub-card-title">Music Videos</h2>
           <span className="hub-card-subtitle">101 VIDEOS — 54 ARTISTS</span>
           <p className="hub-card-desc">Immersive 3D experience showcasing a decade of Toronto hip-hop videography</p>
@@ -58,7 +59,7 @@ export default function HubPage() {
           aria-label="Photography — Coming Soon"
           type="button"
         >
-          <span className="hub-card-icon">📸</span>
+          <span className="hub-card-icon"><Icon name="camera" size={28} /></span>
           <h2 className="hub-card-title">Photography</h2>
           <span className="hub-card-subtitle">COMING SOON</span>
           <p className="hub-card-desc">Portraits, events, artist EPKs, and urban street photography</p>

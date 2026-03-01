@@ -166,9 +166,16 @@
 }
 
 .hub-card-icon {
-  font-size: 2.5rem;
   margin-bottom: 16px;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hub-card-icon .icon {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 0 6px currentColor);
 }
 
 .hub-card-title {
@@ -344,8 +351,9 @@
     padding: 28px 20px;
   }
 
-  .hub-card-icon {
-    font-size: 2rem;
+  .hub-card-icon .icon {
+    width: 22px;
+    height: 22px;
   }
 
   .hub-card-title {

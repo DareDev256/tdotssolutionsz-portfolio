@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.27.0] - 2026-03-01
+
+### Added
+- **Reusable SVG Icon component** (`src/components/ui/Icon.jsx`) — 12 inline stroke-based SVG icons (film, camera, lightning, delorean, cyberbike, search, dice, link, maple, dove, chat, cityscape). Uses `currentColor` for theme-aware color cascading. No external dependencies
+- **Neon glow on SVG icons** — `drop-shadow(0 0 6px currentColor)` filter applied to all icon contexts (hub cards, vehicle selector, share buttons, search, memorial)
+
+### Changed
+- **Replace all UI emojis with SVG icons** — 15 emoji-to-SVG replacements across 7 files (HubPage, App, MobileApp, VideoPage, SearchBar, VideoOverlay, TheaterMode). Tweet text emojis intentionally preserved since they render in external platforms
+- **Hub card icon sizing** — Switched from `font-size` to flexbox + explicit width/height for consistent SVG rendering
+- **Vehicle selector icons** — Changed from emoji strings to Icon component references
+
 ## [3.26.0] - 2026-02-25
 
 ### Added

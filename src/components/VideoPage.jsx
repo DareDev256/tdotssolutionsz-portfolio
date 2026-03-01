@@ -17,6 +17,7 @@ import { useEffect, useMemo, useCallback, useState } from 'react'
 import { VIDEOS, ARTIST_STATS, isDeceasedArtist } from '../utils/videoData'
 import { getThumbnailUrl, isValidYouTubeId, openShareWindow } from '../utils/youtube'
 import { formatViews, formatYear } from '../utils/formatters'
+import Icon from './ui/Icon'
 import './VideoPage.css'
 
 /** Find a video by its youtubeId from the master list */
@@ -130,7 +131,7 @@ export default function VideoPage() {
                         <div>
                             <h1 className="vp-title">{video.title}</h1>
                             <p className={`vp-artist ${isDeceased ? 'vp-artist--memorial' : ''}`}>
-                                {isDeceased && <span className="vp-memorial-icon" aria-label="In memoriam">🕊</span>}
+                                {isDeceased && <span className="vp-memorial-icon" aria-label="In memoriam"><Icon name="dove" size={16} /></span>}
                                 {video.artist}
                             </p>
                         </div>
@@ -163,7 +164,7 @@ export default function VideoPage() {
                             onClick={() => handleShare('copy')}
                             aria-label="Copy link"
                         >
-                            {copied ? '✓ COPIED' : '🔗 COPY LINK'}
+                            {copied ? '✓ COPIED' : <><Icon name="link" size={14} /> COPY LINK</>}
                         </button>
                         <button
                             className="vp-share-btn vp-share-btn--x"
@@ -177,7 +178,7 @@ export default function VideoPage() {
                             onClick={() => handleShare('whatsapp')}
                             aria-label="Share on WhatsApp"
                         >
-                            💬 WHATSAPP
+                            <Icon name="chat" size={14} /> WHATSAPP
                         </button>
                     </div>
 
@@ -186,7 +187,7 @@ export default function VideoPage() {
                         to={`/videos?v=${video.youtubeId}`}
                         className="vp-immersive-cta"
                     >
-                        <span className="vp-cta-icon">🏙️</span>
+                        <span className="vp-cta-icon"><Icon name="cityscape" size={22} /></span>
                         <span className="vp-cta-text">
                             <span className="vp-cta-title">WATCH IN 3D</span>
                             <span className="vp-cta-sub">Experience in the Synthwave Highway</span>

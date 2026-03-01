@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Icon from './Icon'
 import { ARTIST_STATS } from '../../utils/videoData'
 import { isValidYouTubeId, extractVideoId } from '../../utils/youtube'
 import useCopyLink from '../../hooks/useCopyLink'
@@ -63,7 +64,7 @@ export const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArt
                             title="Copy Link"
                             style={{ borderColor: activeProject.color }}
                         >
-                            {copied ? '✓' : '🔗'}
+                            {copied ? '✓' : <Icon name="link" size={14} />}
                         </button>
                         {/* Fullscreen/Theater Mode button */}
                         <button

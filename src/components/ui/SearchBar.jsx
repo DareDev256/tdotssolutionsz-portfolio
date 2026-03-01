@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
+import Icon from './Icon'
 import { ALL_ARTISTS, ARTIST_STATS } from '../../utils/videoData'
 import { searchAll } from '../../hooks/useSearch'
 
@@ -79,7 +80,7 @@ export const SearchBar = ({ filterArtist, onFilterChange, onVideoSelect }) => {
                 </button>
             ) : (
                 <button className="search-trigger" onClick={() => setOpen(!open)}>
-                    🔍 SEARCH
+                    <Icon name="search" size={14} /> SEARCH
                 </button>
             )}
             {open && (

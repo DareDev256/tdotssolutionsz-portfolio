@@ -35,6 +35,7 @@ import * as THREE from 'three'
 import { SoftParticles } from './components/particles'
 import { EnhancedStarField } from './components/atmosphere'
 import { TheaterMode, ArtistPanel, KeyboardGuide, SearchBar, PortfolioStats, VideoOverlay } from './components/ui'
+import Icon from './components/ui/Icon'
 import { Vehicle } from './components/3d/vehicles'
 import { StarField, SynthwaveSun } from './components/3d/effects'
 import { Cityscape, CNTower } from './components/3d/scene'
@@ -753,9 +754,9 @@ const LaneIndicator = ({ currentLane, onLaneChange }) => {
 // ============================================
 const VehicleSelector = ({ currentVehicle, onVehicleChange }) => {
     const vehicles = [
-        { id: 'tron', label: 'TRON', icon: '⚡' },
-        { id: 'delorean', label: 'DELOREAN', icon: '🚗' },
-        { id: 'cyberbike', label: 'CYBER', icon: '🏍️' }
+        { id: 'tron', label: 'TRON', icon: 'lightning' },
+        { id: 'delorean', label: 'DELOREAN', icon: 'delorean' },
+        { id: 'cyberbike', label: 'CYBER', icon: 'cyberbike' }
     ]
 
     return (
@@ -767,7 +768,7 @@ const VehicleSelector = ({ currentVehicle, onVehicleChange }) => {
                     className={`vehicle-btn ${currentVehicle === v.id ? 'active' : ''}`}
                     onClick={() => onVehicleChange(v.id)}
                 >
-                    <span className="vehicle-icon">{v.icon}</span>
+                    <span className="vehicle-icon"><Icon name={v.icon} size={18} /></span>
                     <span className="vehicle-label">{v.label}</span>
                 </button>
             ))}
