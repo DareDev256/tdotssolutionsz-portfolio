@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.27.1] - 2026-03-05
+
+### Added
+- **Cross-module data integrity tests** (`src/data/crossModuleIntegrity.test.js`) — 14 tests verifying contracts between `videos.json`, `videoData.js`, and `youtube.js`. Catches invalid youtubeIds, duplicate IDs, broken artist references, thumbnail URL round-trips, ARTIST_STATS date range accuracy, popular lane neon color offset, and PORTFOLIO_STATS derived value consistency
+- **Search scoring formula tests** (`src/utils/searchScoring.test.js`) — 11 tests verifying fuzzyScore mathematical properties (weight coefficients, coverage ranking, consecutive bonus, case insensitivity, score bounds) and searchAll security boundaries (100-char query truncation, null/undefined resilience, minimum query length, title-vs-artist ranking, result caps)
+- Test suite now at **390 tests across 31 suites** (up from 365/29)
+
 ## [3.27.0] - 2026-03-01
 
 ### Added
