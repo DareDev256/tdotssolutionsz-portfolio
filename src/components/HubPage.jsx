@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import ImpactNumbers from './ImpactNumbers'
 import ArtistShowcase from './ArtistShowcase'
 import VideoSpotlight from './VideoSpotlight'
 import TopHits from './TopHits'
 import EraTimeline from './EraTimeline'
 import Icon from './ui/Icon'
+import { PORTFOLIO_STATS } from '../utils/videoData'
 import './HubPage.css'
 
 export default function HubPage() {
@@ -37,6 +39,8 @@ export default function HubPage() {
         <p className="hub-tagline">TORONTO — CREATIVE PRODUCTION</p>
       </header>
 
+      <ImpactNumbers />
+
       <nav className="hub-cards" aria-label="Portfolio sections">
         <Link
           to="/videos"
@@ -45,7 +49,7 @@ export default function HubPage() {
         >
           <span className="hub-card-icon"><Icon name="film" size={28} /></span>
           <h2 className="hub-card-title">Music Videos</h2>
-          <span className="hub-card-subtitle">101 VIDEOS — 54 ARTISTS</span>
+          <span className="hub-card-subtitle">{PORTFOLIO_STATS.totalVideos} VIDEOS — {PORTFOLIO_STATS.totalArtists} ARTISTS</span>
           <p className="hub-card-desc">Immersive 3D experience showcasing a decade of Toronto hip-hop videography</p>
           <span className="hub-card-cta">
             ENTER <span aria-hidden="true">→</span>

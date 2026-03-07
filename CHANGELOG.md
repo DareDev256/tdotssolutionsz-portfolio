@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.29.0] - 2026-03-06
+
+### Added
+- **Impact Numbers** — Scroll-triggered animated stat counter section on the HubPage landing. Four portfolio metrics (videos, artists, total views, years active) count up from zero using `requestAnimationFrame` with `easeOutExpo` easing for a cinematic "slot machine" feel. Each stat card has its own neon accent color (pink, cyan, gold, green), staggered entrance animation, sliding neon underline bar, and hover glow intensification. Uses `tabular-nums` to prevent layout jank during counting. Responsive 2x2 grid on mobile, `prefers-reduced-motion` respected
+- **`useCountUp` hook** (`src/hooks/useCountUp.js`) — Reusable animation hook for counting numbers. Uses `requestAnimationFrame` for 60fps smoothness, `easeOutExpo` curve (front-loads 87% of progress in first 30% of duration), fires-once guard to prevent re-animation on re-render
+- **Dynamic card subtitle** — HubPage music videos card now reads from `PORTFOLIO_STATS` instead of hardcoded "101 VIDEOS — 54 ARTISTS", so it auto-updates when videos are added
+- 8 new tests for the easeOutExpo counting algorithm (monotonicity, boundary values, curve correctness, large/small targets)
+- Test suite now at **406 tests across 33 suites** (up from 398/32)
+
 ## [3.28.1] - 2026-03-06
 
 ### Fixed
