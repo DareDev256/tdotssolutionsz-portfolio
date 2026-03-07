@@ -18,6 +18,7 @@ export function TheaterMode({
   project,
   audioEnabled,
   isOpen,
+  isClosing = false,
   onClose,
   onNext,
   onPrev,
@@ -56,7 +57,7 @@ export function TheaterMode({
 
   return (
     <div
-      className="theater-backdrop"
+      className={`theater-backdrop${isClosing ? ' theater-closing' : ''}`}
       onClick={handleBackdropClick}
     >
       <div className="theater-container">

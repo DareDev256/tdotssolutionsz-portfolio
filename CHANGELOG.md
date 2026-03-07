@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.27.2] - 2026-03-06
+
+### Fixed
+- **Theater mode close race condition** — Rapid F-key toggles during the 300ms close animation could cause ProximityTracker to overwrite `activeProject`, making the user see a different video on reopen. Added `useClosingGuard` hook that introduces a `closing` phase between open and unmounted, blocking re-entry until the animation completes and cancelling stale timers on re-open
+- **Missing theater close animation** — TheaterMode had a fade-in/scale-in animation but no exit animation; it just unmounted instantly. Added `theater-closing` CSS class with matched `theater-fade-out` and `theater-scale-out` keyframes (0.3s ease-in) for a polished cinematic exit
+- **Accessibility: reduced motion** — Added `prefers-reduced-motion: reduce` media query to TheaterMode, disabling all open/close animations for users who prefer reduced motion
+
+### Added
+- **`useClosingGuard` hook** (`src/hooks/useClosingGuard.js`) — Reusable state machine for guarding panel/modal close animations. Prevents double-close, blocks focus on doomed elements, and force-cancels stale timers on re-open. 8 new tests
+- Test suite now at **398 tests across 32 suites** (up from 390/31)
+
 ## [3.27.1] - 2026-03-05
 
 ### Added

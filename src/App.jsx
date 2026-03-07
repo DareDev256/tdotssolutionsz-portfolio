@@ -46,6 +46,7 @@ import { extractVideoId, getThumbnailUrl } from './utils/youtube'
 import useVideoDeepLink from './hooks/useVideoDeepLink'
 import useVideoNavigation from './hooks/useVideoNavigation'
 import useShufflePlay from './hooks/useShufflePlay'
+import useClosingGuard from './hooks/useClosingGuard'
 import useKeyboardShortcuts from './hooks/useKeyboardShortcuts'
 import { getVolumeFromDistance, AUDIO_SILENCE_DISTANCE, AUDIO_MAX_VOLUME, AUDIO_UPDATE_INTERVAL, AUDIO_VOLUME_EPSILON } from './utils/audioAttenuation'
 
@@ -864,7 +865,8 @@ export default function App({ reducedEffects = false }) {
     const [activeProject, setActiveProject] = useState(null)
     const [currentLane, setCurrentLane] = useState('chronological')
     const [vehicleType, setVehicleType] = useState('tron') // tron, delorean, cyberbike
-    const [theaterMode, setTheaterMode] = useState(false)
+    const theaterGuard = useClosingGuard(300)
+    const theaterMode = theaterGuard.isOpen
     const theaterModeRef = useRef(theaterMode)
     useEffect(() => { theaterModeRef.current = theaterMode }, [theaterMode])
     const [filterArtist, setFilterArtist] = useState(null)
@@ -888,9 +890,9 @@ export default function App({ reducedEffects = false }) {
         if (pick) {
             const enriched = { ...pick, url: `https://www.youtube.com/watch?v=${pick.youtubeId}`, color: NEON_COLORS[Math.floor(Math.random() * NEON_COLORS.length)] }
             setActiveProject(enriched)
-            setTheaterMode(true)
+            theaterGuard.open()
         }
-    }, [shufflePlay])
+    }, [shufflePlay, theaterGuard])
 
     const handleToggleAudio = useCallback(() => {
         setAudioEnabled((prev) => !prev)
@@ -920,13 +922,13 @@ export default function App({ reducedEffects = false }) {
 
     const handleOpenTheater = useCallback(() => {
         if (activeProject) {
-            setTheaterMode(true)
+            theaterGuard.open()
         }
-    }, [activeProject])
+    }, [activeProject, theaterGuard])
 
     const handleCloseTheater = useCallback(() => {
-        setTheaterMode(false)
-    }, [])
+        theaterGuard.close()
+    }, [theaterGuard])
 
     // Theater mode: navigate to next/prev video in current lane
     const currentLaneVideos = useMemo(() => {
@@ -939,8 +941,8 @@ export default function App({ reducedEffects = false }) {
     // Keyboard shortcuts — consolidated into a single listener
     useKeyboardShortcuts({
         f: () => {
-            if (theaterMode) setTheaterMode(false)
-            else if (activeProject) setTheaterMode(true)
+            if (theaterMode) theaterGuard.close()
+            else if (activeProject) theaterGuard.open()
         },
         '?': () => setKbdGuideOpen(prev => !prev),
         s: () => handleShuffle(),
@@ -950,7 +952,7 @@ export default function App({ reducedEffects = false }) {
     useVideoDeepLink(activeProject, (found) => {
         const enriched = { ...found, url: `https://www.youtube.com/watch?v=${found.youtubeId}`, color: NEON_COLORS[0] }
         setActiveProject(enriched)
-        setTheaterMode(true)
+        theaterGuard.open()
     }, theaterMode && !!activeProject)
 
     return (
@@ -987,6 +989,7 @@ export default function App({ reducedEffects = false }) {
                 project={activeProject}
                 audioEnabled={audioEnabled}
                 isOpen={theaterMode}
+                isClosing={theaterGuard.isClosing}
                 onClose={handleCloseTheater}
                 onNext={handleTheaterNext}
                 onPrev={handleTheaterPrev}

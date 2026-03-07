@@ -14,8 +14,8 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel&logoColor=white)](https://tdotssolutionsz.com)
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
-[![Tests](https://img.shields.io/badge/390_TESTS-31_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.27.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/398_TESTS-32_SUITES-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.27.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -40,7 +40,7 @@ This isn't a gallery with thumbnails in a grid. It's a **cinematic streaming int
 A Tron-inspired metropolis you scroll through on a light cycle. 200+ edge-lit buildings, highway arches, data stream pillars, and CN Towers bookend the journey. Video billboards line dual lanes — browse by date or by popularity (60K+ views). Every frame designed with the same cinematic tension as a Director X title sequence.
 
 - **Vehicle Selection** — Tron Light Cycle, DeLorean, or Cyber Bike
-- **Theater Mode** — Press `F` for fullscreen immersive playback; arrow keys skip tracks
+- **Theater Mode** — Press `F` for fullscreen immersive playback; arrow keys skip tracks; guarded close animation prevents race conditions on rapid toggles
 - **Audio Visualizer** — Press `V` for a beat-synced procedural visualizer with frequency bars, floating particles, speaker-cone bass ring, and VHS scanner sweep — all in the synthwave neon palette
 - **Shuffle Play** — Press `S` for random discovery with no-repeat history
 - **Fuzzy Search** — Typo-tolerant search across artists and video titles

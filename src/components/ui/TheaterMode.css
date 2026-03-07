@@ -240,6 +240,48 @@
   color: rgba(0, 255, 255, 0.9);
 }
 
+/* Close animation — plays during the closing guard phase */
+.theater-backdrop.theater-closing {
+  animation: theater-fade-out 0.3s ease-in forwards;
+  pointer-events: none;
+}
+
+.theater-closing .theater-container {
+  animation: theater-scale-out 0.3s ease-in forwards;
+}
+
+@keyframes theater-fade-out {
+  from {
+    opacity: 1;
+    backdrop-filter: blur(20px);
+  }
+  to {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+}
+
+@keyframes theater-scale-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .theater-backdrop,
+  .theater-container,
+  .theater-backdrop.theater-closing,
+  .theater-closing .theater-container {
+    animation: none;
+  }
+}
+
 /* Mobile adjustments */
 @media (max-width: 768px) {
   .theater-container {
