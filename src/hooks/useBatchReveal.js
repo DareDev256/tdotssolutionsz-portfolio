@@ -22,6 +22,10 @@ export default function useBatchReveal(deps) {
     useEffect(() => {
         if (deps === null) return // Still loading — skip until DOM has cards
 
+        // Reset revealed set on filter/tab change so cards re-animate smoothly
+        // instead of some cards flashing in (stale IDs) while others animate
+        setRevealed(new Set())
+
         // Defer to next frame so React has committed new [data-vid] elements
         const raf = requestAnimationFrame(() => {
             const elements = document.querySelectorAll('[data-vid]')

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import VideoCard from './components/VideoCard'
 import YouTubePlayer from './components/YouTubePlayer'
@@ -33,6 +33,8 @@ export default function MobileApp() {
     const [kbdGuideOpen, setKbdGuideOpen] = useState(false)
     const { favorites, toggleFavorite, isFavorite } = useFavorites()
     const [searchParams] = useSearchParams()
+    const searchDropdownRef = useRef(null)
+    const searchToggleRef = useRef(null)
 
     // Read ?artist= param from URL (e.g. from HubPage artist ticker)
     useEffect(() => {
@@ -54,6 +56,27 @@ export default function MobileApp() {
 
     // Deep link: read ?v= on mount + sync URL with active video
     useVideoDeepLink(playingVideo, setPlayingVideo)
+
+    // Close search dropdown on outside click
+    useEffect(() => {
+        if (!searchOpen) return
+        const handleClickOutside = (e) => {
+            if (
+                searchDropdownRef.current && !searchDropdownRef.current.contains(e.target) &&
+                searchToggleRef.current && !searchToggleRef.current.contains(e.target)
+            ) {
+                setSearchOpen(false)
+                setSearchQuery('')
+            }
+        }
+        // Use mousedown so it fires before blur/focus events
+        document.addEventListener('mousedown', handleClickOutside)
+        document.addEventListener('touchstart', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+            document.removeEventListener('touchstart', handleClickOutside)
+        }
+    }, [searchOpen])
 
     // Keyboard shortcuts: ? for keyboard guide, Escape to close search
     useEffect(() => {
@@ -289,6 +312,7 @@ export default function MobileApp() {
                     </button>
                 ) : (
                     <button
+                        ref={searchToggleRef}
                         className="tab"
                         onClick={() => setSearchOpen(!searchOpen)}
                         aria-expanded={searchOpen}
@@ -308,7 +332,7 @@ export default function MobileApp() {
 
             {/* Artist Search Dropdown */}
             {searchOpen && (
-                <div className="mobile-search-dropdown" role="search">
+                <div className="mobile-search-dropdown" role="search" ref={searchDropdownRef}>
                     <input
                         className="mobile-search-input"
                         type="text"

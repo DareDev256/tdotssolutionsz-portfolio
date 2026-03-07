@@ -434,6 +434,13 @@
     position: relative;
     z-index: 2;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    animation: dropdown-enter 0.2s ease-out;
+    transform-origin: top center;
+}
+
+@keyframes dropdown-enter {
+    from { opacity: 0; transform: translateY(-8px) scaleY(0.95); }
+    to { opacity: 1; transform: translateY(0) scaleY(1); }
 }
 
 .mobile-search-input {

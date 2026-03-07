@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.28.1] - 2026-03-06
+
+### Fixed
+- **Search dropdown dismiss** — Mobile search dropdown now closes on outside click (mousedown + touchstart) and Escape key. Previously the only way to close it was clicking the search icon again, which was undiscoverable on mobile
+- **Filter transition jank** — Switching tabs or artist filters caused an inconsistent mix of animated and non-animated cards. Cards whose IDs were already in the `useBatchReveal` revealed set from a previous filter would flash in instantly while new cards animated. Fixed by resetting the revealed set on every filter change so all cards get fresh staggered entrance animations
+- **Card entrance refinement** — Entrance animation now includes a subtle scale (0.97 -> 1) alongside the translateY for a more cinematic spring-in feel. Hidden cards get a CSS transition fallback so they fade out smoothly when removed from the grid
+
+### Added
+- **Search dropdown entrance animation** — `dropdown-enter` keyframe with scaleY + translateY for a polished reveal instead of instant pop-in
+
 ## [3.28.0] - 2026-03-06
 
 ### Added
