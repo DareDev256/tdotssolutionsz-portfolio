@@ -131,6 +131,34 @@
   transform: scale(1.05);
 }
 
+/* ── Vibrancy Pulse ── neon sweep across Top Hits thumbnails ── */
+.top-hit-thumb-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    color-mix(in srgb, var(--rank-color) 40%, transparent) 47%,
+    rgba(5, 217, 232, 0.2) 50%,
+    color-mix(in srgb, var(--rank-color) 30%, transparent) 53%,
+    transparent 60%
+  );
+  transform: translateX(-150%);
+}
+
+.top-hit-card:hover .top-hit-thumb-wrap::after {
+  animation: th-vibrancy-sweep 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes th-vibrancy-sweep {
+  0% { transform: translateX(-150%); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateX(150%); opacity: 0; }
+}
+
 .top-hit-thumb-overlay {
   position: absolute;
   inset: 0;
@@ -258,6 +286,8 @@
 
 /* ---- Reduced Motion ---- */
 @media (prefers-reduced-motion: reduce) {
+  .top-hit-card:hover .top-hit-thumb-wrap::after { animation: none; }
+
   .top-hit-card {
     opacity: 1;
     transform: none;

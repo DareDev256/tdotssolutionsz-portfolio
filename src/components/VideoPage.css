@@ -375,6 +375,59 @@
   transform: scale(1.05);
 }
 
+/* ── Vibrancy Pulse ── neon sweep on related card hover ── */
+.vp-related-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgb(var(--neon-pink-rgb) / 0.35) 45%,
+    rgb(var(--neon-cyan-rgb) / 0.25) 50%,
+    rgb(var(--neon-purple-rgb) / 0.3) 55%,
+    transparent 60%
+  );
+  transform: translateX(-150%);
+}
+
+.vp-related-card:hover .vp-related-thumb::after,
+.vp-related-card:focus-visible .vp-related-thumb::after {
+  animation: vp-vibrancy-sweep 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes vp-vibrancy-sweep {
+  0% { transform: translateX(-150%); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateX(150%); opacity: 0; }
+}
+
+/* Chromatic border flare on related cards */
+.vp-related-card:hover {
+  animation: vp-vibrancy-border 0.8s ease-out forwards;
+}
+
+@keyframes vp-vibrancy-border {
+  0% {
+    border-color: rgb(var(--neon-pink-rgb) / 0.4);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 20px rgb(var(--neon-pink-rgb) / 0.15);
+  }
+  40% {
+    border-color: rgb(var(--neon-cyan-rgb) / 0.5);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 20px rgb(var(--neon-cyan-rgb) / 0.2);
+  }
+  70% {
+    border-color: rgb(var(--neon-purple-rgb) / 0.45);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 15px rgb(var(--neon-purple-rgb) / 0.15);
+  }
+  100% {
+    border-color: rgb(var(--neon-cyan-rgb) / 0.3);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 20px rgb(var(--neon-cyan-rgb) / 0.1);
+  }
+}
+
 .vp-related-views {
   position: absolute;
   bottom: 6px;
@@ -611,4 +664,7 @@
   .vp-player {
     transition: none;
   }
+
+  .vp-related-card:hover .vp-related-thumb::after { animation: none; }
+  .vp-related-card:hover { animation: none; }
 }

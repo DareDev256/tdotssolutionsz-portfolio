@@ -15,7 +15,7 @@
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/398_TESTS-32_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.27.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.28.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -50,7 +50,7 @@ A Tron-inspired metropolis you scroll through on a light cycle. 200+ edge-lit bu
 
 ### 📱 Mobile — Cinematic Card Grid
 
-Dark glassmorphism cards with floating CSS particles, scanline overlay, and staggered scroll-reveal animations. Every card feels like a still from a music video — not a corporate thumbnail.
+Dark glassmorphism cards with floating CSS particles, scanline overlay, and staggered scroll-reveal animations. Every card feels like a still from a music video — not a corporate thumbnail. **Vibrancy Pulse**: on hover, a diagonal neon light sweep races across the thumbnail while the card border flares through a pink-cyan-purple chromatic cycle — like a film projector powering up.
 
 - **Hero Card** — Full-width featured video at the top with cinematic gradient overlay
 - **Swipe Navigation** — Left/right in the video modal

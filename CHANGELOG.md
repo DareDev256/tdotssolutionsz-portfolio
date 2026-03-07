@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.28.0] - 2026-03-06
+
+### Added
+- **Vibrancy Pulse** — Cinematic neon light sweep effect on hover across all video card surfaces. A diagonal streak of pink/cyan/purple races across the thumbnail on hover, combined with a chromatic border flare that cycles through the synthwave palette (pink -> cyan -> purple -> settle). Applied to mobile VideoCards, VideoPage related cards, and Top Hits ranked cards. Each surface uses its own color context (Top Hits cards inherit their per-rank `--rank-color` for the sweep). All animations are GPU-accelerated (`transform`-only), fire once per hover, and fully respect `prefers-reduced-motion`
+
 ## [3.27.2] - 2026-03-06
 
 ### Fixed
