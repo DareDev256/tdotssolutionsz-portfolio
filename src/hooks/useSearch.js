@@ -49,12 +49,25 @@ function fuzzyScore(query, text) {
 const MAX_QUERY_LENGTH = 100
 
 /**
+ * Strip control characters (C0/C1), zero-width Unicode, and null bytes from
+ * search input. These characters can bypass fuzzy matching, cause display
+ * corruption in rendered results, or exploit text-processing edge cases.
+ * Preserves all printable Unicode (letters, numbers, punctuation, emoji).
+ */
+const CONTROL_CHAR_RE = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\u200B-\u200F\u2028-\u202F\uFEFF\uFFF0-\uFFFF]/g
+
+function sanitizeSearchInput(raw) {
+    if (!raw || typeof raw !== 'string') return ''
+    return raw.replace(CONTROL_CHAR_RE, '').slice(0, MAX_QUERY_LENGTH)
+}
+
+/**
  * Search across artists and video titles with fuzzy matching.
  * Returns { artists: [...], videos: [...] } ranked by relevance.
- * Truncates queries beyond MAX_QUERY_LENGTH to prevent performance abuse.
+ * Sanitizes control characters and truncates beyond MAX_QUERY_LENGTH.
  */
 function searchAll(rawQuery) {
-    const query = rawQuery?.slice(0, MAX_QUERY_LENGTH)
+    const query = sanitizeSearchInput(rawQuery)
     if (!query || query.length < 2) return { artists: [], videos: [] }
 
     const artistResults = ALL_ARTISTS
@@ -100,4 +113,4 @@ export default function useSearch() {
     return { query, setQuery, results, clear, hasResults }
 }
 
-export { fuzzyScore, searchAll }
+export { fuzzyScore, searchAll, sanitizeSearchInput }

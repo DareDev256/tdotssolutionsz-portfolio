@@ -7,21 +7,26 @@
  */
 import rawVideoData from '../data/videos.json'
 
-export const NEON_COLORS = ['#ff2a6d', '#05d9e8', '#d300c5', '#7700ff', '#ff6b35', '#ffcc00', '#00ff88', '#ff00ff']
+export const NEON_COLORS = Object.freeze(['#ff2a6d', '#05d9e8', '#d300c5', '#7700ff', '#ff6b35', '#ffcc00', '#00ff88', '#ff00ff'])
 
-/** Transform raw JSON entries to include full YouTube URLs */
-export const VIDEOS = rawVideoData.videos.map(video => ({
+/**
+ * Transform raw JSON entries to include full YouTube URLs.
+ * Each video object is frozen to prevent prototype pollution — third-party
+ * scripts (YouTube IFrame API, Troika font loader, Three.js) share this
+ * execution context and could mutate data that React renders as text nodes.
+ */
+export const VIDEOS = Object.freeze(rawVideoData.videos.map(video => Object.freeze({
     ...video,
     url: `https://www.youtube.com/watch?v=${video.youtubeId}`
-}))
+})))
 
 export const POPULAR_THRESHOLD = rawVideoData.settings?.popularThreshold || 500000
 
-/** Unique sorted artist names */
-export const ALL_ARTISTS = [...new Set(VIDEOS.map(v => v.artist))].sort()
+/** Unique sorted artist names (frozen — prevents injection via array mutation) */
+export const ALL_ARTISTS = Object.freeze([...new Set(VIDEOS.map(v => v.artist))].sort())
 
 /** Pre-computed per-artist stats: count, totalViews, date range */
-export const ARTIST_STATS = VIDEOS.reduce((acc, v) => {
+export const ARTIST_STATS = Object.freeze(VIDEOS.reduce((acc, v) => {
     if (!acc[v.artist]) {
         acc[v.artist] = { count: 0, totalViews: 0, earliest: v.uploadDate, latest: v.uploadDate }
     }
@@ -31,23 +36,23 @@ export const ARTIST_STATS = VIDEOS.reduce((acc, v) => {
     if (v.uploadDate < s.earliest) s.earliest = v.uploadDate
     if (v.uploadDate > s.latest) s.latest = v.uploadDate
     return acc
-}, {})
+}, {}))
 
 /** Portfolio-wide aggregate stats (pre-computed at import time) */
-export const PORTFOLIO_STATS = {
+export const PORTFOLIO_STATS = Object.freeze({
     totalVideos: VIDEOS.length,
     totalArtists: ALL_ARTISTS.length,
     totalViews: VIDEOS.reduce((sum, v) => sum + v.viewCount, 0),
     earliestDate: VIDEOS.reduce((min, v) => v.uploadDate < min ? v.uploadDate : min, VIDEOS[0]?.uploadDate || ''),
     latestDate: VIDEOS.reduce((max, v) => v.uploadDate > max ? v.uploadDate : max, VIDEOS[0]?.uploadDate || ''),
-    topArtist: ALL_ARTISTS.reduce((top, a) => {
+    topArtist: Object.freeze(ALL_ARTISTS.reduce((top, a) => {
         const s = ARTIST_STATS[a]
         return (!top || s.totalViews > top.totalViews) ? { name: a, ...s } : top
-    }, null),
-}
+    }, null)),
+})
 
 /** Artists who have passed — shown with golden halo on billboards */
-export const DECEASED_ARTISTS = new Set(['Murda', 'BG'])
+export const DECEASED_ARTISTS = Object.freeze(new Set(['Murda', 'BG']))
 
 /** Check if any part of a multi-artist string includes a deceased artist */
 export function isDeceasedArtist(artistField) {

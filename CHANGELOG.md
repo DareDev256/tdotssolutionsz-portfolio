@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.29.1] - 2026-03-08
+
+### Security
+- **Prototype pollution defense** — All exported data objects (`VIDEOS`, `ALL_ARTISTS`, `ARTIST_STATS`, `PORTFOLIO_STATS`, `NEON_COLORS`, `DECEASED_ARTISTS`) are now deep-frozen via `Object.freeze()`. Third-party scripts (YouTube IFrame API, Troika font loader, Three.js) share the same execution context — if any are compromised via supply-chain attack, frozen objects prevent mutation of content that React renders into the DOM
+- **Search input sanitization** — Added `sanitizeSearchInput()` that strips C0/C1 control characters, NUL bytes, zero-width Unicode (U+200B–U+200F), byte order marks (U+FEFF), and line/paragraph separators before fuzzy matching. Prevents display corruption and text-processing edge case exploitation
+- **Permissions-Policy hardening** — Added `browsing-topics=()` (blocks Google Topics API, the FLoC successor for ad tracking), `local-fonts=()` (blocks Local Font Access API, a high-entropy fingerprinting vector), and `window-management=()` (blocks multi-screen enumeration fingerprinting)
+
+### Added
+- 20 new security tests in `dataIntegrity.test.js` covering immutability enforcement, input sanitization edge cases (NUL bytes, zero-width chars, BOM, emoji preservation), and Permissions-Policy anti-fingerprinting directives
+- Test suite now at **426 tests across 34 suites** (up from 406/33)
+
 ## [3.29.0] - 2026-03-06
 
 ### Added
