@@ -13,7 +13,11 @@ import React, { Component, Suspense, lazy, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { useDeviceType } from './hooks/useDeviceType.js'
+import { initSecurityMonitor } from './utils/cspMonitor.js'
 import './index.css'
+
+/** Boot security monitor — CSP violation logging + runtime integrity checks */
+initSecurityMonitor()
 
 /** Hub landing page — lightweight, no heavy deps */
 const HubPage = lazy(() => import('./components/HubPage.jsx'))

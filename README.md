@@ -14,8 +14,8 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel&logoColor=white)](https://tdotssolutionsz.com)
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
-[![Tests](https://img.shields.io/badge/426_TESTS-34_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.29.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/438_TESTS-35_SUITES-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.29.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -203,6 +203,7 @@ This portfolio is hardened beyond what most SPAs bother with — because if the 
 | **Secret Scanning** | 30-pattern pre-commit scanner catches `sk-`, `ghp_`, `AKIA`, Bearer tokens, private keys, DB URIs |
 | **Dependency Audit** | `npm audit` integrated into CI — zero high/critical vulnerabilities |
 | **Video Integrity** | 21 dedicated playback tests guard CSP, referrer policy, iframe config, and YouTube ID validation |
+| **Runtime Monitoring** | CSP violation event listener captures blocked injection attempts with dedup + rate limiting; boot-time integrity checks for DOM clobbering, iframe injection, and tabnapping |
 | **Build Performance** | Code-split: Three.js vendor chunk (1.1 MB) loads only on desktop `/videos`; mobile gets a zero-WebGL bundle |
 | **Lighthouse** | 90+ Performance, 100 Accessibility, 100 Best Practices, 100 SEO (desktop) |
 

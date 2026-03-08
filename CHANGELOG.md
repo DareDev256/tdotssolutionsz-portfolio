@@ -2,6 +2,18 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.29.2] - 2026-03-08
+
+### Security
+- **CSP violation monitoring** — Added runtime `securitypolicyviolation` event listener (`src/utils/cspMonitor.js`) that captures, deduplicates, and rate-limits CSP violation events. Previously, blocked injection attempts and supply-chain changes in third-party dependencies were completely invisible — violations now surface as structured `console.warn` logs with directive, blocked URI, source location, and truncated policy. Rate-limited to 25 events/session with 5-second dedup window to prevent console flooding
+- **Runtime integrity assertions** — Boot-time checks verify `document.domain` hasn't been relaxed (same-origin bypass), no unexpected iframes exist at startup (clickjacking overlays), and `window.opener` is null (reverse tabnapping defense). Guards with `typeof document` checks for SSR/Node safety
+- **Browser environment guards** — All DOM-touching security code wrapped in `typeof document !== 'undefined'` checks, preventing crashes if the module is imported in SSR or test environments without jsdom
+
+### Added
+- `src/utils/cspMonitor.js` — Security monitor module with `initSecurityMonitor()` lifecycle API (init/destroy), exported test helpers
+- 12 new security tests in `cspMonitor.test.js` covering violation logging (structured output, inline violations, unknown sources, policy truncation), configuration bounds, runtime integrity no-ops in Node, and monitor lifecycle (destroy/re-init, idempotency)
+- Test suite now at **438 tests across 35 suites** (up from 426/34)
+
 ## [3.29.1] - 2026-03-08
 
 ### Security
