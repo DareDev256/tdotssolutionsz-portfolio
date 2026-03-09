@@ -4,12 +4,15 @@
  * Uses CSS-only infinite marquee animation (no JS timer for scroll).
  *
  * Also includes an animated stats counter that counts up on mount.
+ * Stats use the shared useCountUp + useScrollReveal hooks (same as ImpactNumbers).
  */
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { VIDEOS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
+import useCountUp from '../hooks/useCountUp'
+import useScrollReveal from '../hooks/useScrollReveal'
 import SectionLabel from './ui/SectionLabel'
 import './ArtistShowcase.css'
 
@@ -27,58 +30,16 @@ const TOP_ARTISTS = ALL_ARTISTS
   .slice(0, 12)
 
 /**
- * Animate a number counting up from 0 to target.
- * Uses requestAnimationFrame for smooth 60fps animation.
+ * StatCounter — scroll-triggered animated stat using shared hooks.
+ * Delegates intersection detection to useScrollReveal and animation to useCountUp,
+ * eliminating the duplicate IntersectionObserver + RAF logic that lived here before.
  */
-function useCountUp(target, duration = 2000) {
-  const [value, setValue] = useState(0)
-  const started = useRef(false)
-  const ref = useRef(null)
-
-  const startAnimation = useCallback(() => {
-    if (started.current) return
-    started.current = true
-    const start = performance.now()
-    function tick(now) {
-      const elapsed = now - start
-      const progress = Math.min(elapsed / duration, 1)
-      // Ease-out cubic for satisfying deceleration
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setValue(Math.round(eased * target))
-      if (progress < 1) requestAnimationFrame(tick)
-    }
-    requestAnimationFrame(tick)
-  }, [target, duration])
-
-  return { value, ref, startAnimation }
-}
-
-function StatCounter({ label, target, format, suffix = '' }) {
-  const { value, ref, startAnimation } = useCountUp(target, 2200)
-  const observed = useRef(false)
-
-  useEffect(() => {
-    if (!ref.current) return
-    // Use a local variable — IntersectionObserver fires the callback when it starts
-    const el = document.getElementById(`stat-${label.replace(/\s/g, '-')}`)
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !observed.current) {
-          observed.current = true
-          startAnimation()
-        }
-      },
-      { threshold: 0.5 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [label, startAnimation])
-
+function StatCounter({ label, target, format, suffix = '', isVisible }) {
+  const value = useCountUp(target, 2200, isVisible)
   const displayValue = format ? format(value) : value.toLocaleString()
 
   return (
-    <div className="showcase-stat" id={`stat-${label.replace(/\s/g, '-')}`} ref={ref}>
+    <div className="showcase-stat">
       <span className="showcase-stat-value">{displayValue}{suffix}</span>
       <span className="showcase-stat-label">{label}</span>
     </div>
@@ -87,28 +48,32 @@ function StatCounter({ label, target, format, suffix = '' }) {
 
 export default function ArtistShowcase() {
   const [isPaused, setIsPaused] = useState(false)
+  const statsRef = useRef(null)
+  const statsVisible = useScrollReveal(statsRef, 0.5)
 
   // Double the items for seamless infinite scroll
   const tickerItems = [...TOP_ARTISTS, ...TOP_ARTISTS]
 
   return (
     <section className="artist-showcase" aria-label="Featured artists">
-      {/* Animated Stats Bar */}
-      <div className="showcase-stats">
-        <StatCounter label="Videos" target={PORTFOLIO_STATS.totalVideos} />
+      {/* Animated Stats Bar — single IntersectionObserver via useScrollReveal */}
+      <div className="showcase-stats" ref={statsRef}>
+        <StatCounter label="Videos" target={PORTFOLIO_STATS.totalVideos} isVisible={statsVisible} />
         <div className="showcase-stats-divider" />
-        <StatCounter label="Artists" target={PORTFOLIO_STATS.totalArtists} />
+        <StatCounter label="Artists" target={PORTFOLIO_STATS.totalArtists} isVisible={statsVisible} />
         <div className="showcase-stats-divider" />
         <StatCounter
           label="Total Views"
           target={PORTFOLIO_STATS.totalViews}
           format={formatViews}
           suffix="+"
+          isVisible={statsVisible}
         />
         <div className="showcase-stats-divider" />
         <StatCounter
           label="Years Active"
           target={new Date().getFullYear() - parseInt(PORTFOLIO_STATS.earliestDate)}
+          isVisible={statsVisible}
         />
       </div>
 

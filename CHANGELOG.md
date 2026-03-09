@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.31.0] - 2026-03-09
+
+### Changed
+- **ArtistShowcase: eliminated duplicate `useCountUp` hook** — `ArtistShowcase.jsx` contained its own inline 22-line `useCountUp` implementation (easeOutCubic) plus a 30-line `StatCounter` component with hand-rolled IntersectionObserver logic. Replaced with the shared `useCountUp` hook (easeOutExpo, proper RAF cleanup) and `useScrollReveal` hook — the same pair `ImpactNumbers` already uses. Removes ~50 lines of duplicated logic
+- **Unified easing curve** — Stats counters in both `ArtistShowcase` and `ImpactNumbers` now use the same `easeOutExpo` curve, creating consistent animation feel across the HubPage
+- **Reduced observer count** — Previously each `StatCounter` instance created its own IntersectionObserver (4 observers for 4 stats). Now a single `useScrollReveal` observer triggers all four counters simultaneously via a shared `isVisible` prop
+
 ## [3.30.0] - 2026-03-08
 
 ### Changed
