@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import ImpactNumbers from './ImpactNumbers'
+import FilmStrip from './FilmStrip'
 import ArtistShowcase from './ArtistShowcase'
 import VideoSpotlight from './VideoSpotlight'
 import TopHits from './TopHits'
@@ -73,6 +74,7 @@ export default function HubPage() {
         </button>
       </nav>
 
+      <FilmStrip />
       <ArtistShowcase />
       <VideoSpotlight />
       <TopHits />
