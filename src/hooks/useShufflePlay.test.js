@@ -1,22 +1,17 @@
 import { describe, it, expect } from 'vitest'
 import { VIDEOS } from '../utils/videoData.js'
+import { diverseShuffle } from '../utils/diverseShuffle.js'
 
 /**
- * Tests the shuffle-play selection logic directly — matching the project's
- * pure-function testing pattern (no renderHook / @testing-library needed).
+ * Tests the shuffle-play selection logic using the shared diverseShuffle
+ * utility — same function the hook delegates to at runtime.
  */
 
-/** Reproduces the core selection algorithm from useShufflePlay */
+/** Runs one shuffle cycle matching useShufflePlay's configuration */
 function shuffleOnce(history, historySize) {
-    const historySet = new Set(history)
-    const candidates = VIDEOS.filter(v => !historySet.has(v.id))
-    const pool = candidates.length > 0 ? candidates : VIDEOS
-    const pick = pool[Math.floor(Math.random() * pool.length)]
-    history.push(pick.id)
-    if (history.length > Math.min(historySize, VIDEOS.length - 1)) {
-        history.shift()
-    }
-    return pick
+    const cappedSize = Math.min(historySize, VIDEOS.length - 1)
+    const idx = diverseShuffle(VIDEOS, history, cappedSize, v => v.id)
+    return VIDEOS[idx]
 }
 
 describe('useShufflePlay — shuffle selection logic', () => {

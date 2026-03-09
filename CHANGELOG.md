@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.30.0] - 2026-03-08
+
+### Changed
+- **Extracted shared `diverseShuffle` utility** — Both `VideoSpotlight` (hub hero shuffle) and `useShufflePlay` (video page queue) independently implemented the same sliding-window random selection algorithm. Extracted to `src/utils/diverseShuffle.js` — a single pure function that takes a pool, mutable history array, max history size, and key extractor. Zero behavior change; both consumers now delegate to the same code path
+- **Test files use real implementation** — `VideoSpotlight.test.js` and `useShufflePlay.test.js` previously duplicated the shuffle algorithm in test setup functions. Now they import and test the actual `diverseShuffle` utility, eliminating the risk of test copies drifting from production code
+
+### Added
+- `src/utils/diverseShuffle.js` — Shared sliding-window shuffle with configurable pool, history, and key extraction
+- `src/utils/diverseShuffle.test.js` — 7 tests covering index validity, history mutation, eviction, exhaustion fallback, full rotation guarantee, and custom key functions
+- Test suite now at **445 tests across 36 suites** (up from 438/35)
+
 ## [3.29.2] - 2026-03-08
 
 ### Security

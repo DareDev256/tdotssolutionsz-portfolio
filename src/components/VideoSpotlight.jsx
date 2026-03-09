@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
+import { diverseShuffle } from '../utils/diverseShuffle'
 import useScrollReveal from '../hooks/useScrollReveal'
 import useCinematicScroll from '../hooks/useCinematicScroll'
 import SpotlightPortal from './SpotlightPortal'
@@ -19,15 +20,6 @@ const SPOTLIGHT_POOL = [...VIDEOS]
   .slice(0, 20)
 
 const HISTORY_SIZE = Math.max(1, SPOTLIGHT_POOL.length - 1)
-
-function diversePick(history) {
-  const historySet = new Set(history)
-  const candidates = SPOTLIGHT_POOL
-    .map((v, i) => ({ v, i }))
-    .filter(({ v }) => !historySet.has(v.youtubeId))
-  const pool = candidates.length > 0 ? candidates : SPOTLIGHT_POOL.map((v, i) => ({ v, i }))
-  return pool[Math.floor(Math.random() * pool.length)].i
-}
 
 export default function VideoSpotlight() {
   const historyRef = useRef(null)
@@ -56,9 +48,7 @@ export default function VideoSpotlight() {
     setIsMuted(true)
     setTimeout(() => {
       const history = historyRef.current || []
-      const nextIdx = diversePick(history)
-      history.push(SPOTLIGHT_POOL[nextIdx].youtubeId)
-      if (history.length > HISTORY_SIZE) history.shift()
+      const nextIdx = diverseShuffle(SPOTLIGHT_POOL, history, HISTORY_SIZE, v => v.youtubeId)
       historyRef.current = history
       setIndex(nextIdx)
       transitionRef.current = false

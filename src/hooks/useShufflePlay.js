@@ -1,12 +1,13 @@
 import { useState, useCallback, useRef } from 'react'
 import { VIDEOS } from '../utils/videoData'
+import { diverseShuffle } from '../utils/diverseShuffle'
 
 /**
  * Shuffle-play hook — picks a random video from the catalog, avoiding
  * recent repeats using a sliding window (last N plays are excluded).
  *
- * Uses Fisher-Yates–style random selection with a history buffer to
- * ensure users discover new content rather than seeing the same videos.
+ * Delegates to the shared `diverseShuffle` utility for the core selection
+ * algorithm, ensuring consistent shuffle behavior across all shuffle surfaces.
  *
  * @param {number} [historySize=10] - How many recent picks to exclude
  * @returns {{ shufflePlay: () => Object, lastShuffle: Object|null }}
@@ -19,18 +20,9 @@ export default function useShufflePlay(historySize = 10) {
         if (VIDEOS.length === 0) return null
 
         const history = historyRef.current
-        const historySet = new Set(history)
-        const candidates = VIDEOS.filter(v => !historySet.has(v.id))
-
-        // If all videos exhausted, reset history but keep current
-        const pool = candidates.length > 0 ? candidates : VIDEOS
-        const pick = pool[Math.floor(Math.random() * pool.length)]
-
-        // Maintain sliding window
-        history.push(pick.id)
-        if (history.length > Math.min(historySize, VIDEOS.length - 1)) {
-            history.shift()
-        }
+        const cappedSize = Math.min(historySize, VIDEOS.length - 1)
+        const idx = diverseShuffle(VIDEOS, history, cappedSize, v => v.id)
+        const pick = VIDEOS[idx]
 
         setLastShuffle(pick)
         return pick

@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest'
 import { VIDEOS } from '../utils/videoData.js'
+import { diverseShuffle } from '../utils/diverseShuffle.js'
 
 /**
  * Tests VideoSpotlight's sliding-window diversity buffer logic.
- * Reproduces the diversePick algorithm (module-private) per project convention.
+ * Uses the shared diverseShuffle utility — same function the component uses.
  */
 
 const SPOTLIGHT_POOL = [...VIDEOS]
@@ -11,15 +12,7 @@ const SPOTLIGHT_POOL = [...VIDEOS]
   .slice(0, 20)
 
 const HISTORY_SIZE = Math.max(1, SPOTLIGHT_POOL.length - 1)
-
-function diversePick(history) {
-  const historySet = new Set(history)
-  const candidates = SPOTLIGHT_POOL
-    .map((v, i) => ({ v, i }))
-    .filter(({ v }) => !historySet.has(v.youtubeId))
-  const pool = candidates.length > 0 ? candidates : SPOTLIGHT_POOL.map((v, i) => ({ v, i }))
-  return pool[Math.floor(Math.random() * pool.length)].i
-}
+const KEY_FN = v => v.youtubeId
 
 describe('VideoSpotlight — SPOTLIGHT_POOL construction', () => {
   it('contains exactly 20 videos', () => {
@@ -44,9 +37,10 @@ describe('VideoSpotlight — SPOTLIGHT_POOL construction', () => {
   })
 })
 
-describe('VideoSpotlight — diversePick sliding-window logic', () => {
+describe('VideoSpotlight — diverseShuffle sliding-window logic', () => {
   it('returns a valid index into SPOTLIGHT_POOL', () => {
-    const idx = diversePick([])
+    const history = []
+    const idx = diverseShuffle(SPOTLIGHT_POOL, history, HISTORY_SIZE, KEY_FN)
     expect(idx).toBeGreaterThanOrEqual(0)
     expect(idx).toBeLessThan(SPOTLIGHT_POOL.length)
   })
@@ -54,7 +48,7 @@ describe('VideoSpotlight — diversePick sliding-window logic', () => {
   it('excludes recently-shown IDs from candidates', () => {
     // Fill history with first 19 IDs — only 1 candidate remains
     const history = SPOTLIGHT_POOL.slice(0, 19).map(v => v.youtubeId)
-    const idx = diversePick(history)
+    const idx = diverseShuffle(SPOTLIGHT_POOL, history, 50, KEY_FN)
     expect(SPOTLIGHT_POOL[idx].youtubeId).toBe(SPOTLIGHT_POOL[19].youtubeId)
   })
 
@@ -62,7 +56,7 @@ describe('VideoSpotlight — diversePick sliding-window logic', () => {
     const allIds = SPOTLIGHT_POOL.map(v => v.youtubeId)
     // Should not throw — gracefully uses full pool
     for (let i = 0; i < 30; i++) {
-      const idx = diversePick(allIds)
+      const idx = diverseShuffle(SPOTLIGHT_POOL, allIds, 50, KEY_FN)
       expect(idx).toBeGreaterThanOrEqual(0)
       expect(idx).toBeLessThan(SPOTLIGHT_POOL.length)
     }
@@ -72,10 +66,8 @@ describe('VideoSpotlight — diversePick sliding-window logic', () => {
     const history = []
     const seen = new Set()
     for (let i = 0; i < 20; i++) {
-      const idx = diversePick(history)
+      const idx = diverseShuffle(SPOTLIGHT_POOL, history, HISTORY_SIZE, KEY_FN)
       seen.add(SPOTLIGHT_POOL[idx].youtubeId)
-      history.push(SPOTLIGHT_POOL[idx].youtubeId)
-      if (history.length > HISTORY_SIZE) history.shift()
     }
     expect(seen.size).toBe(20)
   })
@@ -83,9 +75,7 @@ describe('VideoSpotlight — diversePick sliding-window logic', () => {
   it('sliding window trims oldest entry at HISTORY_SIZE', () => {
     const history = []
     for (let i = 0; i < 25; i++) {
-      const idx = diversePick(history)
-      history.push(SPOTLIGHT_POOL[idx].youtubeId)
-      if (history.length > HISTORY_SIZE) history.shift()
+      diverseShuffle(SPOTLIGHT_POOL, history, HISTORY_SIZE, KEY_FN)
     }
     expect(history.length).toBeLessThanOrEqual(HISTORY_SIZE)
   })
