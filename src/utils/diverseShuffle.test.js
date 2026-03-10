@@ -59,4 +59,31 @@ describe('diverseShuffle — core algorithm', () => {
         const idx = diverseShuffle(pool, history, 5, v => v.code)
         expect(pool[idx].code).toBe('C')
     })
+
+    it('avoids back-to-back repeat when history covers entire pool', () => {
+        const pool = [{ id: 'A' }, { id: 'B' }, { id: 'C' }]
+        const results = new Set()
+        // Run 50 times — should never return the most recent item ('C')
+        for (let i = 0; i < 50; i++) {
+            const history = ['A', 'B', 'C']
+            const idx = diverseShuffle(pool, history, 10, v => v.id)
+            results.add(pool[idx].id)
+        }
+        expect(results.has('C')).toBe(false)
+    })
+
+    it('trims oversized history before filtering candidates', () => {
+        // Simulate maxHistory shrinking from 8 to 2
+        const history = ['item-0', 'item-1', 'item-2', 'item-3', 'item-4', 'item-5', 'item-6', 'item-7']
+        diverseShuffle(MOCK_POOL, history, 2, v => v.id)
+        // History should be trimmed to maxHistory (2), not just 1 removed
+        expect(history).toHaveLength(2)
+    })
+
+    it('handles single-item pool gracefully', () => {
+        const pool = [{ id: 'only' }]
+        const history = ['only']
+        const idx = diverseShuffle(pool, history, 5, v => v.id)
+        expect(idx).toBe(0)
+    })
 })

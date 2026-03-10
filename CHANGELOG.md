@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.31.1] - 2026-03-09
+
+### Fixed
+- **diverseShuffle: back-to-back repeat on exhausted pool** — When history covered the entire pool, the fallback path picked from ALL items including the most recently played one. Users hitting "NEXT" on VideoSpotlight could get the same video they just watched. Fallback now excludes the last-played item, guaranteeing a different pick
+- **diverseShuffle: history over-retention on maxHistory shrink** — `if (history.length > maxHistory)` only removed one entry per call. If `maxHistory` decreased between calls (e.g. `useShufflePlay` historySize prop change), history stayed bloated for many iterations, over-excluding candidates and degrading diversity. Replaced with `while` loop that trims to target size immediately
+
+### Added
+- 3 new test cases for diverseShuffle: back-to-back repeat prevention, oversized history trimming, single-item pool edge case
+- Test suite now at **448 tests across 36 suites** (up from 445/36)
+
 ## [3.31.0] - 2026-03-09
 
 ### Changed
