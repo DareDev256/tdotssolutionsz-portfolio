@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.32.1] - 2026-03-10
+
+### Added
+- **useSwipe test suite** (11 tests) — Validates touch gesture detection: left/right swipe direction, 50px threshold boundary (> not >=), ghost swipe prevention after touchEnd reset, graceful handling of missing/empty `changedTouches`, null callback tolerance, and consecutive independent swipes
+- **useCinematicScroll test suite** (12 tests) — Validates scroll progress math: correct 0→1 mapping from viewport bottom to top, clamping at extremes, monotonic increase guarantee, zero/negative window height guards (prevents NaN), and consistent behavior across viewport sizes
+- Test suite now at **471 tests across 38 suites** (up from 448/36)
+
 ## [3.32.0] - 2026-03-10
 
 ### Added
