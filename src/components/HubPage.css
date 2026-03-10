@@ -379,10 +379,190 @@
   margin-bottom: 8px;
 }
 
-/* Reduced motion */
+/* ============================================
+   CINEMATIC ENTRANCE — Movie-premiere reveal
+   ============================================ */
+
+/* Curtain overlay — splits apart like theater curtains */
+.hub-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: var(--dark-surface);
+  animation: hub-curtain-reveal 1.2s cubic-bezier(0.76, 0, 0.24, 1) 0.3s both;
+}
+
+.hub-curtain::before,
+.hub-curtain::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: var(--dark-surface);
+}
+
+.hub-curtain::before {
+  left: 0;
+  animation: hub-curtain-left 0.9s cubic-bezier(0.76, 0, 0.24, 1) 1.0s both;
+}
+
+.hub-curtain::after {
+  right: 0;
+  animation: hub-curtain-right 0.9s cubic-bezier(0.76, 0, 0.24, 1) 1.0s both;
+}
+
+@keyframes hub-curtain-reveal {
+  0%, 70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes hub-curtain-left {
+  to { transform: translateX(-105%); }
+}
+
+@keyframes hub-curtain-right {
+  to { transform: translateX(105%); }
+}
+
+/* Staggered element entrances */
+.hub-logo {
+  animation:
+    hub-entrance-bloom 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both,
+    hub-logo-glow 3s ease-in-out 2.0s infinite alternate;
+}
+
+.hub-title-top {
+  animation: hub-entrance-slide-left 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.3s both;
+}
+
+.hub-title-bottom {
+  animation: hub-entrance-slide-right 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.45s both;
+}
+
+.hub-header-line {
+  animation: hub-entrance-expand 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.6s both;
+}
+
+.hub-tagline {
+  animation: hub-entrance-fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.7s both;
+}
+
+.hub-cards {
+  animation: hub-entrance-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.9s both;
+}
+
+@keyframes hub-entrance-bloom {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+    filter: invert(1) brightness(2.5) drop-shadow(0 0 40px rgb(var(--neon-cyan-rgb) / 1));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: invert(1) brightness(1.5) drop-shadow(0 0 18px rgb(var(--neon-cyan-rgb) / 0.7));
+  }
+}
+
+@keyframes hub-entrance-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes hub-entrance-slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes hub-entrance-expand {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes hub-entrance-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ambient light orbit — makes background breathe */
+.hub-bg-glow {
+  animation: hub-ambient-drift 20s ease-in-out infinite alternate;
+}
+
+@keyframes hub-ambient-drift {
+  0% {
+    background:
+      radial-gradient(ellipse at 30% 20%, rgb(var(--neon-pink-rgb) / 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgb(var(--neon-cyan-rgb) / 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgb(var(--neon-purple-rgb) / 0.08) 0%, transparent 60%);
+  }
+  50% {
+    background:
+      radial-gradient(ellipse at 45% 35%, rgb(var(--neon-pink-rgb) / 0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 55% 65%, rgb(var(--neon-cyan-rgb) / 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 35% 45%, rgb(var(--neon-purple-rgb) / 0.1) 0%, transparent 55%);
+  }
+  100% {
+    background:
+      radial-gradient(ellipse at 60% 25%, rgb(var(--neon-pink-rgb) / 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 40% 75%, rgb(var(--neon-cyan-rgb) / 0.14) 0%, transparent 55%),
+      radial-gradient(ellipse at 65% 55%, rgb(var(--neon-purple-rgb) / 0.08) 0%, transparent 50%);
+  }
+}
+
+/* Reduced motion — skip all entrance animations */
 @media (prefers-reduced-motion: reduce) {
+  .hub-curtain,
+  .hub-curtain::before,
+  .hub-curtain::after {
+    animation: none;
+    opacity: 0;
+  }
+
   .hub-logo {
     animation: none;
     filter: invert(1) brightness(1.5) drop-shadow(0 0 18px rgb(var(--neon-cyan-rgb) / 0.7));
+  }
+
+  .hub-title-top,
+  .hub-title-bottom,
+  .hub-header-line,
+  .hub-tagline,
+  .hub-cards {
+    animation: none;
+  }
+
+  .hub-bg-glow {
+    animation: none;
   }
 }

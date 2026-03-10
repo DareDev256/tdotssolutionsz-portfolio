@@ -20,6 +20,7 @@ export default function HubPage() {
 
   return (
     <div className="hub-page">
+      <div className="hub-curtain" aria-hidden="true" />
       <div className="hub-bg-grid" aria-hidden="true" />
       <div className="hub-bg-glow" aria-hidden="true" />
 

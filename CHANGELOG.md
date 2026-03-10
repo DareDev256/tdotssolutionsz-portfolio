@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.32.0] - 2026-03-10
+
+### Added
+- **Cinematic Entrance** — Movie-premiere opening sequence on HubPage. Dark theater curtain overlay splits apart horizontally via CSS pseudo-elements, revealing the page beneath. Logo blooms in from scaled-down with neon flare burst. Title lines slide in from opposing sides with motion blur (`filter: blur`). Header line expands from center. Tagline and nav cards cascade up with staggered delays. All animations use `cubic-bezier(0.16, 1, 0.3, 1)` (spring-out) for snappy, premium feel
+- **Ambient Light Orbit** — Background glow orbs (`hub-bg-glow`) now slowly drift position over a 20-second cycle, making the page atmosphere feel alive and cinematic rather than static
+- Full `prefers-reduced-motion` support — all entrance animations and ambient drift disabled for users who prefer reduced motion
+
 ## [3.31.1] - 2026-03-09
 
 ### Fixed
