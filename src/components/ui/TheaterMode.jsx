@@ -1,9 +1,10 @@
 // src/components/ui/TheaterMode.jsx
-import { useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import Icon from './Icon';
 import YouTubePlayer from '../YouTubePlayer';
 import { extractVideoId, getShareUrl, openShareWindow } from '../../utils/youtube';
 import useBodyScrollLock from '../../hooks/useBodyScrollLock';
+import useModalKeyboard from '../../hooks/useModalKeyboard';
 import './TheaterMode.css';
 
 /**
@@ -28,18 +29,10 @@ export function TheaterMode({
   queueTotal,
   nextVideoTitle
 }) {
-  // Handle keyboard shortcuts
-  const handleKeyDown = useCallback((e) => {
-    if (!isOpen) return;
-    if (e.key === 'Escape') onClose();
-    if (e.key === 'ArrowRight' && hasNext) onNext?.();
-    if (e.key === 'ArrowLeft' && hasPrev) onPrev?.();
-  }, [isOpen, onClose, onNext, onPrev, hasNext, hasPrev]);
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleKeyDown]);
+  // Handle keyboard shortcuts — Escape, ←, →
+  const guardedPrev = useCallback(() => { if (hasPrev) onPrev?.() }, [hasPrev, onPrev]);
+  const guardedNext = useCallback(() => { if (hasNext) onNext?.() }, [hasNext, onNext]);
+  useModalKeyboard({ onClose, onPrev: guardedPrev, onNext: guardedNext }, isOpen);
 
   // Prevent body scroll when open
   useBodyScrollLock(isOpen);

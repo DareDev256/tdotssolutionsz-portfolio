@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import photos from '../data/photos.json'
 import useBodyScrollLock from '../hooks/useBodyScrollLock'
+import useModalKeyboard from '../hooks/useModalKeyboard'
 import './PhotoGallery.css'
 
 const CATEGORIES = [
@@ -59,15 +60,7 @@ function LazyImage({ src, alt, onClick }) {
 function Lightbox({ photo, onClose, onPrev, onNext }) {
   useBodyScrollLock(true)
 
-  useEffect(() => {
-    const handleKey = (e) => {
-      if (e.key === 'Escape') onClose()
-      if (e.key === 'ArrowLeft') onPrev()
-      if (e.key === 'ArrowRight') onNext()
-    }
-    window.addEventListener('keydown', handleKey)
-    return () => window.removeEventListener('keydown', handleKey)
-  }, [onClose, onPrev, onNext])
+  useModalKeyboard({ onClose, onPrev, onNext })
 
   return (
     <div className="lightbox" onClick={onClose} role="dialog" aria-label={photo.title}>

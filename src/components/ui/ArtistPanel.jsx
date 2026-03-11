@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { VIDEOS, ARTIST_STATS } from '../../utils/videoData'
 import { getThumbnailUrl } from '../../utils/youtube'
 import useBodyScrollLock from '../../hooks/useBodyScrollLock'
+import useModalKeyboard from '../../hooks/useModalKeyboard'
 import './ArtistPanel.css'
 
 export function ArtistPanel({ artist, activeVideoId, onSelectVideo, onClose, mobileModal }) {
@@ -18,14 +19,7 @@ export function ArtistPanel({ artist, activeVideoId, onSelectVideo, onClose, mob
     const stats = artist ? ARTIST_STATS[artist] : null
 
     // ESC to close
-    useEffect(() => {
-        if (!isOpen) return
-        const handleKey = (e) => {
-            if (e.key === 'Escape') onClose()
-        }
-        window.addEventListener('keydown', handleKey)
-        return () => window.removeEventListener('keydown', handleKey)
-    }, [isOpen, onClose])
+    useModalKeyboard({ onClose }, isOpen)
 
     // Lock body scroll when open
     useBodyScrollLock(isOpen)

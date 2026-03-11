@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.33.0] - 2026-03-10
+
+### Changed
+- **Extract `useModalKeyboard` hook** — Centralizes Escape/ArrowLeft/ArrowRight handling for all modal and overlay components. Replaces 4 separate `useEffect` + `addEventListener` blocks across TheaterMode, ArtistPanel, PhotoGallery Lightbox, and SearchBar with a single composable hook. Accepts `{ onClose, onPrev, onNext }` with an optional `active` gate
+- **Extract `useOutsideClick` hook** — Centralizes click-outside-to-dismiss pattern. Listens on `mousedown` (fires before focus shift) for correct popover/dropdown behavior. Used by SearchBar, available for future dropdown/panel components
+- **SearchBar** refactored: 22-line `useEffect` replaced with two 1-line hook calls (`useModalKeyboard` + `useOutsideClick`)
+- **ArtistPanel** refactored: 7-line escape handler replaced with single `useModalKeyboard({ onClose }, isOpen)` call
+- **TheaterMode** refactored: 10-line keyboard handler (useCallback + useEffect) replaced with 3-line hook usage with guarded prev/next callbacks
+- **PhotoGallery Lightbox** refactored: 8-line keyboard handler replaced with single `useModalKeyboard({ onClose, onPrev, onNext })` call
+- Removed unused imports (`useEffect` from ArtistPanel/TheaterMode) — cleaner dependency trees
+
 ## [3.32.1] - 2026-03-10
 
 ### Added

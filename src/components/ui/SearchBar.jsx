@@ -1,7 +1,9 @@
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useMemo, useCallback, useRef } from 'react'
 import Icon from './Icon'
 import { ALL_ARTISTS, ARTIST_STATS } from '../../utils/videoData'
 import { searchAll } from '../../hooks/useSearch'
+import useOutsideClick from '../../hooks/useOutsideClick'
+import useModalKeyboard from '../../hooks/useModalKeyboard'
 
 /**
  * SearchBar — Dropdown search/filter for artists and videos.
@@ -23,30 +25,11 @@ export const SearchBar = ({ filterArtist, onFilterChange, onVideoSelect }) => {
     const [query, setQuery] = useState('')
     const containerRef = useRef(null)
 
+    const dismiss = useCallback(() => { setOpen(false); setQuery('') }, [])
+
     // Close dropdown on Escape key or click outside
-    useEffect(() => {
-        if (!open) return
-
-        const handleKeyDown = (e) => {
-            if (e.key === 'Escape') {
-                setOpen(false)
-                setQuery('')
-            }
-        }
-        const handleClickOutside = (e) => {
-            if (containerRef.current && !containerRef.current.contains(e.target)) {
-                setOpen(false)
-                setQuery('')
-            }
-        }
-
-        document.addEventListener('keydown', handleKeyDown)
-        document.addEventListener('mousedown', handleClickOutside)
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown)
-            document.removeEventListener('mousedown', handleClickOutside)
-        }
-    }, [open])
+    useModalKeyboard({ onClose: dismiss }, open)
+    useOutsideClick(containerRef, dismiss, open)
 
     const { artists: filteredArtists, videos: matchedVideos } = useMemo(() => {
         if (!query || query.length < 2) return { artists: ALL_ARTISTS, videos: [] }
