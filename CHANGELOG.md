@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.33.2] - 2026-03-11
+
+### Security
+- **postMessage origin monitor** — Logs unexpected `postMessage` origins from rogue extensions or injected iframes. Trusted origins (YouTube, Google) are allowlisted; same-origin messages pass silently. Rate-limited to 10 warnings per session to prevent console flooding. Data payloads are intentionally never logged (credential leak prevention)
+- **Runtime iframe origin audit** — New `auditIframes()` validates all current iframes point to allowed origins (youtube.com, youtube-nocookie.com, google.com). Catches rogue iframes injected after React mounts YouTube players — the existing boot-time check only counted iframes before mount
+- Both monitors integrated into `initSecurityMonitor()` with full cleanup on `destroy()`
+- Added 12 new tests covering origin allowlisting, rate limiting, data-type-only logging, destroy/reset cycle, iframe audit in non-browser env, and configuration bounds (485 total tests across 38 suites)
+
 ## [3.33.1] - 2026-03-11
 
 ### Fixed

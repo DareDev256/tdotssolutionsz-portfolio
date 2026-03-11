@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { handleViolation, assertRuntimeIntegrity, MAX_VIOLATIONS, DEDUP_WINDOW_MS, initSecurityMonitor } from './cspMonitor'
+import { handleViolation, assertRuntimeIntegrity, handleMessage, auditIframes, TRUSTED_MSG_ORIGINS, ALLOWED_IFRAME_ORIGINS, MAX_VIOLATIONS, DEDUP_WINDOW_MS, MAX_MSG_VIOLATIONS, initSecurityMonitor } from './cspMonitor'
 
 // ── CSP Violation Handler ───────────────────────────────────────────
 
@@ -139,5 +139,107 @@ describe('initSecurityMonitor lifecycle', () => {
     expect(typeof m2.violationCount).toBe('function')
     expect(typeof m2.destroy).toBe('function')
     m1.destroy()
+  })
+
+  it('exposes auditIframes on the returned API', () => {
+    const monitor = initSecurityMonitor()
+    expect(typeof monitor.auditIframes).toBe('function')
+    monitor.destroy()
+  })
+})
+
+// ── postMessage Origin Monitor ──────────────────────────────────────
+
+describe('postMessage origin monitor', () => {
+  let warnSpy
+  let monitor
+
+  beforeEach(() => {
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    monitor = initSecurityMonitor()
+    monitor.destroy()
+    monitor = initSecurityMonitor()
+  })
+
+  afterEach(() => {
+    monitor?.destroy()
+    warnSpy.mockRestore()
+  })
+
+  it('ignores same-origin messages', () => {
+    // In Node test env, selfOrigin resolves to '' — use that for same-origin simulation
+    handleMessage({ origin: '', data: 'test' })
+    const secCalls = warnSpy.mock.calls.filter(c => c[0]?.includes?.('postMessage'))
+    expect(secCalls).toHaveLength(0)
+  })
+
+  it('ignores empty-origin messages', () => {
+    handleMessage({ origin: '', data: 'test' })
+    const secCalls = warnSpy.mock.calls.filter(c => c[0]?.includes?.('postMessage'))
+    expect(secCalls).toHaveLength(0)
+  })
+
+  it('ignores trusted YouTube origins', () => {
+    for (const origin of TRUSTED_MSG_ORIGINS) {
+      handleMessage({ origin, data: {} })
+    }
+    const secCalls = warnSpy.mock.calls.filter(c => c[0]?.includes?.('postMessage'))
+    expect(secCalls).toHaveLength(0)
+  })
+
+  it('warns on unknown origin', () => {
+    handleMessage({ origin: 'https://evil.com', data: 'payload' })
+    const secCalls = warnSpy.mock.calls.filter(c => c[0]?.includes?.('postMessage'))
+    expect(secCalls).toHaveLength(1)
+    expect(secCalls[0][1].origin).toBe('https://evil.com')
+  })
+
+  it('logs data type but never the actual data', () => {
+    handleMessage({ origin: 'https://attacker.io', data: { secret: 'stolen' } })
+    const secCalls = warnSpy.mock.calls.filter(c => c[0]?.includes?.('postMessage'))
+    expect(secCalls[0][1].dataType).toBe('object')
+    expect(secCalls[0][1]).not.toHaveProperty('data')
+  })
+
+  it('rate-limits after MAX_MSG_VIOLATIONS', () => {
+    for (let i = 0; i < MAX_MSG_VIOLATIONS + 5; i++) {
+      handleMessage({ origin: `https://evil-${i}.com`, data: '' })
+    }
+    const secCalls = warnSpy.mock.calls.filter(c => c[0]?.includes?.('postMessage'))
+    expect(secCalls).toHaveLength(MAX_MSG_VIOLATIONS)
+  })
+
+  it('destroy resets message violation count', () => {
+    handleMessage({ origin: 'https://rogue.com', data: '' })
+    monitor.destroy()
+    monitor = initSecurityMonitor()
+    // Should be able to log again after reset
+    handleMessage({ origin: 'https://rogue2.com', data: '' })
+    const secCalls = warnSpy.mock.calls.filter(c => c[0]?.includes?.('postMessage'))
+    expect(secCalls.length).toBeGreaterThanOrEqual(2)
+  })
+})
+
+// ── Iframe Origin Audit ─────────────────────────────────────────────
+
+describe('iframe origin audit', () => {
+  it('returns empty array in non-browser environment', () => {
+    expect(auditIframes()).toEqual([])
+  })
+
+  it('trusts YouTube and Google iframe origins', () => {
+    expect(ALLOWED_IFRAME_ORIGINS.has('https://www.youtube.com')).toBe(true)
+    expect(ALLOWED_IFRAME_ORIGINS.has('https://www.youtube-nocookie.com')).toBe(true)
+    expect(ALLOWED_IFRAME_ORIGINS.has('https://www.google.com')).toBe(true)
+  })
+
+  it('does not trust arbitrary origins', () => {
+    expect(ALLOWED_IFRAME_ORIGINS.has('https://evil.com')).toBe(false)
+    expect(ALLOWED_IFRAME_ORIGINS.has('http://www.youtube.com')).toBe(false)
+  })
+
+  it('configuration constants are reasonable', () => {
+    expect(MAX_MSG_VIOLATIONS).toBeGreaterThanOrEqual(5)
+    expect(MAX_MSG_VIOLATIONS).toBeLessThanOrEqual(50)
   })
 })

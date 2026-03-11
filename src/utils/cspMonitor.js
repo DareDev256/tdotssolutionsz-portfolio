@@ -118,26 +118,110 @@ export function initSecurityMonitor() {
   if (initialized) return { violationCount: () => violationCount, destroy: () => {} }
   initialized = true
 
-  // Guard: only attach DOM listener in browser environments
+  // Guard: only attach DOM listeners in browser environments
   if (typeof document !== 'undefined') {
     document.addEventListener('securitypolicyviolation', handleViolation)
+  }
+  if (typeof window !== 'undefined') {
+    window.addEventListener('message', handleMessage)
   }
   assertRuntimeIntegrity()
 
   return {
     /** Current violation count (for testing/diagnostics) */
     violationCount: () => violationCount,
-    /** Remove listener (useful for tests) */
+    /** Audit iframes on demand */
+    auditIframes,
+    /** Remove listeners (useful for tests) */
     destroy: () => {
       if (typeof document !== 'undefined') {
         document.removeEventListener('securitypolicyviolation', handleViolation)
       }
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('message', handleMessage)
+      }
       initialized = false
       violationCount = 0
+      msgViolationCount = 0
       seen.clear()
     },
   }
 }
 
+// ── postMessage Origin Monitor ──────────────────────────────────────
+// YouTube IFrame API communicates via postMessage. Any extension, rogue
+// iframe, or XSS payload can also send messages to this window. Logging
+// unexpected origins provides visibility into attack attempts.
+
+/** Origins trusted for postMessage communication */
+const TRUSTED_MSG_ORIGINS = new Set([
+  'https://www.youtube.com',
+  'https://www.youtube-nocookie.com',
+  'https://www.google.com',
+])
+
+/** Max unexpected-origin messages to log before suppressing */
+const MAX_MSG_VIOLATIONS = 10
+let msgViolationCount = 0
+
+/**
+ * Handle incoming postMessage events. Ignores same-origin and trusted
+ * third-party origins. Logs everything else as suspicious — the data
+ * payload is intentionally NOT logged to avoid leaking sensitive info.
+ */
+function handleMessage(event) {
+  const origin = event.origin
+  // Same-origin (React devtools, HMR, internal) — always safe
+  const selfOrigin = typeof window !== 'undefined' ? window.location?.origin : ''
+  if (!origin || origin === selfOrigin) return
+  // Trusted third-party — YouTube API traffic
+  if (TRUSTED_MSG_ORIGINS.has(origin)) return
+  // Unknown origin — flag it
+  if (msgViolationCount >= MAX_MSG_VIOLATIONS) return
+  msgViolationCount++
+  console.warn('[Security] Unexpected postMessage origin:', {
+    origin,
+    dataType: typeof event.data,
+    // Never log event.data — could contain credentials or be massive
+  })
+}
+
+// ── Runtime Iframe Audit ────────────────────────────────────────────
+// Boot-time check catches pre-mount iframes. This audit catches rogue
+// iframes injected AFTER React mounts YouTube players.
+
+/** Origins allowed as iframe src hosts */
+const ALLOWED_IFRAME_ORIGINS = new Set([
+  'https://www.youtube.com',
+  'https://www.youtube-nocookie.com',
+  'https://www.google.com',
+])
+
+/**
+ * Audit all current iframes and return any with unauthorized origins.
+ * Safe to call anytime — returns empty array if all iframes are legit.
+ * @returns {string[]} List of suspicious iframe src values
+ */
+export function auditIframes() {
+  if (typeof document === 'undefined') return []
+  const suspicious = []
+  document.querySelectorAll('iframe').forEach(iframe => {
+    const src = iframe.src
+    if (!src) { suspicious.push('(no src)'); return }
+    try {
+      const url = new URL(src)
+      if (!ALLOWED_IFRAME_ORIGINS.has(url.origin)) {
+        suspicious.push(src)
+      }
+    } catch {
+      suspicious.push(src)
+    }
+  })
+  if (suspicious.length > 0) {
+    console.warn('[Security] Unauthorized iframe origins:', suspicious)
+  }
+  return suspicious
+}
+
 // Exported for testing only — not part of public API
-export { handleViolation, assertRuntimeIntegrity, MAX_VIOLATIONS, DEDUP_WINDOW_MS }
+export { handleViolation, assertRuntimeIntegrity, handleMessage, TRUSTED_MSG_ORIGINS, ALLOWED_IFRAME_ORIGINS, MAX_VIOLATIONS, DEDUP_WINDOW_MS, MAX_MSG_VIOLATIONS }
