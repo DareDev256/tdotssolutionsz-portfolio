@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.33.1] - 2026-03-11
+
+### Fixed
+- **useCopyLink timer leak** — The 2-second "copied" indicator timeout was never cleaned up on unmount (timer leak / setState on dead component) and rapid re-copies caused the indicator to disappear too early because stale timeouts from previous clicks weren't cleared. Added `useRef`-tracked timer with proper cleanup on unmount and `clearTimeout` before each new copy so the indicator always stays visible for a full 2 seconds from the last click
+- Added 2 new tests covering rapid re-copy timer reset and unmount cleanup behavior (473 total tests across 38 suites)
+
 ## [3.33.0] - 2026-03-10
 
 ### Changed

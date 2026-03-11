@@ -123,7 +123,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 | **3D Engine** | Three.js 0.170 / React Three Fiber / Drei |
 | **Post-Processing** | Bloom, Vignette, Noise, Scanline, Chromatic Aberration |
 | **Video** | YouTube IFrame API (playback control, auto-advance, end detection) |
-| **Testing** | Vitest — 350 tests across 28 suites |
+| **Testing** | Vitest — 473 tests across 38 suites |
 | **Hosting** | Vercel with custom domain (tdotssolutionsz.com) |
 | **Build Pipeline** | YouTube API enrichment at build time (zero runtime API costs) |
 
