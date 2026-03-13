@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.33.2] - 2026-03-13
+
+### Added
+- **useModalKeyboard test suite** (11 tests) — Validates the shared keyboard dispatch hook extracted in v3.33.0: correct Escape/ArrowLeft/ArrowRight routing, no cross-triggering between keys, graceful handling of missing callbacks (escape-only and nav-only usage patterns), no-op when `active` is false, and rapid sequential press counting
+- **useOutsideClick test suite** (9 tests) — Validates the click-outside-to-dismiss hook extracted in v3.33.0: outside-target detection, inside-target (self + child) rejection, sibling element distinction, null `ref.current` guard (unmounted component safety), `active` flag gating, and multi-click accumulation
+- Test suite now at **493 tests across 40 suites** (up from 473/38)
+
 ## [3.33.1] - 2026-03-11
 
 ### Fixed
