@@ -2,6 +2,7 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { createAtmosphericMaterial } from '../../utils/shaderFactory';
 
 /**
  * Enhanced star field with GPU-based twinkling
@@ -70,9 +71,8 @@ export function EnhancedStarField({
 
   // Shader material for twinkling
   const shaderMaterial = useMemo(() => {
-    return new THREE.ShaderMaterial({
+    return createAtmosphericMaterial({
       uniforms: {
-        uTime: { value: 0 },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
       },
       vertexShader: `
@@ -92,7 +92,7 @@ export function EnhancedStarField({
 
           // GPU-based twinkling
           float twinkle = sin(uTime * twinkleSpeed + twinklePhase);
-          vTwinkle = 0.5 + twinkle * 0.5; // Normalize to 0.0-1.0
+          vTwinkle = 0.5 + twinkle * 0.5;
 
           vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
           gl_Position = projectionMatrix * mvPosition;
@@ -107,7 +107,6 @@ export function EnhancedStarField({
         varying float vTwinkle;
 
         void main() {
-          // Soft circular point with glow falloff
           vec2 center = gl_PointCoord - 0.5;
           float dist = length(center);
 
@@ -120,15 +119,10 @@ export function EnhancedStarField({
 
           if (alpha < 0.01) discard;
 
-          // Slight color boost for core
           vec3 finalColor = vColor * (1.0 + core * 0.5);
-
           gl_FragColor = vec4(finalColor, alpha);
         }
       `,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
     });
   }, []);
 

@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.34.0] - 2026-03-13
+
+### Changed
+- **Shader factory utility** (`shaderFactory.js`) — New shared module centralizing `THREE.ShaderMaterial` creation for atmospheric 3D effects. Provides `createAtmosphericMaterial()` factory with sensible defaults (transparent, no depth write, additive blending) and reusable GLSL snippets: `GLSL_SIMPLEX_NOISE` (2D simplex noise, Ashima Arts implementation) and `GLSL_FBM` (fractal Brownian motion + domain warping)
+- **ProceduralNebula** — Replaced 48 lines of inline GLSL noise functions (mod289, permute, snoise, fbm, warpedFbm) with shared `GLSL_SIMPLEX_NOISE` + `GLSL_FBM` imports from shaderFactory; switched from raw `new THREE.ShaderMaterial()` to `createAtmosphericMaterial()`
+- **EnhancedStarField** — Switched from raw `new THREE.ShaderMaterial()` to `createAtmosphericMaterial()`, eliminating duplicate transparent/depthWrite/blending boilerplate
+- **SoftParticles** — Same factory extraction as EnhancedStarField, consistent material creation pattern across all 3D atmosphere components
+
 ## [3.33.3] - 2026-03-13
 
 ### Security

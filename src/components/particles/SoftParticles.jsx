@@ -3,6 +3,7 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { createSoftCircleTexture, createHexBokehTexture, createDustTexture } from '../../utils/proceduralTextures';
+import { createAtmosphericMaterial } from '../../utils/shaderFactory';
 
 // Color palette
 const PARTICLE_COLORS = [
@@ -89,10 +90,9 @@ export function SoftParticles({
 
   // Custom shader material for soft particles
   const material = useMemo(() => {
-    return new THREE.ShaderMaterial({
+    return createAtmosphericMaterial({
       uniforms: {
         uTexture: { value: textures.soft },
-        uTime: { value: 0 },
       },
       vertexShader: `
         attribute vec3 instanceColor;
@@ -122,8 +122,8 @@ export function SoftParticles({
         void main() {
           vec4 texColor = texture2D(uTexture, vUv);
 
-          // Apply instance color
-          vec3 finalColor = vColor * texColor.rgb * 2.0; // Boost brightness
+          // Apply instance color with brightness boost
+          vec3 finalColor = vColor * texColor.rgb * 2.0;
 
           // Subtle pulse
           float pulse = sin(uTime * 2.0) * 0.1 + 0.9;
@@ -132,9 +132,6 @@ export function SoftParticles({
           gl_FragColor = vec4(finalColor, texColor.a * 0.8);
         }
       `,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
     });
   }, [textures]);
 
