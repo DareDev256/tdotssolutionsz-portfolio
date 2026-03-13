@@ -123,6 +123,86 @@
     .video-card:hover { animation: none; }
 }
 
+/* ── Culture Canvas — cinematic spotlight focus ── */
+/* When any card is focused, the grid enters "canvas mode":
+   - Non-focused cards dim + desaturate (theater lights down)
+   - Focused card gets dramatic accent bloom (spotlight on)
+   - Transition is asymmetric: slow dim-in, instant dim-out */
+
+.canvas-active [data-canvas-id] .video-card {
+    transition:
+        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        filter 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+    opacity: 0.3;
+    filter: saturate(0.2) brightness(0.6);
+}
+
+.canvas-active [data-canvas-lit] .video-card {
+    opacity: 1;
+    filter: saturate(1.15) brightness(1.05);
+    transform: translateY(-6px) scale(1.03);
+    border-color: rgba(5, 217, 232, 0.6);
+    box-shadow:
+        0 12px 40px rgba(5, 217, 232, 0.3),
+        0 0 60px rgba(255, 42, 109, 0.15),
+        0 0 0 1px rgba(5, 217, 232, 0.4);
+    z-index: 10;
+    position: relative;
+}
+
+/* Canvas bloom — pulsing accent glow behind the lit card */
+.canvas-active [data-canvas-lit]::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 16px;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(255, 42, 109, 0.12) 0%,
+        rgba(5, 217, 232, 0.08) 40%,
+        transparent 70%
+    );
+    z-index: -1;
+    pointer-events: none;
+    animation: canvas-bloom 2s ease-in-out infinite;
+}
+
+@keyframes canvas-bloom {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.02); }
+}
+
+/* Enhanced play icon visibility on lit card */
+.canvas-active [data-canvas-lit] .play-overlay {
+    opacity: 0.9;
+}
+
+.canvas-active [data-canvas-lit] .play-icon {
+    filter: drop-shadow(0 0 12px rgba(5, 217, 232, 0.6));
+    color: rgba(5, 217, 232, 0.95);
+}
+
+/* Override dim for now-playing cards — always stay visible */
+.canvas-active [data-canvas-id] .video-card.now-playing {
+    opacity: 0.65;
+    filter: saturate(0.5) brightness(0.8);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .canvas-active [data-canvas-id] .video-card {
+        transition: opacity 0.15s ease;
+        filter: none;
+    }
+    .canvas-active [data-canvas-lit]::before { animation: none; }
+    .canvas-active [data-canvas-lit] .video-card {
+        transform: none;
+        filter: none;
+    }
+}
+
 /* View count badge */
 .card-views-badge {
     position: absolute;

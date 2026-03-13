@@ -13,6 +13,7 @@ import { THUMBNAIL_FALLBACK } from './utils/imageFallback'
 import { formatViews } from './utils/formatters'
 import { searchAll } from './hooks/useSearch'
 import useVideoDeepLink from './hooks/useVideoDeepLink'
+import useCinematicFocus from './hooks/useCinematicFocus'
 import useVideoNavigation from './hooks/useVideoNavigation'
 import useCopyLink from './hooks/useCopyLink'
 import useShufflePlay from './hooks/useShufflePlay'
@@ -181,6 +182,7 @@ export default function MobileApp() {
 
     const revealed = useBatchReveal(loading ? null : filteredVideos)
     const swipeHandlers = useSwipe(handleNextVideo, handlePrevVideo)
+    const { focusedId, gridProps: canvasGridProps, cardProps: canvasCardProps } = useCinematicFocus()
 
     const stats = playingVideo ? ARTIST_STATS[playingVideo.artist] : null
 
@@ -408,17 +410,25 @@ export default function MobileApp() {
             )}
 
             {/* Video Grid */}
-            <main className="video-grid" role="list" aria-label="Music videos">
+            <main className={`video-grid${canvasGridProps.className}`} role="list" aria-label="Music videos"
+                onMouseLeave={canvasGridProps.onMouseLeave} onTouchStart={canvasGridProps.onTouchStart}>
                 {gridVideos.map((video, index) => {
                     const isNowPlaying = playingVideo && video.id === playingVideo.id
                     const isUpNext = gridPlayingIndex >= 0 && index === (gridPlayingIndex + 1) % gridVideos.length && !isNowPlaying
                     const isRevealed = revealed.has(String(video.id))
+                    const canvas = canvasCardProps(video.id)
                     return (
                         <div
                             key={video.id}
                             data-vid={video.id}
+                            data-canvas-id={canvas['data-canvas-id']}
+                            data-canvas-lit={canvas['data-canvas-lit']}
                             className={isRevealed ? 'video-card--reveal' : 'video-card--hidden'}
                             style={{ animationDelay: `${(index % 2) * 0.1}s` }}
+                            onMouseEnter={canvas.onMouseEnter}
+                            onMouseLeave={canvas.onMouseLeave}
+                            onTouchStart={canvas.onTouchStart}
+                            onTouchEnd={canvas.onTouchEnd}
                         >
                             <VideoCard
                                 video={video}
