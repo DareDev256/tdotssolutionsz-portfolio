@@ -5,6 +5,7 @@
  */
 import { useState, useCallback } from 'react'
 import { isValidYouTubeId } from '../utils/youtube'
+import { safeJsonParse } from '../utils/urlSafety'
 
 /** localStorage key for persisted favorites array */
 const STORAGE_KEY = 'tdots-favorites'
@@ -21,7 +22,9 @@ export function readFavorites() {
     try {
         const raw = localStorage.getItem(STORAGE_KEY)
         if (!raw) return []
-        const parsed = JSON.parse(raw)
+        // safeJsonParse strips __proto__/constructor/prototype keys to prevent
+        // prototype pollution from tampered localStorage payloads (CWE-1321)
+        const parsed = safeJsonParse(raw, [])
         if (!Array.isArray(parsed)) return []
         // Only keep valid YouTube IDs, cap at MAX_FAVORITES
         return parsed.filter(isValidYouTubeId).slice(0, MAX_FAVORITES)

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { VIDEOS } from '../utils/videoData'
 import { isValidYouTubeId, extractVideoId } from '../utils/youtube'
+import { safeReplaceState } from '../utils/urlSafety'
 
 /**
  * Resolve a ?v= query-param value to a video from the catalog.
@@ -53,6 +54,6 @@ export default function useVideoDeepLink(activeVideo, onFound, isActive) {
     // Sync URL ↔ active video
     useEffect(() => {
         const url = buildVideoUrl(activeVideo, showingVideo)
-        window.history.replaceState(null, '', url || window.location.pathname)
+        safeReplaceState(url || window.location.pathname)
     }, [showingVideo, activeVideo])
 }

@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.33.3] - 2026-03-13
+
+### Security
+- **URL safety utility** (`urlSafety.js`) — New defense-in-depth module with three guards: `isDangerousScheme()` blocks `javascript:`, `data:`, `vbscript:`, `blob:` protocol attacks (CWE-79); `safeReplaceState()` enforces same-origin relative URLs only, preventing open redirect via `history.replaceState` (CWE-601); `safeJsonParse()` strips `__proto__`/`constructor`/`prototype` keys during JSON parsing to prevent prototype pollution from tampered localStorage (CWE-1321)
+- **useVideoDeepLink** now uses `safeReplaceState` instead of raw `window.history.replaceState` — blocks absolute URL injection and dangerous scheme writes to the address bar
+- **useFavorites** now uses `safeJsonParse` instead of raw `JSON.parse` — prevents prototype pollution if an attacker tampers with localStorage `tdots-favorites` payload
+- 31 new tests: 12 dangerous scheme detection (case/whitespace bypass vectors), 9 replaceState origin-pinning (absolute/protocol-relative/scheme blocking), 10 JSON prototype pollution prevention (nested `__proto__`, `constructor`, `prototype` key stripping)
+- Test suite now at **524 tests across 41 suites** (up from 493/40)
+
 ## [3.33.2] - 2026-03-13
 
 ### Added
