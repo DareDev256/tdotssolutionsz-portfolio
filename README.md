@@ -54,7 +54,7 @@ A Tron-inspired metropolis you scroll through on a light cycle. 200+ edge-lit bu
 
 ### 📱 Mobile — Cinematic Card Grid
 
-Dark glassmorphism cards with floating CSS particles, scanline overlay, and staggered scroll-reveal animations. Every card feels like a still from a music video — not a corporate thumbnail. **Vibrancy Pulse**: on hover, a diagonal neon light sweep races across the thumbnail while the card border flares through a pink-cyan-purple chromatic cycle — like a film projector powering up.
+Dark glassmorphism cards with floating CSS particles, scanline overlay, and staggered scroll-reveal animations. Every card feels like a still from a music video — not a corporate thumbnail. **Vibrancy Pulse**: on hover, a diagonal neon light sweep races across the thumbnail while the card border flares through a pink-cyan-purple chromatic cycle — like a film projector powering up. **Culture Canvas**: hover or long-press any card and the grid enters cinematic spotlight mode — surrounding cards dim and desaturate while the focused card lifts with a cyan-pink accent bloom and pulsing glow halo, like theater lights going down on everything except your pick.
 
 - **Hero Card** — Full-width featured video at the top with cinematic gradient overlay
 - **Swipe Navigation** — Left/right in the video modal

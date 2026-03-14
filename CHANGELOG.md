@@ -39,6 +39,13 @@ All notable changes to TdotsSolutionsz Music Video Portfolio.
 - **Runtime iframe origin audit** — New `auditIframes()` validates all current iframes point to allowed origins (youtube.com, youtube-nocookie.com, google.com). Catches rogue iframes injected after React mounts YouTube players — the existing boot-time check only counted iframes before mount
 - Both monitors integrated into `initSecurityMonitor()` with full cleanup on `destroy()`
 - Added 12 new tests covering origin allowlisting, rate limiting, data-type-only logging, destroy/reset cycle, iframe audit in non-browser env, and configuration bounds (485 total tests across 38 suites)
+## [3.34.0] - 2026-03-13
+
+### Added
+- **Culture Canvas — cinematic spotlight focus** on the mobile video grid. When hovering (desktop) or long-pressing (mobile) a video card, the entire grid enters "theater mode": surrounding cards dim and desaturate while the focused card lifts with a dramatic cyan-pink accent bloom, pulsing glow halo, and enhanced play icon visibility. Creates the Netflix browse-and-spotlight interaction pattern — like the lights going down in a theater when you point at a poster
+- **`useCinematicFocus` hook** — reusable hook managing spotlight state with 120ms hover entry delay (prevents flicker on mouse traversal), instant exit, 400ms long-press threshold for mobile, and tap-away-to-dismiss. Exposes `gridProps` and `cardProps` for zero-config wiring into any grid layout
+- Full `prefers-reduced-motion` support — spotlight dims opacity only (no transforms, no bloom animation) when reduced motion is preferred
+- Now-playing cards stay semi-visible during canvas mode so users never lose track of the active video
 
 ## [3.33.1] - 2026-03-11
 
