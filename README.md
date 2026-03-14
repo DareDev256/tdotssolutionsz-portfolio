@@ -16,6 +16,8 @@
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/524_TESTS-41_SUITES-00ff41?style=for-the-badge)](.)
 [![Version](https://img.shields.io/badge/v3.35.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/445_TESTS-36_SUITES-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.32.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -62,6 +64,7 @@ Dark glassmorphism cards with floating CSS particles, scanline overlay, and stag
 The front door. Moody, atmospheric, and designed to showcase 14 years of Toronto hip-hop video production like a label's homepage — not a portfolio template. Opens with a **cinematic entrance sequence** — theater curtains split apart, logo blooms in with neon flare, title slides in from opposing sides with motion blur, and content cascades in like opening credits. Ambient stage lights slowly orbit the background, making the entire page breathe.
 
 - **"Now Playing" Cinematic Hero** — Full-bleed ultra-wide (21:9) viewport showcasing a random top-20 video. Hover triggers auto-playing YouTube preview (muted) with dual-gradient cinematic overlay, pulsing NOW PLAYING badge, mute/unmute toggle, and WATCH NOW CTA. **3D Portal Frame**: rotating neon torus rings and drifting particles behind the viewport create an Astroworld-inspired gate effect, color-cycling through the neon palette per video. **Scroll-driven animations**: parallax thumbnail shift, dolly zoom scale, staggered info reveal, and reactive neon aura glow that intensifies as you scroll. Responsive: 16:9 tablet, 16:10 mobile. Respects `prefers-reduced-motion`
+- **Film Strip** — Continuously scrolling 35mm film strip of the top 14 most-viewed video thumbnails, styled with celluloid sprocket holes, dark film borders, and vignette edge fades. Hover pauses the strip and reveals the artist name. Click any frame to jump to that video. Respects `prefers-reduced-motion`
 - **Artist Showcase Ticker** — Infinite CSS marquee of top 12 artists with YouTube thumbnails, video counts, and total views. Hover to pause, seamless edge-fade masking
 - **Impact Numbers** — Scroll-triggered animated stat counters using `requestAnimationFrame` with `easeOutExpo` easing. Four neon-accented cards (pink/cyan/gold/green) count up from zero: videos, artists, total views, years active. Each card staggers its entrance with sliding neon accent bars. `tabular-nums` prevents layout shift during counting. Fully responsive (2×2 grid on mobile), respects `prefers-reduced-motion`. 8 tests verify the easing algorithm
 - **Top Hits — Ranked Showcase** — Netflix Top 10-style horizontally scrollable strip of the most-viewed productions. Oversized hollow neon rank numbers with per-rank color theming (#1 gold, #2 pink, #3 cyan...), cinematic thumbnail cards with hover zoom + glow, animated view count badges, and staggered scroll-reveal animations. Each card links directly to the video detail page. 12 tests guard ranking integrity and data validation

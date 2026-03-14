@@ -73,6 +73,14 @@ All notable changes to TdotsSolutionsz Music Video Portfolio.
 ### Added
 - 3 new test cases for diverseShuffle: back-to-back repeat prevention, oversized history trimming, single-item pool edge case
 - Test suite now at **448 tests across 36 suites** (up from 445/36)
+## [3.32.0] - 2026-03-09
+
+### Added
+- **Film Strip** — Cinematic 35mm film strip component on HubPage between navigation cards and ArtistShowcase. Continuously scrolling marquee of the top 14 most-viewed video thumbnails styled as celluloid film frames with sprocket holes, dark film borders, and vignette edge fades. Hover pauses the strip, scales the frame, and reveals the artist name in neon cyan. Clicking any frame navigates to that video's standalone page. Respects `prefers-reduced-motion`, responsive on mobile (smaller frames, faster scroll). Adds the "film projector lobby" ambient motion that fits a video production portfolio
+
+### New Files
+- `src/components/FilmStrip.jsx` — Film strip React component (14 top videos, duplicated for seamless loop, accessible button frames)
+- `src/components/FilmStrip.css` — 35mm film aesthetic with sprocket holes, continuous `film-scroll` keyframes, hover-to-pause, mobile breakpoint, reduced-motion support
 
 ## [3.31.0] - 2026-03-09
 
