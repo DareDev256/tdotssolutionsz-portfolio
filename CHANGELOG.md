@@ -32,6 +32,13 @@ All notable changes to TdotsSolutionsz Music Video Portfolio.
 - **useModalKeyboard test suite** (11 tests) — Validates the shared keyboard dispatch hook extracted in v3.33.0: correct Escape/ArrowLeft/ArrowRight routing, no cross-triggering between keys, graceful handling of missing callbacks (escape-only and nav-only usage patterns), no-op when `active` is false, and rapid sequential press counting
 - **useOutsideClick test suite** (9 tests) — Validates the click-outside-to-dismiss hook extracted in v3.33.0: outside-target detection, inside-target (self + child) rejection, sibling element distinction, null `ref.current` guard (unmounted component safety), `active` flag gating, and multi-click accumulation
 - Test suite now at **493 tests across 40 suites** (up from 473/38)
+## [3.33.2] - 2026-03-11
+
+### Security
+- **postMessage origin monitor** — Logs unexpected `postMessage` origins from rogue extensions or injected iframes. Trusted origins (YouTube, Google) are allowlisted; same-origin messages pass silently. Rate-limited to 10 warnings per session to prevent console flooding. Data payloads are intentionally never logged (credential leak prevention)
+- **Runtime iframe origin audit** — New `auditIframes()` validates all current iframes point to allowed origins (youtube.com, youtube-nocookie.com, google.com). Catches rogue iframes injected after React mounts YouTube players — the existing boot-time check only counted iframes before mount
+- Both monitors integrated into `initSecurityMonitor()` with full cleanup on `destroy()`
+- Added 12 new tests covering origin allowlisting, rate limiting, data-type-only logging, destroy/reset cycle, iframe audit in non-browser env, and configuration bounds (485 total tests across 38 suites)
 
 ## [3.33.1] - 2026-03-11
 

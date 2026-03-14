@@ -18,6 +18,8 @@
 [![Version](https://img.shields.io/badge/v3.35.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 [![Tests](https://img.shields.io/badge/445_TESTS-36_SUITES-00ff41?style=for-the-badge)](.)
 [![Version](https://img.shields.io/badge/v3.32.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/485_TESTS-38_SUITES-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.33.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -208,6 +210,7 @@ This portfolio is hardened beyond what most SPAs bother with — because if the 
 | **Video Integrity** | 21 dedicated playback tests guard CSP, referrer policy, iframe config, and YouTube ID validation |
 | **Runtime Monitoring** | CSP violation event listener captures blocked injection attempts with dedup + rate limiting; boot-time integrity checks for DOM clobbering, iframe injection, and tabnapping |
 | **URL & Data Safety** | Centralized dangerous-scheme blocking (`javascript:`, `data:`, `vbscript:`, `blob:`), origin-pinned `replaceState`, prototype-pollution-safe JSON parsing for all localStorage reads |
+| **Runtime Monitoring** | CSP violation listener + postMessage origin guard + iframe origin audit — captures blocked injections, rogue extensions, and DOM tampering with dedup + rate limiting |
 | **Build Performance** | Code-split: Three.js vendor chunk (1.1 MB) loads only on desktop `/videos`; mobile gets a zero-WebGL bundle |
 | **Lighthouse** | 90+ Performance, 100 Accessibility, 100 Best Practices, 100 SEO (desktop) |
 
