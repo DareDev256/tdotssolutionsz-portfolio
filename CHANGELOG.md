@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.35.2] - 2026-03-14
+
+### Added
+- **CSP Monitor documentation** (`docs/CSP_MONITOR.md`) — Portfolio-grade technical README for the runtime security observability module (`src/utils/cspMonitor.js`). Covers all 5 subsystems: CSP violation listener with dedup/rate-limiting, postMessage origin monitor, boot-time integrity assertions, runtime iframe audit, and test cleanup. Includes ASCII architecture diagram, subsystem interaction table, integration examples, export reference, relationship map to other security modules, and protected-config warnings to prevent repeat regressions
+- Updated README.md with cross-links to the new security deep-dive doc
+
 ## [3.35.1] - 2026-03-14
 
 ### Security

@@ -15,7 +15,7 @@
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/555_TESTS-42_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.35.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.35.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -207,7 +207,7 @@ This portfolio is hardened beyond what most SPAs bother with — because if the 
 | **Runtime Monitoring** | CSP violation event listener captures blocked injection attempts with dedup + rate limiting; boot-time integrity checks for DOM clobbering, iframe injection, and tabnapping |
 | **URL & Data Safety** | Centralized dangerous-scheme blocking (`javascript:`, `data:`, `vbscript:`, `blob:`), origin-pinned `replaceState`, prototype-pollution-safe JSON parsing for all localStorage reads |
 | **Build-Time Sanitizer** | YouTube API responses pass through HTML stripping, origin-allowlisted thumbnail validation, prototype pollution removal, and ID cross-checking before entering the client bundle |
-| **Runtime Monitoring** | CSP violation listener + postMessage origin guard + iframe origin audit — captures blocked injections, rogue extensions, and DOM tampering with dedup + rate limiting |
+| **Runtime Monitoring** | CSP violation listener + postMessage origin guard + iframe origin audit — captures blocked injections, rogue extensions, and DOM tampering with dedup + rate limiting. Deep-dive: **[docs/CSP_MONITOR.md](docs/CSP_MONITOR.md)** |
 | **Build Performance** | Code-split: Three.js vendor chunk (1.1 MB) loads only on desktop `/videos`; mobile gets a zero-WebGL bundle |
 | **Lighthouse** | 90+ Performance, 100 Accessibility, 100 Best Practices, 100 SEO (desktop) |
 
@@ -217,9 +217,9 @@ This portfolio is hardened beyond what most SPAs bother with — because if the 
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.35.1** (2026-03-14): Build-time API response sanitizer — HTML stripping, origin-allowlisted thumbnails, prototype pollution prevention, and ID cross-checking for all YouTube API data entering the client bundle (19 new tests).
+**Latest — v3.35.2** (2026-03-14): Added portfolio-grade documentation for the CSP Monitor runtime security subsystem — architecture diagrams, subsystem breakdowns, integration guide, and protected-config warnings.
 
-> Architecture and research docs: **[docs/](docs/)**
+> Architecture and research docs: **[docs/](docs/)** · Security deep-dive: **[docs/CSP_MONITOR.md](docs/CSP_MONITOR.md)**
 
 ---
 
