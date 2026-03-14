@@ -14,12 +14,8 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel&logoColor=white)](https://tdotssolutionsz.com)
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
-[![Tests](https://img.shields.io/badge/524_TESTS-41_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.35.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
-[![Tests](https://img.shields.io/badge/445_TESTS-36_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.32.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
-[![Tests](https://img.shields.io/badge/485_TESTS-38_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.33.2-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/555_TESTS-42_SUITES-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.35.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -128,7 +124,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 | **3D Engine** | Three.js 0.170 / React Three Fiber / Drei |
 | **Post-Processing** | Bloom, Vignette, Noise, Scanline, Chromatic Aberration |
 | **Video** | YouTube IFrame API (playback control, auto-advance, end detection) |
-| **Testing** | Vitest — 524 tests across 41 suites |
+| **Testing** | Vitest — 555 tests across 42 suites |
 | **Hosting** | Vercel with custom domain (tdotssolutionsz.com) |
 | **Build Pipeline** | YouTube API enrichment at build time (zero runtime API costs) |
 
@@ -141,7 +137,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 - **Build-Time Data** — `fetch-youtube-data.js` pulls real view counts and upload dates from YouTube at build time — zero runtime API dependencies
 - **Modular 3D** — Vehicles, effects, scene elements, atmosphere, and particles all extracted into focused modules with barrel exports
 - **11 Shared Hooks** — Deep linking, video navigation, shuffle play, favorites, copy-to-clipboard, keyboard shortcuts, search (with `searchWithFallback` utility), device type, fresnel materials, modal keyboard, outside click (supports single or multiple refs) — plus 2 inline hooks colocated with their components
-- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy blocking 18 browser APIs), YouTube ID validation at all entry points, HTTPS-enforced share windows, 30-pattern secret scanning
+- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy blocking 18 browser APIs), YouTube ID validation at all entry points, build-time API response sanitization, HTTPS-enforced share windows, 30-pattern secret scanning
 
 > Full architecture deep-dive: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 
@@ -191,7 +187,7 @@ src/
 │   └── ui/                    # SearchBar, ArtistPanel, TheaterMode, KeyboardGuide,
 │                              # SectionLabel, AudioVisualizer
 ├── hooks/                     # 11 shared hooks (+ 3 inline hooks in components)
-├── utils/                     # videoData, youtube, urlSafety, searchScoring, easing, formatters, audioAttenuation, imageFallback
+├── utils/                     # videoData, youtube, urlSafety, apiSanitizer, searchScoring, easing, formatters, audioAttenuation, imageFallback
 └── data/                      # videos.json (101 entries), photos.json (25 entries)
 ```
 
@@ -210,6 +206,7 @@ This portfolio is hardened beyond what most SPAs bother with — because if the 
 | **Video Integrity** | 21 dedicated playback tests guard CSP, referrer policy, iframe config, and YouTube ID validation |
 | **Runtime Monitoring** | CSP violation event listener captures blocked injection attempts with dedup + rate limiting; boot-time integrity checks for DOM clobbering, iframe injection, and tabnapping |
 | **URL & Data Safety** | Centralized dangerous-scheme blocking (`javascript:`, `data:`, `vbscript:`, `blob:`), origin-pinned `replaceState`, prototype-pollution-safe JSON parsing for all localStorage reads |
+| **Build-Time Sanitizer** | YouTube API responses pass through HTML stripping, origin-allowlisted thumbnail validation, prototype pollution removal, and ID cross-checking before entering the client bundle |
 | **Runtime Monitoring** | CSP violation listener + postMessage origin guard + iframe origin audit — captures blocked injections, rogue extensions, and DOM tampering with dedup + rate limiting |
 | **Build Performance** | Code-split: Three.js vendor chunk (1.1 MB) loads only on desktop `/videos`; mobile gets a zero-WebGL bundle |
 | **Lighthouse** | 90+ Performance, 100 Accessibility, 100 Best Practices, 100 SEO (desktop) |
@@ -220,7 +217,7 @@ This portfolio is hardened beyond what most SPAs bother with — because if the 
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.33.3** (2026-03-13): URL & data safety hardening — dangerous scheme blocking, origin-pinned replaceState, prototype pollution prevention in localStorage reads (31 new tests).
+**Latest — v3.35.1** (2026-03-14): Build-time API response sanitizer — HTML stripping, origin-allowlisted thumbnails, prototype pollution prevention, and ID cross-checking for all YouTube API data entering the client bundle (19 new tests).
 
 > Architecture and research docs: **[docs/](docs/)**
 

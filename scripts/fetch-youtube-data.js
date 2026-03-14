@@ -12,6 +12,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { sanitizeVideoItem, stripPoisonKeys } from '../src/utils/apiSanitizer.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.join(__dirname, '..');
@@ -94,22 +95,25 @@ async function main() {
     // Fetch data from YouTube API
     const youtubeData = await fetchVideoData(videoIds);
 
-    // Build enriched video data
-    const enrichedVideos = videos.map(video => {
-        // Find matching YouTube data
-        const ytVideo = youtubeData?.items?.find(item => item.id === video.youtubeId);
+    // Build enriched video data — sanitize all external API fields before bundling
+    const rawItems = stripPoisonKeys(youtubeData?.items || []);
+    let sanitizedCount = 0;
 
-        if (ytVideo) {
-            // Use real YouTube data
+    const enrichedVideos = videos.map(video => {
+        const rawItem = rawItems.find(item => item?.id === video.youtubeId);
+        const safeItem = rawItem ? sanitizeVideoItem(rawItem, video.youtubeId) : null;
+
+        if (safeItem) {
+            sanitizedCount++;
+            const thumbs = safeItem.snippet.thumbnails;
             return {
                 ...video,
-                viewCount: parseInt(ytVideo.statistics.viewCount, 10) || video.viewCount,
-                uploadDate: ytVideo.snippet.publishedAt?.split('T')[0] || video.uploadDate,
-                thumbnail: ytVideo.snippet.thumbnails?.maxres?.url 
-                    || ytVideo.snippet.thumbnails?.high?.url
+                viewCount: parseInt(safeItem.statistics.viewCount, 10) || video.viewCount,
+                uploadDate: safeItem.snippet.publishedAt?.split('T')[0] || video.uploadDate,
+                thumbnail: thumbs?.maxres?.url
+                    || thumbs?.high?.url
                     || `https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`,
-                duration: ytVideo.contentDetails?.duration || null,
-                channelTitle: ytVideo.snippet.channelTitle || null,
+                channelTitle: safeItem.snippet.channelTitle || null,
             };
         } else {
             // Use existing data with default thumbnail
@@ -119,6 +123,10 @@ async function main() {
             };
         }
     });
+
+    if (sanitizedCount > 0) {
+        console.log(`🛡️  Sanitized ${sanitizedCount} API response items (HTML/poison-key/origin checks)`);
+    }
 
     // Build output data
     const outputData = {

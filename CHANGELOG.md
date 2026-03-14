@@ -2,6 +2,18 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.35.1] - 2026-03-14
+
+### Security
+- **Build-time API response sanitizer** (`apiSanitizer.js`) — New defense-in-depth module that sanitizes all YouTube API response data before it enters `public/videos-enriched.json`. Addresses CWE-20 (improper input validation), CWE-79 (stored XSS via injected HTML in API fields), and CWE-1321 (prototype pollution via `__proto__`/`constructor` keys in external JSON)
+- **`sanitizeString()`** — Strips HTML tags and control characters from API string fields (channelTitle, publishedAt) before they're bundled into client-side data
+- **`isAllowedImageUrl()`** — Validates thumbnail URLs against an origin allowlist (img.youtube.com, i.ytimg.com, yt3.ggpht.com, yt3.googleusercontent.com) — rejects non-HTTPS and untrusted CDN origins
+- **`stripPoisonKeys()`** — Recursive prototype pollution prevention for nested API response objects, complementing the client-side `safeJsonParse()` in urlSafety.js
+- **`sanitizeVideoItem()`** — Per-item sanitizer that cross-checks API response item IDs against requested IDs (detects MITM response swaps), clamps negative view counts, and filters thumbnails through origin validation
+- **Integrated into `fetch-youtube-data.js`** — All YouTube API responses now pass through `stripPoisonKeys()` + `sanitizeVideoItem()` before being written to the build output
+- 19 new tests covering HTML stripping, control char removal, origin allowlisting, prototype pollution, ID mismatch detection, negative view count clamping, and graceful degradation
+- Test suite now at **555 tests across 42 suites** (up from 536/41)
+
 ## [3.35.0] - 2026-03-14
 
 ### Changed
