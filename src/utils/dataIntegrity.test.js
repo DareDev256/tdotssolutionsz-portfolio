@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import { VIDEOS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS, NEON_COLORS, DECEASED_ARTISTS } from './videoData'
-import { sanitizeSearchInput } from '../hooks/useSearch'
+import { sanitizeSearchInput } from './searchScoring'
 
 // ── Prototype Pollution Defense ─────────────────────────────────────
 // Third-party scripts (YouTube IFrame API, Troika font loader, Three.js)

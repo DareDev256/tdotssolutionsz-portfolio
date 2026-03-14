@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.35.0] - 2026-03-14
+
+### Changed
+- **Search scoring extraction** — Moved `fuzzyScore()`, `searchAll()`, `sanitizeSearchInput()`, and constants (`MAX_QUERY_LENGTH`, `CONTROL_CHAR_RE`) from hook file (`useSearch.js`) into dedicated utility module (`src/utils/searchScoring.js`). The hook now imports from the utility and re-exports for backward compatibility. Aligns with the project convention: pure algorithms live in `utils/`, hooks manage React state only
+- **Easing extraction** — Extracted `easeOutExpo()` from inline definition in `useCountUp.js` into `src/utils/easing.js`. The test suite now imports the canonical function instead of duplicating the formula. Single source of truth for animation curves
+- Updated 5 consumer imports (`MobileApp.jsx`, `SearchBar.jsx`, `searchScoring.test.js`, `dataIntegrity.test.js`, `useCountUp.test.js`) to import directly from utility modules
+
 ## [3.34.0] - 2026-03-13
 
 ### Changed

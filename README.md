@@ -15,7 +15,7 @@
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/524_TESTS-41_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.34.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.35.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -186,7 +186,7 @@ src/
 │   └── ui/                    # SearchBar, ArtistPanel, TheaterMode, KeyboardGuide,
 │                              # SectionLabel, AudioVisualizer
 ├── hooks/                     # 11 shared hooks (+ 3 inline hooks in components)
-├── utils/                     # videoData, youtube, urlSafety, formatters, audioAttenuation, imageFallback
+├── utils/                     # videoData, youtube, urlSafety, searchScoring, easing, formatters, audioAttenuation, imageFallback
 └── data/                      # videos.json (101 entries), photos.json (25 entries)
 ```
 

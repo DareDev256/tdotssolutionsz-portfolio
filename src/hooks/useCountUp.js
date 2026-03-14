@@ -12,6 +12,7 @@
  * @returns {number} Current animated value (integer)
  */
 import { useState, useEffect, useRef } from 'react'
+import { easeOutExpo } from '../utils/easing'
 
 export default function useCountUp(target, duration = 2000, trigger = false) {
   const [value, setValue] = useState(0)
@@ -28,8 +29,7 @@ export default function useCountUp(target, duration = 2000, trigger = false) {
       const elapsed = timestamp - startTimeRef.current
       const progress = Math.min(elapsed / duration, 1)
 
-      // easeOutExpo — fast start, gentle deceleration
-      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress)
+      const eased = easeOutExpo(progress)
       setValue(Math.round(eased * target))
 
       if (progress < 1) {

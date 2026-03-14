@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback, useRef } from 'react'
 import Icon from './Icon'
 import { ALL_ARTISTS, ARTIST_STATS } from '../../utils/videoData'
-import { searchAll } from '../../hooks/useSearch'
+import { searchAll } from '../../utils/searchScoring'
 import useOutsideClick from '../../hooks/useOutsideClick'
 import useModalKeyboard from '../../hooks/useModalKeyboard'
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { fuzzyScore, searchAll } from '../hooks/useSearch'
+import { fuzzyScore, searchAll } from './searchScoring'
 
 /**
  * Deep verification of fuzzyScore's mathematical properties and searchAll's

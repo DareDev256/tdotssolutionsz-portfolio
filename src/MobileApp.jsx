@@ -11,7 +11,7 @@ import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS }
 import { getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
 import { THUMBNAIL_FALLBACK } from './utils/imageFallback'
 import { formatViews } from './utils/formatters'
-import { searchAll } from './hooks/useSearch'
+import { searchAll } from './utils/searchScoring'
 import useVideoDeepLink from './hooks/useVideoDeepLink'
 import useVideoNavigation from './hooks/useVideoNavigation'
 import useCopyLink from './hooks/useCopyLink'

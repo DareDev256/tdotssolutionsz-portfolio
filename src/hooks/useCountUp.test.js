@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { easeOutExpo } from '../utils/easing'
 
 /**
  * Tests the easeOutExpo counting algorithm directly — matching the project's
@@ -6,11 +7,6 @@ import { describe, it, expect } from 'vitest'
  *
  * The hook wraps this core math in rAF; we test the math itself.
  */
-
-/** Reproduces the easing curve from useCountUp */
-function easeOutExpo(progress) {
-  return progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress)
-}
 
 function simulateCountUp(target, duration, elapsedMs) {
   const progress = Math.min(elapsedMs / duration, 1)
