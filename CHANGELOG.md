@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.36.1] - 2026-03-15
+
+### Security
+- **Dependency audit & remediation** — Patched HIGH severity Rollup path traversal vulnerability (GHSA-mw96-cpmx-2vgc) affecting `rollup@4.0.0–4.58.0`. Updated to `rollup@4.59.0+` via `npm audit fix`
+- **Extraneous package cleanup** — Removed 44 orphaned packages (legacy Mux, Vimeo, react-player, TikTok/Twitch/Wistia video elements, and associated utilities) that were no longer declared in `package.json` but persisted in `node_modules`, reducing supply-chain attack surface
+- **Full OWASP Top 10 audit** — Verified all 10 categories; zero code-level vulnerabilities found. Existing defenses confirmed: two-layer prototype pollution guards, build-time API response sanitizer, runtime CSP monitor, strict YouTube ID validation, URL scheme blocking, postMessage origin whitelisting, and iframe auditing
+- **npm audit result: 0 vulnerabilities** (was 1 HIGH)
+- All 555 tests passing across 42 suites (including 21 video playback regression tests and 29 security header tests)
+
 ## [3.35.2] - 2026-03-14
 
 ### Added
