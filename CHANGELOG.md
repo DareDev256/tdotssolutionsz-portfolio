@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.36.2] - 2026-03-17
+
+### Security
+- **YouTube API response envelope sanitizer** (`youtubeSanitizer.js`) — New defense-in-depth module that validates the outer structure of YouTube Data API v3 responses before individual items are processed. Operates upstream of `apiSanitizer.js` to catch structural attacks: malformed envelopes, item count amplification, oversized payloads, and unexpected response kinds
+- **`validatePayloadSize()`** — Rejects raw API response text exceeding 5 MB before JSON.parse runs, preventing CWE-400 (uncontrolled resource consumption) at build time
+- **`validateEnvelope()`** — Validates `kind`, `etag` format, `pageInfo` bounds, and `items[]` array shape against YouTube API v3 contract — detects MITM envelope swaps and impossible pagination values
+- **`sanitizeYouTubeResponse()`** — Full-pipeline entry point: envelope validation → count ceiling enforcement → poison key stripping → per-item sanitization → unrequested-ID filtering. Replaces manual item processing in the fetch script
+- **Fetch script hardened** — `fetch-youtube-data.js` now validates payload size before parsing and routes all items through the envelope sanitizer pipeline
+- 23 new tests covering payload size limits, envelope shape validation, etag format, item count ceiling, unrequested ID filtering, prototype pollution, and graceful degradation
+- Test suite now at **578 tests across 43 suites** (up from 555/42)
+
 ## [3.36.1] - 2026-03-15
 
 ### Security

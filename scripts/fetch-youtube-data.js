@@ -13,6 +13,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { sanitizeVideoItem, stripPoisonKeys } from '../src/utils/apiSanitizer.js';
+import { sanitizeYouTubeResponse, validatePayloadSize } from '../src/utils/youtubeSanitizer.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.join(__dirname, '..');
@@ -63,7 +64,14 @@ async function fetchVideoData(videoIds) {
         if (!response.ok) {
             throw new Error(`YouTube API error: ${response.status}`);
         }
-        return await response.json();
+        // Validate payload size before JSON parsing (CWE-400 guard)
+        const rawText = await response.text();
+        const sizeCheck = validatePayloadSize(rawText);
+        if (!sizeCheck.ok) {
+            console.error(`❌ Response payload rejected: ${sizeCheck.reason}`);
+            return null;
+        }
+        return JSON.parse(rawText);
     } catch (error) {
         console.error('❌ Failed to fetch YouTube data:', error.message);
         return null;
@@ -95,16 +103,20 @@ async function main() {
     // Fetch data from YouTube API
     const youtubeData = await fetchVideoData(videoIds);
 
-    // Build enriched video data — sanitize all external API fields before bundling
-    const rawItems = stripPoisonKeys(youtubeData?.items || []);
-    let sanitizedCount = 0;
+    // Build enriched video data — full pipeline sanitization of API response
+    const { items: safeItems, warnings } = youtubeData
+        ? sanitizeYouTubeResponse(youtubeData, videoIds)
+        : { items: [], warnings: [] };
+
+    if (warnings.length > 0) {
+        console.warn(`⚠️  Sanitizer warnings (${warnings.length}):`);
+        for (const w of warnings) console.warn(`   ${w}`);
+    }
 
     const enrichedVideos = videos.map(video => {
-        const rawItem = rawItems.find(item => item?.id === video.youtubeId);
-        const safeItem = rawItem ? sanitizeVideoItem(rawItem, video.youtubeId) : null;
+        const safeItem = safeItems.find(item => item?.id === video.youtubeId);
 
         if (safeItem) {
-            sanitizedCount++;
             const thumbs = safeItem.snippet.thumbnails;
             return {
                 ...video,
@@ -116,7 +128,6 @@ async function main() {
                 channelTitle: safeItem.snippet.channelTitle || null,
             };
         } else {
-            // Use existing data with default thumbnail
             return {
                 ...video,
                 thumbnail: `https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`,
@@ -124,8 +135,8 @@ async function main() {
         }
     });
 
-    if (sanitizedCount > 0) {
-        console.log(`🛡️  Sanitized ${sanitizedCount} API response items (HTML/poison-key/origin checks)`);
+    if (safeItems.length > 0) {
+        console.log(`🛡️  Sanitized ${safeItems.length} API response items (envelope + item-level checks)`);
     }
 
     // Build output data
