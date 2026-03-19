@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.36.3] - 2026-03-19
+
+### Fixed
+- **TopHits misleading link text** — Cards in the Top 10 ranked showcase displayed `video.description` as the song title, but the `description` field is inconsistent across the catalog (some entries contain featuring info, collaborator names, or wrong album titles instead of the actual song name). Swapped fallback priority to extract the song name from `video.title` first (via `title.replace(artist, '')`) and only fall back to `description` if the title extraction produces an empty string. Fixes misleading link text for #2 Casper TNG, #6 K Money collab, #7 Purple X BG, and #8 Hypa crew track
+
 ## [3.36.2] - 2026-03-17
 
 ### Security
