@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.36.4] - 2026-03-21
+
+### Added
+- **easeOutExpo test suite** (`easing.test.js`) — 15 tests covering the exponential ease-out curve used by `useCountUp` for animated counters. Validates boundary conditions (t=0→0, t=1→1 including the float precision guard), monotonicity (output never decreases), output range clamping [0,1], ease-out curve shape (85% at one-third, deceleration, concavity), formula correctness against `1 - 2^(-10t)`, and numerical stability at extreme values. Previously the only untested utility extracted in v3.35.0
+- Test suite now at **593 tests across 44 suites** (up from 578/43)
+
 ## [3.36.3] - 2026-03-19
 
 ### Fixed
