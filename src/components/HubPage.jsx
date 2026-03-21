@@ -6,6 +6,7 @@ import ArtistShowcase from './ArtistShowcase'
 import VideoSpotlight from './VideoSpotlight'
 import TopHits from './TopHits'
 import EraTimeline from './EraTimeline'
+import CinematicAtmosphere from './CinematicAtmosphere'
 import Icon from './ui/Icon'
 import { PORTFOLIO_STATS } from '../utils/videoData'
 import './HubPage.css'
@@ -24,6 +25,7 @@ export default function HubPage() {
       <div className="hub-curtain" aria-hidden="true" />
       <div className="hub-bg-grid" aria-hidden="true" />
       <div className="hub-bg-glow" aria-hidden="true" />
+      <CinematicAtmosphere />
 
       <header className="hub-header">
         <img

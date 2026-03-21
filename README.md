@@ -15,7 +15,7 @@
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/593_TESTS-44_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.36.4-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.37.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -59,7 +59,7 @@ Dark glassmorphism cards with floating CSS particles, scanline overlay, and stag
 
 ### 🏠 Hub Landing Page (`/`)
 
-The front door. Moody, atmospheric, and designed to showcase 14 years of Toronto hip-hop video production like a label's homepage — not a portfolio template. Opens with a **cinematic entrance sequence** — theater curtains split apart, logo blooms in with neon flare, title slides in from opposing sides with motion blur, and content cascades in like opening credits. Ambient stage lights slowly orbit the background, making the entire page breathe.
+The front door. Moody, atmospheric, and designed to showcase 14 years of Toronto hip-hop video production like a label's homepage — not a portfolio template. Opens with a **cinematic entrance sequence** — theater curtains split apart, logo blooms in with neon flare, title slides in from opposing sides with motion blur, and content cascades in like opening credits. **Cinematic Atmosphere**: a three-layer immersive system — scroll-reactive ambient glow shifts color as you move between sections (purple origins → pink artists → cyan spotlight → orange charts → green eras), CSS-only film grain noise overlay creates authentic analog texture, and a radial vignette darkens the edges like a camera lens. Every section feels like a chapter in a visual narrative. Ambient stage lights slowly orbit the background, making the entire page breathe.
 
 - **"Now Playing" Cinematic Hero** — Full-bleed ultra-wide (21:9) viewport showcasing a random top-20 video. Hover triggers auto-playing YouTube preview (muted) with dual-gradient cinematic overlay, pulsing NOW PLAYING badge, mute/unmute toggle, and WATCH NOW CTA. **3D Portal Frame**: rotating neon torus rings and drifting particles behind the viewport create an Astroworld-inspired gate effect, color-cycling through the neon palette per video. **Scroll-driven animations**: parallax thumbnail shift, dolly zoom scale, staggered info reveal, and reactive neon aura glow that intensifies as you scroll. Responsive: 16:9 tablet, 16:10 mobile. Respects `prefers-reduced-motion`
 - **Film Strip** — Continuously scrolling 35mm film strip of the top 14 most-viewed video thumbnails, styled with celluloid sprocket holes, dark film borders, and vignette edge fades. Hover pauses the strip and reveals the artist name. Click any frame to jump to that video. Respects `prefers-reduced-motion`

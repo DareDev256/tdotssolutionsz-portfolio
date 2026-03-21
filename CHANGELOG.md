@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.37.0] - 2026-03-21
+
+### Added
+- **Cinematic Atmosphere** (`CinematicAtmosphere.jsx`) — Scroll-reactive ambient mood lighting system for HubPage inspired by the "Culture Chronicle" creative concept. Three fixed layers create an immersive, chapter-based narrative feel as users scroll through the portfolio:
+  - **Scroll-reactive glow**: `useAtmosphereScroll` hook uses IntersectionObserver + rAF-throttled scroll to detect the dominant viewport section and smoothly transitions the ambient background color between moods (purple origins → pink artists → cyan spotlight → orange top hits → green eras). 1.4s cubic-bezier transition creates cinematic color shifts
+  - **Film grain overlay**: CSS-only analog noise using SVG `feTurbulence` as a data URI background. Animated with stepped `transform` shifts for subtle grain movement. `mix-blend-mode: overlay` at 3.5% opacity — visible enough to feel authentic, light enough to never distract
+  - **Cinematic vignette**: Radial gradient darkening the viewport edges like a camera lens, adding depth and focus to the center content
+- All three layers respect `prefers-reduced-motion` (grain animation stops, glow transitions are instant, vignette remains static)
+- Zero new dependencies — pure CSS + React hooks
+
 ## [3.36.4] - 2026-03-21
 
 ### Added
