@@ -1,4 +1,5 @@
 import { VIDEOS, ALL_ARTISTS, ARTIST_STATS } from './videoData'
+import { CONTROL_CHAR_UNICODE_RE } from './securityConstants.js'
 
 /**
  * Lightweight fuzzy substring matching — scores how well `query` matches `text`.
@@ -53,11 +54,9 @@ export const MAX_QUERY_LENGTH = 100
  * corruption in rendered results, or exploit text-processing edge cases.
  * Preserves all printable Unicode (letters, numbers, punctuation, emoji).
  */
-export const CONTROL_CHAR_RE = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\u200B-\u200F\u2028-\u202F\uFEFF\uFFF0-\uFFFF]/g
-
 export function sanitizeSearchInput(raw) {
     if (!raw || typeof raw !== 'string') return ''
-    return raw.replace(CONTROL_CHAR_RE, '').slice(0, MAX_QUERY_LENGTH)
+    return raw.replace(CONTROL_CHAR_UNICODE_RE, '').slice(0, MAX_QUERY_LENGTH)
 }
 
 /**

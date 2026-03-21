@@ -15,14 +15,11 @@
  * @module apiSanitizer
  */
 
-/** Keys that enable prototype pollution when present in parsed JSON */
-const POISON_KEYS = new Set(['__proto__', 'constructor', 'prototype'])
-
-/** HTML tags and script patterns — strip from string fields to prevent stored XSS */
-const HTML_TAG_RE = /<\/?[a-z][^>]*>/gi
-
-/** Control characters that can corrupt rendering or exploit text processors */
-const CONTROL_CHAR_RE = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g
+import {
+  POISON_KEYS,
+  CONTROL_CHAR_ASCII_RE as CONTROL_CHAR_RE,
+  HTML_TAG_RE,
+} from './securityConstants.js'
 
 /** Allowed origins for thumbnail/image URLs from YouTube API responses */
 const ALLOWED_IMG_ORIGINS = new Set([

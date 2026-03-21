@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.37.1] - 2026-03-21
+
+### Changed
+- **Shared security constants** (`securityConstants.js`) — Extracted duplicated security primitives (`POISON_KEYS`, control character regexes, `HTML_TAG_RE`) into a single source-of-truth module. Previously, `POISON_KEYS` was identically defined in both `apiSanitizer.js` and `urlSafety.js`, and two different-scope control character regexes existed without documentation explaining why they differed
+  - `CONTROL_CHAR_ASCII_RE` — C0/C1 range for API response data (YouTube Data API v3)
+  - `CONTROL_CHAR_UNICODE_RE` — Extended range including zero-width Unicode for user-typed input (search queries)
+  - `apiSanitizer.js`, `urlSafety.js`, and `searchScoring.js` now import from the shared module instead of defining local copies
+- 18 new tests for the shared constants module covering POISON_KEYS completeness, both regex scopes (ASCII vs Unicode), HTML tag stripping, and edge cases (emoji preservation, BOM, specials block). Test suite now at **611 tests across 45 suites**
+
 ## [3.37.0] - 2026-03-21
 
 ### Added

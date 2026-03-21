@@ -72,7 +72,7 @@ export function safeReplaceState(url) {
  * @param {*} fallback - Return value if parsing fails (default: null)
  * @returns {*} Parsed value with dangerous keys stripped, or fallback on error
  */
-const POISON_KEYS = new Set(['__proto__', 'constructor', 'prototype'])
+import { POISON_KEYS } from './securityConstants.js'
 
 export function safeJsonParse(raw, fallback = null) {
     if (!raw || typeof raw !== 'string') return fallback
