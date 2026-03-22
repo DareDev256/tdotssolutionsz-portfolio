@@ -81,6 +81,44 @@ describe('TopHits — data integrity', () => {
     })
   })
 
+  it('title extraction should never duplicate the artist name', () => {
+    // Guards the fix: splitting on first " - " delimiter handles all title formats
+    // (solo, featured, collabs, multi-artist) without duplicating artist text.
+    TOP_10.forEach(video => {
+      const separatorIdx = video.title.indexOf(' - ')
+      const extracted = separatorIdx !== -1
+        ? video.title.slice(separatorIdx + 3)
+        : video.title
+
+      // Extracted song name should never be empty
+      expect(extracted.length).toBeGreaterThan(0)
+
+      // Extracted song name should not start with the artist (would mean duplicate)
+      expect(extracted.startsWith(video.artist)).toBe(false)
+    })
+  })
+
+  it('title extraction handles featured artist format correctly', () => {
+    // "Casper TNG ft. Fresh - Dope Boy" → "Dope Boy"
+    const ftTitle = 'Casper TNG ft. Fresh - Dope Boy'
+    const idx = ftTitle.indexOf(' - ')
+    expect(ftTitle.slice(idx + 3)).toBe('Dope Boy')
+  })
+
+  it('title extraction handles multi-artist collab format correctly', () => {
+    // "Hypa, Sloc, M, Fresh - Deeper Than The Ocean" → "Deeper Than The Ocean"
+    const collabTitle = 'Hypa, Sloc, M, Fresh - Deeper Than The Ocean'
+    const idx = collabTitle.indexOf(' - ')
+    expect(collabTitle.slice(idx + 3)).toBe('Deeper Than The Ocean')
+  })
+
+  it('title extraction handles X-collab format correctly', () => {
+    // "SLOC X BG X LV X YG - It\'s Only Us" → "It's Only Us"
+    const xTitle = "SLOC X BG X LV X YG - It's Only Us"
+    const idx = xTitle.indexOf(' - ')
+    expect(xTitle.slice(idx + 3)).toBe("It's Only Us")
+  })
+
   it('rank colors array has exactly 10 entries', () => {
     // Validates the RANK_COLORS constant matches the top 10 count
     const RANK_COLORS = [

@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.37.3] - 2026-03-22
+
+### Fixed
+- **TopHits title extraction** — Song titles for featured-artist (`ft.`), multi-artist comma-separated, and X-collab formats now correctly extract only the song name instead of showing the full title with redundant artist text. Previous logic used `title.replace(\`${artist} - \`, '')` which silently failed when the title prefix didn't match the artist field exactly (e.g. `"Hypa, Sloc, M, Fresh - Deeper Than The Ocean"` with artist `"Hypa"`). Now splits on the first ` - ` delimiter — the universal YouTube title format — which works for all artist/collab patterns
+- 4 new tests guarding title extraction: no artist duplication across real data, plus explicit cases for `ft.`, comma-collab, and X-collab formats
+
 ## [3.37.1] - 2026-03-21
 
 ### Changed

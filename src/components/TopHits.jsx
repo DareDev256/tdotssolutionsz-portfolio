@@ -115,7 +115,16 @@ export default function TopHits() {
             {/* Metadata */}
             <div className="top-hit-info">
               <span className="top-hit-artist">{video.artist}</span>
-              <span className="top-hit-title">{video.title.replace(`${video.artist} - `, '') || video.description}</span>
+              <span className="top-hit-title">
+                {(() => {
+                  const separatorIdx = video.title.indexOf(' - ')
+                  // Extract everything after the first " - " delimiter (the song name).
+                  // Falls back to the full title if no separator exists, then to description.
+                  return separatorIdx !== -1
+                    ? video.title.slice(separatorIdx + 3) || video.description
+                    : video.title || video.description
+                })()}
+              </span>
               <span className="top-hit-year">{formatYear(video.uploadDate)}</span>
             </div>
 
