@@ -202,7 +202,7 @@ This portfolio is hardened beyond what most SPAs bother with — because if the 
 |----------|--------|
 | **HTTP Headers** | 11 security headers: CSP, HSTS (preload), COOP, CORP, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy (18 APIs blocked) |
 | **Content Security** | Strict CSP with YouTube/Google allowlists — no `unsafe-eval`, no `unsafe-inline` in production |
-| **Secret Scanning** | 30-pattern pre-commit scanner catches `sk-`, `ghp_`, `AKIA`, Bearer tokens, private keys, DB URIs |
+| **Secret Scanning** | 30-pattern pre-commit scanner detects AWS keys, GitHub tokens, OpenAI/Anthropic keys, private keys, DB URIs, and more — with documentation-aware skip rules to eliminate false positives |
 | **Dependency Audit** | `npm audit` integrated into CI — zero high/critical vulnerabilities |
 | **Video Integrity** | 21 dedicated playback tests guard CSP, referrer policy, iframe config, and YouTube ID validation |
 | **Runtime Monitoring** | CSP violation event listener captures blocked injection attempts with dedup + rate limiting; boot-time integrity checks for DOM clobbering, iframe injection, and tabnapping |

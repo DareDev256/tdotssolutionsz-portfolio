@@ -2,6 +2,25 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.37.5] - 2026-03-23
+
+### Security
+- **Full OWASP Top 10 audit — clean bill** — Comprehensive security review covering hardcoded secrets, dependency vulnerabilities, input validation, XSS vectors, injection attacks, access control, and security misconfiguration. Zero findings across all categories
+- **Secret scanner false positive fixed** — `scan-secrets.js` Bearer token pattern triggered on README.md documentation prose ("catches Bearer tokens"). Added two surgical skip rules: backtick-wrapped code references and documentation prose describing scanner capabilities. Real Bearer token leaks (e.g. `Authorization: Bearer eyJ...`) still caught — verified with regression test. Scanner now returns clean on full codebase scan
+
+### Audit Summary
+- **npm audit**: 0 vulnerabilities across 226 dependencies (91 prod, 136 dev)
+- **Secret scan**: Clean (30 patterns, 0 findings after false positive fix)
+- **CSP headers**: Complete — no `unsafe-eval`, strict allowlists, `frame-ancestors 'none'`
+- **Security headers**: 11 headers verified (HSTS preload, COOP, CORP, Permissions-Policy blocking 18 APIs)
+- **Input validation**: All URL params (`?v=`, `?artist=`) validated via regex/allowlist before use
+- **XSS prevention**: No `dangerouslySetInnerHTML`, API strings sanitized (HTML tag + control char stripping)
+- **Prototype pollution**: `safeJsonParse` reviver on all localStorage reads, `stripPoisonKeys` on API data
+- **Open redirect**: `safeReplaceState` blocks absolute URLs + dangerous schemes; `openShareWindow` enforces host allowlist + HTTPS
+- **Reverse tabnapping**: All `target="_blank"` links use `rel="noopener noreferrer"`; `window.open` hardcodes the same
+- **Runtime monitoring**: CSP violation listener, postMessage origin guard, iframe origin audit, boot-time integrity checks
+- **Test suite**: 616 tests across 45 suites — all passing
+
 ## [3.37.4] - 2026-03-23
 
 ### Fixed

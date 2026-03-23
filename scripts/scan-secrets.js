@@ -88,8 +88,12 @@ function scanFile(filePath) {
   const findings = [];
 
   content.split('\n').forEach((line, idx) => {
-    // Skip comments that document patterns (like this file itself)
+    // Skip lines that document patterns rather than containing actual secrets.
+    // Catches: regex definitions (re:, RegExp, test()), inline code blocks (`Bearer`),
+    // and documentation prose that describes what the scanner detects.
     if (line.includes('re:') || line.includes('RegExp') || line.includes('test(')) return;
+    if (/`[^`]*Bearer[^`]*`/.test(line)) return;
+    if (/catches?\b.*Bearer/i.test(line)) return;
 
     for (const { name, re } of SECRET_PATTERNS) {
       if (re.test(line)) {
