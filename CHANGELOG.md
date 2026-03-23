@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.37.4] - 2026-03-23
+
+### Fixed
+- **searchScoring test clarity** — Removed misleading comments that described `"abc"` in `"abcXXX"` as a "subsequence" match when it's actually a substring match (hits the `includes()` fast path → returns 1.0, never reaches the subsequence scorer). Added explicit test verifying the substring-vs-subsequence boundary: `fuzzyScore('abc', 'abcXXX') === 1.0` vs `fuzzyScore('abc', 'aXbXcX') < 1.0`. Cleaned up the consecutive-runs test to clearly document why it uses `"abd"` instead of `"abc"`. Test suite now at **616 tests across 45 suites**
+
 ## [3.37.3] - 2026-03-22
 
 ### Fixed

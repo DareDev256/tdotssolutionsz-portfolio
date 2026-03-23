@@ -30,10 +30,22 @@ describe('fuzzyScore — scoring formula verification', () => {
         expect(shortText).toBeGreaterThan(longText)
     })
 
+    it('substring match returns 1.0 via includes() fast path, not subsequence scoring', () => {
+        // "abc" IS a substring of "abcXXX" — hits t.includes(q) on line 15
+        // This returns 1.0 immediately, bypassing the subsequence scorer entirely.
+        // Previously a misleading comment here called this a "subsequence" match.
+        expect(fuzzyScore('abc', 'abcXXX')).toBe(1.0)
+        expect(fuzzyScore('abc', 'XXXabcXXX')).toBe(1.0)
+        // Contrast: "aXbXcX" does NOT contain "abc" as a substring
+        expect(fuzzyScore('abc', 'aXbXcX')).toBeLessThan(1.0)
+        expect(fuzzyScore('abc', 'aXbXcX')).toBeGreaterThan(0)
+    })
+
     it('consecutive char runs score higher than scattered matches', () => {
-        // "abc" subsequence in "aXbXcX" — maxConsecutive = 1
-        // "abc" subsequence in "abcXXX" — maxConsecutive = 3 (but this is substring match = 1.0)
-        // Better test: "abd" in "abXXdX" (consecutive=2) vs "aXbXdX" (consecutive=1)
+        // Uses query "abd" — NOT a substring of either text, so both go
+        // through the subsequence scorer where consecutiveBonus matters.
+        // "abd" in "abXXdX": a-b consecutive (run=2), then d after gap
+        // "abd" in "aXbXdX": all chars separated by gaps (run=1)
         const consecutive = fuzzyScore('abd', 'abXXdX') // maxConsec = 2
         const scattered = fuzzyScore('abd', 'aXbXdX')   // maxConsec = 1
         expect(consecutive).toBeGreaterThan(scattered)
