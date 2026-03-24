@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.38.0] - 2026-03-24
+
+### Added
+- **Latest Drops — Netflix-style "New Releases" row on HubPage** — Horizontally scrollable card rail showcasing the 8 most recent videos. Features drag-to-scroll with pointer capture (mouse + touch + pen), staggered scroll-reveal entrance animations, "NEW" badge with pulsing neon glow on videos from the last 6 months, cinematic hover effects (lift + scale + green accent border glow), play icon overlay, and responsive card sizing. Positioned between navigation cards and FilmStrip for maximum discovery impact. Fills the content discovery gap: TopHits = popular, FilmStrip = top viewed, EraTimeline = historical, **LatestDrops = recent**. Fully accessible with ARIA labels, `role="list"`, and `prefers-reduced-motion` support. Uses existing `latestFirst()`, `formatViews()`, `formatDate()`, and `getThumbnailUrl()` utilities — zero new dependencies
+
 ## [3.37.6] - 2026-03-24
 
 ### Changed

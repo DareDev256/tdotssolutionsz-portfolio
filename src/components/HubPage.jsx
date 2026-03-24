@@ -5,6 +5,7 @@ import FilmStrip from './FilmStrip'
 import ArtistShowcase from './ArtistShowcase'
 import VideoSpotlight from './VideoSpotlight'
 import TopHits from './TopHits'
+import LatestDrops from './LatestDrops'
 import EraTimeline from './EraTimeline'
 import CinematicAtmosphere from './CinematicAtmosphere'
 import Icon from './ui/Icon'
@@ -77,6 +78,7 @@ export default function HubPage() {
         </button>
       </nav>
 
+      <LatestDrops />
       <FilmStrip />
       <ArtistShowcase />
       <VideoSpotlight />
