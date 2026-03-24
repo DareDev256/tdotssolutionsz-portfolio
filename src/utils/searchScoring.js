@@ -11,8 +11,20 @@ export function fuzzyScore(query, text) {
     const q = query.toLowerCase()
     const t = text.toLowerCase()
 
-    // Exact substring → highest score
-    if (t.includes(q)) return 1
+    // Exact match → perfect score
+    if (q === t) return 1
+
+    // Substring match → score by position and coverage
+    // Prefix matches rank higher than mid-string matches;
+    // higher coverage (query fills more of the text) ranks higher too.
+    const subIdx = t.indexOf(q)
+    if (subIdx !== -1) {
+        const coverage = q.length / t.length
+        // prefix: 0.90–1.0  |  mid-string: 0.80–0.90
+        return subIdx === 0
+            ? 0.90 + coverage * 0.10
+            : 0.80 + coverage * 0.10
+    }
 
     // Subsequence match: every char of query appears in order in text
     let qi = 0

@@ -21,24 +21,37 @@ describe('fuzzyScore — scoring formula verification', () => {
     })
 
     it('full coverage subsequence scores higher than partial coverage', () => {
-        // "abc" in "abc" vs "abc" in "abcdefghij"
-        // First is exact substring (score = 1.0)
-        // Second is also exact substring (score = 1.0 because includes() returns true)
-        // But "ac" in "abc" vs "ac" in "abcdefghij"
+        // "ac" in "abc" vs "ac" in "abcdefghij" — subsequence, not substring
         const shortText = fuzzyScore('ac', 'abc')   // coverage = 2/3
         const longText = fuzzyScore('ac', 'abcdefghij') // coverage = 2/10
         expect(shortText).toBeGreaterThan(longText)
     })
 
-    it('substring match returns 1.0 via includes() fast path, not subsequence scoring', () => {
-        // "abc" IS a substring of "abcXXX" — hits t.includes(q) on line 15
-        // This returns 1.0 immediately, bypassing the subsequence scorer entirely.
-        // Previously a misleading comment here called this a "subsequence" match.
-        expect(fuzzyScore('abc', 'abcXXX')).toBe(1.0)
-        expect(fuzzyScore('abc', 'XXXabcXXX')).toBe(1.0)
-        // Contrast: "aXbXcX" does NOT contain "abc" as a substring
-        expect(fuzzyScore('abc', 'aXbXcX')).toBeLessThan(1.0)
-        expect(fuzzyScore('abc', 'aXbXcX')).toBeGreaterThan(0)
+    it('exact match returns 1.0, prefix > mid-string > subsequence', () => {
+        // Exact match → 1.0
+        expect(fuzzyScore('abc', 'abc')).toBe(1.0)
+
+        // Prefix substring → 0.90 + (coverage * 0.10)
+        const prefix = fuzzyScore('abc', 'abcXXX') // coverage = 3/6 = 0.5 → 0.95
+        expect(prefix).toBeCloseTo(0.95, 2)
+        expect(prefix).toBeLessThan(1.0)
+
+        // Mid-string substring → 0.80 + (coverage * 0.10)
+        const mid = fuzzyScore('abc', 'XXXabcXXX') // coverage = 3/9 ≈ 0.333 → ≈0.833
+        expect(mid).toBeCloseTo(0.833, 2)
+        expect(mid).toBeLessThan(prefix) // prefix beats mid-string
+
+        // Subsequence (not a substring) → lowest tier
+        const subseq = fuzzyScore('abc', 'aXbXcX')
+        expect(subseq).toBeLessThan(mid)
+        expect(subseq).toBeGreaterThan(0)
+    })
+
+    it('prefix match ranks above mid-string match for identical queries', () => {
+        // "drake" at start vs "drake" buried in text
+        const prefix = fuzzyScore('drake', 'drake - gods plan')
+        const middle = fuzzyScore('drake', 'feat. drake')
+        expect(prefix).toBeGreaterThan(middle)
     })
 
     it('consecutive char runs score higher than scattered matches', () => {

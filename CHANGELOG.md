@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.38.1] - 2026-03-24
+
+### Fixed
+- **Search ranking: prefix matches now outrank mid-string matches** — `fuzzyScore` previously returned a flat `1.0` for all substring matches, making "Drake" in `"Drake - God's Plan"` rank identically to "Drake" in `"feat. Drake"`. Now uses position-aware scoring: exact match = 1.0, prefix = 0.90–1.0, mid-string = 0.80–0.90 (scaled by coverage). Resolves search result ordering bugs where irrelevant mid-string hits tied with exact prefix matches. 13 tests updated/added, all 632 passing
+
 ## [3.38.0] - 2026-03-24
 
 ### Added

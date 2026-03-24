@@ -14,8 +14,10 @@ describe('fuzzyScore', () => {
         expect(fuzzyScore('test', '')).toBe(0)
     })
 
-    it('matches partial substring', () => {
-        expect(fuzzyScore('cas', 'Casper TNG')).toBe(1)
+    it('matches partial substring (prefix scores high but below exact)', () => {
+        const score = fuzzyScore('cas', 'Casper TNG') // prefix: 0.90 + (3/10)*0.10 = 0.93
+        expect(score).toBeGreaterThan(0.9)
+        expect(score).toBeLessThan(1.0)
     })
 
     it('returns > 0 for subsequence match (typo tolerance)', () => {

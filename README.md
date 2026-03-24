@@ -43,7 +43,7 @@ A Tron-inspired metropolis you scroll through on a light cycle. 200+ edge-lit bu
 - **Theater Mode** — Press `F` for fullscreen immersive playback; arrow keys skip tracks; guarded close animation prevents race conditions on rapid toggles
 - **Audio Visualizer** — Press `V` for a beat-synced procedural visualizer with frequency bars, floating particles, speaker-cone bass ring, and VHS scanner sweep — all in the synthwave neon palette
 - **Shuffle Play** — Press `S` for random discovery with no-repeat history
-- **Fuzzy Search** — Typo-tolerant search across artists and video titles
+- **Fuzzy Search** — Typo-tolerant search across artists and video titles with position-aware ranking (prefix matches outrank mid-string hits)
 - **Artist Panel** — Click any artist name for a slide-in sidebar with all their videos and stats
 - **Golden Angel Halos** — Deceased artists (Murda, BG) honored with golden halos and ethereal bloom glow
 - **Keyboard Shortcuts** — Press `?` to see all controls
