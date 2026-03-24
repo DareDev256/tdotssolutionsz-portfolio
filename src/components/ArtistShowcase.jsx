@@ -9,6 +9,7 @@
 import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { VIDEOS, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from '../utils/videoData'
+import { topVideoForArtist } from '../utils/videoFilters'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
 import useCountUp from '../hooks/useCountUp'
@@ -21,10 +22,7 @@ const TOP_ARTISTS = ALL_ARTISTS
   .map(name => ({
     name,
     ...ARTIST_STATS[name],
-    // Get the most-viewed video for this artist (for thumbnail)
-    topVideo: VIDEOS
-      .filter(v => v.artist === name)
-      .sort((a, b) => b.viewCount - a.viewCount)[0]
+    topVideo: topVideoForArtist(VIDEOS, name)
   }))
   .sort((a, b) => b.totalViews - a.totalViews)
   .slice(0, 12)

@@ -11,6 +11,7 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
+import { topByViews } from '../utils/videoFilters'
 import { formatViews, formatYear } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
 import SectionLabel from './ui/SectionLabel'
@@ -34,12 +35,7 @@ export default function TopHits() {
   const trackRef = useRef(null)
 
   /** Top 10 videos sorted by view count, computed once at mount */
-  const topVideos = useMemo(() =>
-    [...VIDEOS]
-      .sort((a, b) => b.viewCount - a.viewCount)
-      .slice(0, 10),
-    []
-  )
+  const topVideos = useMemo(() => topByViews(VIDEOS, 10), [])
 
   /** IntersectionObserver for staggered card reveal */
   useEffect(() => {

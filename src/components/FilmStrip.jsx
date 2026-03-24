@@ -6,6 +6,7 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
+import { topByViews } from '../utils/videoFilters'
 import { getThumbnailUrl } from '../utils/youtube'
 import './FilmStrip.css'
 
@@ -14,10 +15,7 @@ const FRAME_COUNT = 14
 export default function FilmStrip() {
   const navigate = useNavigate()
 
-  const frames = useMemo(() => {
-    const sorted = [...VIDEOS].sort((a, b) => b.viewCount - a.viewCount)
-    return sorted.slice(0, FRAME_COUNT)
-  }, [])
+  const frames = useMemo(() => topByViews(VIDEOS, FRAME_COUNT), [])
 
   // Duplicate frames for seamless infinite scroll loop
   const doubledFrames = useMemo(() => [...frames, ...frames], [frames])

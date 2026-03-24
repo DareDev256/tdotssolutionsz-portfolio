@@ -8,6 +8,7 @@
  */
 import { useEffect, useRef } from 'react'
 import { VIDEOS } from '../utils/videoData'
+import { byYearRange, topByViews } from '../utils/videoFilters'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
 import SectionLabel from './ui/SectionLabel'
@@ -72,10 +73,7 @@ export const ERA_DEFS = [
 
 /** Pre-compute era stats from video data */
 export const ERAS = ERA_DEFS.map(era => {
-  const videos = VIDEOS.filter(v => {
-    const year = new Date(v.uploadDate).getFullYear()
-    return year >= era.range[0] && year <= era.range[1]
-  }).sort((a, b) => b.viewCount - a.viewCount)
+  const videos = topByViews(byYearRange(VIDEOS, era.range[0], era.range[1]))
 
   const totalViews = videos.reduce((sum, v) => sum + v.viewCount, 0)
   const uniqueArtists = new Set(videos.map(v => v.artist)).size

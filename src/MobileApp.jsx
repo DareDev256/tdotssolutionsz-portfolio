@@ -8,6 +8,7 @@ import useFavorites from './hooks/useFavorites'
 import useBatchReveal from './hooks/useBatchReveal'
 import useSwipe from './hooks/useSwipe'
 import { VIDEOS, POPULAR_THRESHOLD, ALL_ARTISTS, ARTIST_STATS, PORTFOLIO_STATS } from './utils/videoData'
+import { topByViews, latestFirst, byArtist } from './utils/videoFilters'
 import { getShareUrl, getThumbnailUrl, openShareWindow } from './utils/youtube'
 import { THUMBNAIL_FALLBACK } from './utils/imageFallback'
 import { formatViews } from './utils/formatters'
@@ -96,22 +97,14 @@ export default function MobileApp() {
     }, [searchOpen])
 
     const filteredVideos = useMemo(() => {
-        let vids = [...VIDEOS]
-        if (filterArtist) {
-            vids = vids.filter(v => v.artist === filterArtist)
-        }
+        const vids = filterArtist ? byArtist(VIDEOS, filterArtist) : VIDEOS
         if (activeTab === 'favorites') {
-            return vids
-                .filter(v => favorites.includes(v.id))
-                .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+            return latestFirst(vids.filter(v => favorites.includes(v.id)))
         }
         if (activeTab === 'latest') {
-            return vids.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
-        } else {
-            return vids
-                .filter(v => v.viewCount >= POPULAR_THRESHOLD)
-                .sort((a, b) => b.viewCount - a.viewCount)
+            return latestFirst(vids)
         }
+        return topByViews(vids.filter(v => v.viewCount >= POPULAR_THRESHOLD))
     }, [activeTab, filterArtist, favorites])
 
     const searchResults = useMemo(() => {

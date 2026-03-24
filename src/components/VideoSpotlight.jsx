@@ -7,6 +7,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
+import { topByViews } from '../utils/videoFilters'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
 import { diverseShuffle } from '../utils/diverseShuffle'
@@ -15,9 +16,7 @@ import useCinematicScroll from '../hooks/useCinematicScroll'
 import SpotlightPortal from './SpotlightPortal'
 import './VideoSpotlight.css'
 
-const SPOTLIGHT_POOL = [...VIDEOS]
-  .sort((a, b) => b.viewCount - a.viewCount)
-  .slice(0, 20)
+const SPOTLIGHT_POOL = topByViews(VIDEOS, 20)
 
 const HISTORY_SIZE = Math.max(1, SPOTLIGHT_POOL.length - 1)
 

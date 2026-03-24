@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.37.6] - 2026-03-24
+
+### Changed
+- **Extracted video filtering/sorting into `videoFilters.js`** — Five components (TopHits, VideoSpotlight, FilmStrip, EraTimeline, ArtistShowcase) and MobileApp each reimplemented `[...VIDEOS].sort((a, b) => b.viewCount - a.viewCount).slice(0, N)`. Centralized into `topByViews()`, `latestFirst()`, `byArtist()`, `byYearRange()`, and `topVideoForArtist()` utilities. Ranking strategy changes now propagate from one file instead of six
+- **15 new tests** for videoFilters — covers sorting correctness, limit behavior, immutability guarantees, empty inputs, and composed filters. Test suite now at **631 tests across 46 suites**
+
 ## [3.37.5] - 2026-03-23
 
 ### Security
