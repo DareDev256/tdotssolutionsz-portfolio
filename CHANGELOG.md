@@ -2,6 +2,13 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.38.2] - 2026-03-25
+
+### Added
+- **Deep test coverage for search scoring formula** — 15 new tests across 4 new describe blocks verifying prefix scoring (0.90 + coverage × 0.10), mid-string scoring (0.80 + coverage × 0.10), score tier boundaries (mid-string ceiling < prefix floor), and edge cases (null/undefined/empty inputs, no-match returns 0). Catches formula regressions that would silently break search ranking
+- **`sanitizeSearchInput` direct test suite** — 6 tests covering C0 control character stripping, zero-width Unicode bypass prevention, truncation to MAX_QUERY_LENGTH, strip-then-truncate ordering (prevents bypass via control char padding), and null/non-string input handling. Previously only tested indirectly through `searchAll`
+- Test suite now at **647 tests across 46 suites** (up from 632)
+
 ## [3.38.1] - 2026-03-24
 
 ### Fixed

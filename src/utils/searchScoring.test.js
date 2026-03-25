@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { fuzzyScore, searchAll } from './searchScoring'
+import { fuzzyScore, searchAll, sanitizeSearchInput, MAX_QUERY_LENGTH } from './searchScoring'
 
 /**
  * Deep verification of fuzzyScore's mathematical properties and searchAll's
@@ -81,6 +81,125 @@ describe('fuzzyScore — scoring formula verification', () => {
         expect(fuzzyScore('DRAKE', 'drake')).toBe(1) // exact substring
         expect(fuzzyScore('drake', 'DRAKE')).toBe(1)
         expect(fuzzyScore('DrAkE', 'dRaKe')).toBe(1)
+    })
+
+    it('returns 0 for null, undefined, and empty inputs', () => {
+        expect(fuzzyScore(null, 'text')).toBe(0)
+        expect(fuzzyScore('query', null)).toBe(0)
+        expect(fuzzyScore('', 'text')).toBe(0)
+        expect(fuzzyScore('query', '')).toBe(0)
+        expect(fuzzyScore(null, null)).toBe(0)
+        expect(fuzzyScore(undefined, undefined)).toBe(0)
+    })
+
+    it('returns 0 when query chars do not appear in order', () => {
+        expect(fuzzyScore('zyx', 'abcdef')).toBe(0)
+        expect(fuzzyScore('ba', 'abcdef')).toBe(0) // reversed order
+        expect(fuzzyScore('xyz', 'abc')).toBe(0)    // no chars at all
+    })
+})
+
+describe('fuzzyScore — prefix scoring formula: 0.90 + coverage × 0.10', () => {
+    it('prefix score scales with coverage — short text scores higher', () => {
+        // "drop" in "dropXX" → coverage = 4/6 ≈ 0.667 → 0.9667
+        const short = fuzzyScore('drop', 'dropXX')
+        expect(short).toBeCloseTo(0.90 + (4 / 6) * 0.10, 3)
+
+        // "drop" in "dropXXXXXXXXXX" → coverage = 4/14 ≈ 0.286 → 0.929
+        const long = fuzzyScore('drop', 'dropXXXXXXXXXX')
+        expect(long).toBeCloseTo(0.90 + (4 / 14) * 0.10, 3)
+
+        expect(short).toBeGreaterThan(long)
+    })
+
+    it('prefix ceiling approaches but never reaches 1.0', () => {
+        // Maximum prefix score: query is almost the full text
+        // "abcde" in "abcdef" → coverage = 5/6 → 0.983
+        const nearFull = fuzzyScore('abcde', 'abcdef')
+        expect(nearFull).toBeCloseTo(0.90 + (5 / 6) * 0.10, 3)
+        expect(nearFull).toBeLessThan(1.0)
+    })
+
+    it('prefix floor is 0.90 for vanishingly small coverage', () => {
+        // "a" in "a" + 99 X's → coverage = 1/100 = 0.01 → 0.901
+        const tiny = fuzzyScore('a', 'a' + 'X'.repeat(99))
+        expect(tiny).toBeCloseTo(0.901, 2)
+        expect(tiny).toBeGreaterThan(0.90)
+    })
+
+    it('real-world prefix: artist name at start of title', () => {
+        const score = fuzzyScore('migos', 'migos - culture iii')
+        const expected = 0.90 + (5 / 19) * 0.10
+        expect(score).toBeCloseTo(expected, 3)
+    })
+})
+
+describe('fuzzyScore — mid-string scoring formula: 0.80 + coverage × 0.10', () => {
+    it('mid-string score scales with coverage', () => {
+        // "abc" in "XabcX" → coverage = 3/5 = 0.6 → 0.86
+        const tight = fuzzyScore('abc', 'XabcX')
+        expect(tight).toBeCloseTo(0.80 + (3 / 5) * 0.10, 3)
+
+        // "abc" in "XXXXXabcXXXXX" → coverage = 3/13 ≈ 0.231 → 0.823
+        const buried = fuzzyScore('abc', 'XXXXXabcXXXXX')
+        expect(buried).toBeCloseTo(0.80 + (3 / 13) * 0.10, 3)
+
+        expect(tight).toBeGreaterThan(buried)
+    })
+
+    it('mid-string ceiling stays below prefix floor', () => {
+        // Best possible mid-string: "ab" in "Xab" → coverage = 2/3 → 0.867
+        // Worst possible prefix:    "a" in "a" + 99 X's → 0.901
+        const bestMid = fuzzyScore('ab', 'Xab')
+        const worstPrefix = fuzzyScore('a', 'a' + 'X'.repeat(99))
+        expect(bestMid).toBeLessThan(worstPrefix)
+    })
+
+    it('real-world mid-string: "feat." artist buried in title', () => {
+        const score = fuzzyScore('drake', 'sicko mode feat. drake')
+        const expected = 0.80 + (5 / 22) * 0.10
+        expect(score).toBeCloseTo(expected, 3)
+    })
+})
+
+describe('sanitizeSearchInput — control char stripping and truncation', () => {
+    it('passes through normal alphanumeric and emoji input', () => {
+        expect(sanitizeSearchInput('drake 🔥')).toBe('drake 🔥')
+        expect(sanitizeSearchInput('Migos - Culture')).toBe('Migos - Culture')
+    })
+
+    it('strips C0 control characters (null, backspace, escape)', () => {
+        expect(sanitizeSearchInput('dra\x00ke')).toBe('drake')
+        expect(sanitizeSearchInput('\x08hello\x1B')).toBe('hello')
+    })
+
+    it('strips zero-width Unicode characters used for fuzzy bypass', () => {
+        // Zero-width space (U+200B) injected between chars
+        expect(sanitizeSearchInput('d\u200Br\u200Bake')).toBe('drake')
+        // BOM (U+FEFF) prepended
+        expect(sanitizeSearchInput('\uFEFFquery')).toBe('query')
+    })
+
+    it('truncates to MAX_QUERY_LENGTH (100) chars', () => {
+        const long = 'a'.repeat(150)
+        const result = sanitizeSearchInput(long)
+        expect(result.length).toBe(100)
+    })
+
+    it('strips control chars THEN truncates (order matters for bypass)', () => {
+        // 98 real chars + 50 zero-width chars + 2 real chars = strips to 100 real, truncates to 100
+        const payload = 'A'.repeat(98) + '\u200B'.repeat(50) + 'BB'
+        const result = sanitizeSearchInput(payload)
+        // After stripping: 100 chars of "A...ABB", truncated to 100
+        expect(result.length).toBe(100)
+        expect(result).toBe('A'.repeat(98) + 'BB')
+    })
+
+    it('returns empty string for null, undefined, non-string inputs', () => {
+        expect(sanitizeSearchInput(null)).toBe('')
+        expect(sanitizeSearchInput(undefined)).toBe('')
+        expect(sanitizeSearchInput(42)).toBe('')
+        expect(sanitizeSearchInput({})).toBe('')
     })
 })
 
