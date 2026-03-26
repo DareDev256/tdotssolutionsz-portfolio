@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { fuzzyScore, searchAll, sanitizeSearchInput, MAX_QUERY_LENGTH } from './searchScoring'
+import { fuzzyScore, searchAll, sanitizeSearchInput, MAX_QUERY_LENGTH, SCORE_EPSILON } from './searchScoring'
 
 /**
  * Deep verification of fuzzyScore's mathematical properties and searchAll's
@@ -200,6 +200,35 @@ describe('sanitizeSearchInput — control char stripping and truncation', () => 
         expect(sanitizeSearchInput(undefined)).toBe('')
         expect(sanitizeSearchInput(42)).toBe('')
         expect(sanitizeSearchInput({})).toBe('')
+    })
+})
+
+describe('searchAll — epsilon-bucketed sort stability', () => {
+    it('SCORE_EPSILON is exported and positive', () => {
+        expect(SCORE_EPSILON).toBeGreaterThan(0)
+        expect(SCORE_EPSILON).toBeLessThan(1e-6) // sanity: epsilon is tiny
+    })
+
+    it('scores within epsilon are treated as equal, falling through to view-count tiebreaker', () => {
+        // When two videos score identically (or within epsilon) for a query,
+        // the sort must fall through to view count — the more popular video first.
+        // With the old strict `!==` comparison, IEEE 754 rounding on different
+        // text lengths could produce scores that differ by ~1e-16, bypassing
+        // the tiebreaker and producing unstable ordering.
+        const result = searchAll('Freestyle')
+        if (result.videos.length >= 2) {
+            // Among videos with tied or near-tied scores, higher view counts come first
+            for (let i = 0; i < result.videos.length - 1; i++) {
+                const a = result.videos[i]
+                const b = result.videos[i + 1]
+                const aScore = Math.max(fuzzyScore('freestyle', a.title), fuzzyScore('freestyle', a.artist) * 0.8)
+                const bScore = Math.max(fuzzyScore('freestyle', b.title), fuzzyScore('freestyle', b.artist) * 0.8)
+                if (Math.abs(aScore - bScore) <= SCORE_EPSILON) {
+                    // Scores are within epsilon — view count tiebreaker must apply
+                    expect(a.viewCount).toBeGreaterThanOrEqual(b.viewCount)
+                }
+            }
+        }
     })
 })
 

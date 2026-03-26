@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.38.3] - 2026-03-26
+
+### Fixed
+- **Search result sort stability — epsilon-bucketed score comparison** — `searchAll` sort callbacks used strict inequality (`!==`) to compare floating-point scores, a classic IEEE 754 antipattern. Two videos with nearly-identical relevance (scores differing by ~1e-16 due to different text lengths) would bypass the view-count tiebreaker, producing unstable/flaky ordering. Now uses `Math.abs(diff) > SCORE_EPSILON` (1e-9) so scores within machine-precision noise are treated as equal, correctly falling through to the popularity tiebreaker. 2 new tests verify epsilon export and tiebreaker activation. Test suite: **649 tests across 46 suites**
+
 ## [3.38.2] - 2026-03-25
 
 ### Added

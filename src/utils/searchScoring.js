@@ -2,6 +2,15 @@ import { VIDEOS, ALL_ARTISTS, ARTIST_STATS } from './videoData'
 import { CONTROL_CHAR_UNICODE_RE } from './securityConstants.js'
 
 /**
+ * Epsilon for floating-point score comparisons. Scores within this threshold
+ * are treated as equal, allowing the popularity tiebreaker to activate.
+ * Without this, IEEE 754 rounding means nearly-identical scores (e.g.
+ * 0.90 + 3/7*0.10 vs 0.90 + 5/12*0.10) can differ by ~1e-16, causing
+ * the sort to treat them as meaningfully different and skip the tiebreaker.
+ */
+export const SCORE_EPSILON = 1e-9
+
+/**
  * Lightweight fuzzy substring matching — scores how well `query` matches `text`.
  * Returns 0 (no match) to 1 (perfect match). Handles typos by checking if
  * all query chars appear in order within the text (subsequence match).
@@ -84,8 +93,9 @@ export function searchAll(rawQuery) {
         .map(artist => ({ artist, score: fuzzyScore(query, artist) }))
         .filter(r => r.score > 0)
         .sort((a, b) => {
-            // Primary: score, secondary: total views (popular artists first)
-            if (b.score !== a.score) return b.score - a.score
+            // Primary: score (epsilon-bucketed), secondary: total views (popular artists first)
+            const diff = b.score - a.score
+            if (Math.abs(diff) > SCORE_EPSILON) return diff
             return (ARTIST_STATS[b.artist]?.totalViews || 0) - (ARTIST_STATS[a.artist]?.totalViews || 0)
         })
         .map(r => r.artist)
@@ -98,7 +108,9 @@ export function searchAll(rawQuery) {
         })
         .filter(r => r.score > 0)
         .sort((a, b) => {
-            if (b.score !== a.score) return b.score - a.score
+            // Primary: score (epsilon-bucketed), secondary: view count (popular videos first)
+            const diff = b.score - a.score
+            if (Math.abs(diff) > SCORE_EPSILON) return diff
             return b.video.viewCount - a.video.viewCount
         })
         .slice(0, 8) // cap video results for UI clarity
