@@ -15,7 +15,7 @@
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/649_TESTS-46_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.39.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.38.4-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -219,7 +219,7 @@ This portfolio is hardened beyond what most SPAs bother with — because if the 
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.35.2** (2026-03-14): Added portfolio-grade documentation for the CSP Monitor runtime security subsystem — architecture diagrams, subsystem breakdowns, integration guide, and protected-config warnings.
+**Latest — v3.38.4** (2026-03-27): Security hardening — fixed picomatch ReDoS, added security.txt (RFC 9116), expanded secret scanner to 38 patterns covering modern AI/cloud tokens. Full OWASP Top 10 re-audit clean.
 
 > Architecture and research docs: **[docs/](docs/)** · Security deep-dive: **[docs/CSP_MONITOR.md](docs/CSP_MONITOR.md)**
 
