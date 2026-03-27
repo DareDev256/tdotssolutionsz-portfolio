@@ -15,7 +15,7 @@
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/649_TESTS-46_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.38.3-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.39.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
@@ -68,7 +68,7 @@ The front door. Moody, atmospheric, and designed to showcase 14 years of Toronto
 - **Impact Numbers** — Scroll-triggered animated stat counters using `requestAnimationFrame` with `easeOutExpo` easing. Four neon-accented cards (pink/cyan/gold/green) count up from zero: videos, artists, total views, years active. Each card staggers its entrance with sliding neon accent bars. `tabular-nums` prevents layout shift during counting. Fully responsive (2×2 grid on mobile), respects `prefers-reduced-motion`. 8 tests verify the easing algorithm
 - **Top Hits — Ranked Showcase** — Netflix Top 10-style horizontally scrollable strip of the most-viewed productions. Oversized hollow neon rank numbers with per-rank color theming (#1 gold, #2 pink, #3 cyan...), cinematic thumbnail cards with hover zoom + glow, animated view count badges, and staggered scroll-reveal animations. Each card links directly to the video detail page. 16 tests guard ranking integrity, title extraction, and data validation
 - **Production Era Timeline** — Horizontal scroll cards grouping 101 videos into four eras (Origins 2010–2014, Rise 2015–2017, Peak 2018–2020, New Wave 2021–2026) with per-era color theming, top video thumbnails, scroll-snap, and timeline connector dots with glow effects
-- **Latest Drops** — Netflix-style "New Releases" horizontal scroll rail showing the 8 most recent videos. Drag-to-scroll with pointer capture, "NEW" badge with pulsing neon glow on videos from the last 6 months, cinematic hover effects (lift + scale + green accent glow), staggered entrance animations, and responsive sizing. Think Spotify's new releases row, but with synthwave energy
+- **Latest Drops** — Netflix-style "New Releases" horizontal scroll rail showing the 8 most recent videos. Drag-to-scroll with pointer capture, "NEW" badge with pulsing neon glow on videos from the last 6 months, staggered entrance animations, and responsive sizing. **Black Box Reveal**: thumbnails start in a moody desaturated state and "power on" when hovered — color floods in while a VHS-style neon scan line sweeps across the image and CRT grain fades in, creating a cinematic reveal moment. Enhanced 60px neon aura bloom on hover. Think Spotify's new releases row, but with synthwave energy and a film projector powering up
 - **Split Navigation** — Two-card entry to Music Videos (live) and Photography (coming soon) with animated gradient borders and backdrop blur
 
 ### 🔗 Video Detail Page (`/video/:youtubeId`)
