@@ -10,6 +10,22 @@ import { CONTROL_CHAR_UNICODE_RE } from './securityConstants.js'
  */
 export const SCORE_EPSILON = 1e-9
 
+// ── Scoring constants ─────────────────────────────────────────────
+// Exported so tests verify behaviour against the same constants
+// rather than duplicating magic numbers in every assertion.
+/** Base score for a prefix substring match (query starts the text). */
+export const PREFIX_BASE = 0.90
+/** Base score for a mid-string substring match (query found, not at start). */
+export const MID_BASE = 0.80
+/** Coverage multiplier applied on top of PREFIX_BASE / MID_BASE. */
+export const SUBSTRING_COVERAGE_WEIGHT = 0.10
+/** Base floor for subsequence-only matches (chars in order, not contiguous). */
+export const SUBSEQUENCE_BASE = 0.30
+/** Weight of query/text length coverage in subsequence scoring. */
+export const COVERAGE_WEIGHT = 0.35
+/** Weight of longest consecutive char run in subsequence scoring. */
+export const CONSECUTIVE_WEIGHT = 0.35
+
 /**
  * Lightweight fuzzy substring matching — scores how well `query` matches `text`.
  * Returns 0 (no match) to 1 (perfect match). Handles typos by checking if
@@ -29,10 +45,9 @@ export function fuzzyScore(query, text) {
     const subIdx = t.indexOf(q)
     if (subIdx !== -1) {
         const coverage = q.length / t.length
-        // prefix: 0.90–1.0  |  mid-string: 0.80–0.90
-        return subIdx === 0
-            ? 0.90 + coverage * 0.10
-            : 0.80 + coverage * 0.10
+        // prefix: PREFIX_BASE–1.0  |  mid-string: MID_BASE–PREFIX_BASE
+        const base = subIdx === 0 ? PREFIX_BASE : MID_BASE
+        return base + coverage * SUBSTRING_COVERAGE_WEIGHT
     }
 
     // Subsequence match: every char of query appears in order in text
@@ -63,7 +78,7 @@ export function fuzzyScore(query, text) {
     // Max possible: 0.3 + 0.35 + 0.35 = 1.0 (but only exact substrings hit 1.0)
     const coverage = q.length / t.length
     const consecutiveBonus = maxConsecutive / q.length
-    return 0.3 + (coverage * 0.35) + (consecutiveBonus * 0.35)
+    return SUBSEQUENCE_BASE + (coverage * COVERAGE_WEIGHT) + (consecutiveBonus * CONSECUTIVE_WEIGHT)
 }
 
 /** Hard cap on query length to prevent performance abuse via long fuzzy inputs */

@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.38.4] - 2026-03-28
+
+### Changed
+- **Extracted scoring formula magic numbers into named constants** — `PREFIX_BASE`, `MID_BASE`, `SUBSTRING_COVERAGE_WEIGHT`, `SUBSEQUENCE_BASE`, `COVERAGE_WEIGHT`, `CONSECUTIVE_WEIGHT` are now exported from `searchScoring.js`. The source function uses these constants instead of inline `0.90`, `0.80`, `0.10`, `0.30`, `0.35` literals. Tests import the same constants via a shared `expectedSubstringScore()` helper, eliminating 10+ duplicated inline formula calculations. Changing the scoring formula now requires updating one constant, not hunting through test assertions. All 649 tests passing
+
 ## [3.38.3] - 2026-03-26
 
 ### Fixed

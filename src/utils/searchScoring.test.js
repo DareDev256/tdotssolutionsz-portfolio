@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { fuzzyScore, searchAll, sanitizeSearchInput, MAX_QUERY_LENGTH, SCORE_EPSILON } from './searchScoring'
+import { fuzzyScore, searchAll, sanitizeSearchInput, MAX_QUERY_LENGTH, SCORE_EPSILON,
+    PREFIX_BASE, MID_BASE, SUBSTRING_COVERAGE_WEIGHT, SUBSEQUENCE_BASE,
+    COVERAGE_WEIGHT, CONSECUTIVE_WEIGHT } from './searchScoring'
 
 /**
  * Deep verification of fuzzyScore's mathematical properties and searchAll's
@@ -8,16 +10,30 @@ import { fuzzyScore, searchAll, sanitizeSearchInput, MAX_QUERY_LENGTH, SCORE_EPS
  * degrade ranking, and input sanitization edge cases.
  */
 
+/**
+ * Compute the expected substring match score from the shared constants.
+ * Eliminates the repeated inline `0.90 + (qLen / tLen) * 0.10` arithmetic
+ * that was duplicated across 10+ test assertions.
+ * @param {number} queryLen  Length of the search query
+ * @param {number} textLen   Length of the target text
+ * @param {boolean} isPrefix True if the match starts at index 0
+ * @returns {number} Expected score
+ */
+function expectedSubstringScore(queryLen, textLen, isPrefix) {
+    const base = isPrefix ? PREFIX_BASE : MID_BASE
+    return base + (queryLen / textLen) * SUBSTRING_COVERAGE_WEIGHT
+}
+
 describe('fuzzyScore — scoring formula verification', () => {
-    // The formula: 0.30 base + (coverage * 0.35) + (consecutiveBonus * 0.35)
+    // The formula: SUBSEQUENCE_BASE + (coverage * COVERAGE_WEIGHT) + (consecutiveBonus * CONSECUTIVE_WEIGHT)
     // where coverage = queryLen/textLen, consecutiveBonus = maxConsecutiveRun/queryLen
 
     it('subsequence match gets exactly 0.30 base when coverage and consecutive are minimal', () => {
         // "ae" in "abcdefghij" — chars exist in order but scattered
         // coverage = 2/10 = 0.2, consecutive = 1/2 = 0.5
-        // score = 0.30 + (0.2 * 0.35) + (0.5 * 0.35) = 0.30 + 0.07 + 0.175 = 0.545
         const score = fuzzyScore('ae', 'abcdefghij')
-        expect(score).toBeCloseTo(0.545, 2)
+        const expected = SUBSEQUENCE_BASE + (0.2 * COVERAGE_WEIGHT) + (0.5 * CONSECUTIVE_WEIGHT)
+        expect(score).toBeCloseTo(expected, 2)
     })
 
     it('full coverage subsequence scores higher than partial coverage', () => {
@@ -31,14 +47,14 @@ describe('fuzzyScore — scoring formula verification', () => {
         // Exact match → 1.0
         expect(fuzzyScore('abc', 'abc')).toBe(1.0)
 
-        // Prefix substring → 0.90 + (coverage * 0.10)
-        const prefix = fuzzyScore('abc', 'abcXXX') // coverage = 3/6 = 0.5 → 0.95
-        expect(prefix).toBeCloseTo(0.95, 2)
+        // Prefix substring → PREFIX_BASE + (coverage * SUBSTRING_COVERAGE_WEIGHT)
+        const prefix = fuzzyScore('abc', 'abcXXX') // coverage = 3/6
+        expect(prefix).toBeCloseTo(expectedSubstringScore(3, 6, true), 2)
         expect(prefix).toBeLessThan(1.0)
 
-        // Mid-string substring → 0.80 + (coverage * 0.10)
-        const mid = fuzzyScore('abc', 'XXXabcXXX') // coverage = 3/9 ≈ 0.333 → ≈0.833
-        expect(mid).toBeCloseTo(0.833, 2)
+        // Mid-string substring → MID_BASE + (coverage * SUBSTRING_COVERAGE_WEIGHT)
+        const mid = fuzzyScore('abc', 'XXXabcXXX') // coverage = 3/9
+        expect(mid).toBeCloseTo(expectedSubstringScore(3, 9, false), 2)
         expect(mid).toBeLessThan(prefix) // prefix beats mid-string
 
         // Subsequence (not a substring) → lowest tier
@@ -99,24 +115,24 @@ describe('fuzzyScore — scoring formula verification', () => {
     })
 })
 
-describe('fuzzyScore — prefix scoring formula: 0.90 + coverage × 0.10', () => {
+describe('fuzzyScore — prefix scoring formula: PREFIX_BASE + coverage × SUBSTRING_COVERAGE_WEIGHT', () => {
     it('prefix score scales with coverage — short text scores higher', () => {
-        // "drop" in "dropXX" → coverage = 4/6 ≈ 0.667 → 0.9667
+        // "drop" in "dropXX" → coverage = 4/6
         const short = fuzzyScore('drop', 'dropXX')
-        expect(short).toBeCloseTo(0.90 + (4 / 6) * 0.10, 3)
+        expect(short).toBeCloseTo(expectedSubstringScore(4, 6, true), 3)
 
-        // "drop" in "dropXXXXXXXXXX" → coverage = 4/14 ≈ 0.286 → 0.929
+        // "drop" in "dropXXXXXXXXXX" → coverage = 4/14
         const long = fuzzyScore('drop', 'dropXXXXXXXXXX')
-        expect(long).toBeCloseTo(0.90 + (4 / 14) * 0.10, 3)
+        expect(long).toBeCloseTo(expectedSubstringScore(4, 14, true), 3)
 
         expect(short).toBeGreaterThan(long)
     })
 
     it('prefix ceiling approaches but never reaches 1.0', () => {
         // Maximum prefix score: query is almost the full text
-        // "abcde" in "abcdef" → coverage = 5/6 → 0.983
+        // "abcde" in "abcdef" → coverage = 5/6
         const nearFull = fuzzyScore('abcde', 'abcdef')
-        expect(nearFull).toBeCloseTo(0.90 + (5 / 6) * 0.10, 3)
+        expect(nearFull).toBeCloseTo(expectedSubstringScore(5, 6, true), 3)
         expect(nearFull).toBeLessThan(1.0)
     })
 
@@ -129,20 +145,19 @@ describe('fuzzyScore — prefix scoring formula: 0.90 + coverage × 0.10', () =>
 
     it('real-world prefix: artist name at start of title', () => {
         const score = fuzzyScore('migos', 'migos - culture iii')
-        const expected = 0.90 + (5 / 19) * 0.10
-        expect(score).toBeCloseTo(expected, 3)
+        expect(score).toBeCloseTo(expectedSubstringScore(5, 19, true), 3)
     })
 })
 
-describe('fuzzyScore — mid-string scoring formula: 0.80 + coverage × 0.10', () => {
+describe('fuzzyScore — mid-string scoring formula: MID_BASE + coverage × SUBSTRING_COVERAGE_WEIGHT', () => {
     it('mid-string score scales with coverage', () => {
-        // "abc" in "XabcX" → coverage = 3/5 = 0.6 → 0.86
+        // "abc" in "XabcX" → coverage = 3/5
         const tight = fuzzyScore('abc', 'XabcX')
-        expect(tight).toBeCloseTo(0.80 + (3 / 5) * 0.10, 3)
+        expect(tight).toBeCloseTo(expectedSubstringScore(3, 5, false), 3)
 
-        // "abc" in "XXXXXabcXXXXX" → coverage = 3/13 ≈ 0.231 → 0.823
+        // "abc" in "XXXXXabcXXXXX" → coverage = 3/13
         const buried = fuzzyScore('abc', 'XXXXXabcXXXXX')
-        expect(buried).toBeCloseTo(0.80 + (3 / 13) * 0.10, 3)
+        expect(buried).toBeCloseTo(expectedSubstringScore(3, 13, false), 3)
 
         expect(tight).toBeGreaterThan(buried)
     })
@@ -157,8 +172,7 @@ describe('fuzzyScore — mid-string scoring formula: 0.80 + coverage × 0.10', (
 
     it('real-world mid-string: "feat." artist buried in title', () => {
         const score = fuzzyScore('drake', 'sicko mode feat. drake')
-        const expected = 0.80 + (5 / 22) * 0.10
-        expect(score).toBeCloseTo(expected, 3)
+        expect(score).toBeCloseTo(expectedSubstringScore(5, 22, false), 3)
     })
 })
 
