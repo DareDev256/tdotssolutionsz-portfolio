@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.38.5] - 2026-03-28
+
+### Changed
+- **Extracted epsilon-bucketed sort comparator into `epsilonSortBy()` factory** — The duplicated `Math.abs(diff) > SCORE_EPSILON ? diff : tiebreaker` pattern in `searchAll()` artist and video sorts is now a single exported comparator factory. Artist and video tiebreakers are named functions (`artistTiebreaker`, `videoTiebreaker`) instead of inline anonymous callbacks. Changing epsilon behavior or sort strategy now requires editing one function, not two copy-pasted blocks. 3 new tests verify the factory in isolation (score-dominant sort, epsilon fallthrough, tiebreaker bypass). All 652 tests passing across 46 suites
+
 ## [3.38.4] - 2026-03-28
 
 ### Changed

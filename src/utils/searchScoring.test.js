@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { fuzzyScore, searchAll, sanitizeSearchInput, MAX_QUERY_LENGTH, SCORE_EPSILON,
     PREFIX_BASE, MID_BASE, SUBSTRING_COVERAGE_WEIGHT, SUBSEQUENCE_BASE,
-    COVERAGE_WEIGHT, CONSECUTIVE_WEIGHT } from './searchScoring'
+    COVERAGE_WEIGHT, CONSECUTIVE_WEIGHT, epsilonSortBy } from './searchScoring'
 
 /**
  * Deep verification of fuzzyScore's mathematical properties and searchAll's
@@ -214,6 +214,33 @@ describe('sanitizeSearchInput — control char stripping and truncation', () => 
         expect(sanitizeSearchInput(undefined)).toBe('')
         expect(sanitizeSearchInput(42)).toBe('')
         expect(sanitizeSearchInput({})).toBe('')
+    })
+})
+
+describe('epsilonSortBy — comparator factory', () => {
+    it('sorts by score descending when scores differ by more than epsilon', () => {
+        const items = [
+            { score: 0.50, label: 'low' },
+            { score: 0.90, label: 'high' },
+            { score: 0.70, label: 'mid' },
+        ]
+        const sorted = [...items].sort(epsilonSortBy(() => 0))
+        expect(sorted.map(i => i.label)).toEqual(['high', 'mid', 'low'])
+    })
+
+    it('falls through to tiebreaker when scores are within epsilon', () => {
+        const a = { score: 0.900000000000001, views: 100 }
+        const b = { score: 0.900000000000002, views: 500 }
+        // Scores differ by ~1e-15 (within SCORE_EPSILON of 1e-9)
+        const sorted = [a, b].sort(epsilonSortBy((x, y) => y.views - x.views))
+        expect(sorted[0].views).toBe(500) // tiebreaker: higher views first
+    })
+
+    it('does NOT use tiebreaker when score gap exceeds epsilon', () => {
+        const a = { score: 0.95, views: 1 }
+        const b = { score: 0.50, views: 999999 }
+        const sorted = [a, b].sort(epsilonSortBy((x, y) => y.views - x.views))
+        expect(sorted[0].score).toBe(0.95) // score wins despite fewer views
     })
 })
 

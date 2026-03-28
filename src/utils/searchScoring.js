@@ -96,6 +96,28 @@ export function sanitizeSearchInput(raw) {
 }
 
 /**
+ * Build an epsilon-bucketed sort comparator. Scores within SCORE_EPSILON
+ * are treated as equal, falling through to the `tiebreaker` function.
+ * This prevents IEEE 754 rounding noise (~1e-16) from overriding
+ * meaningful popularity-based ordering.
+ * @param {(a: T, b: T) => number} tiebreaker  Secondary sort when scores tie
+ * @returns {(a: {score:number}, b: {score:number}) => number}
+ */
+export function epsilonSortBy(tiebreaker) {
+    return (a, b) => {
+        const diff = b.score - a.score
+        return Math.abs(diff) > SCORE_EPSILON ? diff : tiebreaker(a, b)
+    }
+}
+
+/** Artist popularity tiebreaker — higher total views first */
+const artistTiebreaker = (a, b) =>
+    (ARTIST_STATS[b.artist]?.totalViews || 0) - (ARTIST_STATS[a.artist]?.totalViews || 0)
+
+/** Video popularity tiebreaker — higher view count first */
+const videoTiebreaker = (a, b) => b.video.viewCount - a.video.viewCount
+
+/**
  * Search across artists and video titles with fuzzy matching.
  * Returns { artists: [...], videos: [...] } ranked by relevance.
  * Sanitizes control characters and truncates beyond MAX_QUERY_LENGTH.
@@ -107,12 +129,7 @@ export function searchAll(rawQuery) {
     const artistResults = ALL_ARTISTS
         .map(artist => ({ artist, score: fuzzyScore(query, artist) }))
         .filter(r => r.score > 0)
-        .sort((a, b) => {
-            // Primary: score (epsilon-bucketed), secondary: total views (popular artists first)
-            const diff = b.score - a.score
-            if (Math.abs(diff) > SCORE_EPSILON) return diff
-            return (ARTIST_STATS[b.artist]?.totalViews || 0) - (ARTIST_STATS[a.artist]?.totalViews || 0)
-        })
+        .sort(epsilonSortBy(artistTiebreaker))
         .map(r => r.artist)
 
     const videoResults = VIDEOS
@@ -122,12 +139,7 @@ export function searchAll(rawQuery) {
             return { video, score: Math.max(titleScore, artistScore) }
         })
         .filter(r => r.score > 0)
-        .sort((a, b) => {
-            // Primary: score (epsilon-bucketed), secondary: view count (popular videos first)
-            const diff = b.score - a.score
-            if (Math.abs(diff) > SCORE_EPSILON) return diff
-            return b.video.viewCount - a.video.viewCount
-        })
+        .sort(epsilonSortBy(videoTiebreaker))
         .slice(0, 8) // cap video results for UI clarity
         .map(r => r.video)
 
