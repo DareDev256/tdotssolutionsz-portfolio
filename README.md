@@ -127,7 +127,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 | **3D Engine** | Three.js 0.170 / React Three Fiber / Drei |
 | **Post-Processing** | Bloom, Vignette, Noise, Scanline, Chromatic Aberration |
 | **Video** | YouTube IFrame API (playback control, auto-advance, end detection) |
-| **Testing** | Vitest — 647 tests across 46 suites |
+| **Testing** | Vitest — 658 tests across 46 suites |
 | **Hosting** | Vercel with custom domain (tdotssolutionsz.com) |
 | **Build Pipeline** | YouTube API enrichment at build time (zero runtime API costs) |
 
@@ -220,7 +220,7 @@ This portfolio is hardened beyond what most SPAs bother with — because if the 
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.38.4** (2026-03-27): Security hardening — fixed picomatch ReDoS, added security.txt (RFC 9116), expanded secret scanner to 38 patterns covering modern AI/cloud tokens. Full OWASP Top 10 re-audit clean.
+**Latest — v3.38.4** (2026-03-27): `fuzzyScore` edge case test suite — 9 new tests covering single-char queries, query>text rejection, repeated-char consecutive tracking, tier boundary invariants, Unicode/emoji matching, and score monotonicity. 658 tests across 46 suites.
 
 > Architecture and research docs: **[docs/](docs/)** · Security deep-dive: **[docs/CSP_MONITOR.md](docs/CSP_MONITOR.md)**
 
