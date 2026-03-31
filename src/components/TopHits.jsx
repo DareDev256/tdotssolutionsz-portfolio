@@ -8,12 +8,13 @@
  * All data is pre-computed at import time (zero runtime API cost).
  * Uses IntersectionObserver for scroll-triggered staggered reveals.
  */
-import { useEffect, useRef, useMemo } from 'react'
+import { useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
 import { topByViews } from '../utils/videoFilters'
 import { formatViews, formatYear } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
+import useStaggerReveal from '../hooks/useStaggerReveal'
 import SectionLabel from './ui/SectionLabel'
 import './TopHits.css'
 
@@ -37,27 +38,10 @@ export default function TopHits() {
   /** Top 10 videos sorted by view count, computed once at mount */
   const topVideos = useMemo(() => topByViews(VIDEOS, 10), [])
 
-  /** IntersectionObserver for staggered card reveal */
-  useEffect(() => {
-    const track = trackRef.current
-    if (!track) return
-
-    const cards = track.querySelectorAll('.top-hit-card')
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('top-hit-card--visible')
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
-    )
-
-    cards.forEach(card => observer.observe(card))
-    return () => observer.disconnect()
-  }, [topVideos])
+  /** Staggered scroll-reveal via shared hook */
+  useStaggerReveal(trackRef, '.top-hit-card', 'top-hit-card--visible', {
+    deps: topVideos,
+  })
 
   return (
     <section className="top-hits" aria-label="Top 10 most viewed videos">

@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.38.6] - 2026-03-31
+
+### Changed
+- **Extracted scroll-reveal IntersectionObserver into `useStaggerReveal` hook** — TopHits and EraTimeline each duplicated the same pattern: query children inside a container ref, create an IntersectionObserver, add a `--visible` CSS class on intersection, and clean up on unmount. The new `useStaggerReveal(containerRef, childSelector, visibleClass, options)` hook encapsulates this in a configurable, reusable API with `threshold`, `rootMargin`, `once` (fire-once vs. persistent), and `deps` options. Both components now use a single hook call instead of 10-15 lines of inline observer logic. 9 new tests verify callback behavior, fire-once vs. persistent modes, and edge cases. All 661 tests passing across 47 suites
+
 ## [3.38.5] - 2026-03-28
 
 ### Changed

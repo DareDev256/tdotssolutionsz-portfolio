@@ -141,7 +141,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 - **Dual Lane System** — Videos processed into chronological and popular lanes with dynamic road scaling
 - **Build-Time Data** — `fetch-youtube-data.js` pulls real view counts and upload dates from YouTube at build time — zero runtime API dependencies
 - **Modular 3D** — Vehicles, effects, scene elements, atmosphere, and particles all extracted into focused modules with barrel exports
-- **11 Shared Hooks** — Deep linking, video navigation, shuffle play, favorites, copy-to-clipboard, keyboard shortcuts, search (with `searchWithFallback` utility), device type, fresnel materials, modal keyboard, outside click (supports single or multiple refs) — plus 2 inline hooks colocated with their components
+- **12 Shared Hooks** — Deep linking, video navigation, shuffle play, favorites, copy-to-clipboard, keyboard shortcuts, search (with `searchWithFallback` utility), device type, fresnel materials, modal keyboard, outside click (supports single or multiple refs), stagger reveal (batch IntersectionObserver for scroll-triggered CSS animations) — plus 2 inline hooks colocated with their components
 - **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy blocking 18 browser APIs), YouTube ID validation at all entry points, build-time API response sanitization, HTTPS-enforced share windows, 30-pattern secret scanning
 
 > Full architecture deep-dive: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
@@ -191,7 +191,7 @@ src/
 │   ├── particles/             # SoftParticles
 │   └── ui/                    # SearchBar, ArtistPanel, TheaterMode, KeyboardGuide,
 │                              # SectionLabel, AudioVisualizer
-├── hooks/                     # 11 shared hooks (+ 3 inline hooks in components)
+├── hooks/                     # 12 shared hooks (+ 3 inline hooks in components)
 ├── utils/                     # videoData, youtube, urlSafety, apiSanitizer, youtubeSanitizer, searchScoring, easing, formatters, audioAttenuation, imageFallback
 └── data/                      # videos.json (101 entries), photos.json (25 entries)
 ```

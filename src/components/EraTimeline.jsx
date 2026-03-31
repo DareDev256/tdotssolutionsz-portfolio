@@ -6,11 +6,12 @@
  * All data is pre-computed at import time (zero runtime API cost).
  * Uses IntersectionObserver for scroll-triggered reveal animations.
  */
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { VIDEOS } from '../utils/videoData'
 import { byYearRange, topByViews } from '../utils/videoFilters'
 import { formatViews } from '../utils/formatters'
 import { getThumbnailUrl } from '../utils/youtube'
+import useStaggerReveal from '../hooks/useStaggerReveal'
 import SectionLabel from './ui/SectionLabel'
 import './EraTimeline.css'
 
@@ -87,24 +88,11 @@ export const ERAS = ERA_DEFS.map(era => {
 export default function EraTimeline() {
   const trackRef = useRef(null)
 
-  useEffect(() => {
-    const cards = trackRef.current?.querySelectorAll('.era-card')
-    if (!cards?.length) return
-
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('era-card--visible')
-          }
-        })
-      },
-      { threshold: 0.2, rootMargin: '0px 0px -40px 0px' }
-    )
-
-    cards.forEach(card => observer.observe(card))
-    return () => observer.disconnect()
-  }, [])
+  /** Staggered scroll-reveal via shared hook */
+  useStaggerReveal(trackRef, '.era-card', 'era-card--visible', {
+    threshold: 0.2,
+    once: false, // EraTimeline re-reveals on re-scroll
+  })
 
   return (
     <section className="era-timeline" aria-label="Production era timeline">
