@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.40.0] - 2026-03-31
+
+### Added
+- **Broadcast Bar — "NOW ON AIR" chyron** — A TV-channel-style fixed bar at the bottom of the Hub page that auto-cycles through the top 12 most-viewed videos every 6 seconds with broadcast wipe transitions. Features a pulsing LIVE indicator, thumbnail preview, title/artist/views metadata, animated progress sweep bar, and a WATCH CTA that links to each video's detail page. Dismissable via close button with sessionStorage persistence (won't reappear until next session). The entire bar slides up with a spring-eased entrance after a 2-second delay to avoid competing with the page's curtain opening sequence. Full `prefers-reduced-motion` support disables all animations. Mobile-responsive layout hides the CTA badge and tightens spacing below 600px. Makes the Hub page feel like tuning into a live music video network — exactly the "if a label had a streaming platform" aesthetic
+
 ## [3.39.0] - 2026-03-31
 
 ### Added

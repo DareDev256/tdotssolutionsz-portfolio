@@ -8,6 +8,7 @@ import TopHits from './TopHits'
 import LatestDrops from './LatestDrops'
 import EraTimeline from './EraTimeline'
 import CinematicAtmosphere from './CinematicAtmosphere'
+import BroadcastBar from './BroadcastBar'
 import Icon from './ui/Icon'
 import { PORTFOLIO_STATS } from '../utils/videoData'
 import './HubPage.css'
@@ -90,6 +91,8 @@ export default function HubPage() {
           PHOTOGRAPHY — COMING SOON
         </div>
       )}
+
+      <BroadcastBar />
 
       <footer className="hub-footer">
         <div className="hub-footer-line-bar" aria-hidden="true" />

@@ -14,8 +14,8 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel&logoColor=white)](https://tdotssolutionsz.com)
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
-[![Tests](https://img.shields.io/badge/652_TESTS-46_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.39.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/661_TESTS-47_SUITES-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.40.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 [![Security](https://img.shields.io/badge/OWASP_AUDIT-CLEAN-00ff41?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
@@ -72,6 +72,7 @@ The front door. Moody, atmospheric, and designed to showcase 14 years of Toronto
 - **Director Credits Roll** — Cinematic end-credits sequence listing all 54 artists sorted by lifetime views. Auto-scrolling vertical ticker with Bebas Neue film-credits typography, dotted leader lines between artist names and stats, scanline film grain overlay, edge-fade vignettes, and neon accent color cycling per row. Hover to pause and browse the full roster. "A PRODUCTION BY TDOTSSOLUTIONSZ" title card with portfolio-wide stats. Inspired by movie end credits — the mic-drop finale before the footer
 - **Cinematic Marquee** — Dual-strip infinite scroll filmstrip of video thumbnails running in opposite directions, creating ambient "theater lobby" motion. Top row: most-viewed, bottom row: most-recent. Hover pauses and lifts the frame with neon pink glow and artist name reveal. Edge-fade vignettes, keyboard-accessible, reduced-motion safe. Inspired by Culture III rollout energy
 - **Latest Drops — Culture Codex Dynamic Preview** — Netflix-style "New Releases" horizontal scroll rail showing the 8 most recent videos. Drag-to-scroll with pointer capture, "NEW" badge with pulsing neon glow on videos from the last 6 months, staggered entrance animations, and responsive sizing. **Culture Codex Mode**: hover any card and the rail enters cinematic "codex mode" — sibling cards dim to 30% opacity with heavy desaturation (theater lights going down), while the hovered card expands with dramatic neon glow, slow Ken Burns thumbnail zoom, an animated preview progress bar sweeping across the bottom, and a pulsing play icon. A "PREVIEW" label fades in, selling the illusion of a video about to play. Powered entirely by CSS `:has()` — zero JavaScript state. Full `prefers-reduced-motion` support. Think the Migos Culture III rollout meets Netflix hover-to-play
+- **Broadcast Bar — "NOW ON AIR"** — A TV-channel-style fixed chyron at the bottom of the viewport that auto-cycles through the top 12 most-viewed videos every 6 seconds. Pulsing LIVE indicator, thumbnail preview, title/artist/views metadata, animated progress sweep bar, and WATCH CTA linking to each video's detail page. Broadcast wipe transitions between entries. Dismissable with sessionStorage persistence. Delayed entrance (2s) avoids competing with the curtain opening. Full `prefers-reduced-motion` support. Mobile-responsive. Makes the Hub feel like tuning into a live music video network
 - **Split Navigation** — Two-card entry to Music Videos (live) and Photography (coming soon) with animated gradient borders and backdrop blur
 
 ### 🔗 Video Detail Page (`/video/:youtubeId`)
