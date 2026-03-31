@@ -15,7 +15,7 @@
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/652_TESTS-46_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.38.6-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v3.39.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 [![Security](https://img.shields.io/badge/OWASP_AUDIT-CLEAN-00ff41?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
@@ -26,7 +26,7 @@
 
 | Experience | Link | What You'll See |
 |-----------|------|-----------------|
-| 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Cinematic hero with hover-to-play, artist ticker, era timeline |
+| 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Culture Codex previews, artist ticker, era timeline |
 | 🏙️ **3D City** | [tdotssolutionsz.com/videos](https://tdotssolutionsz.com/videos) | Tron-inspired neon metropolis — scroll the highway, pick a lane |
 | 🎬 **Video Page** | [tdotssolutionsz.com/video/dQw4w9WgXcQ](https://tdotssolutionsz.com/video/dQw4w9WgXcQ) | Standalone shareable player with related videos & share bar |
 
@@ -71,7 +71,7 @@ The front door. Moody, atmospheric, and designed to showcase 14 years of Toronto
 - **Production Era Timeline** — Horizontal scroll cards grouping 101 videos into four eras (Origins 2010–2014, Rise 2015–2017, Peak 2018–2020, New Wave 2021–2026) with per-era color theming, top video thumbnails, scroll-snap, and timeline connector dots with glow effects
 - **Director Credits Roll** — Cinematic end-credits sequence listing all 54 artists sorted by lifetime views. Auto-scrolling vertical ticker with Bebas Neue film-credits typography, dotted leader lines between artist names and stats, scanline film grain overlay, edge-fade vignettes, and neon accent color cycling per row. Hover to pause and browse the full roster. "A PRODUCTION BY TDOTSSOLUTIONSZ" title card with portfolio-wide stats. Inspired by movie end credits — the mic-drop finale before the footer
 - **Cinematic Marquee** — Dual-strip infinite scroll filmstrip of video thumbnails running in opposite directions, creating ambient "theater lobby" motion. Top row: most-viewed, bottom row: most-recent. Hover pauses and lifts the frame with neon pink glow and artist name reveal. Edge-fade vignettes, keyboard-accessible, reduced-motion safe. Inspired by Culture III rollout energy
-- **Latest Drops** — Netflix-style "New Releases" horizontal scroll rail showing the 8 most recent videos. Drag-to-scroll with pointer capture, "NEW" badge with pulsing neon glow on videos from the last 6 months, staggered entrance animations, and responsive sizing. **Black Box Reveal**: thumbnails start in a moody desaturated state and "power on" when hovered — color floods in while a VHS-style neon scan line sweeps across the image and CRT grain fades in, creating a cinematic reveal moment. Enhanced 60px neon aura bloom on hover. Think Spotify's new releases row, but with synthwave energy and a film projector powering up
+- **Latest Drops — Culture Codex Dynamic Preview** — Netflix-style "New Releases" horizontal scroll rail showing the 8 most recent videos. Drag-to-scroll with pointer capture, "NEW" badge with pulsing neon glow on videos from the last 6 months, staggered entrance animations, and responsive sizing. **Culture Codex Mode**: hover any card and the rail enters cinematic "codex mode" — sibling cards dim to 30% opacity with heavy desaturation (theater lights going down), while the hovered card expands with dramatic neon glow, slow Ken Burns thumbnail zoom, an animated preview progress bar sweeping across the bottom, and a pulsing play icon. A "PREVIEW" label fades in, selling the illusion of a video about to play. Powered entirely by CSS `:has()` — zero JavaScript state. Full `prefers-reduced-motion` support. Think the Migos Culture III rollout meets Netflix hover-to-play
 - **Split Navigation** — Two-card entry to Music Videos (live) and Photography (coming soon) with animated gradient borders and backdrop blur
 
 ### 🔗 Video Detail Page (`/video/:youtubeId`)

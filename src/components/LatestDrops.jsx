@@ -98,6 +98,8 @@ export default function LatestDrops() {
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
+                <div className="codex-preview-bar" aria-hidden="true" />
+                <span className="codex-preview-label" aria-hidden="true">PREVIEW</span>
                 {fresh && <span className="latest-drops__badge">NEW</span>}
               </div>
 

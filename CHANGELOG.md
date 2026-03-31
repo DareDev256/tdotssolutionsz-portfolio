@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.39.0] - 2026-03-31
+
+### Added
+- **Culture Codex Dynamic Preview** — the Latest Drops rail now enters cinematic "codex mode" on hover. When you hover any card, sibling cards dim and desaturate (theater darkening), the hovered card expands dramatically with a neon glow, the thumbnail performs a slow Ken Burns zoom, and an animated preview progress bar sweeps across the bottom — selling the illusion of a video about to play. A pulsing play icon and "PREVIEW" label complete the Netflix-meets-Migos visual language. Powered entirely by CSS `:has()` — zero JavaScript state needed. Full `prefers-reduced-motion` support strips transforms and hides the progress bar for accessibility
+
 ## [3.38.6] - 2026-03-31
 
 ### Changed

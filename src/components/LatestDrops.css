@@ -188,6 +188,120 @@
 }
 
 /* ============================================
+   CULTURE CODEX — Dynamic Preview Mode
+   When any card is hovered, the rail enters
+   "codex mode": siblings dim, hovered card
+   expands into a cinematic preview spotlight
+   ============================================ */
+
+/* Codex trigger — rail shifts when any card is hovered */
+.latest-drops__rail:has(.latest-drops__card:hover) {
+  --codex-active: 1;
+}
+
+/* Sibling cards dim + shrink when codex is active */
+.latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:not(:hover) {
+  opacity: 0.3;
+  filter: saturate(0.15) brightness(0.5);
+  transform: scale(0.96);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hovered card — dramatic cinematic expansion */
+.latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover {
+  transform: translateY(-10px) scale(1.08);
+  border-color: rgb(0 255 136 / 0.6);
+  box-shadow:
+    0 0 40px rgb(0 255 136 / 0.25),
+    0 0 80px rgb(0 255 136 / 0.1),
+    0 16px 48px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  position: relative;
+}
+
+/* Thumbnail — slow Ken Burns zoom on codex hover */
+.latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__thumb img {
+  transform: scale(1.15);
+  filter: brightness(1.2) saturate(1.15);
+  transition: transform 3s cubic-bezier(0.25, 0, 0.4, 1),
+              filter 0.6s ease;
+}
+
+/* Preview progress bar — animates across thumbnail bottom */
+.codex-preview-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #00ff88, #05d9e8, #00ff88);
+  z-index: 5;
+  opacity: 0;
+  box-shadow: 0 0 12px rgb(0 255 136 / 0.6);
+}
+
+.latest-drops__card:hover .codex-preview-bar {
+  opacity: 1;
+  width: 100%;
+  transition: width 3.5s linear, opacity 0.3s ease;
+}
+
+.latest-drops__card:not(:hover) .codex-preview-bar {
+  opacity: 0;
+  width: 0;
+  transition: opacity 0.15s ease, width 0s 0.15s;
+}
+
+/* Preview label — fades in on hover */
+.codex-preview-label {
+  position: absolute;
+  bottom: 10px;
+  right: 8px;
+  font-family: var(--font-display);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgb(0 255 136 / 0.9);
+  background: rgb(0 0 0 / 0.7);
+  padding: 2px 8px;
+  border-radius: 2px;
+  border: 1px solid rgb(0 255 136 / 0.3);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease 0.2s, transform 0.3s ease 0.2s;
+  z-index: 5;
+  text-shadow: 0 0 6px rgb(0 255 136 / 0.5);
+}
+
+.latest-drops__card:hover .codex-preview-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Play icon — enhanced pulse in codex mode */
+.latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__play {
+  opacity: 1;
+  background: rgb(0 0 0 / 0.45);
+}
+
+.latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__play svg {
+  animation: codex-play-pulse 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 14px rgb(0 255 136 / 0.8));
+}
+
+@keyframes codex-play-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* Codex mode — ensure now-playing cards stay visible */
+.latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:not(:hover) .latest-drops__badge {
+  animation: none;
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 640px) {
@@ -224,5 +338,29 @@
 
   .latest-drops__badge {
     animation: none;
+  }
+
+  /* Culture Codex — reduce to opacity-only in reduced motion */
+  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:not(:hover) {
+    filter: none;
+    transform: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover {
+    transform: none;
+  }
+
+  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__thumb img {
+    transform: none;
+    transition: filter 0.3s ease;
+  }
+
+  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__play svg {
+    animation: none;
+  }
+
+  .codex-preview-bar {
+    display: none;
   }
 }
