@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { fuzzyScore, searchAll, sanitizeSearchInput, MAX_QUERY_LENGTH, SCORE_EPSILON,
     PREFIX_BASE, MID_BASE, SUBSTRING_COVERAGE_WEIGHT, SUBSEQUENCE_BASE,
-    COVERAGE_WEIGHT, CONSECUTIVE_WEIGHT, epsilonSortBy } from './searchScoring'
+    COVERAGE_WEIGHT, CONSECUTIVE_WEIGHT, epsilonSortBy, scoredRank,
+    ARTIST_MATCH_PENALTY, VIDEO_RESULTS_CAP } from './searchScoring'
 
 /**
  * Deep verification of fuzzyScore's mathematical properties and searchAll's
@@ -270,6 +271,55 @@ describe('searchAll — epsilon-bucketed sort stability', () => {
                 }
             }
         }
+    })
+})
+
+describe('scoredRank — generic pipeline', () => {
+    it('filters out zero-score items and sorts by score descending', () => {
+        const items = ['alpha', 'beta', 'gamma']
+        const scorer = name => ({ name, score: name === 'beta' ? 0.9 : name === 'gamma' ? 0.7 : 0 })
+        const result = scoredRank(items, scorer, () => 0, r => r.name)
+        expect(result).toEqual(['beta', 'gamma'])
+    })
+
+    it('applies limit when provided', () => {
+        const items = [1, 2, 3, 4, 5]
+        const scorer = n => ({ n, score: n * 0.1 })
+        const result = scoredRank(items, scorer, () => 0, r => r.n, 2)
+        expect(result).toHaveLength(2)
+    })
+
+    it('returns all results when limit is omitted', () => {
+        const items = [1, 2, 3]
+        const scorer = n => ({ n, score: n * 0.1 })
+        const result = scoredRank(items, scorer, () => 0, r => r.n)
+        expect(result).toHaveLength(3)
+    })
+
+    it('falls through to tiebreaker for equal scores', () => {
+        const items = [{ id: 'a', priority: 10 }, { id: 'b', priority: 50 }]
+        const scorer = item => ({ ...item, score: 0.5 })
+        const tiebreaker = (a, b) => b.priority - a.priority
+        const result = scoredRank(items, scorer, tiebreaker, r => r.id)
+        expect(result).toEqual(['b', 'a'])
+    })
+})
+
+describe('extracted constants — ARTIST_MATCH_PENALTY & VIDEO_RESULTS_CAP', () => {
+    it('ARTIST_MATCH_PENALTY is between 0 and 1 exclusive', () => {
+        expect(ARTIST_MATCH_PENALTY).toBeGreaterThan(0)
+        expect(ARTIST_MATCH_PENALTY).toBeLessThan(1)
+    })
+
+    it('VIDEO_RESULTS_CAP is a positive integer', () => {
+        expect(VIDEO_RESULTS_CAP).toBeGreaterThan(0)
+        expect(Number.isInteger(VIDEO_RESULTS_CAP)).toBe(true)
+    })
+
+    it('artist score penalty ensures title matches outrank artist matches', () => {
+        // For identical fuzzy scores, the penalty must push artist below title
+        const baseScore = 0.85
+        expect(baseScore * ARTIST_MATCH_PENALTY).toBeLessThan(baseScore)
     })
 })
 

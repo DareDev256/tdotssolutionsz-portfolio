@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.40.1] - 2026-04-01
+
+### Changed
+- **Extracted `scoredRank()` pipeline helper from `searchAll()`** — Both artist and video search branches duplicated the same `map→filter→sort→slice→map` chain. The new generic `scoredRank(items, scorer, tiebreaker, extract, limit?)` function encapsulates the entire score-rank-extract pipeline, making it reusable for future searchable fields (tags, albums, etc.) without copy-pasting another chain. Also extracted `ARTIST_MATCH_PENALTY` (0.8) and `VIDEO_RESULTS_CAP` (8) as named constants — the last two inline magic numbers in the search module, completing the extraction started in v3.38.4. 7 new tests cover `scoredRank` pipeline behavior and constant invariants. All tests passing
+
 ## [3.40.0] - 2026-03-31
 
 ### Added

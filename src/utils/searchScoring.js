@@ -25,6 +25,10 @@ export const SUBSEQUENCE_BASE = 0.30
 export const COVERAGE_WEIGHT = 0.35
 /** Weight of longest consecutive char run in subsequence scoring. */
 export const CONSECUTIVE_WEIGHT = 0.35
+/** Penalty applied to artist-field matches so title hits rank higher. */
+export const ARTIST_MATCH_PENALTY = 0.8
+/** Maximum video results returned by searchAll for UI clarity. */
+export const VIDEO_RESULTS_CAP = 8
 
 /**
  * Lightweight fuzzy substring matching — scores how well `query` matches `text`.
@@ -118,6 +122,32 @@ const artistTiebreaker = (a, b) =>
 const videoTiebreaker = (a, b) => b.video.viewCount - a.video.viewCount
 
 /**
+ * Generic score → rank → extract pipeline. Scores every item, discards
+ * non-matches, sorts with epsilon-bucketed tiebreaking, optionally caps
+ * the result count, then extracts the final value via `extract`.
+ *
+ * Both artist and video search branches were duplicating this exact
+ * sequence. Centralising it means adding a new searchable field (e.g.
+ * tags, album names) is a single `scoredRank()` call instead of
+ * another copy-pasted map→filter→sort→slice→map chain.
+ *
+ * @template T, R
+ * @param {T[]}              items       Source collection
+ * @param {(item: T) => {scored: object, score: number}} scorer  Produce a scored wrapper
+ * @param {(a: any, b: any) => number} tiebreaker  Secondary sort
+ * @param {(wrapper: any) => R}         extract     Unwrap the final value
+ * @param {number}           [limit]     Optional result cap
+ * @returns {R[]}
+ */
+export function scoredRank(items, scorer, tiebreaker, extract, limit) {
+    const ranked = items
+        .map(scorer)
+        .filter(r => r.score > 0)
+        .sort(epsilonSortBy(tiebreaker))
+    return (limit != null ? ranked.slice(0, limit) : ranked).map(extract)
+}
+
+/**
  * Search across artists and video titles with fuzzy matching.
  * Returns { artists: [...], videos: [...] } ranked by relevance.
  * Sanitizes control characters and truncates beyond MAX_QUERY_LENGTH.
@@ -126,22 +156,24 @@ export function searchAll(rawQuery) {
     const query = sanitizeSearchInput(rawQuery)
     if (!query || query.length < 2) return { artists: [], videos: [] }
 
-    const artistResults = ALL_ARTISTS
-        .map(artist => ({ artist, score: fuzzyScore(query, artist) }))
-        .filter(r => r.score > 0)
-        .sort(epsilonSortBy(artistTiebreaker))
-        .map(r => r.artist)
+    const artists = scoredRank(
+        ALL_ARTISTS,
+        artist => ({ artist, score: fuzzyScore(query, artist) }),
+        artistTiebreaker,
+        r => r.artist,
+    )
 
-    const videoResults = VIDEOS
-        .map(video => {
+    const videos = scoredRank(
+        VIDEOS,
+        video => {
             const titleScore = fuzzyScore(query, video.title)
-            const artistScore = fuzzyScore(query, video.artist) * 0.8 // slight penalty so title matches rank higher
+            const artistScore = fuzzyScore(query, video.artist) * ARTIST_MATCH_PENALTY
             return { video, score: Math.max(titleScore, artistScore) }
-        })
-        .filter(r => r.score > 0)
-        .sort(epsilonSortBy(videoTiebreaker))
-        .slice(0, 8) // cap video results for UI clarity
-        .map(r => r.video)
+        },
+        videoTiebreaker,
+        r => r.video,
+        VIDEO_RESULTS_CAP,
+    )
 
-    return { artists: artistResults, videos: videoResults }
+    return { artists, videos }
 }
