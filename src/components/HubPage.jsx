@@ -9,6 +9,7 @@ import LatestDrops from './LatestDrops'
 import EraTimeline from './EraTimeline'
 import CinematicAtmosphere from './CinematicAtmosphere'
 import BroadcastBar from './BroadcastBar'
+import SpotlightHero from './SpotlightHero'
 import Icon from './ui/Icon'
 import { PORTFOLIO_STATS } from '../utils/videoData'
 import './HubPage.css'
@@ -45,6 +46,7 @@ export default function HubPage() {
         <p className="hub-tagline">TORONTO — CREATIVE PRODUCTION</p>
       </header>
 
+      <SpotlightHero />
       <ImpactNumbers />
 
       <nav className="hub-cards" aria-label="Portfolio sections">

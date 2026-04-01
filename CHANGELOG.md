@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.41.0] - 2026-04-01
+
+### Added
+- **Spotlight Hero — cinematic full-bleed hero banner** — A Netflix/streaming-platform-style auto-cycling hero section at the top of the Hub page showcasing the 5 most-viewed videos. Each slide fills the viewport width with a maxres YouTube thumbnail darkened and saturated for a cinematic mood, overlaid with a vignette gradient, film grain texture, and radial neon accent lighting (pink bottom-left, cyan top-right). Content slides in with spring-eased animations: artist name in bold Orbitron display type, video title, view count, and a glowing "WATCH NOW" CTA that links to the video page. Auto-cycles every 5 seconds with a smooth 1.2s crossfade between slides. Background images perform a subtle Ken Burns drift (scale + translate) for filmic motion. Progress dots at the bottom act as a visual timeline — the active dot fills with a neon-pink sweep synchronized to the cycle duration. Fully keyboard accessible: Arrow keys navigate slides, Space pauses/resumes auto-play, each dot is a tab stop with descriptive aria-labels. Mobile-responsive layout adjusts height and spacing below 600px. Full `prefers-reduced-motion` support disables all animations and transitions. Makes the landing page feel like tuning into a premium music video channel — the "Culture Portal" moment the site was missing
+
 ## [3.40.1] - 2026-04-01
 
 ### Changed
