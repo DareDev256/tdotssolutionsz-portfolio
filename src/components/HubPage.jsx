@@ -10,6 +10,7 @@ import EraTimeline from './EraTimeline'
 import CinematicAtmosphere from './CinematicAtmosphere'
 import BroadcastBar from './BroadcastBar'
 import SpotlightHero from './SpotlightHero'
+import DirectorsReel from './DirectorsReel'
 import Icon from './ui/Icon'
 import { PORTFOLIO_STATS } from '../utils/videoData'
 import './HubPage.css'
@@ -82,6 +83,7 @@ export default function HubPage() {
       </nav>
 
       <LatestDrops />
+      <DirectorsReel />
       <FilmStrip />
       <ArtistShowcase />
       <VideoSpotlight />

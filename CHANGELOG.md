@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.42.0] - 2026-04-03
+
+### Added
+- **Director's Reel — editorial montage section** — A magazine-style collage of the top 5 most-viewed videos (artist-diverse, no repeated artists) displayed in an asymmetric CSS Grid layout with organic `clip-path` polygon masks on each cell. Each thumbnail is darkened with a radial vignette overlay and gains a Ken Burns zoom + neon bloom glow on hover — pink, cyan, purple, and orange accents that vary per cell. Info overlays (artist, title, views) slide up from a cinematic gradient base. Scroll-triggered staggered entrance animations with per-cell delay. Responsive across three breakpoints: 3-column editorial grid (desktop), 2-column (tablet), single-column stack (mobile). Full `prefers-reduced-motion` support disables all animations. Placed between LatestDrops and FilmStrip on the Hub page for visual rhythm variety between the horizontal rail and the celluloid strip
+
 ## [3.41.1] - 2026-04-03
 
 ### Changed
