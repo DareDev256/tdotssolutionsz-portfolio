@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { isValidYouTubeId, extractVideoId, getShareUrl, getThumbnailUrl, openShareWindow } from './youtube.js'
+import { isValidYouTubeId, extractVideoId, getShareUrl, getThumbnailUrl, openShareWindow, buildEmbedUrl } from './youtube.js'
 
 describe('isValidYouTubeId', () => {
     it('accepts valid 11-char YouTube IDs', () => {
@@ -200,6 +200,67 @@ describe('getThumbnailUrl — consolidated callers (VideoCard + MobileApp)', () 
     it('blocks injection via tampered youtubeId in MobileApp related context', () => {
         expect(getThumbnailUrl('"><script>x</script>', 'default')).toBe('')
         expect(getThumbnailUrl(undefined, 'default')).toBe('')
+    })
+})
+
+describe('buildEmbedUrl', () => {
+    it('builds standard embed URL with defaults (rel=0, modestbranding=1)', () => {
+        const url = buildEmbedUrl('dQw4w9WgXcQ')
+        expect(url).toBe('https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1')
+    })
+
+    it('returns empty string for invalid video ID', () => {
+        expect(buildEmbedUrl('')).toBe('')
+        expect(buildEmbedUrl('short')).toBe('')
+        expect(buildEmbedUrl('<script>xss')).toBe('')
+        expect(buildEmbedUrl(null)).toBe('')
+    })
+
+    it('uses youtube-nocookie.com when privacyEnhanced is true', () => {
+        const url = buildEmbedUrl('dQw4w9WgXcQ', { privacyEnhanced: true })
+        expect(url).toContain('https://www.youtube-nocookie.com/embed/')
+    })
+
+    it('sets autoplay and mute params', () => {
+        const url = buildEmbedUrl('dQw4w9WgXcQ', { autoplay: true, muted: true })
+        expect(url).toContain('autoplay=1')
+        expect(url).toContain('mute=1')
+    })
+
+    it('disables controls when controls=false', () => {
+        const url = buildEmbedUrl('dQw4w9WgXcQ', { controls: false })
+        expect(url).toContain('controls=0')
+    })
+
+    it('sets loop with automatic playlist param', () => {
+        const url = buildEmbedUrl('dQw4w9WgXcQ', { loop: true })
+        expect(url).toContain('loop=1')
+        expect(url).toContain('playlist=dQw4w9WgXcQ')
+    })
+
+    it('accepts allowlisted extra params', () => {
+        const url = buildEmbedUrl('dQw4w9WgXcQ', { extra: { playsinline: 1, enablejsapi: 1 } })
+        expect(url).toContain('playsinline=1')
+        expect(url).toContain('enablejsapi=1')
+    })
+
+    it('rejects non-allowlisted extra params (injection prevention)', () => {
+        const url = buildEmbedUrl('dQw4w9WgXcQ', { extra: { evil: 'payload', onload: 'alert(1)' } })
+        expect(url).not.toContain('evil')
+        expect(url).not.toContain('onload')
+    })
+
+    it('produces the same URL VideoSpotlight previously hardcoded', () => {
+        const url = buildEmbedUrl('dQw4w9WgXcQ', {
+            autoplay: true, muted: true, controls: false, loop: true,
+            extra: { showinfo: 0, enablejsapi: 1 },
+        })
+        expect(url).toContain('https://www.youtube.com/embed/dQw4w9WgXcQ')
+        expect(url).toContain('autoplay=1')
+        expect(url).toContain('mute=1')
+        expect(url).toContain('controls=0')
+        expect(url).toContain('loop=1')
+        expect(url).toContain('playlist=dQw4w9WgXcQ')
     })
 })
 

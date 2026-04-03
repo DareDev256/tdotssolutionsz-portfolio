@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.41.1] - 2026-04-03
+
+### Changed
+- **Extracted `buildEmbedUrl()` into `youtube.js`** — YouTube embed URL construction was duplicated across three components (VideoSpotlight, VideoOverlay, VideoPage), each using raw string interpolation with inconsistent parameter sets. The new `buildEmbedUrl(videoId, options)` function centralizes this in the existing YouTube utilities module with ID validation, a parameter allowlist preventing injection via option keys, and `URLSearchParams` for safe encoding. Components now declare intent (`autoplay: true`, `privacyEnhanced: true`) instead of manually assembling query strings. Updated videoPlayback guardrail tests to verify the new single source of truth. 10 new tests cover builder behavior, domain selection, and injection prevention. All tests passing
+
 ## [3.41.0] - 2026-04-01
 
 ### Added

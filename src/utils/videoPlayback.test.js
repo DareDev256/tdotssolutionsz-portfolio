@@ -172,22 +172,37 @@ describe('iframe sandbox: must NOT be present on YouTube embeds', () => {
 // ════════════════════════════════════════════════
 
 describe('YouTube embed URLs: correct format', () => {
-    it('VideoOverlay uses youtube.com/embed/ (not youtube-nocookie for autoplay)', () => {
+    // Embed URL construction is centralised in youtube.js via buildEmbedUrl().
+    // Components import buildEmbedUrl instead of inlining URLs, so we verify
+    // (a) youtube.js contains the correct domains and (b) components use the builder.
+
+    it('buildEmbedUrl uses youtube.com domain for standard embeds', () => {
+        const src = readSrc('utils/youtube.js')
+        expect(src).toContain("'https://www.youtube.com'")
+    })
+
+    it('buildEmbedUrl uses youtube-nocookie.com for privacy-enhanced embeds', () => {
+        const src = readSrc('utils/youtube.js')
+        expect(src).toContain("'https://www.youtube-nocookie.com'")
+    })
+
+    it('VideoOverlay imports buildEmbedUrl (autoplay needs youtube.com)', () => {
         const src = readSrc('components/ui/VideoOverlay.jsx')
-        // VideoOverlay needs autoplay=1 which works more reliably on youtube.com
-        expect(src).toContain('https://www.youtube.com/embed/')
+        expect(src).toContain('buildEmbedUrl')
+        // Must NOT use privacyEnhanced for autoplay
+        expect(src).not.toContain('privacyEnhanced')
     })
 
-    it('VideoSpotlight uses youtube.com/embed/ (hover-to-play needs autoplay)', () => {
+    it('VideoSpotlight imports buildEmbedUrl (hover-to-play needs youtube.com)', () => {
         const src = readSrc('components/VideoSpotlight.jsx')
-        // Spotlight hover preview relies on autoplay=1 — must use youtube.com, not nocookie
-        expect(src).toContain('https://www.youtube.com/embed/')
+        expect(src).toContain('buildEmbedUrl')
+        expect(src).not.toContain('privacyEnhanced')
     })
 
-    it('VideoPage uses youtube-nocookie.com/embed/ (privacy-enhanced, no autoplay)', () => {
+    it('VideoPage uses privacyEnhanced mode (standalone page, no autoplay)', () => {
         const src = readSrc('components/VideoPage.jsx')
-        // VideoPage is a standalone shareable page — privacy-enhanced domain is correct
-        expect(src).toContain('https://www.youtube-nocookie.com/embed/')
+        expect(src).toContain('buildEmbedUrl')
+        expect(src).toContain('privacyEnhanced: true')
     })
 
     it('YouTubePlayer loads IFrame API from correct URL', () => {

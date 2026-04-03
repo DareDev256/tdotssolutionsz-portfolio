@@ -92,6 +92,71 @@ export function openShareWindow(url) {
     }
 }
 
+// ── Embed URL builder ──
+
+/** Allowed embed parameter keys (allowlist prevents injection via option keys) */
+const EMBED_PARAM_ALLOWLIST = new Set([
+    'autoplay', 'mute', 'controls', 'showinfo', 'rel',
+    'modestbranding', 'loop', 'playlist', 'enablejsapi',
+    'playsinline', 'origin', 'start', 'end',
+])
+
+/**
+ * Build a YouTube embed URL with validated parameters.
+ *
+ * Centralizes embed URL construction that was previously duplicated across
+ * VideoSpotlight, VideoOverlay, and VideoPage with inconsistent parameters.
+ * Uses URLSearchParams for safe encoding instead of raw string interpolation.
+ *
+ * @param {string} videoId - 11-char YouTube video ID
+ * @param {Object} [options]
+ * @param {boolean} [options.privacyEnhanced=false] - Use youtube-nocookie.com domain
+ * @param {boolean} [options.autoplay=false] - Start playing immediately
+ * @param {boolean} [options.muted=false] - Start muted
+ * @param {boolean} [options.controls=true] - Show player controls
+ * @param {boolean} [options.loop=false] - Loop playback (sets playlist=videoId automatically)
+ * @param {Object} [options.extra] - Additional allowlisted params (e.g. { showinfo: 0, enablejsapi: 1 })
+ * @returns {string} Full embed URL, or empty string if videoId is invalid
+ */
+export function buildEmbedUrl(videoId, options = {}) {
+    if (!isValidYouTubeId(videoId)) return ''
+
+    const {
+        privacyEnhanced = false,
+        autoplay = false,
+        muted = false,
+        controls = true,
+        loop = false,
+        extra = {},
+    } = options
+
+    const domain = privacyEnhanced
+        ? 'https://www.youtube-nocookie.com'
+        : 'https://www.youtube.com'
+
+    const params = new URLSearchParams()
+    if (autoplay) params.set('autoplay', '1')
+    if (muted) params.set('mute', '1')
+    if (!controls) params.set('controls', '0')
+    params.set('rel', '0')
+    params.set('modestbranding', '1')
+    if (loop) {
+        params.set('loop', '1')
+        params.set('playlist', videoId)
+    }
+
+    // Merge extra params — only allowlisted keys, values coerced to string
+    for (const [key, val] of Object.entries(extra)) {
+        if (EMBED_PARAM_ALLOWLIST.has(key)) {
+            params.set(key, String(val))
+        }
+    }
+
+    return `${domain}/embed/${videoId}?${params.toString()}`
+}
+
+// ── Thumbnail URL builder ──
+
 /** Allowed YouTube thumbnail quality presets */
 const VALID_QUALITIES = new Set([
     'default', 'mqdefault', 'hqdefault', 'sddefault', 'maxresdefault'

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Icon from './Icon'
 import { ARTIST_STATS } from '../../utils/videoData'
-import { isValidYouTubeId, extractVideoId } from '../../utils/youtube'
+import { isValidYouTubeId, extractVideoId, buildEmbedUrl } from '../../utils/youtube'
 import useCopyLink from '../../hooks/useCopyLink'
 import AudioVisualizer from './AudioVisualizer'
 
@@ -85,7 +85,10 @@ export const VideoOverlay = ({ activeProject, audioEnabled, onOpenTheater, onArt
                             key={videoId}
                             width="100%"
                             height="100%"
-                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${audioEnabled ? 0 : 1}&loop=1&playlist=${videoId}&controls=1&modestbranding=1&rel=0&playsinline=1`}
+                            src={buildEmbedUrl(videoId, {
+                                autoplay: true, muted: !audioEnabled, loop: true,
+                                extra: { playsinline: 1 },
+                            })}
                             style={{ border: 'none' }}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             referrerPolicy="strict-origin-when-cross-origin"

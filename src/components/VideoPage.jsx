@@ -15,7 +15,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useEffect, useMemo, useCallback, useState } from 'react'
 import { VIDEOS, ARTIST_STATS, isDeceasedArtist } from '../utils/videoData'
-import { getThumbnailUrl, isValidYouTubeId, openShareWindow } from '../utils/youtube'
+import { getThumbnailUrl, isValidYouTubeId, openShareWindow, buildEmbedUrl } from '../utils/youtube'
 import { formatViews, formatYear } from '../utils/formatters'
 import Icon from './ui/Icon'
 import './VideoPage.css'
@@ -113,7 +113,7 @@ export default function VideoPage() {
                 <div className="vp-player-wrap">
                     <div className={`vp-player ${playerLoaded ? 'vp-player--loaded' : ''}`}>
                         <iframe
-                            src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?rel=0&modestbranding=1`}
+                            src={buildEmbedUrl(video.youtubeId, { privacyEnhanced: true })}
                             title={`${video.artist} — ${video.title}`}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             referrerPolicy="strict-origin-when-cross-origin"

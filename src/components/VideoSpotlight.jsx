@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
 import { topByViews } from '../utils/videoFilters'
 import { formatViews } from '../utils/formatters'
-import { getThumbnailUrl } from '../utils/youtube'
+import { getThumbnailUrl, buildEmbedUrl } from '../utils/youtube'
 import { diverseShuffle } from '../utils/diverseShuffle'
 import useScrollReveal from '../hooks/useScrollReveal'
 import useCinematicScroll from '../hooks/useCinematicScroll'
@@ -55,7 +55,10 @@ export default function VideoSpotlight() {
     }, 400)
   }, [])
 
-  const embedUrl = `https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&mute=${isMuted ? 1 : 0}&controls=0&showinfo=0&rel=0&modestbranding=1&loop=1&playlist=${video.youtubeId}&enablejsapi=1`
+  const embedUrl = buildEmbedUrl(video.youtubeId, {
+    autoplay: true, muted: isMuted, controls: false, loop: true,
+    extra: { showinfo: 0, enablejsapi: 1 },
+  })
 
   // CSS custom properties drive the cinematic parallax + dolly zoom
   const cinematicStyle = {
