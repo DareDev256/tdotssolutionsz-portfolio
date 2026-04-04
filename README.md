@@ -14,8 +14,8 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel&logoColor=white)](https://tdotssolutionsz.com)
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
-[![Tests](https://img.shields.io/badge/669_TESTS-47_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.42.0-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/691_TESTS-47_SUITES-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v3.42.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
 [![Security](https://img.shields.io/badge/OWASP_AUDIT-CLEAN-00ff41?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
@@ -130,7 +130,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 | **3D Engine** | Three.js 0.170 / React Three Fiber / Drei |
 | **Post-Processing** | Bloom, Vignette, Noise, Scanline, Chromatic Aberration |
 | **Video** | YouTube IFrame API (playback control, auto-advance, end detection) |
-| **Testing** | Vitest — 685 tests across 47 suites |
+| **Testing** | Vitest — 691 tests across 47 suites |
 | **Hosting** | Vercel with custom domain (tdotssolutionsz.com) |
 | **Build Pipeline** | YouTube API enrichment at build time (zero runtime API costs) |
 
@@ -156,7 +156,7 @@ npm install
 npm run dev              # Start dev server (http://localhost:5173)
 npm run build            # Fetch YouTube data + production build
 npm run preview          # Preview production build locally
-npm test                 # Run 685 tests across 47 suites
+npm test                 # Run 691 tests across 47 suites
 npm run test:watch       # Tests in watch mode
 npm run prescan          # Scan for leaked secrets
 npm run audit:security   # Dependency vulnerability check
