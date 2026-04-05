@@ -1,6 +1,6 @@
 /* ============================================
-   IMPACT NUMBERS — Animated portfolio stats
-   Synthwave aesthetic with scroll-triggered reveals
+   IMPACT NUMBERS — Editorial portfolio stats
+   3-color: charcoal / white / blue
    ============================================ */
 
 .impact-numbers {
@@ -8,14 +8,14 @@
   z-index: 1;
   width: 100%;
   max-width: 860px;
-  margin: 0 auto 40px;
+  margin: 0 auto 48px;
   padding: 0 20px;
 }
 
 .impact-numbers__track {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 0;
 }
 
 .impact-numbers__item {
@@ -25,16 +25,13 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 24px 12px 20px;
+  padding: 28px 12px 24px;
   position: relative;
-  border-radius: 12px;
-  background: rgb(var(--dark-surface-rgb) / 0.6);
-  border: 1px solid rgb(255 255 255 / 0.04);
-  backdrop-filter: blur(4px);
+  background: transparent;
+  border: none;
 
-  /* Staggered reveal */
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(16px);
   transition:
     opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -46,142 +43,90 @@
   transform: translateY(0);
 }
 
-/* Value — the big animated number */
 .impact-numbers__value-wrap {
   display: flex;
   align-items: baseline;
   gap: 2px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .impact-numbers__value {
   font-family: var(--font-display);
-  font-size: 2.2rem;
-  font-weight: 900;
-  color: var(--stat-color);
-  text-shadow:
-    0 0 12px color-mix(in srgb, var(--stat-color) 60%, transparent),
-    0 0 40px color-mix(in srgb, var(--stat-color) 25%, transparent);
-  letter-spacing: 0.02em;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
   line-height: 1;
-  /* Tabular nums prevent layout shift during counting */
   font-variant-numeric: tabular-nums;
 }
 
 .impact-numbers__suffix {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--stat-color);
-  opacity: 0.7;
-  letter-spacing: 0.05em;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent-blue);
+  letter-spacing: 0.02em;
 }
 
-/* Label — descriptor below the number */
 .impact-numbers__label {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 0.55rem;
   font-weight: 600;
   letter-spacing: 0.2em;
-  color: rgb(255 255 255 / 0.4);
+  color: var(--text-tertiary);
   margin-top: 2px;
 }
 
-/* Accent bar — neon underline that slides in */
+/* Accent bar — thin blue underline */
 .impact-numbers__bar {
   position: absolute;
   bottom: 0;
   left: 50%;
   width: 0;
-  height: 2px;
-  background: var(--stat-color);
-  border-radius: 1px;
+  height: 1px;
+  background: var(--accent-blue);
   transform: translateX(-50%);
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   transition-delay: calc(var(--reveal-delay, 0ms) + 400ms);
-  box-shadow: 0 0 8px var(--stat-color);
+  opacity: 0.3;
 }
 
 .impact-numbers--visible .impact-numbers__bar {
-  width: 60%;
+  width: 40%;
 }
 
-/* Background glow — subtle radial gradient behind the stats */
 .impact-numbers__glow {
-  position: absolute;
-  inset: -20px -40px;
-  border-radius: 24px;
-  background:
-    radial-gradient(ellipse at 25% 50%, rgb(var(--neon-pink-rgb) / 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 75% 50%, rgb(var(--neon-cyan-rgb) / 0.05) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
+  display: none;
 }
 
-/* Hover effect — subtle lift + glow intensify */
 .impact-numbers__item:hover {
-  background: rgb(var(--dark-surface-rgb) / 0.8);
-  border-color: color-mix(in srgb, var(--stat-color) 15%, transparent);
   transform: translateY(-2px);
   transition-delay: 0ms;
 }
 
 .impact-numbers__item:hover .impact-numbers__value {
-  text-shadow:
-    0 0 16px color-mix(in srgb, var(--stat-color) 80%, transparent),
-    0 0 50px color-mix(in srgb, var(--stat-color) 35%, transparent);
+  color: var(--accent-blue);
+  transition: color 0.3s ease;
 }
 
 /* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 640px) {
-  .impact-numbers {
-    margin-bottom: 28px;
-  }
-
-  .impact-numbers__track {
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .impact-numbers__item {
-    flex: 1 1 calc(50% - 6px);
-    min-width: 140px;
-    padding: 18px 8px 16px;
-  }
-
-  .impact-numbers__value {
-    font-size: 1.7rem;
-  }
-
-  .impact-numbers__suffix {
-    font-size: 0.8rem;
-  }
-
-  .impact-numbers__label {
-    font-size: 0.5rem;
-  }
+  .impact-numbers { margin-bottom: 32px; }
+  .impact-numbers__track { flex-wrap: wrap; gap: 0; }
+  .impact-numbers__item { flex: 1 1 calc(50% - 4px); min-width: 140px; padding: 20px 8px 18px; }
+  .impact-numbers__value { font-size: 1.8rem; }
+  .impact-numbers__suffix { font-size: 0.75rem; }
+  .impact-numbers__label { font-size: 0.5rem; }
 }
 
 @media (max-width: 380px) {
-  .impact-numbers__item {
-    min-width: 120px;
-    padding: 14px 6px 12px;
-  }
-
-  .impact-numbers__value {
-    font-size: 1.4rem;
-  }
+  .impact-numbers__item { min-width: 120px; padding: 16px 6px 14px; }
+  .impact-numbers__value { font-size: 1.5rem; }
 }
 
-/* Reduced motion — show final values immediately */
 @media (prefers-reduced-motion: reduce) {
-  .impact-numbers__item {
-    transition: none;
-  }
-
-  .impact-numbers__bar {
-    transition: none;
-  }
+  .impact-numbers__item { transition: none; }
+  .impact-numbers__bar { transition: none; }
 }

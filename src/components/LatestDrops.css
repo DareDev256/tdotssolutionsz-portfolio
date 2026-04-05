@@ -1,13 +1,12 @@
 /* ============================================
-   LATEST DROPS — Netflix-style new releases rail
-   Neon green accent (#00ff88), drag-to-scroll,
-   cinematic hover effects with glow
+   LATEST DROPS — Editorial card rail
+   3-color: charcoal / white / blue
    ============================================ */
 
 .latest-drops {
   width: 100%;
   max-width: 1200px;
-  margin: 48px auto 8px;
+  margin: 8px auto 40px;
   padding: 0 20px;
   position: relative;
   z-index: 1;
@@ -23,11 +22,12 @@
 
 .latest-drops__sub {
   text-align: center;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.35);
-  letter-spacing: 0.15em;
-  margin: -4px 0 20px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+  margin: -4px 0 24px;
 }
 
 /* Horizontal scroll rail */
@@ -37,7 +37,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  padding: 8px 4px 16px;
+  padding: 8px 4px 20px;
   cursor: grab;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -54,16 +54,15 @@
 
 /* Individual card */
 .latest-drops__card {
-  flex: 0 0 240px;
+  flex: 0 0 250px;
   text-decoration: none;
   color: inherit;
-  border-radius: 8px;
   overflow: hidden;
-  background: rgb(255 255 255 / 0.03);
-  border: 1px solid rgb(255 255 255 / 0.06);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.3s ease,
-              box-shadow 0.3s ease;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
   opacity: 0;
   transform: translateY(20px);
 }
@@ -74,16 +73,14 @@
   transform: translateY(0);
   transition: opacity 0.5s ease-out calc(var(--card-index) * 80ms + 200ms),
               transform 0.5s ease-out calc(var(--card-index) * 80ms + 200ms),
-              border-color 0.3s ease,
-              box-shadow 0.3s ease;
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
 }
 
 .latest-drops__card:hover {
-  transform: translateY(-6px) scale(1.03);
-  border-color: rgb(0 255 136 / 0.35);
-  box-shadow:
-    0 0 24px rgb(0 255 136 / 0.15),
-    0 8px 24px rgba(0, 0, 0, 0.4);
+  transform: translateY(-6px);
+  border-color: var(--border-hover);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
 }
 
 /* Thumbnail container */
@@ -91,19 +88,20 @@
   position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  background: rgb(var(--dark-bg-rgb));
+  background: #262626;
 }
 
 .latest-drops__thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease, filter 0.4s ease;
+  transition: transform 0.5s ease, filter 0.5s ease;
+  filter: saturate(0.85);
 }
 
 .latest-drops__card:hover .latest-drops__thumb img {
-  transform: scale(1.08);
-  filter: brightness(1.1);
+  transform: scale(1.06);
+  filter: saturate(1) brightness(1.05);
 }
 
 /* Play icon overlay */
@@ -113,11 +111,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(0 0 0 / 0.3);
+  background: rgb(0 0 0 / 0.25);
   opacity: 0;
   transition: opacity 0.3s ease;
-  color: #00ff88;
-  filter: drop-shadow(0 0 8px rgb(0 255 136 / 0.6));
+  color: #fff;
 }
 
 .latest-drops__card:hover .latest-drops__play {
@@ -127,47 +124,41 @@
 /* "NEW" badge */
 .latest-drops__badge {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  font-family: var(--font-display);
+  top: 10px;
+  left: 10px;
+  font-family: var(--font-body);
   font-size: 0.55rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
-  padding: 3px 8px;
-  background: #00ff88;
-  color: #0a0015;
-  border-radius: 3px;
-  box-shadow: 0 0 12px rgb(0 255 136 / 0.5);
-  animation: badge-pulse 2s ease-in-out infinite alternate;
-}
-
-@keyframes badge-pulse {
-  from { box-shadow: 0 0 8px rgb(0 255 136 / 0.4); }
-  to   { box-shadow: 0 0 18px rgb(0 255 136 / 0.7); }
+  letter-spacing: 0.1em;
+  padding: 3px 10px;
+  background: var(--accent-orange);
+  color: #fff;
+  text-transform: uppercase;
 }
 
 /* Text info area */
 .latest-drops__info {
-  padding: 12px 14px 14px;
+  padding: 14px 16px 16px;
 }
 
 .latest-drops__artist {
-  font-family: var(--font-display);
-  font-size: 0.55rem;
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  font-weight: 600;
   letter-spacing: 0.12em;
-  color: #00ff88;
-  opacity: 0.7;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  opacity: 0.75;
   display: block;
   margin-bottom: 4px;
-  text-shadow: 0 0 8px rgb(0 255 136 / 0.3);
 }
 
 .latest-drops__title {
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: 0.9rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
@@ -177,7 +168,7 @@
 .latest-drops__meta {
   font-family: var(--font-body);
   font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--text-tertiary);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -188,62 +179,47 @@
 }
 
 /* ============================================
-   CULTURE CODEX — Dynamic Preview Mode
-   When any card is hovered, the rail enters
-   "codex mode": siblings dim, hovered card
-   expands into a cinematic preview spotlight
+   FOCUS MODE — siblings dim on hover
    ============================================ */
 
-/* Codex trigger — rail shifts when any card is hovered */
-.latest-drops__rail:has(.latest-drops__card:hover) {
-  --codex-active: 1;
-}
-
-/* Sibling cards dim + shrink when codex is active */
 .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:not(:hover) {
   opacity: 0.3;
-  filter: saturate(0.15) brightness(0.5);
-  transform: scale(0.96);
+  filter: saturate(0.15) brightness(0.55);
+  transform: scale(0.97);
   transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
               filter 0.4s cubic-bezier(0.4, 0, 0.2, 1),
               transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hovered card — dramatic cinematic expansion */
 .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover {
-  transform: translateY(-10px) scale(1.08);
-  border-color: rgb(0 255 136 / 0.6);
-  box-shadow:
-    0 0 40px rgb(0 255 136 / 0.25),
-    0 0 80px rgb(0 255 136 / 0.1),
-    0 16px 48px rgba(0, 0, 0, 0.6);
+  transform: translateY(-8px);
+  border-color: rgba(74, 124, 255, 0.25);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
   z-index: 10;
   position: relative;
 }
 
-/* Thumbnail — slow Ken Burns zoom on codex hover */
 .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__thumb img {
-  transform: scale(1.15);
-  filter: brightness(1.2) saturate(1.15);
-  transition: transform 3s cubic-bezier(0.25, 0, 0.4, 1),
+  transform: scale(1.1);
+  filter: brightness(1.1) saturate(1.05);
+  transition: transform 4s cubic-bezier(0.25, 0, 0.4, 1),
               filter 0.6s ease;
 }
 
-/* Preview progress bar — animates across thumbnail bottom */
+/* Preview progress bar */
 .codex-preview-bar {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 3px;
+  height: 2px;
   width: 0;
-  background: linear-gradient(90deg, #00ff88, #05d9e8, #00ff88);
+  background: var(--accent-blue);
   z-index: 5;
   opacity: 0;
-  box-shadow: 0 0 12px rgb(0 255 136 / 0.6);
 }
 
 .latest-drops__card:hover .codex-preview-bar {
-  opacity: 1;
+  opacity: 0.7;
   width: 100%;
   transition: width 3.5s linear, opacity 0.3s ease;
 }
@@ -254,51 +230,28 @@
   transition: opacity 0.15s ease, width 0s 0.15s;
 }
 
-/* Preview label — fades in on hover */
+/* Preview label */
 .codex-preview-label {
   position: absolute;
   bottom: 10px;
   right: 8px;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 0.5rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  color: rgb(0 255 136 / 0.9);
-  background: rgb(0 0 0 / 0.7);
-  padding: 2px 8px;
-  border-radius: 2px;
-  border: 1px solid rgb(0 255 136 / 0.3);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgb(0 0 0 / 0.6);
+  padding: 3px 8px;
   opacity: 0;
   transform: translateY(4px);
   transition: opacity 0.3s ease 0.2s, transform 0.3s ease 0.2s;
   z-index: 5;
-  text-shadow: 0 0 6px rgb(0 255 136 / 0.5);
+  text-transform: uppercase;
 }
 
 .latest-drops__card:hover .codex-preview-label {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Play icon — enhanced pulse in codex mode */
-.latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__play {
-  opacity: 1;
-  background: rgb(0 0 0 / 0.45);
-}
-
-.latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__play svg {
-  animation: codex-play-pulse 1.2s ease-in-out infinite;
-  filter: drop-shadow(0 0 14px rgb(0 255 136 / 0.8));
-}
-
-@keyframes codex-play-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-}
-
-/* Codex mode — ensure now-playing cards stay visible */
-.latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:not(:hover) .latest-drops__badge {
-  animation: none;
 }
 
 /* ============================================
@@ -307,60 +260,26 @@
 @media (max-width: 640px) {
   .latest-drops {
     padding: 0 12px;
-    margin-top: 36px;
+    margin-top: 4px;
   }
 
   .latest-drops__card {
-    flex: 0 0 200px;
+    flex: 0 0 210px;
   }
 
   .latest-drops__info {
-    padding: 10px 12px 12px;
+    padding: 12px 14px 14px;
   }
 }
 
-/* Reduced motion — disable animations */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .latest-drops {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .latest-drops__card {
-    opacity: 1;
-    transform: none;
-  }
-
-  .latest-drops--visible .latest-drops__card {
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .latest-drops__badge {
-    animation: none;
-  }
-
-  /* Culture Codex — reduce to opacity-only in reduced motion */
-  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:not(:hover) {
-    filter: none;
-    transform: none;
-    transition: opacity 0.2s ease;
-  }
-
-  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover {
-    transform: none;
-  }
-
-  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__thumb img {
-    transform: none;
-    transition: filter 0.3s ease;
-  }
-
-  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__play svg {
-    animation: none;
-  }
-
-  .codex-preview-bar {
-    display: none;
-  }
+  .latest-drops { opacity: 1; transform: none; transition: none; }
+  .latest-drops__card { opacity: 1; transform: none; }
+  .latest-drops--visible .latest-drops__card { transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+  .latest-drops__badge { animation: none; }
+  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:not(:hover) { filter: none; transform: none; transition: opacity 0.2s ease; }
+  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover { transform: none; }
+  .latest-drops__rail:has(.latest-drops__card:hover) .latest-drops__card:hover .latest-drops__thumb img { transform: none; transition: filter 0.3s ease; }
+  .codex-preview-bar { display: none; }
 }

@@ -1,6 +1,6 @@
 /* =============================================
-   SpotlightHero — Cinematic full-bleed hero banner
-   Auto-cycling featured videos with crossfade
+   SpotlightHero — Cinematic editorial hero banner
+   3-color: charcoal / white / blue
    ============================================= */
 
 .spotlight-hero {
@@ -14,10 +14,10 @@
 }
 
 .spotlight-hero:focus-visible {
-  box-shadow: inset 0 0 0 3px var(--neon-cyan);
+  box-shadow: inset 0 0 0 2px var(--accent-blue);
 }
 
-/* ── Background layers (crossfade stack) ── */
+/* -- Background layers (crossfade stack) -- */
 .spotlight-hero__bg {
   position: absolute;
   inset: 0;
@@ -35,17 +35,17 @@
   height: 100%;
   object-fit: cover;
   object-position: center 20%;
-  filter: brightness(0.45) saturate(1.2);
-  transform: scale(1.05);
-  animation: hero-drift 12s ease-in-out infinite alternate;
+  filter: brightness(0.3) saturate(0.7) contrast(1.15);
+  transform: scale(1.03);
+  animation: hero-drift 16s ease-in-out infinite alternate;
 }
 
 @keyframes hero-drift {
-  0% { transform: scale(1.05) translate(0, 0); }
-  100% { transform: scale(1.08) translate(-1%, -0.5%); }
+  0% { transform: scale(1.03) translate(0, 0); }
+  100% { transform: scale(1.06) translate(-0.5%, -0.3%); }
 }
 
-/* ── Vignette overlay — moody theatre lighting ── */
+/* -- Vignette overlay -- */
 .spotlight-hero__vignette {
   position: absolute;
   inset: 0;
@@ -53,28 +53,26 @@
   pointer-events: none;
   background:
     linear-gradient(180deg,
-      rgba(10, 0, 21, 0.6) 0%,
-      rgba(10, 0, 21, 0.1) 35%,
-      rgba(10, 0, 21, 0.05) 50%,
-      rgba(10, 0, 21, 0.7) 85%,
-      rgba(10, 0, 21, 0.95) 100%
-    ),
-    radial-gradient(ellipse at 20% 80%, rgba(255, 42, 109, 0.15), transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(5, 217, 232, 0.1), transparent 50%);
+      rgba(38, 38, 38, 0.55) 0%,
+      rgba(38, 38, 38, 0.05) 35%,
+      rgba(38, 38, 38, 0.0) 50%,
+      rgba(38, 38, 38, 0.65) 80%,
+      rgba(38, 38, 38, 0.97) 100%
+    );
 }
 
-/* ── Film grain texture ── */
+/* -- Film grain texture -- */
 .spotlight-hero__grain {
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px;
 }
 
-/* ── Content ── */
+/* -- Content -- */
 .spotlight-hero__content {
   position: absolute;
   bottom: 60px;
@@ -85,48 +83,47 @@
 
 .spotlight-hero__label {
   display: inline-block;
-  padding: 3px 10px;
-  font-family: var(--font-display);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  color: var(--dark-bg);
-  background: var(--neon-cyan);
-  border-radius: 2px;
-  margin-bottom: 12px;
-  box-shadow: 0 0 16px rgba(5, 217, 232, 0.5);
+  padding: 4px 12px;
+  font-family: var(--font-body);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: var(--accent-blue);
+  background: transparent;
+  border: 1px solid rgba(74, 124, 255, 0.35);
+  margin-bottom: 14px;
 }
 
 .spotlight-hero__artist {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 4vw, 2.8rem);
-  font-weight: 900;
-  letter-spacing: 0.08em;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
   color: #fff;
-  margin: 0 0 4px;
-  text-shadow:
-    0 0 20px rgba(255, 42, 109, 0.6),
-    0 2px 12px rgba(0, 0, 0, 0.8);
+  margin: 0 0 6px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
   animation: hero-text-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 .spotlight-hero__title {
   font-family: var(--font-body);
-  font-size: clamp(0.85rem, 2vw, 1.15rem);
-  color: rgba(255, 255, 255, 0.7);
+  font-size: clamp(0.85rem, 2vw, 1.1rem);
+  color: var(--text-secondary);
   margin: 0 0 8px;
-  font-weight: 500;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+  font-weight: 400;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
   animation: hero-text-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s both;
 }
 
 .spotlight-hero__views {
   display: block;
-  font-family: var(--font-display);
-  font-size: 10px;
-  color: rgba(0, 255, 255, 0.7);
-  letter-spacing: 0.06em;
-  margin-bottom: 16px;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--accent-blue);
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  margin-bottom: 20px;
   animation: hero-text-in 0.5s ease-out 0.15s both;
 }
 
@@ -135,41 +132,38 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── CTA Button ── */
+/* -- CTA Button -- */
 .spotlight-hero__cta {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 24px;
-  font-family: var(--font-display);
-  font-size: 12px;
-  font-weight: 700;
+  padding: 12px 28px;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
   letter-spacing: 0.15em;
   color: #fff;
   text-decoration: none;
-  background: rgba(255, 42, 109, 0.2);
-  border: 1px solid rgba(255, 42, 109, 0.6);
-  border-radius: 4px;
-  transition: all 0.25s ease;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
   animation: hero-text-in 0.5s ease-out 0.2s both;
 }
 
 .spotlight-hero__cta:hover,
 .spotlight-hero__cta:focus-visible {
-  background: rgba(255, 42, 109, 0.45);
-  border-color: #ff2a6d;
-  box-shadow:
-    0 0 24px rgba(255, 42, 109, 0.4),
-    0 0 60px rgba(255, 42, 109, 0.15);
+  background: rgba(74, 124, 255, 0.12);
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
   transform: translateY(-2px);
 }
 
 .spotlight-hero__cta:focus-visible {
-  outline: 2px solid var(--neon-cyan);
+  outline: 2px solid var(--accent-blue);
   outline-offset: 3px;
 }
 
-/* ── Progress dots ── */
+/* -- Progress dots -- */
 .spotlight-hero__dots {
   position: absolute;
   bottom: 20px;
@@ -182,11 +176,11 @@
 
 .spotlight-hero__dot {
   width: 32px;
-  height: 3px;
+  height: 2px;
   border: none;
   padding: 0;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.12);
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -194,21 +188,20 @@
 }
 
 .spotlight-hero__dot:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .spotlight-hero__dot--active {
-  background: rgba(255, 42, 109, 0.3);
+  background: rgba(74, 124, 255, 0.2);
 }
 
 .spotlight-hero__dot-fill {
   position: absolute;
   inset: 0;
-  background: var(--neon-pink);
-  border-radius: 2px;
+  background: var(--accent-blue);
+  border-radius: 1px;
   transform: scaleX(0);
   transform-origin: left;
-  box-shadow: 0 0 8px rgba(255, 42, 109, 0.6);
 }
 
 .spotlight-hero__dot--active .spotlight-hero__dot-fill {
@@ -220,7 +213,7 @@
   to { transform: scaleX(1); }
 }
 
-/* ── Reduced motion ── */
+/* -- Reduced motion -- */
 @media (prefers-reduced-motion: reduce) {
   .spotlight-hero__bg { transition: opacity 0.3s ease; }
   .spotlight-hero__bg img { animation: none; transform: scale(1); }
@@ -231,9 +224,9 @@
   .spotlight-hero__dot-fill { animation: none !important; transform: scaleX(1); }
 }
 
-/* ── Mobile ── */
+/* -- Mobile -- */
 @media (max-width: 600px) {
-  .spotlight-hero { height: clamp(260px, 50vh, 400px); margin-bottom: 24px; }
+  .spotlight-hero { height: clamp(260px, 50vh, 400px); margin-bottom: 28px; }
   .spotlight-hero__content { bottom: 48px; left: 16px; right: 16px; max-width: none; }
-  .spotlight-hero__cta { padding: 8px 18px; font-size: 11px; }
+  .spotlight-hero__cta { padding: 10px 20px; font-size: 0.65rem; }
 }

@@ -42,28 +42,24 @@ export default function ImpactNumbers() {
       value: videoCount,
       suffix: '',
       label: 'VIDEOS',
-      color: '#ff2a6d',
       delay: '0ms',
     },
     {
       value: artistCount,
       suffix: '',
       label: 'ARTISTS',
-      color: '#05d9e8',
       delay: '100ms',
     },
     {
       value: viewDisplay,
       suffix: 'M+',
       label: 'TOTAL VIEWS',
-      color: '#ffcc00',
       delay: '200ms',
     },
     {
       value: yearCount,
       suffix: '',
       label: 'YEARS ACTIVE',
-      color: '#00ff88',
       delay: '300ms',
     },
   ]
@@ -80,7 +76,6 @@ export default function ImpactNumbers() {
             key={stat.label}
             className="impact-numbers__item"
             style={{
-              '--stat-color': stat.color,
               '--reveal-delay': stat.delay,
             }}
           >

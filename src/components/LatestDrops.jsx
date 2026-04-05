@@ -60,8 +60,8 @@ export default function LatestDrops() {
       ref={sectionRef}
       aria-label="Latest video releases"
     >
-      <SectionLabel text="LATEST DROPS" color="rgb(0 255 136 / 0.6)" as="h2" />
-      <p className="latest-drops__sub">Fresh from the timeline</p>
+      <SectionLabel text="LATEST DROPS" color="rgba(74, 124, 255, 0.45)" as="h2" />
+      <p className="latest-drops__sub">Recent releases from the catalogue</p>
 
       <div
         className={`latest-drops__rail ${isDragging ? 'is-dragging' : ''}`}

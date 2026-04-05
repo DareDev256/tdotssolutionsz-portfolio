@@ -56,7 +56,7 @@ export default function SpotlightHero() {
           aria-hidden="true"
         >
           <img
-            src={getThumbnailUrl(v.youtubeId, 'maxresdefault')}
+            src={getThumbnailUrl(v.youtubeId, 'hqdefault')}
             alt=""
             draggable="false"
           />

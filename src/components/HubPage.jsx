@@ -1,22 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ImpactNumbers from './ImpactNumbers'
-import FilmStrip from './FilmStrip'
-import ArtistShowcase from './ArtistShowcase'
-import VideoSpotlight from './VideoSpotlight'
-import TopHits from './TopHits'
 import LatestDrops from './LatestDrops'
-import EraTimeline from './EraTimeline'
-import CinematicAtmosphere from './CinematicAtmosphere'
-import BroadcastBar from './BroadcastBar'
 import SpotlightHero from './SpotlightHero'
-import DirectorsReel from './DirectorsReel'
+import WebDesignShowcase from './WebDesignShowcase'
 import Icon from './ui/Icon'
 import { PORTFOLIO_STATS } from '../utils/videoData'
 import './HubPage.css'
 
 export default function HubPage() {
   const [showToast, setShowToast] = useState(false)
+  const [introPhase, setIntroPhase] = useState('hold') // hold → shrink → done
+
+  useEffect(() => {
+    // Hold the centered logo for a beat
+    const holdTimer = setTimeout(() => setIntroPhase('shrink'), 900)
+    // Remove intro overlay after animation completes
+    const doneTimer = setTimeout(() => setIntroPhase('done'), 2400)
+    return () => { clearTimeout(holdTimer); clearTimeout(doneTimer) }
+  }, [])
 
   function handleLockedClick(e) {
     e.preventDefault()
@@ -26,10 +28,24 @@ export default function HubPage() {
 
   return (
     <div className="hub-page">
-      <div className="hub-curtain" aria-hidden="true" />
-      <div className="hub-bg-grid" aria-hidden="true" />
-      <div className="hub-bg-glow" aria-hidden="true" />
-      <CinematicAtmosphere />
+      {/* Intro overlay — logo scales from center to header position */}
+      {introPhase !== 'done' && (
+        <div className={`hub-intro ${introPhase === 'shrink' ? 'hub-intro--shrink' : ''}`} aria-hidden="true">
+          <div className="hub-intro__content">
+            <img
+              src="/logo.png"
+              alt=""
+              className="hub-intro__logo"
+              width="200"
+              height="200"
+            />
+            <div className="hub-intro__line" />
+            <span className="hub-intro__tagline">TDOTSSOLUTIONSZ</span>
+          </div>
+        </div>
+      )}
+
+      <div className="hub-grain" aria-hidden="true" />
 
       <header className="hub-header">
         <img
@@ -48,31 +64,47 @@ export default function HubPage() {
       </header>
 
       <SpotlightHero />
+      <LatestDrops />
       <ImpactNumbers />
 
       <nav className="hub-cards" aria-label="Portfolio sections">
         <Link
           to="/videos"
-          className="hub-card hub-card--pink"
+          className="hub-card"
           aria-label="View Music Videos portfolio"
         >
-          <span className="hub-card-icon"><Icon name="film" size={28} /></span>
+          <span className="hub-card-icon"><Icon name="film" size={24} /></span>
           <h2 className="hub-card-title">Music Videos</h2>
           <span className="hub-card-subtitle">{PORTFOLIO_STATS.totalVideos} VIDEOS — {PORTFOLIO_STATS.totalArtists} ARTISTS</span>
-          <p className="hub-card-desc">Immersive 3D experience showcasing a decade of Toronto hip-hop videography</p>
+          <p className="hub-card-desc">A decade of Toronto hip-hop videography — immersive 3D viewing experience</p>
           <span className="hub-card-cta">
             ENTER <span aria-hidden="true">→</span>
           </span>
         </Link>
 
-        {/* DO NOT unlock Photography — it is intentionally locked/coming soon */}
+        <Link
+          to="/web-design"
+          className="hub-card"
+          aria-label="View Web Design portfolio"
+          onClick={(e) => { e.preventDefault(); handleLockedClick(e) }}
+        >
+          <span className="hub-card-icon"><Icon name="camera" size={24} /></span>
+          <h2 className="hub-card-title">Web Design</h2>
+          <span className="hub-card-subtitle">SITES & DIGITAL</span>
+          <p className="hub-card-desc">Custom websites for artists, brands, and creative projects</p>
+          <span className="hub-card-cta">
+            VIEW WORK <span aria-hidden="true">→</span>
+          </span>
+        </Link>
+
+        {/* Photography — intentionally locked/coming soon */}
         <button
-          className="hub-card hub-card--cyan hub-card--locked"
+          className="hub-card hub-card--locked"
           onClick={handleLockedClick}
           aria-label="Photography — Coming Soon"
           type="button"
         >
-          <span className="hub-card-icon"><Icon name="camera" size={28} /></span>
+          <span className="hub-card-icon"><Icon name="camera" size={24} /></span>
           <h2 className="hub-card-title">Photography</h2>
           <span className="hub-card-subtitle">COMING SOON</span>
           <p className="hub-card-desc">Portraits, events, artist EPKs, and urban street photography</p>
@@ -82,28 +114,21 @@ export default function HubPage() {
         </button>
       </nav>
 
-      <LatestDrops />
-      <DirectorsReel />
-      <FilmStrip />
-      <ArtistShowcase />
-      <VideoSpotlight />
-      <TopHits />
-      <EraTimeline />
+      <WebDesignShowcase />
 
       {showToast && (
         <div className="hub-toast" role="status" aria-live="polite">
-          PHOTOGRAPHY — COMING SOON
+          COMING SOON
         </div>
       )}
 
-      <BroadcastBar />
-
       <footer className="hub-footer">
-        <div className="hub-footer-line-bar" aria-hidden="true" />
+        <div className="hub-footer-rule" aria-hidden="true" />
         <span className="hub-footer-brand">TDOTSSOLUTIONSZ</span>
         <div className="hub-footer-links">
           <a href="https://www.youtube.com/@Tdotssolutionsz" target="_blank" rel="noopener noreferrer" className="hub-footer-link">YouTube</a>
           <a href="https://www.instagram.com/tdotssolutionsz" target="_blank" rel="noopener noreferrer" className="hub-footer-link">Instagram</a>
+          <a href="https://x.com/tdotssolutionsz" target="_blank" rel="noopener noreferrer" className="hub-footer-link">X</a>
           <a href="mailto:tdotssolutionsz@gmail.com" className="hub-footer-link hub-footer-link--cta">Book a Session</a>
         </div>
         <span className="hub-footer-loc">TORONTO, CANADA</span>

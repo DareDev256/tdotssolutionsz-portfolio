@@ -2,6 +2,28 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [4.0.0] - 2026-04-05
+
+### Breaking — Full Design Overhaul
+- **Editorial redesign** — Replaced synthwave neon aesthetic with a 3-color editorial palette: charcoal grey (#262626), white, cobalt blue (#4a7cff) + warm orange (#e85d34) accent. Inspired by anime title card color discipline
+- **Typography overhaul** — Playfair Display serif for headlines, Inter for body text. Replaces Orbitron/Rajdhani
+- **Cinematic logo intro** — Full-screen studio card animation: logo appears large and centered, holds, then scales down and dissolves to reveal the page. Film-quality easing and choreography
+- **HubPage stripped to essentials** — Removed DirectorsReel, FilmStrip, ArtistShowcase, VideoSpotlight, TopHits, EraTimeline, CinematicAtmosphere, BroadcastBar. Clean editorial layout
+- **Web Design showcase** — New section with real project previews (SyrenEffect, Savv4x) and coming soon (Casper TNG). Live cards link to deployed sites
+- **Photography card restored** — Coming Soon state, 3-column card grid alongside Music Videos and Web Design
+- **Layout reorder** — SpotlightHero → LatestDrops → ImpactNumbers → Cards → Web Design → Footer
+- **X/Twitter link** added to footer
+
+### Fixed
+- **Masicka, King Louie, Street Bud thumbnails** — Fallback from maxresdefault to hqdefault for videos without high-res thumbnails (3/5 featured videos were showing broken images)
+
+### Changed
+- Grey background throughout (charcoal, not black) — surfaces at #262626/#303030/#363636
+- All neon glows, gradient backgrounds, particle effects removed from HubPage
+- SpotlightHero vignette blends into grey background
+- SectionLabel uses Inter sans-serif instead of Orbitron
+- ImpactNumbers: monochrome values with blue suffix accent, no per-stat colors
+
 ## [3.43.1] - 2026-04-05
 
 ### Security

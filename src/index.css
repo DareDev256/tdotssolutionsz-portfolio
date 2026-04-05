@@ -11,8 +11,8 @@
     left: 50%;
     transform: translateX(-50%);
     padding: 12px 24px;
-    background: var(--neon-cyan, #05d9e8);
-    color: #0d0221;
+    background: var(--accent-blue, #4a7cff);
+    color: #fff;
     font-weight: 700;
     font-size: 14px;
     z-index: 10000;
@@ -26,28 +26,42 @@
 }
 
 :root {
-    /* Synthwave Color Palette */
+    /* 3-Color Palette: Charcoal / White / Blue (+orange spark) */
     --neon-pink: #ff2a6d;
     --neon-cyan: #05d9e8;
     --neon-purple: #d300c5;
     --neon-blue: #7700ff;
     --neon-orange: #ff6b35;
-    --dark-bg: #0d0221;
-    --dark-surface: #0a0015;
-    --grid-color: rgba(255, 42, 109, 0.3);
+    --dark-bg: #2a2a2a;
+    --dark-surface: #262626;
+    --grid-color: rgba(255, 255, 255, 0.03);
     --sun-yellow: #ffcc00;
     --sun-orange: #ff6600;
+
+    /* Accent system — anime 3-color discipline */
+    --accent-blue: #4a7cff;
+    --accent-blue-dim: rgba(74, 124, 255, 0.15);
+    --accent-orange: #e85d34;
+    --accent-orange-dim: rgba(232, 93, 52, 0.12);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.55);
+    --text-tertiary: rgba(255, 255, 255, 0.3);
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-hover: rgba(255, 255, 255, 0.14);
+    --surface-raised: #303030;
 
     /* RGB channels — enables alpha compositing via rgb(var(--token) / α) */
     --neon-pink-rgb: 255 42 109;
     --neon-cyan-rgb: 5 217 232;
     --neon-purple-rgb: 211 0 197;
-    --dark-bg-rgb: 13 2 33;
-    --dark-surface-rgb: 10 0 21;
+    --dark-bg-rgb: 42 42 42;
+    --dark-surface-rgb: 38 38 38;
 
-    /* Typography */
-    --font-display: 'Orbitron', monospace;
-    --font-body: 'Rajdhani', sans-serif;
+    /* Typography — Editorial */
+    --font-display: 'Playfair Display', 'Georgia', serif;
+    --font-heading: 'Inter', -apple-system, sans-serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'Orbitron', monospace;
 }
 
 html,

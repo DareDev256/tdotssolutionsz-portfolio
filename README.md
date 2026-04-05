@@ -15,18 +15,18 @@
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/681_TESTS-47_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v3.42.1-synthwave-blueviolet?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v4.0.0-editorial-4a7cff?style=for-the-badge)](CHANGELOG.md)
 [![Security](https://img.shields.io/badge/OWASP_AUDIT-CLEAN-00ff41?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
-> An immersive, cinematic-dark portfolio showcasing **101 music videos** across **54 artists** — 14 years of Toronto hip-hop production rendered as a neon-soaked 3D metropolis you drive through. Full-bleed video previews. Hover-to-play cinematics. Moody lighting that makes every thumbnail feel like an album campaign. Think the **Migos Culture III rollout** meets a **Netflix UI** designed by a synthwave art director.
+> An immersive, cinematic portfolio showcasing **101 music videos** across **54 artists** — 14 years of Toronto hip-hop production. Editorial grey aesthetic with a 3-color palette (charcoal, white, cobalt blue). Film studio logo intro, magazine-style layouts, and a 3D metropolis you drive through. Now also featuring a **Web Design** showcase for artist and creator websites.
 
 ### ⚡ Jump In
 
 | Experience | Link | What You'll See |
 |-----------|------|-----------------|
-| 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Spotlight Hero banner, Director's Reel montage, Culture Codex previews, artist ticker, era timeline |
+| 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Film studio logo intro, Spotlight Hero, Latest Drops, Web Design showcase |
 | 🏙️ **3D City** | [tdotssolutionsz.com/videos](https://tdotssolutionsz.com/videos) | Tron-inspired neon metropolis — scroll the highway, pick a lane |
 | 🎬 **Video Page** | [tdotssolutionsz.com/video/dQw4w9WgXcQ](https://tdotssolutionsz.com/video/dQw4w9WgXcQ) | Standalone shareable player with related videos & share bar |
 
