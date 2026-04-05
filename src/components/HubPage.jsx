@@ -96,7 +96,6 @@ export default function HubPage() {
           to="/web-design"
           className="hub-card"
           aria-label="View Web Design portfolio"
-          onClick={(e) => { e.preventDefault(); handleLockedClick(e) }}
         >
           <span className="hub-card-icon"><Icon name="camera" size={24} /></span>
           <h2 className="hub-card-title">Web Design</h2>

@@ -1,0 +1,394 @@
+/* ============================================
+   WEB DESIGN PAGE — Network graph visualization
+   2D canvas graph + DOM overlays + preview cards
+   ============================================ */
+
+.webdesign-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #1a1a1a 0%, #222 50%, #1e1e1e 100%);
+  color: #fff;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.webdesign-page__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 32px 20px;
+  z-index: 10;
+}
+
+.webdesign-page__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-subtle);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.webdesign-page__back:hover {
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  background: var(--accent-blue-dim);
+}
+
+.webdesign-page__title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.webdesign-page__sub {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  margin: 2px 0 0;
+  letter-spacing: 0.04em;
+}
+
+/* Network container */
+.webdesign-page__network {
+  flex: 1;
+  position: relative;
+  min-height: 500px;
+  max-height: 65vh;
+}
+
+.webdesign-page__canvas {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+/* Hub center label */
+.webdesign-page__hub-label {
+  position: absolute;
+  transform: translate(-50%, 20px);
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent-blue);
+  white-space: nowrap;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+/* Node labels — clickable buttons over canvas */
+.webdesign-page__node-label {
+  position: absolute;
+  transform: translate(-50%, 18px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+}
+
+.webdesign-page__node-label:hover,
+.webdesign-page__node-label--active {
+  border-color: var(--accent-blue);
+  color: #fff;
+  background: rgba(74, 124, 255, 0.1);
+}
+
+.webdesign-page__node-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+.webdesign-page__node-name {
+  letter-spacing: 0.04em;
+}
+
+/* ============================================
+   PREVIEW CARD — expands on node click
+   ============================================ */
+
+.webdesign-page__card {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 380px;
+  max-width: calc(100vw - 48px);
+  background: #1e1e1e;
+  border: 1px solid var(--border-subtle);
+  z-index: 50;
+  animation: card-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  overflow: hidden;
+}
+
+@keyframes card-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.webdesign-page__card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px 0;
+}
+
+.webdesign-page__card-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: #151515;
+  padding: 4px;
+}
+
+.webdesign-page__card-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.webdesign-page__card-type {
+  font-family: var(--font-body);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  opacity: 0.7;
+}
+
+.webdesign-page__card-status {
+  margin-left: auto;
+  font-family: var(--font-body);
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #4caf50;
+  padding: 3px 8px;
+  border: 1px solid rgba(76, 175, 80, 0.25);
+  background: rgba(76, 175, 80, 0.08);
+}
+
+.webdesign-page__card-desc {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  padding: 14px 20px 0;
+  margin: 0;
+}
+
+.webdesign-page__card-tech {
+  display: flex;
+  gap: 6px;
+  padding: 12px 20px;
+  flex-wrap: wrap;
+}
+
+.webdesign-page__card-tag {
+  font-family: var(--font-body);
+  font-size: 0.55rem;
+  font-weight: 500;
+  padding: 3px 8px;
+  color: var(--text-tertiary);
+  border: 1px solid var(--border-subtle);
+  letter-spacing: 0.04em;
+}
+
+/* Live site preview iframe */
+.webdesign-page__card-preview {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #111;
+  position: relative;
+}
+
+.webdesign-page__card-iframe {
+  width: 200%;
+  height: 200%;
+  border: none;
+  transform: scale(0.5);
+  transform-origin: top left;
+  pointer-events: none;
+}
+
+.webdesign-page__card-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--accent-blue);
+  text-decoration: none;
+  border-top: 1px solid var(--border-subtle);
+  transition: all 0.3s ease;
+}
+
+.webdesign-page__card-cta:hover {
+  background: var(--accent-blue-dim);
+  color: #fff;
+}
+
+/* ============================================
+   MOBILE LIST — below graph on small screens
+   ============================================ */
+
+.webdesign-page__list {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px 40px;
+}
+
+.webdesign-page__list-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.3s ease;
+}
+
+.webdesign-page__list-item:hover {
+  border-color: var(--border-hover);
+}
+
+.webdesign-page__list-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.webdesign-page__list-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.webdesign-page__list-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  display: block;
+  color: #fff;
+}
+
+.webdesign-page__list-type {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  opacity: 0.7;
+}
+
+.webdesign-page__list-status {
+  font-family: var(--font-body);
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #4caf50;
+  padding: 3px 8px;
+  border: 1px solid rgba(76, 175, 80, 0.25);
+  background: rgba(76, 175, 80, 0.08);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .webdesign-page__network {
+    min-height: 350px;
+    max-height: 45vh;
+  }
+
+  .webdesign-page__card {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 60vh;
+    overflow-y: auto;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    animation-name: card-slide-up;
+  }
+
+  @keyframes card-slide-up {
+    from { opacity: 0; transform: translateY(100%); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .webdesign-page__list {
+    display: flex;
+  }
+
+  .webdesign-page__node-label {
+    font-size: 0.55rem;
+    padding: 4px 8px;
+  }
+
+  .webdesign-page__node-icon {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .webdesign-page__header {
+    padding: 20px 16px 16px;
+  }
+
+  .webdesign-page__title {
+    font-size: 1.2rem;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .webdesign-page__card {
+    animation: none;
+  }
+}
