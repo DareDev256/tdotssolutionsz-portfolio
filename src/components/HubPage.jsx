@@ -28,7 +28,7 @@ export default function HubPage() {
 
   return (
     <div className="hub-page">
-      {/* Intro overlay — logo scales from center to header position */}
+      {/* Intro overlay — logo + staggered letter reveal */}
       {introPhase !== 'done' && (
         <div className={`hub-intro ${introPhase === 'shrink' ? 'hub-intro--shrink' : ''}`} aria-hidden="true">
           <div className="hub-intro__content">
@@ -40,7 +40,17 @@ export default function HubPage() {
               height="200"
             />
             <div className="hub-intro__line" />
-            <span className="hub-intro__tagline">TDOTSSOLUTIONSZ</span>
+            <span className="hub-intro__letters">
+              {'TDOTSSOLUTIONSZ'.split('').map((char, i) => (
+                <span
+                  key={i}
+                  className="hub-intro__letter"
+                  style={{ '--letter-index': i }}
+                >
+                  {char}
+                </span>
+              ))}
+            </span>
           </div>
         </div>
       )}

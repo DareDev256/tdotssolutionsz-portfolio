@@ -1,11 +1,9 @@
 /**
- * LatestDrops — "New Releases" horizontal scroll row for the HubPage.
- * Netflix-style card rail showing the 8 most recent videos with
- * drag-to-scroll, "NEW" badges, cinematic hover effects, and
- * neon accent glow. Fills the discovery gap: TopHits = popular,
- * FilmStrip = top viewed, EraTimeline = historical, LatestDrops = recent.
+ * LatestDrops — Asymmetric editorial grid for recent releases.
+ * Magazine spread layout: one hero card + smaller stacked cards.
+ * Not a uniform rail — editorial tension through size contrast.
  */
-import { useRef, useState, useCallback } from 'react'
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { VIDEOS } from '../utils/videoData'
 import { latestFirst } from '../utils/videoFilters'
@@ -15,9 +13,8 @@ import useScrollReveal from '../hooks/useScrollReveal'
 import SectionLabel from './ui/SectionLabel'
 import './LatestDrops.css'
 
-const LATEST = latestFirst(VIDEOS, 8)
+const LATEST = latestFirst(VIDEOS, 5)
 
-/** Videos uploaded within 180 days get a "NEW" badge */
 const FRESH_THRESHOLD_MS = 180 * 24 * 60 * 60 * 1000
 
 function isFresh(uploadDate) {
@@ -26,33 +23,10 @@ function isFresh(uploadDate) {
 
 export default function LatestDrops() {
   const sectionRef = useRef(null)
-  const railRef = useRef(null)
   const isRevealed = useScrollReveal(sectionRef)
-  const [isDragging, setIsDragging] = useState(false)
-  const dragState = useRef({ startX: 0, scrollLeft: 0, moved: false })
 
-  const handlePointerDown = useCallback((e) => {
-    const rail = railRef.current
-    if (!rail) return
-    setIsDragging(true)
-    dragState.current = {
-      startX: e.clientX,
-      scrollLeft: rail.scrollLeft,
-      moved: false,
-    }
-    rail.setPointerCapture(e.pointerId)
-  }, [])
-
-  const handlePointerMove = useCallback((e) => {
-    if (!isDragging) return
-    const dx = e.clientX - dragState.current.startX
-    if (Math.abs(dx) > 4) dragState.current.moved = true
-    railRef.current.scrollLeft = dragState.current.scrollLeft - dx
-  }, [isDragging])
-
-  const handlePointerUp = useCallback(() => {
-    setIsDragging(false)
-  }, [])
+  const hero = LATEST[0]
+  const rest = LATEST.slice(1)
 
   return (
     <section
@@ -61,60 +35,66 @@ export default function LatestDrops() {
       aria-label="Latest video releases"
     >
       <SectionLabel text="LATEST DROPS" color="rgba(74, 124, 255, 0.45)" as="h2" />
-      <p className="latest-drops__sub">Recent releases from the catalogue</p>
 
-      <div
-        className={`latest-drops__rail ${isDragging ? 'is-dragging' : ''}`}
-        ref={railRef}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
-        role="list"
-      >
-        {LATEST.map((video, i) => {
-          const fresh = isFresh(video.uploadDate)
-          return (
+      <div className="latest-drops__grid">
+        {/* Hero card — large left */}
+        <Link
+          to={`/video/${hero.youtubeId}`}
+          className="latest-drops__hero"
+          aria-label={`${hero.title} by ${hero.artist}`}
+        >
+          <div className="latest-drops__hero-img">
+            <img
+              src={getThumbnailUrl(hero.youtubeId, 'hqdefault')}
+              alt=""
+              loading="lazy"
+              draggable="false"
+            />
+            <div className="latest-drops__hero-overlay" aria-hidden="true" />
+            {isFresh(hero.uploadDate) && (
+              <span className="latest-drops__badge">NEW</span>
+            )}
+          </div>
+          <div className="latest-drops__hero-info">
+            <span className="latest-drops__artist">{hero.artist}</span>
+            <h3 className="latest-drops__hero-title">{hero.title}</h3>
+            <div className="latest-drops__meta">
+              <span>{formatViews(hero.viewCount)} views</span>
+              <span className="latest-drops__dot">·</span>
+              <span>{formatDate(hero.uploadDate)}</span>
+            </div>
+          </div>
+        </Link>
+
+        {/* Stacked cards — right column */}
+        <div className="latest-drops__stack">
+          {rest.map((video, i) => (
             <Link
               to={`/video/${video.youtubeId}`}
               key={video.youtubeId}
               className="latest-drops__card"
-              style={{ '--card-index': i }}
-              role="listitem"
-              onClick={(e) => { if (dragState.current.moved) e.preventDefault() }}
+              style={{ '--stack-index': i }}
               aria-label={`${video.title} by ${video.artist}`}
             >
-              <div className="latest-drops__thumb">
+              <div className="latest-drops__card-img">
                 <img
                   src={getThumbnailUrl(video.youtubeId, 'mqdefault')}
                   alt=""
                   loading="lazy"
                   draggable="false"
-                  width="320"
-                  height="180"
                 />
-                <div className="latest-drops__play" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-                <div className="codex-preview-bar" aria-hidden="true" />
-                <span className="codex-preview-label" aria-hidden="true">PREVIEW</span>
-                {fresh && <span className="latest-drops__badge">NEW</span>}
+                {isFresh(video.uploadDate) && (
+                  <span className="latest-drops__badge latest-drops__badge--sm">NEW</span>
+                )}
               </div>
-
-              <div className="latest-drops__info">
+              <div className="latest-drops__card-info">
                 <span className="latest-drops__artist">{video.artist}</span>
-                <h3 className="latest-drops__title">{video.title}</h3>
-                <div className="latest-drops__meta">
-                  <span>{formatViews(video.viewCount)} views</span>
-                  <span className="latest-drops__dot">·</span>
-                  <span>{formatDate(video.uploadDate)}</span>
-                </div>
+                <h3 className="latest-drops__card-title">{video.title}</h3>
+                <span className="latest-drops__card-meta">{formatViews(video.viewCount)}</span>
               </div>
             </Link>
-          )
-        })}
+          ))}
+        </div>
       </div>
     </section>
   )
