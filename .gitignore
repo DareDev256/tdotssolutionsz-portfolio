@@ -21,3 +21,6 @@ logs/
 .env.*
 .env.local
 .env.production
+
+# Script-generated backups — never commit
+src/data/videos.backup.json

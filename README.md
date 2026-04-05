@@ -143,7 +143,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 - **Build-Time Data** — `fetch-youtube-data.js` pulls real view counts and upload dates from YouTube at build time — zero runtime API dependencies
 - **Modular 3D** — Vehicles, effects, scene elements, atmosphere, and particles all extracted into focused modules with barrel exports
 - **12 Shared Hooks** — Deep linking, video navigation, shuffle play, favorites, copy-to-clipboard, keyboard shortcuts, search (with `searchWithFallback` utility), device type, fresnel materials, modal keyboard, outside click (supports single or multiple refs), stagger reveal (batch IntersectionObserver for scroll-triggered CSS animations) — plus 2 inline hooks colocated with their components
-- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy blocking 18 browser APIs), YouTube ID validation at all entry points, build-time API response sanitization, HTTPS-enforced share windows, 30-pattern secret scanning
+- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy blocking 18 browser APIs), YouTube ID validation at all entry points, build-time API response sanitization, HTTPS-enforced share windows, 30-pattern secret scanner with test-file coverage for 8 high-confidence credential patterns
 
 > Full architecture deep-dive: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 

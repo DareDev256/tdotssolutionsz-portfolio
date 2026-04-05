@@ -2,6 +2,20 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.43.1] - 2026-04-05
+
+### Security
+- **Fixed picomatch high-severity vulnerability** (CVE: method injection + ReDoS via extglob quantifiers) — updated from 4.0.3 → 4.0.4 via `npm audit fix`, removing 44 unused transitive packages in the process
+- **Secret scanner now covers test files** — `scan-secrets.js` previously skipped all `.test.` and `__tests__` files entirely, creating a blind spot where real credentials copy-pasted into mocks would go undetected. Test files are now scanned against a curated subset of 8 high-confidence patterns (AWS keys, private keys, DB URIs, Stripe/Google/Firebase keys) that have near-zero false-positive rates against regex definitions and test assertions
+- **Added `videos.backup.json` to `.gitignore`** — `fix-video-ids.js` generates this backup file; it was previously untracked but not gitignored, risking accidental commits of stale data snapshots
+
+### Audit Results
+- **0 dependency vulnerabilities** (was 1 high)
+- **0 hardcoded secrets** across all source, config, and test files
+- **CSP headers** properly configured — no `unsafe-eval`, YouTube/jsdelivr/fonts allowlisted correctly
+- **HSTS, X-Frame-Options, Permissions-Policy, Referrer-Policy** all verified present and correct
+- **No XSS vectors** — no `dangerouslySetInnerHTML`, URL params validated via `isValidYouTubeId`, `safeJsonParse` guards localStorage
+
 ## [3.43.0] - 2026-04-05
 
 ### Added

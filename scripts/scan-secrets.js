@@ -18,6 +18,19 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 
+// Subset of patterns safe to run inside test files (extremely low false-positive,
+// catches real credentials that might be copy-pasted into mocks).
+const TEST_FILE_PATTERNS = [
+  'AWS Access Key',
+  'Private Key',
+  'Database URI',
+  'Supabase Key',
+  'Stripe Secret Key',
+  'Google API Key',
+  'Firebase Server Key',
+  'DigitalOcean Token',
+];
+
 // High-confidence secret patterns (low false-positive rate)
 const SECRET_PATTERNS = [
   { name: 'AWS Access Key',        re: /AKIA[0-9A-Z]{16}/ },
@@ -110,13 +123,30 @@ const files = getFilesToScan();
 let allFindings = [];
 
 for (const file of files) {
-  // Skip this scanner itself and test files
+  // Skip this scanner itself
   if (file.endsWith('scan-secrets.js')) continue;
-  if (file.includes('.test.') || file.includes('__tests__')) continue;
+
+  const isTestFile = file.includes('.test.') || file.includes('__tests__');
 
   try {
-    const findings = scanFile(file);
-    allFindings.push(...findings);
+    if (isTestFile) {
+      // Test files only get scanned for high-confidence patterns that are
+      // almost never false positives (real AWS keys, private keys, DB URIs).
+      // This closes the blind spot where real creds get copy-pasted into mocks.
+      const testPatterns = SECRET_PATTERNS.filter(p => TEST_FILE_PATTERNS.includes(p.name));
+      const content = fs.readFileSync(file, 'utf-8');
+      content.split('\n').forEach((line, idx) => {
+        if (line.includes('re:') || line.includes('RegExp') || line.includes('test(')) return;
+        for (const { name, re } of testPatterns) {
+          if (re.test(line)) {
+            allFindings.push({ file: path.relative(ROOT, file), line: idx + 1, pattern: name });
+          }
+        }
+      });
+    } else {
+      const findings = scanFile(file);
+      allFindings.push(...findings);
+    }
   } catch {
     // Skip unreadable files
   }
