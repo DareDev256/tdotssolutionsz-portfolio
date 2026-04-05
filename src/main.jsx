@@ -27,8 +27,6 @@ const VideoPage = lazy(() => import('./components/VideoPage.jsx'))
 const App = lazy(() => import('./App.jsx'))
 /** Mobile grid view — lightweight chunk without Three.js dependency */
 const MobileApp = lazy(() => import('./MobileApp.jsx'))
-/** Web Design network page — interactive graph of managed sites */
-const WebDesignPage = lazy(() => import('./components/WebDesignPage.jsx'))
 /** Photography gallery — DO NOT enable until owner explicitly requests it */
 // const PhotoGallery = lazy(() => import('./components/PhotoGallery.jsx'))
 
@@ -157,7 +155,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                         <Route path="/" element={<HubPage />} />
                         <Route path="/video/:youtubeId" element={<VideoPage />} />
                         <Route path="/videos" element={<VideosRoute />} />
-                        <Route path="/web-design" element={<WebDesignPage />} />
                         {/* DO NOT enable /photos route — Photography is Coming Soon */}
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>

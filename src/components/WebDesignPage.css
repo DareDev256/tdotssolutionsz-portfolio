@@ -1,15 +1,16 @@
 /* ============================================
-   WEB DESIGN PAGE — Network graph visualization
-   2D canvas graph + DOM overlays + preview cards
+   WEB DESIGN PAGE — Living particle network
+   Floating mesh + anchor nodes + preview cards
    ============================================ */
 
 .webdesign-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #1a1a1a 0%, #222 50%, #1e1e1e 100%);
+  min-height: 100dvh;
+  background: #141414;
   color: #fff;
-  padding: 0;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 /* Header */
@@ -17,8 +18,9 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 28px 32px 20px;
+  padding: 24px 28px 0;
   z-index: 10;
+  position: relative;
 }
 
 .webdesign-page__back {
@@ -37,138 +39,131 @@
 .webdesign-page__back:hover {
   color: var(--accent-blue);
   border-color: var(--accent-blue);
-  background: var(--accent-blue-dim);
 }
 
 .webdesign-page__title {
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 800;
   margin: 0;
-  letter-spacing: 0.01em;
 }
 
 .webdesign-page__sub {
   font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--text-tertiary);
   margin: 2px 0 0;
   letter-spacing: 0.04em;
 }
 
-/* Network container */
+/* ============================================
+   NETWORK CANVAS — fills available space
+   ============================================ */
+
 .webdesign-page__network {
   flex: 1;
   position: relative;
-  min-height: 500px;
-  max-height: 65vh;
+  min-height: 400px;
+  cursor: crosshair;
 }
 
 .webdesign-page__canvas {
   position: absolute;
   inset: 0;
-  cursor: pointer;
 }
 
 /* Hub center label */
 .webdesign-page__hub-label {
   position: absolute;
-  transform: translate(-50%, 20px);
+  transform: translate(-50%, 26px);
   font-family: var(--font-body);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.15em;
   color: var(--accent-blue);
   white-space: nowrap;
   pointer-events: none;
   text-transform: uppercase;
+  opacity: 0.8;
 }
 
-/* Node labels — clickable buttons over canvas */
+/* Node labels */
 .webdesign-page__node-label {
   position: absolute;
-  transform: translate(-50%, 18px);
+  transform: translate(-50%, 20px);
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  background: rgba(30, 30, 30, 0.9);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
+  padding: 5px 12px;
+  background: rgba(20, 20, 20, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
   font-family: var(--font-body);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  z-index: 5;
 }
 
 .webdesign-page__node-label:hover,
 .webdesign-page__node-label--active {
-  border-color: var(--accent-blue);
+  border-color: rgba(74, 124, 255, 0.4);
   color: #fff;
-  background: rgba(74, 124, 255, 0.1);
+  background: rgba(74, 124, 255, 0.08);
+  transform: translate(-50%, 18px);
 }
 
 .webdesign-page__node-icon {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   object-fit: contain;
   border-radius: 2px;
 }
 
-.webdesign-page__node-name {
-  letter-spacing: 0.04em;
-}
-
 /* ============================================
-   PREVIEW CARD — expands on node click
+   PREVIEW CARD
    ============================================ */
 
 .webdesign-page__card {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  width: 380px;
+  width: 360px;
   max-width: calc(100vw - 48px);
-  background: #1e1e1e;
-  border: 1px solid var(--border-subtle);
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   z-index: 50;
-  animation: card-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: card-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
   overflow: hidden;
 }
 
-@keyframes card-slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(24px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .webdesign-page__card-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 18px 20px 0;
+  padding: 16px 18px 0;
 }
 
 .webdesign-page__card-icon {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
-  border-radius: 4px;
-  background: #151515;
-  padding: 4px;
+  border-radius: 3px;
+  background: #111;
+  padding: 3px;
 }
 
 .webdesign-page__card-name {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   margin: 0;
   line-height: 1.2;
@@ -176,7 +171,7 @@
 
 .webdesign-page__card-type {
   font-family: var(--font-body);
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -187,48 +182,44 @@
 .webdesign-page__card-status {
   margin-left: auto;
   font-family: var(--font-body);
-  font-size: 0.5rem;
+  font-size: 0.45rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   color: #4caf50;
-  padding: 3px 8px;
-  border: 1px solid rgba(76, 175, 80, 0.25);
-  background: rgba(76, 175, 80, 0.08);
+  padding: 2px 7px;
+  border: 1px solid rgba(76, 175, 80, 0.2);
 }
 
 .webdesign-page__card-desc {
   font-family: var(--font-body);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   line-height: 1.5;
   color: var(--text-secondary);
-  padding: 14px 20px 0;
+  padding: 12px 18px 0;
   margin: 0;
 }
 
 .webdesign-page__card-tech {
   display: flex;
-  gap: 6px;
-  padding: 12px 20px;
+  gap: 5px;
+  padding: 10px 18px;
   flex-wrap: wrap;
 }
 
 .webdesign-page__card-tag {
   font-family: var(--font-body);
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   font-weight: 500;
-  padding: 3px 8px;
+  padding: 2px 7px;
   color: var(--text-tertiary);
   border: 1px solid var(--border-subtle);
-  letter-spacing: 0.04em;
 }
 
-/* Live site preview iframe */
 .webdesign-page__card-preview {
   width: 100%;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: #111;
-  position: relative;
 }
 
 .webdesign-page__card-iframe {
@@ -245,9 +236,9 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px;
+  padding: 12px;
   font-family: var(--font-body);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   color: var(--accent-blue);
@@ -262,37 +253,40 @@
 }
 
 /* ============================================
-   MOBILE LIST — below graph on small screens
+   MOBILE LIST — tappable cards below network
    ============================================ */
 
 .webdesign-page__list {
   display: none;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px 20px 40px;
+  gap: 6px;
+  padding: 8px 16px 32px;
 }
 
 .webdesign-page__list-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px;
-  background: var(--surface-raised);
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-subtle);
-  text-decoration: none;
   color: inherit;
+  cursor: pointer;
   transition: border-color 0.3s ease;
+  text-align: left;
+  font: inherit;
 }
 
-.webdesign-page__list-item:hover {
-  border-color: var(--border-hover);
+.webdesign-page__list-item:hover,
+.webdesign-page__list-item--active {
+  border-color: rgba(74, 124, 255, 0.3);
 }
 
 .webdesign-page__list-icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: 3px;
   flex-shrink: 0;
 }
 
@@ -303,31 +297,29 @@
 
 .webdesign-page__list-name {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   display: block;
-  color: #fff;
 }
 
 .webdesign-page__list-type {
   font-family: var(--font-body);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent-blue);
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
-.webdesign-page__list-status {
+.webdesign-page__list-badge {
   font-family: var(--font-body);
-  font-size: 0.5rem;
+  font-size: 0.45rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   color: #4caf50;
-  padding: 3px 8px;
-  border: 1px solid rgba(76, 175, 80, 0.25);
-  background: rgba(76, 175, 80, 0.08);
+  padding: 2px 7px;
+  border: 1px solid rgba(76, 175, 80, 0.2);
   flex-shrink: 0;
 }
 
@@ -337,8 +329,12 @@
 
 @media (max-width: 768px) {
   .webdesign-page__network {
-    min-height: 350px;
-    max-height: 45vh;
+    min-height: 300px;
+    max-height: 50vh;
+  }
+
+  .webdesign-page__list {
+    display: flex;
   }
 
   .webdesign-page__card {
@@ -348,7 +344,7 @@
     left: 0;
     width: 100%;
     max-width: 100%;
-    max-height: 60vh;
+    max-height: 65vh;
     overflow-y: auto;
     border-left: none;
     border-right: none;
@@ -356,18 +352,9 @@
     animation-name: card-slide-up;
   }
 
-  @keyframes card-slide-up {
-    from { opacity: 0; transform: translateY(100%); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .webdesign-page__list {
-    display: flex;
-  }
-
   .webdesign-page__node-label {
-    font-size: 0.55rem;
-    padding: 4px 8px;
+    font-size: 0.5rem;
+    padding: 3px 8px;
   }
 
   .webdesign-page__node-icon {
@@ -376,9 +363,14 @@
   }
 }
 
+@keyframes card-slide-up {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 480px) {
   .webdesign-page__header {
-    padding: 20px 16px 16px;
+    padding: 18px 16px 0;
   }
 
   .webdesign-page__title {
@@ -386,9 +378,6 @@
   }
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .webdesign-page__card {
-    animation: none;
-  }
+  .webdesign-page__card { animation: none; }
 }
