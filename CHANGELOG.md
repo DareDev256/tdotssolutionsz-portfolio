@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [3.43.0] - 2026-04-05
+
+### Added
+- **Cinematic Reveal — dark veil hover dissolve on VideoCard thumbnails** — Thumbnails now start under a dark radial veil (dimmed + desaturated), creating a moody, blacked-out preview aesthetic. On hover, the veil dissolves outward via a `cinematic-iris` keyframe animation that mimics a camera aperture opening — radial gradient transitions from opaque dark to transparent center-out over 0.7s. Simultaneously, the thumbnail image transitions from `brightness(0.55) saturate(0.6)` to full vivid color with a subtle 1.08x zoom using spring-eased cubic-bezier curves. Title text gains a pulsing neon glow that alternates between pink and cyan accents (`title-neon-pulse`, 1.8s infinite cycle). Canvas spotlight mode properly overrides the veil for lit cards. Full `prefers-reduced-motion` support: veil removed instantly, all animations disabled, image filters cleared. Zero JavaScript — pure CSS enhancement. Creates the anticipation of discovering premium content on a curated streaming platform
+
 ## [3.42.0] - 2026-04-03
 
 ### Added

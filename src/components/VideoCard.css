@@ -57,11 +57,68 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: brightness(0.55) saturate(0.6);
 }
 
-.video-card:hover .card-thumbnail img {
-    transform: scale(1.05);
+.video-card:hover .card-thumbnail img,
+.video-card:focus-visible .card-thumbnail img {
+    transform: scale(1.08);
+    filter: brightness(1) saturate(1.15);
+}
+
+/* ── Cinematic Reveal — dark veil that dissolves on hover ── */
+/* A radial mask that starts fully opaque (blacked-out preview)
+   and irises open on hover like a camera aperture revealing the shot */
+.card-thumbnail::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(13, 2, 33, 0.65) 0%,
+        rgba(10, 0, 21, 0.85) 50%,
+        rgba(10, 0, 21, 0.95) 100%
+    );
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+}
+
+.video-card:hover .card-thumbnail::before,
+.video-card:focus-visible .card-thumbnail::before {
+    animation: cinematic-iris 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes cinematic-iris {
+    0% {
+        opacity: 1;
+        background: radial-gradient(
+            ellipse at center,
+            rgba(13, 2, 33, 0.65) 0%,
+            rgba(10, 0, 21, 0.85) 50%,
+            rgba(10, 0, 21, 0.95) 100%
+        );
+    }
+    40% {
+        background: radial-gradient(
+            ellipse at center,
+            transparent 30%,
+            rgba(10, 0, 21, 0.6) 60%,
+            rgba(10, 0, 21, 0.8) 100%
+        );
+    }
+    100% {
+        opacity: 0;
+        background: radial-gradient(
+            ellipse at center,
+            transparent 60%,
+            rgba(10, 0, 21, 0.2) 80%,
+            transparent 100%
+        );
+    }
 }
 
 /* ── Vibrancy Pulse ── neon light sweep on hover ── */
@@ -120,7 +177,11 @@
 
 @media (prefers-reduced-motion: reduce) {
     .video-card:hover .card-thumbnail::after { animation: none; }
+    .video-card:hover .card-thumbnail::before { animation: none; opacity: 0; }
     .video-card:hover { animation: none; }
+    .video-card:hover .card-title,
+    .video-card:focus-visible .card-title { animation: none; }
+    .card-thumbnail img { filter: none; transition: none; }
 }
 
 /* ── Culture Canvas — cinematic spotlight focus ── */
@@ -173,6 +234,14 @@
 @keyframes canvas-bloom {
     0%, 100% { opacity: 0.6; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.02); }
+}
+
+/* Lit card gets full reveal — veil dissolves in canvas mode */
+.canvas-active [data-canvas-lit] .card-thumbnail::before {
+    opacity: 0;
+}
+.canvas-active [data-canvas-lit] .card-thumbnail img {
+    filter: brightness(1) saturate(1.15);
 }
 
 /* Enhanced play icon visibility on lit card */
@@ -265,6 +334,32 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    transition: text-shadow 0.4s ease, color 0.4s ease;
+}
+
+/* ── Title Neon Pulse — glowing accent on hover ── */
+.video-card:hover .card-title,
+.video-card:focus-visible .card-title {
+    text-shadow:
+        0 0 6px rgba(255, 42, 109, 0.6),
+        0 0 20px rgba(255, 42, 109, 0.3),
+        0 1px 2px rgba(0, 0, 0, 0.5);
+    animation: title-neon-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes title-neon-pulse {
+    0%, 100% {
+        text-shadow:
+            0 0 6px rgba(255, 42, 109, 0.6),
+            0 0 20px rgba(255, 42, 109, 0.3),
+            0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    50% {
+        text-shadow:
+            0 0 10px rgba(5, 217, 232, 0.7),
+            0 0 30px rgba(5, 217, 232, 0.35),
+            0 1px 2px rgba(0, 0, 0, 0.5);
+    }
 }
 
 .card-description {
