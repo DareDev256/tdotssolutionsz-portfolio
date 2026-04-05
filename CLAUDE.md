@@ -11,7 +11,16 @@ These items have been broken by automated agents before. Do NOT change them:
 5. **Server `Referrer-Policy` must stay `strict-origin-when-cross-origin`** — Do NOT change it to `no-referrer` or `same-origin`. Same reason as #4.
 6. **Photography is LOCKED** — The `/photos` route and Photography card on HubPage are intentionally disabled (Coming Soon). Do NOT re-enable without explicit owner approval.
 7. **videos.json integrity** — Do NOT modify `youtubeId` fields. Every `youtubeId` must be exactly 11 characters matching `[A-Za-z0-9_-]{11}`.
-8. **Removed features — do NOT re-add** — CultureQueue, CollabWeb, ProductionPulse, NowPlayingOverlay were removed from HubPage in v3.20.0 per owner request.
+8. **Removed features — do NOT re-add** — The following were removed from HubPage in v4.0.0 per owner request. The hub must stay **simple and clean**. Do NOT re-add any of these or create equivalents under different names:
+   - DirectorsReel, FilmStrip, ArtistShowcase, VideoSpotlight, TopHits, EraTimeline
+   - CinematicAtmosphere, BroadcastBar (removed in v4.0.0)
+   - CultureQueue, CollabWeb, ProductionPulse, NowPlayingOverlay (removed in v3.20.0)
+   - Any new "showcase", "gallery", "ticker", "timeline", or "reel" sections on the HubPage
+   - Neon glow effects, synthwave gradients, animated background grids/orbs on HubPage
+   
+   **HubPage structure is LOCKED to**: Logo Intro → Header → SpotlightHero → LatestDrops → ImpactNumbers → Cards (Music Videos / Web Design / Photography) → WebDesignShowcase → Footer. Do NOT add new sections without explicit owner approval.
+   
+   **What IS welcome**: Interactive enhancements to EXISTING sections (better hover states, micro-interactions, accessibility improvements), performance optimizations, and new features on the 3D `/videos` experience or `/video/:id` pages. Make the existing pieces better, don't add more pieces.
 9. **CSP `connect-src` MUST include `cdn.jsdelivr.net`** — Troika (drei's `<Text>` component) fetches fonts from jsdelivr inside Web Workers at runtime. Worker `fetch()` calls are governed by `connect-src`, not `font-src`. Removing jsdelivr breaks ALL 3D text labels. This has now been broken and fixed TWICE (v3.16.0 added it, v3.22.0 wrongly removed it). Do NOT remove it again regardless of "not found in source code" reasoning — it's a runtime dependency loaded by a third-party library inside a Worker.
 
 ## VIDEO PLAYBACK — THE #1 PRIORITY
@@ -37,6 +46,18 @@ Security hardening on this project has broken videos **three times** (COEP, Trus
 2. Make your change
 3. Run the tests again AFTER
 4. If any test fails, your security change is incompatible with YouTube embeds — revert it
+
+## DESIGN SYSTEM — v4.0.0 (DO NOT REVERT)
+
+The site uses an editorial 3-color palette. Do NOT revert to synthwave/neon aesthetics.
+
+- **Background**: Charcoal grey (`#262626` surface, `#303030` raised, `#363636` hover) — NOT black, NOT purple
+- **Text**: White hierarchy (`#fff`, `rgba(255,255,255,0.55)`, `rgba(255,255,255,0.3)`)
+- **Accent 1**: Cobalt blue `#4a7cff` — section labels, subtitles, hover states, CTAs
+- **Accent 2**: Warm orange `#e85d34` — badges, "Book a Session" CTA only. Use SPARINGLY
+- **Typography**: `Playfair Display` (serif) for headlines, `Inter` for body. Do NOT add Orbitron back to HubPage
+- **Effects**: Film grain texture only. No neon glows, no text-shadow colors, no radial gradient orbs, no particle effects on HubPage
+- **3D experience** (`/videos`, `App.jsx`): Synthwave aesthetic is fine here — that's the viewing experience, not the landing page
 
 ## CORE PRINCIPLE: TOOL-FIRST EXECUTION
 
