@@ -25,6 +25,22 @@ function expectedSubstringScore(queryLen, textLen, isPrefix) {
     return base + (queryLen / textLen) * SUBSTRING_COVERAGE_WEIGHT
 }
 
+/**
+ * Compute the expected subsequence match score from the shared constants.
+ * Eliminates the repeated inline `SUBSEQUENCE_BASE + (qLen/tLen)*COVERAGE_WEIGHT
+ * + (maxConsec/qLen)*CONSECUTIVE_WEIGHT` arithmetic that was duplicated across
+ * 5 test assertions.
+ * @param {number} queryLen       Length of the search query
+ * @param {number} textLen        Length of the target text
+ * @param {number} maxConsecutive Longest run of consecutive matched characters
+ * @returns {number} Expected score
+ */
+function expectedSubsequenceScore(queryLen, textLen, maxConsecutive) {
+    const coverage = queryLen / textLen
+    const consecutiveBonus = maxConsecutive / queryLen
+    return SUBSEQUENCE_BASE + (coverage * COVERAGE_WEIGHT) + (consecutiveBonus * CONSECUTIVE_WEIGHT)
+}
+
 describe('fuzzyScore — scoring formula verification', () => {
     // The formula: SUBSEQUENCE_BASE + (coverage * COVERAGE_WEIGHT) + (consecutiveBonus * CONSECUTIVE_WEIGHT)
     // where coverage = queryLen/textLen, consecutiveBonus = maxConsecutiveRun/queryLen
@@ -33,8 +49,7 @@ describe('fuzzyScore — scoring formula verification', () => {
         // "ae" in "abcdefghij" — chars exist in order but scattered
         // coverage = 2/10 = 0.2, consecutive = 1/2 = 0.5
         const score = fuzzyScore('ae', 'abcdefghij')
-        const expected = SUBSEQUENCE_BASE + (0.2 * COVERAGE_WEIGHT) + (0.5 * CONSECUTIVE_WEIGHT)
-        expect(score).toBeCloseTo(expected, 2)
+        expect(score).toBeCloseTo(expectedSubsequenceScore(2, 10, 1), 2)
     })
 
     it('full coverage subsequence scores higher than partial coverage', () => {
@@ -174,6 +189,104 @@ describe('fuzzyScore — mid-string scoring formula: MID_BASE + coverage × SUBS
     it('real-world mid-string: "feat." artist buried in title', () => {
         const score = fuzzyScore('drake', 'sicko mode feat. drake')
         expect(score).toBeCloseTo(expectedSubstringScore(5, 22, false), 3)
+    })
+})
+
+describe('fuzzyScore — edge cases that break ranking in production', () => {
+    it('query longer than text returns 0 (cannot match)', () => {
+        expect(fuzzyScore('abcdef', 'abc')).toBe(0)
+        expect(fuzzyScore('longquery', 'short')).toBe(0)
+    })
+
+    it('single-character subsequence scores correctly', () => {
+        // Single char: coverage = 1/10, consecutiveBonus = 1/1 = 1.0
+        // This is a substring match (single char is always contiguous)
+        // so it goes through the substring path, not subsequence
+        const score = fuzzyScore('a', 'abcdefghij')
+        expect(score).toBeCloseTo(expectedSubstringScore(1, 10, true), 3)
+    })
+
+    it('single-character mid-string match uses MID_BASE', () => {
+        const score = fuzzyScore('e', 'abcdefghij')
+        expect(score).toBeCloseTo(expectedSubstringScore(1, 10, false), 3)
+    })
+
+    it('repeated characters in query track consecutive runs correctly', () => {
+        // "aaa" in "aXaXa" — subsequence, each 'a' matches but none consecutive
+        // maxConsecutive = 1, coverage = 3/5
+        const scattered = fuzzyScore('aaa', 'aXaXa')
+        expect(scattered).toBeCloseTo(expectedSubsequenceScore(3, 5, 1), 2)
+
+        // "aaa" in "aaXXa" — first two 'a's consecutive, third after gap
+        // maxConsecutive = 2, coverage = 3/5
+        const partial = fuzzyScore('aaa', 'aaXXa')
+        expect(partial).toBeCloseTo(expectedSubsequenceScore(3, 5, 2), 2)
+
+        expect(partial).toBeGreaterThan(scattered)
+    })
+
+    it('special characters in music titles match correctly', () => {
+        // Hyphens, parentheses, "feat." — real music metadata
+        expect(fuzzyScore('feat', 'Sicko Mode (feat. Drake)')).toBeGreaterThan(0)
+        expect(fuzzyScore('ft.', 'Track ft. Artist')).toBe(
+            expectedSubstringScore(3, 16, false)
+        )
+        expect(fuzzyScore('(remix)', '(Remix)')).toBe(1.0) // case-insensitive exact
+    })
+
+    it('whitespace in query and text does not break matching', () => {
+        // Space is a valid character in fuzzy matching
+        expect(fuzzyScore('gods plan', 'Gods Plan')).toBe(1.0)
+        expect(fuzzyScore('culture iii', 'Migos - Culture III')).toBeGreaterThan(MID_BASE)
+    })
+
+    it('subsequence where all chars exist but last char is at the very end', () => {
+        // "az" in "abcdefghijklmnopqrstuvwxyz" — max spread
+        // coverage = 2/26, consecutive = 1 (only 'a' or only 'z' alone), maxConsec = 1
+        const score = fuzzyScore('az', 'abcdefghijklmnopqrstuvwxyz')
+        // This is actually a substring check first — "az" is NOT in the string contiguously
+        // So it falls to subsequence: coverage=2/26, consecutiveBonus=1/2
+        expect(score).toBeCloseTo(expectedSubsequenceScore(2, 26, 1), 2)
+    })
+
+    it('near-miss: all chars present but wrong order returns 0', () => {
+        // Every char of "cba" exists in "abc" but in reverse order
+        expect(fuzzyScore('cba', 'abc')).toBe(0)
+        expect(fuzzyScore('gfe', 'efg')).toBe(0)
+    })
+
+    it('emoji and unicode in text does not crash or produce negative scores', () => {
+        const score = fuzzyScore('fire', '🔥 Fire Mix 🔥')
+        expect(score).toBeGreaterThan(0)
+        expect(score).toBeLessThanOrEqual(1.0)
+    })
+
+    it('identical single characters score 1.0 (exact match)', () => {
+        expect(fuzzyScore('a', 'a')).toBe(1.0)
+        expect(fuzzyScore('X', 'x')).toBe(1.0) // case-insensitive
+    })
+
+    it('subsequence score ceiling: high coverage + full consecutive still < MID_BASE', () => {
+        // "adc" in "abdc" — true subsequence: a(0) d(2) c(3)
+        // coverage = 3/4, maxConsec = 2 (d,c consecutive), bonus = 2/3
+        const trueSubseq = fuzzyScore('adc', 'abdc')
+        const expected = expectedSubsequenceScore(3, 4, 2)
+        // Raw formula gives ~0.796, capped below MID_BASE
+        expect(trueSubseq).toBeCloseTo(Math.min(expected, MID_BASE - SCORE_EPSILON), 2)
+        expect(trueSubseq).toBeLessThan(MID_BASE)
+    })
+
+    it('high-coverage subsequence is capped below MID_BASE (ranking inversion fix)', () => {
+        // REGRESSION: "abcd" in "aXbcd" — a(0) b(2) c(3) d(4)
+        // coverage = 4/5, maxConsec = 3, bonus = 3/4
+        // Raw formula: 0.30 + 0.28 + 0.2625 = 0.8425 (exceeded MID_BASE!)
+        // After fix: capped just below MID_BASE to preserve hierarchy
+        const score = fuzzyScore('abcd', 'aXbcd')
+        expect(score).toBeLessThan(MID_BASE)
+
+        // A legitimate mid-string substring must ALWAYS outrank any subsequence
+        const substringScore = fuzzyScore('abcd', 'XXXXabcdXXXX')
+        expect(substringScore).toBeGreaterThan(score)
     })
 })
 

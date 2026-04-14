@@ -14,8 +14,8 @@
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel&logoColor=white)](https://tdotssolutionsz.com)
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
-[![Tests](https://img.shields.io/badge/681_TESTS-47_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v4.0.0-editorial-4a7cff?style=for-the-badge)](CHANGELOG.md)
+[![Tests](https://img.shields.io/badge/710_TESTS-49_SUITES-00ff41?style=for-the-badge)](.)
+[![Version](https://img.shields.io/badge/v4.1.3-editorial-4a7cff?style=for-the-badge)](CHANGELOG.md)
 [![Security](https://img.shields.io/badge/OWASP_AUDIT-CLEAN-00ff41?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
@@ -26,9 +26,10 @@
 
 | Experience | Link | What You'll See |
 |-----------|------|-----------------|
-| 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Film studio logo intro, Spotlight Hero, Latest Drops, Web Design showcase |
+| 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Film studio logo intro, Spotlight Hero, Latest Drops with hover-to-play overlays, 3D tilt cards, Web Design showcase |
 | 🏙️ **3D City** | [tdotssolutionsz.com/videos](https://tdotssolutionsz.com/videos) | Tron-inspired neon metropolis — scroll the highway, pick a lane |
-| 🎬 **Video Page** | [tdotssolutionsz.com/video/dQw4w9WgXcQ](https://tdotssolutionsz.com/video/dQw4w9WgXcQ) | Standalone shareable player with related videos & share bar |
+| 🎬 **Video Page** | [tdotssolutionsz.com/video/u3O5PKN9vCQ](https://tdotssolutionsz.com/video/u3O5PKN9vCQ) | Standalone shareable player with related videos & share bar |
+| 🎨 **Web Design** | [tdotssolutionsz.com/web-design](https://tdotssolutionsz.com/web-design) | Interactive particle network showcasing web design projects |
 
 ---
 
@@ -126,7 +127,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 | Layer | Technology |
 |-------|-----------|
 | **Frontend** | React 18 + Vite 6 (code-split with React.lazy + manual chunks) |
-| **Routing** | React Router v7 (lazy-loaded `/`, `/video/:youtubeId`, `/videos`, `/photos`) |
+| **Routing** | React Router v7 (lazy-loaded `/`, `/video/:youtubeId`, `/videos`, `/web-design`) |
 | **3D Engine** | Three.js 0.170 / React Three Fiber / Drei |
 | **Post-Processing** | Bloom, Vignette, Noise, Scanline, Chromatic Aberration |
 | **Video** | YouTube IFrame API (playback control, auto-advance, end detection) |
@@ -143,7 +144,7 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 - **Build-Time Data** — `fetch-youtube-data.js` pulls real view counts and upload dates from YouTube at build time — zero runtime API dependencies
 - **Modular 3D** — Vehicles, effects, scene elements, atmosphere, and particles all extracted into focused modules with barrel exports
 - **12 Shared Hooks** — Deep linking, video navigation, shuffle play, favorites, copy-to-clipboard, keyboard shortcuts, search (with `searchWithFallback` utility), device type, fresnel materials, modal keyboard, outside click (supports single or multiple refs), stagger reveal (batch IntersectionObserver for scroll-triggered CSS animations) — plus 2 inline hooks colocated with their components
-- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy blocking 18 browser APIs), YouTube ID validation at all entry points, build-time API response sanitization, HTTPS-enforced share windows, 30-pattern secret scanner with test-file coverage for 8 high-confidence credential patterns
+- **Security Hardened** — 11 HTTP security headers (CSP, HSTS, COOP, CORP, Permissions-Policy blocking 18 browser APIs), YouTube ID validation at all entry points, build-time API response sanitization, HTTPS-enforced share windows, 30-pattern secret scanner enforced via pre-commit hook with test-file coverage for 8 high-confidence credential patterns, 0 dependency vulnerabilities
 
 > Full architecture deep-dive: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 
@@ -223,7 +224,7 @@ This portfolio is hardened beyond what most SPAs bother with — because if the 
 
 See **[CHANGELOG.md](CHANGELOG.md)** for full version history.
 
-**Latest — v3.38.4** (2026-03-27): `fuzzyScore` edge case test suite — 9 new tests covering single-char queries, query>text rejection, repeated-char consecutive tracking, tier boundary invariants, Unicode/emoji matching, and score monotonicity. 658 tests across 46 suites.
+**Latest — v4.0.2** (2026-04-07): Fixed broken portfolio navigation links in README — replaced placeholder video ID with actual catalog entry (Masicka — Everything Mi Want), added missing Web Design page to navigation table, corrected routing list to reflect active `/web-design` route instead of disabled `/photos`.
 
 > Architecture and research docs: **[docs/](docs/)** · Security deep-dive: **[docs/CSP_MONITOR.md](docs/CSP_MONITOR.md)**
 

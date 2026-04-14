@@ -80,6 +80,63 @@
     linear-gradient(90deg, rgba(34, 34, 34, 0.65) 0%, transparent 45%);
 }
 
+/* -- PLAY OVERLAY — cinematic hover bloom -- */
+.spotlight-hero__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  z-index: 3;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.spotlight-hero__play::before {
+  content: '';
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transform: scale(0.5);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.spotlight-hero__play svg {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  transform: translateX(2px);
+}
+
+.spotlight-hero:hover .spotlight-hero__play {
+  opacity: 1;
+}
+
+.spotlight-hero:hover .spotlight-hero__play::before {
+  transform: scale(1);
+}
+
+.spotlight-hero:hover .spotlight-hero__play::after {
+  content: '';
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent-blue);
+  animation: spotlight-play-pulse 2.2s ease-out infinite;
+}
+
+@keyframes spotlight-play-pulse {
+  0% { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
 /* -- ARTIST INFO — overlaps bottom-left, overlapping visual -- */
 .spotlight-hero__info {
   position: relative;
@@ -237,6 +294,8 @@
     margin-left: 0;
   }
 
+  .spotlight-hero__play { display: none; }
+
   .spotlight-hero__info {
     margin-top: -48px;
     max-width: 85%;
@@ -288,4 +347,6 @@
   .spotlight-hero__title,
   .spotlight-hero__cta { animation: none; }
   .spotlight-hero__pip-fill { animation: none !important; transform: scaleY(1); }
+  .spotlight-hero__play::before { transition: none; transform: scale(1); }
+  .spotlight-hero:hover .spotlight-hero__play::after { animation: none; }
 }

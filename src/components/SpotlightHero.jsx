@@ -66,6 +66,9 @@ export default function SpotlightHero() {
             />
           </div>
         ))}
+        <div className="spotlight-hero__play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+        </div>
         <div className="spotlight-hero__img-vignette" aria-hidden="true" />
       </div>
 

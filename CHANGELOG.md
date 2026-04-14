@@ -2,6 +2,49 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [4.1.3] - 2026-04-09
+
+### Fixed
+- **fuzzyScore ranking inversion** — Subsequence scores with high coverage + high consecutive runs (e.g. "abcd" in "aXbcd" = 0.8425) could exceed `MID_BASE` (0.80), causing non-contiguous matches to outrank legitimate substring matches in search results. Capped subsequence scores below `MID_BASE` to enforce the hierarchy: exact > prefix > mid-string > subsequence. Added regression test.
+- **Dead test variables in subsequence ceiling test** — Removed two computed-but-never-asserted variables (`subseqScore`, `substringScore`) that gave false coverage confidence. Replaced with a targeted ranking inversion regression test.
+
+## [4.1.2] - 2026-04-08
+
+### Added
+- **useCinematicFocus test suite (13 tests)** — Covers desktop hover debounce (120ms anti-flicker), mobile long-press threshold (400ms), rapid card sweep behavior, timer cleanup on cancelled interactions, cardProps shape contract, and grid-level tap-away spotlight clearing. Guards against timer race conditions that cause stale focus states.
+- **useBodyScrollLock test suite (6 tests)** — Covers lock/unlock toggle, cleanup restoration (prevents scroll-stuck bugs after modal dismiss), rapid toggle settlement, and idempotent unlock.
+
+## [4.1.1] - 2026-04-08
+
+### Security
+- **Fixed high-severity Vite vulnerability** — Updated vite 6.4.1 → 6.4.2 to patch CVE path traversal in optimized deps `.map` handling (GHSA-4w7w-66w2-5vf9) and arbitrary file read via dev server WebSocket (GHSA-p9ff-h696-f583). `npm audit` now reports 0 vulnerabilities.
+- **Activated pre-commit secret scanner** — Wired `scripts/scan-secrets.js --staged` as a git pre-commit hook. The 30-pattern scanner existed but was manual-only — commits containing hardcoded credentials (AWS keys, GitHub tokens, API keys, private keys, database URIs, etc.) are now blocked automatically before they reach the repository.
+
+### Changed
+- **Dependency cleanup** — `npm audit fix` removed 44 unused transitive packages (react-player, hls-video-element, dashjs, mux-player, etc.), reducing `node_modules` footprint.
+
+## [4.1.0] - 2026-04-07
+
+### Added
+- **Cinematic hover-to-play overlays** — Frosted glass play buttons bloom on hover over SpotlightHero and LatestDrops video cards. Play icon appears inside a backdrop-blurred circle with spring easing (`cubic-bezier(0.34, 1.56, 0.64, 1)`), plus a cobalt-blue pulse ring that radiates outward on the hero cards. Streaming-platform interaction pattern (Netflix/Spotify style) that makes video content feel immediately playable. Hidden on mobile (no hover), respects `prefers-reduced-motion`.
+
+## [4.0.3] - 2026-04-07
+
+### Changed
+- **Refactored subsequence test assertions** — Extracted `expectedSubsequenceScore()` helper to eliminate 5 inline formula duplications across `searchScoring.test.js`. Mirrors the existing `expectedSubstringScore()` pattern, making all score assertions self-documenting and formula changes single-point-of-edit. All 51 tests pass unchanged.
+
+## [4.0.2] - 2026-04-07
+
+### Fixed
+- **Broken example video link** — Replaced `dQw4w9WgXcQ` (Rick Astley — not in catalog) with `u3O5PKN9vCQ` (Masicka — Everything Mi Want, 5.7M views) in the Jump In navigation table
+- **Missing Web Design navigation** — Added `/web-design` page link to the Jump In table and corrected the routing list in Tech Stack
+- **Stale route reference** — Replaced disabled `/photos` route with active `/web-design` in the routing description
+
+## [4.0.1] - 2026-04-06
+
+### Added
+- **13 new fuzzyScore edge-case tests** — Covers query-longer-than-text, single-character matches, repeated characters in queries, special music metadata characters (feat., parentheses, hyphens), whitespace handling, emoji resilience, max-spread subsequences, reverse-order rejection, and subsequence score ceiling verification. Total test count: 38 → 51
+
 ## [4.0.0] - 2026-04-05
 
 ### Breaking — Full Design Overhaul

@@ -82,7 +82,12 @@ export function fuzzyScore(query, text) {
     // Max possible: 0.3 + 0.35 + 0.35 = 1.0 (but only exact substrings hit 1.0)
     const coverage = q.length / t.length
     const consecutiveBonus = maxConsecutive / q.length
-    return SUBSEQUENCE_BASE + (coverage * COVERAGE_WEIGHT) + (consecutiveBonus * CONSECUTIVE_WEIGHT)
+    const raw = SUBSEQUENCE_BASE + (coverage * COVERAGE_WEIGHT) + (consecutiveBonus * CONSECUTIVE_WEIGHT)
+    // Cap subsequence scores below MID_BASE to preserve the ranking hierarchy:
+    // exact (1.0) > prefix (≥0.90) > mid-string (≥0.80) > subsequence (<0.80)
+    // Without this cap, high-coverage + high-consecutive subsequences (e.g.
+    // "abcd" in "aXbcd" = 0.8425) can outrank legitimate substring matches.
+    return Math.min(raw, MID_BASE - SCORE_EPSILON)
 }
 
 /** Hard cap on query length to prevent performance abuse via long fuzzy inputs */

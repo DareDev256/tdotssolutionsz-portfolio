@@ -51,6 +51,9 @@ export default function LatestDrops() {
               draggable="false"
             />
             <div className="latest-drops__hero-overlay" aria-hidden="true" />
+            <div className="latest-drops__play" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+            </div>
             {isFresh(hero.uploadDate) && (
               <span className="latest-drops__badge">NEW</span>
             )}
@@ -83,6 +86,9 @@ export default function LatestDrops() {
                   loading="lazy"
                   draggable="false"
                 />
+                <div className="latest-drops__play" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                </div>
                 {isFresh(video.uploadDate) && (
                   <span className="latest-drops__badge latest-drops__badge--sm">NEW</span>
                 )}
