@@ -2,6 +2,7 @@
   "rewrites": [
     { "source": "/videos", "destination": "/index.html" },
     { "source": "/video/:youtubeId", "destination": "/index.html" },
+    { "source": "/web-design", "destination": "/index.html" },
     { "source": "/photos", "destination": "/index.html" }
   ],
   "headers": [
