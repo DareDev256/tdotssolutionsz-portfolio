@@ -15,18 +15,18 @@
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/710_TESTS-49_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v4.1.3-editorial-4a7cff?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v4.2.0-editorial-4a7cff?style=for-the-badge)](CHANGELOG.md)
 [![Security](https://img.shields.io/badge/OWASP_AUDIT-CLEAN-00ff41?style=for-the-badge)](CHANGELOG.md)
 
 > **If a music video label had its own streaming platform, it would look like this.**
 >
-> An immersive, cinematic portfolio showcasing **101 music videos** across **54 artists** — 14 years of Toronto hip-hop production. Editorial grey aesthetic with a 3-color palette (charcoal, white, cobalt blue). Film studio logo intro, magazine-style layouts, and a 3D metropolis you drive through. Now also featuring a **Web Design** showcase for artist and creator websites.
+> An immersive, cinematic portfolio showcasing **101 music videos** across **54 artists** — 14 years of Toronto hip-hop production. Editorial grey aesthetic with a 3-color palette (charcoal, white, cobalt blue). Kinetic 5-second hub intro (drifting dust, cobalt hairline draw, logo bloom-in, single warm-orange spark), magazine-style layouts, and a 3D metropolis you drive through. Now also featuring a **Web Design** showcase for artist and creator websites.
 
 ### ⚡ Jump In
 
 | Experience | Link | What You'll See |
 |-----------|------|-----------------|
-| 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Film studio logo intro, Spotlight Hero, Latest Drops with hover-to-play overlays, 3D tilt cards, Web Design showcase |
+| 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Kinetic 5-second logo intro, Spotlight Hero, Latest Drops with hover-to-play overlays, 3D tilt cards, Web Design showcase |
 | 🏙️ **3D City** | [tdotssolutionsz.com/videos](https://tdotssolutionsz.com/videos) | Tron-inspired neon metropolis — scroll the highway, pick a lane |
 | 🎬 **Video Page** | [tdotssolutionsz.com/video/u3O5PKN9vCQ](https://tdotssolutionsz.com/video/u3O5PKN9vCQ) | Standalone shareable player with related videos & share bar |
 | 🎨 **Web Design** | [tdotssolutionsz.com/web-design](https://tdotssolutionsz.com/web-design) | Interactive particle network showcasing web design projects |

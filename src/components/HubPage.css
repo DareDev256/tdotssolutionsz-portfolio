@@ -50,156 +50,7 @@
 }
 
 /* ============================================
-   INTRO — Film studio logo reveal
-   Large centered logo → scales down to header
-   ============================================ */
-
-.hub-intro {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #1a1a1a;
-  pointer-events: none;
-}
-
-.hub-intro__content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: intro-content-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.hub-intro__logo {
-  height: 220px;
-  width: auto;
-  filter: invert(1) brightness(1.2);
-  transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.hub-intro__line {
-  width: 0;
-  height: 1px;
-  background: var(--accent-blue);
-  opacity: 0.4;
-  margin: 20px 0 14px;
-  animation: intro-line-expand 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
-}
-
-/* Staggered letter reveal */
-.hub-intro__letters {
-  display: flex;
-  gap: 0;
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.35em;
-}
-
-.hub-intro__letter {
-  display: inline-block;
-  color: rgba(255, 255, 255, 0);
-  transform: translateY(12px);
-  animation: intro-letter-drop 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(0.35s + var(--letter-index) * 0.04s);
-}
-
-@keyframes intro-content-in {
-  from {
-    opacity: 0;
-    transform: scale(0.85);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes intro-line-expand {
-  from { width: 0; }
-  to { width: 80px; }
-}
-
-@keyframes intro-letter-drop {
-  from {
-    color: rgba(255, 255, 255, 0);
-    transform: translateY(12px);
-  }
-  to {
-    color: rgba(255, 255, 255, 0.35);
-    transform: translateY(0);
-  }
-}
-
-/* Phase 2: shrink — logo scales down, overlay dissolves */
-.hub-intro--shrink {
-  animation: intro-overlay-out 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
-}
-
-.hub-intro--shrink .hub-intro__content {
-  animation: intro-content-shrink 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.hub-intro--shrink .hub-intro__logo {
-  animation: intro-logo-shrink 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.hub-intro--shrink .hub-intro__line {
-  animation: intro-element-fade 0.4s ease-out both;
-}
-
-.hub-intro--shrink .hub-intro__letter {
-  animation: intro-element-fade 0.25s ease-out both;
-  animation-delay: calc(var(--letter-index) * 0.02s);
-}
-
-@keyframes intro-logo-shrink {
-  0% {
-    height: 220px;
-    opacity: 1;
-  }
-  60% {
-    height: 120px;
-    opacity: 0.8;
-  }
-  100% {
-    height: 80px;
-    opacity: 0;
-    transform: translateY(-30vh);
-  }
-}
-
-@keyframes intro-content-shrink {
-  to {
-    transform: translateY(-20vh) scale(0.7);
-  }
-}
-
-@keyframes intro-overlay-out {
-  0% {
-    opacity: 1;
-    backdrop-filter: blur(0);
-  }
-  60% {
-    opacity: 0.6;
-  }
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-@keyframes intro-element-fade {
-  to {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-}
-
-/* ============================================
-   HEADER — appears after intro completes
+   HEADER — appears after intro overlay fades
    ============================================ */
 
 .hub-header {
@@ -537,19 +388,6 @@
     gap: 12px;
   }
 
-  .hub-intro__logo {
-    height: 160px;
-  }
-
-  .hub-intro--shrink .hub-intro__logo {
-    animation-name: intro-logo-shrink-mobile;
-  }
-}
-
-@keyframes intro-logo-shrink-mobile {
-  0% { height: 160px; opacity: 1; }
-  60% { height: 90px; opacity: 0.8; }
-  100% { height: 60px; opacity: 0; transform: translateY(-25vh); }
 }
 
 @media (max-width: 640px) {
@@ -596,10 +434,6 @@
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  .hub-intro {
-    display: none;
-  }
-
   .hub-logo,
   .hub-title-top,
   .hub-title-bottom,

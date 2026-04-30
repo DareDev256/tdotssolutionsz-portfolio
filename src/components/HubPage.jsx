@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import HubIntroKinetic from './HubIntroKinetic'
 import ImpactNumbers from './ImpactNumbers'
 import LatestDrops from './LatestDrops'
 import SpotlightHero from './SpotlightHero'
@@ -10,15 +11,6 @@ import './HubPage.css'
 
 export default function HubPage() {
   const [showToast, setShowToast] = useState(false)
-  const [introPhase, setIntroPhase] = useState('hold') // hold → shrink → done
-
-  useEffect(() => {
-    // Hold the centered logo for a beat
-    const holdTimer = setTimeout(() => setIntroPhase('shrink'), 900)
-    // Remove intro overlay after animation completes
-    const doneTimer = setTimeout(() => setIntroPhase('done'), 2400)
-    return () => { clearTimeout(holdTimer); clearTimeout(doneTimer) }
-  }, [])
 
   function handleLockedClick(e) {
     e.preventDefault()
@@ -28,32 +20,7 @@ export default function HubPage() {
 
   return (
     <div className="hub-page">
-      {/* Intro overlay — logo + staggered letter reveal */}
-      {introPhase !== 'done' && (
-        <div className={`hub-intro ${introPhase === 'shrink' ? 'hub-intro--shrink' : ''}`} aria-hidden="true">
-          <div className="hub-intro__content">
-            <img
-              src="/logo.png"
-              alt=""
-              className="hub-intro__logo"
-              width="200"
-              height="200"
-            />
-            <div className="hub-intro__line" />
-            <span className="hub-intro__letters">
-              {'TDOTSSOLUTIONSZ'.split('').map((char, i) => (
-                <span
-                  key={i}
-                  className="hub-intro__letter"
-                  style={{ '--letter-index': i }}
-                >
-                  {char}
-                </span>
-              ))}
-            </span>
-          </div>
-        </div>
-      )}
+      <HubIntroKinetic />
 
       <div className="hub-grain" aria-hidden="true" />
 

@@ -2,6 +2,19 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [4.2.0] - 2026-04-29
+
+### Added
+- **HubIntroKinetic — cinematic 5-second hub intro** (`src/components/HubIntroKinetic.{jsx,css}`). Replaces the previous logo + letter-stagger overlay with a layered painterly composite: drifting charcoal-dust canvas (220 particles desktop / 110 mobile, ash-rises motion), cobalt hairline draw (`#4a7cff` 360px gradient), real `/logo.png` bloom-in (28px → 0px blur over 2s with handheld 24fps micro-jitter), single warm-orange spark burst (22 particles, gravity-driven, the only orange in the loop), radial vignette breathe, and crossfade out into the existing `.hub-header`. Pixel-perfect wordmark guaranteed — no AI text regeneration.
+- **Once-per-session playback gate** via `sessionStorage('tdots:intro-played-v1')`, written on completion (StrictMode-safe — dev double-mount cleanup cancels the write). Reduced-motion users get a static 900ms fade.
+
+### Removed
+- Orphaned `.hub-intro__*` CSS rules (~165 lines) from `HubPage.css` — the old letter-stagger overlay and its `@keyframes intro-content-in/intro-line-expand/intro-letter-drop/intro-overlay-out/intro-content-shrink/intro-logo-shrink/intro-element-fade` are gone with the markup.
+
+### Notes
+- 710/710 tests pass. `videoPlayback.test.js` (CSP, referrer policy, iframe sandbox guards) — green.
+- Bundle impact: HubPage.js 16.77 KB gz 5.06 KB, HubPage.css 27.88 KB gz 5.60 KB. No new runtime deps.
+
 ## [4.1.3] - 2026-04-09
 
 ### Fixed

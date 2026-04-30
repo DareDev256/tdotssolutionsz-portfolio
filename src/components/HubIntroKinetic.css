@@ -1,0 +1,266 @@
+/* ============================================
+   HUB INTRO KINETIC — 5-second cinematic overlay
+   Layered composite: dust → line → logo bloom → spark → vignette → fade
+   Editorial palette: charcoal / white / cobalt / sparing orange
+   ============================================ */
+
+.hub-intro-kinetic {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 45%, #1f1f1f 0%, #131313 60%, #0a0a0a 100%);
+  /* Crossfade overlay → reveals .hub-header below */
+  animation: hubikin-overlay-out 0.8s cubic-bezier(0.4, 0, 0.4, 1) 4.2s forwards;
+  will-change: opacity;
+}
+
+@keyframes hubikin-overlay-out {
+  0%   { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+/* ----- Layer 1: Drifting dust canvas ----- */
+.hub-intro-kinetic__dust {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: hubikin-dust-in 1.0s ease-out 0.1s forwards;
+  mix-blend-mode: screen;
+}
+
+@keyframes hubikin-dust-in {
+  to { opacity: 0.9; }
+}
+
+/* ----- Stage: centered logo + line + caption ----- */
+.hub-intro-kinetic__stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ----- Layer 2: Cobalt hairline draw ----- */
+.hub-intro-kinetic__line {
+  width: 0;
+  height: 1px;
+  margin-bottom: 38px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(74, 124, 255, 0) 8%,
+    rgba(74, 124, 255, 0.8) 50%,
+    rgba(74, 124, 255, 0) 92%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(74, 124, 255, 0.4);
+  animation: hubikin-line-draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+}
+
+@keyframes hubikin-line-draw {
+  0%   { width: 0; opacity: 0; }
+  20%  { opacity: 1; }
+  100% { width: 360px; opacity: 1; }
+}
+
+/* ----- Layer 3: Logo bloom-in (real /logo.png — never regenerated) ----- */
+.hub-intro-kinetic__logo-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hub-intro-kinetic__logo {
+  height: 240px;
+  width: auto;
+  /* logo.png is dark on transparent — invert to render white */
+  filter: invert(1) brightness(1.2) blur(28px);
+  opacity: 0;
+  transform: scale(1.18);
+  animation:
+    hubikin-logo-bloom 2.0s cubic-bezier(0.22, 1, 0.36, 1) 1.0s forwards,
+    hubikin-logo-jitter 0.12s steps(2, end) 1.6s 8;
+  will-change: filter, opacity, transform;
+}
+
+@keyframes hubikin-logo-bloom {
+  0% {
+    opacity: 0;
+    filter: invert(1) brightness(1.4) blur(28px);
+    transform: scale(1.18);
+  }
+  35% {
+    opacity: 0.45;
+    filter: invert(1) brightness(1.4) blur(14px);
+    transform: scale(1.08);
+  }
+  70% {
+    opacity: 0.95;
+    filter: invert(1) brightness(1.25) blur(2px);
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    filter: invert(1) brightness(1.18) blur(0);
+    transform: scale(1);
+  }
+}
+
+/* 24fps handheld micro-jitter — subtle organic feel */
+@keyframes hubikin-logo-jitter {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-0.5px, 0.5px) scale(1); }
+}
+
+/* Vignette breathe enters during 'hold' phase */
+.hub-intro-kinetic--hold .hub-intro-kinetic__logo {
+  animation:
+    hubikin-logo-bloom 2.0s cubic-bezier(0.22, 1, 0.36, 1) 1.0s forwards,
+    hubikin-logo-breathe 2.0s ease-in-out 3.0s forwards;
+}
+
+@keyframes hubikin-logo-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.012); }
+}
+
+/* ----- Layer 4: Orange spark canvas ----- */
+.hub-intro-kinetic__spark {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.hub-intro-kinetic--spark .hub-intro-kinetic__spark,
+.hub-intro-kinetic--hold .hub-intro-kinetic__spark {
+  opacity: 1;
+}
+
+/* ----- Caption beneath logo ----- */
+.hub-intro-kinetic__caption {
+  margin-top: 38px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  color: rgba(255, 255, 255, 0);
+  text-transform: uppercase;
+  animation: hubikin-caption-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 2.8s forwards;
+}
+
+.hub-intro-kinetic__caption-dot {
+  color: rgba(74, 124, 255, 0.7);
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+@keyframes hubikin-caption-in {
+  0%   { opacity: 0; transform: translateY(8px); color: rgba(255, 255, 255, 0); }
+  100% { opacity: 1; transform: translateY(0); color: rgba(255, 255, 255, 0.55); }
+}
+
+/* ----- Layer 5: Radial vignette breathe ----- */
+.hub-intro-kinetic__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 65% at 50% 50%,
+    transparent 35%,
+    rgba(0, 0, 0, 0.55) 90%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  opacity: 0;
+  animation: hubikin-vignette 2.4s cubic-bezier(0.22, 1, 0.36, 1) 1.6s forwards;
+}
+
+@keyframes hubikin-vignette {
+  0%   { opacity: 0; }
+  60%  { opacity: 0.95; }
+  100% { opacity: 0.7; }
+}
+
+/* ----- Layer 6: Subtle film grain (matches .hub-grain on page) ----- */
+.hub-intro-kinetic__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+/* ============================================
+   Mobile (≤768px) — scale logo, shorter line
+   ============================================ */
+@media (max-width: 768px) {
+  .hub-intro-kinetic__logo {
+    height: 160px;
+  }
+  .hub-intro-kinetic__line {
+    margin-bottom: 28px;
+    animation-name: hubikin-line-draw-mobile;
+  }
+  @keyframes hubikin-line-draw-mobile {
+    0%   { width: 0; opacity: 0; }
+    20%  { opacity: 1; }
+    100% { width: 60vw; opacity: 1; }
+  }
+  .hub-intro-kinetic__caption {
+    margin-top: 28px;
+    font-size: 0.6rem;
+    letter-spacing: 0.32em;
+  }
+  .hub-intro-kinetic__caption-dot {
+    font-size: 0.85em;
+  }
+}
+
+/* ============================================
+   Reduced motion — kill canvas + animation, hold static
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .hub-intro-kinetic {
+    animation: hubikin-overlay-out 0.4s ease 0.6s forwards;
+  }
+  .hub-intro-kinetic__dust,
+  .hub-intro-kinetic__spark,
+  .hub-intro-kinetic__grain {
+    display: none;
+  }
+  .hub-intro-kinetic__logo {
+    opacity: 1;
+    filter: invert(1) brightness(1.2);
+    transform: none;
+    animation: none;
+  }
+  .hub-intro-kinetic__line {
+    width: 320px;
+    opacity: 1;
+    animation: none;
+  }
+  .hub-intro-kinetic__caption {
+    opacity: 1;
+    color: rgba(255, 255, 255, 0.55);
+    transform: none;
+    animation: none;
+  }
+  .hub-intro-kinetic__vignette {
+    opacity: 0.5;
+    animation: none;
+  }
+}
