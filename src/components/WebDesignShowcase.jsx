@@ -26,15 +26,6 @@ const PROJECTS = [
     preview: '/sites/savv-preview.jpg',
     url: 'https://savv4x.com',
   },
-  {
-    name: 'Casper TNG',
-    type: 'Artist Site',
-    description: 'Official web presence for one of Toronto\'s most recognized voices',
-    status: 'Coming Soon',
-    icon: null,
-    preview: null,
-    url: null,
-  },
 ]
 
 export default function WebDesignShowcase() {

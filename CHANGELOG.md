@@ -2,7 +2,7 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
-## [4.2.0] - 2026-04-29
+## [4.2.0] - 2026-04-30
 
 ### Added
 - **HubIntroKinetic — cinematic 5-second hub intro** (`src/components/HubIntroKinetic.{jsx,css}`). Replaces the previous logo + letter-stagger overlay with a layered painterly composite: drifting charcoal-dust canvas (220 particles desktop / 110 mobile, ash-rises motion), cobalt hairline draw (`#4a7cff` 360px gradient), real `/logo.png` bloom-in (28px → 0px blur over 2s with handheld 24fps micro-jitter), single warm-orange spark burst (22 particles, gravity-driven, the only orange in the loop), radial vignette breathe, and crossfade out into the existing `.hub-header`. Pixel-perfect wordmark guaranteed — no AI text regeneration.
@@ -10,6 +10,10 @@ All notable changes to TdotsSolutionsz Music Video Portfolio.
 
 ### Removed
 - Orphaned `.hub-intro__*` CSS rules (~165 lines) from `HubPage.css` — the old letter-stagger overlay and its `@keyframes intro-content-in/intro-line-expand/intro-letter-drop/intro-overlay-out/intro-content-shrink/intro-logo-shrink/intro-element-fade` are gone with the markup.
+- **Casper TNG entry from `WebDesignShowcase`** — was sitting as `Coming Soon` with no URL. Showcase now SyrenEffect + Savv4x only.
+
+### Audit (2026-04-30)
+Full hub link audit against production. All CTAs verified wired correctly: Music Videos → /videos, Watch → /video/:id, Book a Session → mailto:tdotssolutionsz@gmail.com, footer YouTube/Instagram/X. **Production /web-design 404 root-caused**: Vercel build cache corruption (stale Vite chunk `dep-Dq2t6Dq0.js` → ERR_MODULE_NOT_FOUND). Last 3 production deploys errored — production has been serving 16-day-old code. Fix: redeploy with `--force` to bypass cache.
 
 ### Notes
 - 710/710 tests pass. `videoPlayback.test.js` (CSP, referrer policy, iframe sandbox guards) — green.
