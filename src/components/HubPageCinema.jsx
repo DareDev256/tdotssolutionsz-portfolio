@@ -94,8 +94,8 @@ export default function HubPageCinema() {
       trigger: track, start: `${start}% top`, end: `${end}% top`, scrub
     })
 
-    // Hero text entrance
-    const heroTL = gsap.timeline({ scrollTrigger: st(0, 8) })
+    // === SCENE 1: Hero (0-14%) ===
+    const heroTL = gsap.timeline({ scrollTrigger: st(0, 6) })
     heroTL
       .to('.cinema-hero-label', { opacity: 1, duration: 0.3 })
       .fromTo('.cinema-hero-title .cinema-line-1 .cinema-letter',
@@ -107,12 +107,12 @@ export default function HubPageCinema() {
       .to('.cinema-hero-sub', { opacity: 1, duration: 0.2 }, 0.5)
       .to('.cinema-hero-stats', { opacity: 1, y: 0, duration: 0.2 }, 0.6)
 
-    gsap.to('.cinema-scroll-cue', { opacity: 0, scrollTrigger: st(2, 5, 0.5) })
+    gsap.to('.cinema-scroll-cue', { opacity: 0, scrollTrigger: st(2, 4, 0.5) })
 
-    // Scene 1 → Scene 2: letters scatter + flash
+    // Scatter 1: Hero → Scene 2 (10-16%)
     const scatter1 = gsap.timeline({
       scrollTrigger: {
-        ...st(18, 25),
+        ...st(10, 16),
         onUpdate: (self) => {
           if (self.progress > 0.75 && self.progress < 0.85 && window.__spawnParticles)
             window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 8)
@@ -132,28 +132,28 @@ export default function HubPageCinema() {
       scale: () => 0.1 + Math.random() * 2, opacity: 0, stagger: 0.02, duration: 1, ease: 'power3.in',
     }, 0.1)
     scatter1.to('.cinema-hero-label, .cinema-hero-sub, .cinema-hero-stats', { y: -200, opacity: 0, scale: 0.5, duration: 0.5 }, 0)
+    scatter1.to('#cinema-scene1', { opacity: 0, duration: 0.3 }, 0.6)
+    scatter1.to('#cinema-scene2', { opacity: 1, duration: 0.3 }, 0.6)
     scatter1.to('.cinema-flash', { opacity: 0.9, duration: 0.15, ease: 'power4.in' }, 0.7)
     scatter1.to('.cinema-flash', { opacity: 0, duration: 0.3, ease: 'power2.out' }, 0.85)
 
-    // Scene 2 fade in
-    const scene2TL = gsap.timeline({ scrollTrigger: st(25, 40) })
-    scene2TL.to('#cinema-scene2', { opacity: 1, duration: 0.3 }, 0)
-    scene2TL.to('#cinema-scene1', { opacity: 0, duration: 0.2 }, 0)
+    // === SCENE 2: Music Videos entrance (16-26%) ===
+    const scene2TL = gsap.timeline({ scrollTrigger: st(16, 26) })
     scene2TL.fromTo('.cinema-s2-title .cinema-line-1 .cinema-letter',
       { x: () => (Math.random() - 0.5) * 400, y: () => (Math.random() - 0.5) * 400, rotation: () => (Math.random() - 0.5) * 180, opacity: 0, scale: 0 },
-      { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.04, duration: 0.5, ease: 'back.out(2)' }, 0.2)
+      { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.04, duration: 0.5, ease: 'back.out(2)' }, 0)
     scene2TL.fromTo('.cinema-s2-title .cinema-line-2 .cinema-letter',
       { x: () => (Math.random() - 0.5) * 400, y: () => (Math.random() - 0.5) * 400, rotation: () => (Math.random() - 0.5) * 180, opacity: 0, scale: 0 },
-      { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.04, duration: 0.5, ease: 'back.out(2)' }, 0.3)
-    scene2TL.fromTo('.cinema-s2-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3 }, 0.5)
+      { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.04, duration: 0.5, ease: 'back.out(2)' }, 0.1)
+    scene2TL.fromTo('.cinema-s2-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3 }, 0.3)
     scene2TL.fromTo('.cinema-frame',
-      { x: (i) => (i % 2 === 0 ? -300 : 300), y: (i) => (i < 2 ? -200 : 200), rotation: (i) => (i % 2 === 0 ? -15 : 10), opacity: 0, scale: 0.6 },
-      { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.1, duration: 0.6, ease: 'power2.out' }, 0.3)
+      { x: (i) => (i % 2 === 0 ? -300 : 300), y: (i) => (i < 3 ? -200 : 200), rotation: (i) => (i % 2 === 0 ? -15 : 10), opacity: 0, scale: 0.6 },
+      { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.08, duration: 0.5, ease: 'power2.out' }, 0.2)
 
-    // Scene 2 → Scene 3
+    // Scatter 2: Scene 2 → Scene 3 (30-36%)
     const scatter2 = gsap.timeline({
       scrollTrigger: {
-        ...st(45, 55),
+        ...st(30, 36),
         onUpdate: (self) => {
           if (self.progress > 0.4 && self.progress < 0.5 && window.__spawnParticles)
             window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 5, 'rgba(74,124,255,0.8)')
@@ -165,14 +165,14 @@ export default function HubPageCinema() {
       rotation: () => (Math.random() - 0.5) * 360, opacity: 0, stagger: 0.02, duration: 0.5,
     }, 0)
     scatter2.to('.cinema-s2-sub', { opacity: 0, y: -50, duration: 0.3 }, 0)
-    scatter2.to('.cinema-frame', { x: (i) => (i % 2 === 0 ? -500 : 500), y: (i) => (i < 2 ? -400 : 400), rotation: (i) => (i % 2 === 0 ? -30 : 20), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
+    scatter2.to('.cinema-frame', { x: (i) => (i % 2 === 0 ? -500 : 500), y: (i) => (i < 3 ? -400 : 400), rotation: (i) => (i % 2 === 0 ? -30 : 20), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
+    scatter2.to('#cinema-scene2', { opacity: 0, duration: 0.3 }, 0.5)
+    scatter2.to('#cinema-scene3', { opacity: 1, duration: 0.3 }, 0.5)
     scatter2.to('.cinema-flash', { opacity: 0.6, duration: 0.1 }, 0.5)
     scatter2.to('.cinema-flash', { opacity: 0, duration: 0.2 }, 0.6)
-    scatter2.to('#cinema-scene2', { opacity: 0, duration: 0.2 }, 0.5)
-    scatter2.to('#cinema-scene3', { opacity: 1, duration: 0.3 }, 0.5)
 
-    // Scene 3 entrance
-    const scene3TL = gsap.timeline({ scrollTrigger: st(55, 70) })
+    // === SCENE 3: Web Design entrance (36-46%) ===
+    const scene3TL = gsap.timeline({ scrollTrigger: st(36, 46) })
     scene3TL.fromTo('.cinema-s3-title .cinema-line-1 .cinema-letter',
       { scale: 3, opacity: 0, rotation: () => (Math.random() - 0.5) * 90 },
       { scale: 1, opacity: 1, rotation: 0, stagger: 0.06, duration: 0.4, ease: 'expo.out' }, 0)
@@ -184,20 +184,39 @@ export default function HubPageCinema() {
       { x: (i) => (i === 0 ? -500 : i === 1 ? 500 : 0), y: (i) => (i === 2 ? 400 : 0), rotateY: (i) => (i === 0 ? 45 : i === 1 ? -45 : 0), rotateX: (i) => (i === 2 ? 30 : 0), opacity: 0, scale: 0.5 },
       { x: 0, y: 0, rotateY: 0, rotateX: 0, opacity: 1, scale: 1, stagger: 0.1, duration: 0.6, ease: 'power2.out' }, 0.2)
 
-    // Scene 3 → Scene 4
-    const scatter3 = gsap.timeline({ scrollTrigger: st(70, 78) })
+    // Scatter 3: Scene 3 → Scene 4 Photography (50-56%)
+    const scatter3 = gsap.timeline({ scrollTrigger: st(50, 56) })
     scatter3.to('.cinema-s3-title .cinema-letter', { y: () => 100 + Math.random() * 200, opacity: 0, stagger: 0.02, duration: 0.4 }, 0)
     scatter3.to('.cinema-s3-sub', { opacity: 0, duration: 0.2 }, 0)
     scatter3.to('.cinema-browser', { x: (i) => (i === 0 ? -600 : i === 1 ? 600 : 0), y: (i) => (i === 2 ? 500 : 0), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
     scatter3.to('#cinema-scene3', { opacity: 0, duration: 0.3 }, 0.4)
     scatter3.to('#cinema-scene4', { opacity: 1, duration: 0.5 }, 0.4)
 
-    // Scene 4 entrance
-    const scene4TL = gsap.timeline({ scrollTrigger: st(78, 92) })
-    scene4TL.fromTo('.cinema-s4-label', { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 0)
-    scene4TL.fromTo('.cinema-s4-title', { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.4)' }, 0.1)
-    scene4TL.fromTo('.cinema-s4-sub', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.3)
-    scene4TL.fromTo('.cinema-cta-btn', { y: 60, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, 0.5)
+    // === SCENE 4: Photography entrance (56-66%) ===
+    const scene4TL = gsap.timeline({ scrollTrigger: st(56, 66) })
+    scene4TL.fromTo('.cinema-s4-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3 }, 0)
+    scene4TL.fromTo('.cinema-s4-title-photo .cinema-line-1 .cinema-letter',
+      { scale: 0, opacity: 0, rotation: () => (Math.random() - 0.5) * 120 },
+      { scale: 1, opacity: 1, rotation: 0, stagger: 0.05, duration: 0.4, ease: 'back.out(2)' }, 0.1)
+    scene4TL.fromTo('.cinema-s4-title-photo .cinema-line-2 .cinema-letter',
+      { scale: 0, opacity: 0, rotation: () => (Math.random() - 0.5) * 120 },
+      { scale: 1, opacity: 1, rotation: 0, stagger: 0.05, duration: 0.4, ease: 'back.out(2)' }, 0.2)
+    scene4TL.fromTo('.cinema-coming-badge', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(3)' }, 0.4)
+    scene4TL.fromTo('.cinema-photo-coming-soon p', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3 }, 0.5)
+
+    // Scatter 4: Scene 4 → Scene 5 CTA (70-76%)
+    const scatter4 = gsap.timeline({ scrollTrigger: st(70, 76) })
+    scatter4.to('.cinema-s4-title-photo .cinema-letter', { y: () => -80 - Math.random() * 200, opacity: 0, stagger: 0.02, duration: 0.4 }, 0)
+    scatter4.to('.cinema-s4-sub, .cinema-photo-coming-soon', { opacity: 0, duration: 0.3 }, 0)
+    scatter4.to('#cinema-scene4', { opacity: 0, duration: 0.3 }, 0.4)
+    scatter4.to('#cinema-scene5', { opacity: 1, duration: 0.5 }, 0.4)
+
+    // === SCENE 5: CTA entrance (76-90%) ===
+    const scene5TL = gsap.timeline({ scrollTrigger: st(76, 90) })
+    scene5TL.fromTo('.cinema-s5-label', { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 0)
+    scene5TL.fromTo('.cinema-s5-title', { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.4)' }, 0.1)
+    scene5TL.fromTo('.cinema-s5-sub', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.3)
+    scene5TL.fromTo('.cinema-cta-btn', { y: 60, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, 0.5)
 
     // Progress bar
     gsap.to('.cinema-progress', {
@@ -211,10 +230,10 @@ export default function HubPageCinema() {
   // Scroll-scrubbed video
   useEffect(() => {
     const videos = [
-      { id: 'v1', start: 0, end: 0.25 },
-      { id: 'v2', start: 0.25, end: 0.55 },
-      { id: 'v3', start: 0.55, end: 0.85 },
-      { id: 'v4', start: 0.85, end: 1.0 },
+      { id: 'v1', start: 0, end: 0.16 },
+      { id: 'v2', start: 0.16, end: 0.36 },
+      { id: 'v3', start: 0.36, end: 0.56 },
+      { id: 'v4', start: 0.70, end: 1.0 },
     ]
     const loaded = new Set(['v1'])
     let ticking = false
@@ -360,14 +379,30 @@ export default function HubPageCinema() {
           </Link>
         </div>
 
-        {/* SCENE 4: CTA */}
+        {/* SCENE 4: Photography */}
         <div className="cinema-scene cinema-scene--hidden" id="cinema-scene4">
+          <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 40%,rgba(20,15,30,0.6),rgba(0,0,0,0.9))' }} />
+
+          <p className="cinema-s4-sub">PORTRAITS &bull; EVENTS &bull; STREET</p>
+          <h2 className="cinema-s4-title-photo cinema-section-title">
+            <span className="cinema-line-1">{splitIntoLetters('Photo')}</span>
+            <span className="cinema-line-2">{splitIntoLetters('graphy')}</span>
+          </h2>
+
+          <div className="cinema-photo-coming-soon">
+            <span className="cinema-coming-badge">COMING SOON</span>
+            <p>Portraits, events, artist EPKs, and urban street photography</p>
+          </div>
+        </div>
+
+        {/* SCENE 5: CTA */}
+        <div className="cinema-scene cinema-scene--hidden" id="cinema-scene5">
           <video className="cinema-video-bg" ref={setVideoRef('v4')} src="/videos/seedance/scene4-cta.mp4" muted playsInline preload="metadata" />
           <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.4),rgba(0,0,0,0.8))' }} />
 
-          <p className="cinema-s4-label">LET'S WORK</p>
-          <h2 className="cinema-s4-title">Book a<br />Session</h2>
-          <p className="cinema-s4-sub">Ready to bring your vision to life?<br />Let's create something unforgettable.</p>
+          <p className="cinema-s5-label">LET'S WORK</p>
+          <h2 className="cinema-s5-title">Book a<br />Session</h2>
+          <p className="cinema-s5-sub">Ready to bring your vision to life?<br />Let's create something unforgettable.</p>
           <a href="mailto:tdotssolutionsz@gmail.com" className="cinema-cta-btn">
             GET STARTED <span>&rarr;</span>
           </a>
