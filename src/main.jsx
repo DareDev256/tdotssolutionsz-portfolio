@@ -19,8 +19,8 @@ import './index.css'
 /** Boot security monitor — CSP violation logging + runtime integrity checks */
 initSecurityMonitor()
 
-/** Hub landing page — lightweight, no heavy deps */
-const HubPage = lazy(() => import('./components/HubPage.jsx'))
+/** Hub landing page — scroll-cinema redesign with GSAP + Seedance videos */
+const HubPage = lazy(() => import('./components/HubPageCinema.jsx'))
 /** Standalone video detail page — lightweight, shareable, no Three.js */
 const VideoPage = lazy(() => import('./components/VideoPage.jsx'))
 /** Desktop 3D cityscape — lazy-loaded to separate chunk (~1.1MB with Three.js) */

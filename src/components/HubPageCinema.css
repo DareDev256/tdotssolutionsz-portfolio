@@ -1,0 +1,454 @@
+/* ============================================
+   SCROLL CINEMA — Full-page scroll-scrubbed experience
+   Fixed viewport + tall scroll track architecture
+   ============================================ */
+
+.cinema-track { height: 600vh; position: relative; }
+
+.cinema-viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+/* Film grain */
+.cinema-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+  mix-blend-mode: overlay;
+}
+
+/* Progress bar */
+.cinema-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #4a7cff, #e85d34);
+  z-index: 9999;
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* Scenes */
+.cinema-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cinema-scene--hidden { opacity: 0; }
+
+/* Video backgrounds */
+.cinema-video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.cinema-video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Particle canvas */
+.cinema-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Flash */
+.cinema-flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  z-index: 50;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Letter animation */
+.cinema-letter {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ============================================
+   SCENE 1: HERO
+   ============================================ */
+.cinema-hero-text {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.cinema-hero-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #4a7cff;
+  margin-bottom: 24px;
+  opacity: 0;
+}
+
+.cinema-hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(5rem, 14vw, 12rem);
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.cinema-hero-title .cinema-line-1,
+.cinema-hero-title .cinema-line-2 { display: block; }
+
+.cinema-hero-logo {
+  height: 80px;
+  width: auto;
+  filter: invert(1) brightness(1.2);
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+
+.cinema-hero-sub {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.08em;
+  opacity: 0;
+  margin-bottom: 12px;
+}
+
+.cinema-hero-stats {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.06em;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.cinema-stat-dot { margin: 0 8px; }
+
+.cinema-scroll-cue {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.3);
+  z-index: 10;
+}
+
+.cinema-scroll-cue::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+  margin: 12px auto 0;
+  animation: cinema-pulse 2s ease-in-out infinite;
+}
+
+@keyframes cinema-pulse {
+  0%, 100% { opacity: 0.3; height: 30px; }
+  50% { opacity: 1; height: 50px; }
+}
+
+/* ============================================
+   SCENE 2: MUSIC VIDEOS
+   ============================================ */
+.cinema-s2-sub,
+.cinema-s3-sub {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.12em;
+  z-index: 10;
+  margin-bottom: 16px;
+}
+
+.cinema-section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 900;
+  line-height: 0.9;
+  text-align: center;
+  color: #fff;
+  z-index: 10;
+  margin-bottom: 16px;
+}
+
+.cinema-section-title .cinema-line-1,
+.cinema-section-title .cinema-line-2 { display: block; }
+
+/* Floating video frames */
+.cinema-floating-frames {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.cinema-frame {
+  position: absolute;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  will-change: transform;
+  pointer-events: auto;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cinema-frame:hover {
+  transform: scale(1.05);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+}
+
+.cinema-frame-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cinema-frame-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.cinema-frame-label span {
+  display: block;
+  font-size: 10px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+/* Enter portfolio button */
+.cinema-enter-btn {
+  position: absolute;
+  bottom: 60px;
+  z-index: 10;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #fff;
+  text-decoration: none;
+  padding: 14px 32px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 40px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cinema-enter-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #4a7cff;
+  color: #4a7cff;
+}
+
+/* ============================================
+   SCENE 3: WEB DESIGN
+   ============================================ */
+.cinema-browsers {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.cinema-browser {
+  position: absolute;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+  will-change: transform;
+  z-index: 5;
+  text-decoration: none;
+  color: #fff;
+  pointer-events: auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cinema-browser:hover {
+  transform: scale(1.04);
+  box-shadow: 0 35px 100px rgba(0,0,0,0.7);
+}
+
+.cinema-browser-chrome {
+  height: 32px;
+  background: #1e1e1e;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 6px;
+}
+
+.cinema-browser-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cinema-browser-url {
+  margin-left: 12px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.05em;
+}
+
+.cinema-browser-body {
+  width: 100%;
+  height: calc(100% - 32px);
+  background: #111;
+  overflow: hidden;
+}
+
+.cinema-browser-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.cinema-browser-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.15);
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, #0a1a3a, #1a0a2a);
+}
+
+/* ============================================
+   SCENE 4: CTA
+   ============================================ */
+.cinema-s4-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: #4a7cff;
+  z-index: 10;
+  margin-bottom: 24px;
+}
+
+.cinema-s4-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 900;
+  text-align: center;
+  color: #fff;
+  z-index: 10;
+  margin-bottom: 24px;
+  line-height: 1;
+}
+
+.cinema-s4-sub {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+  max-width: 450px;
+  line-height: 1.6;
+  z-index: 10;
+  margin-bottom: 40px;
+}
+
+.cinema-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 48px;
+  background: #e85d34;
+  color: white;
+  border: none;
+  border-radius: 60px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  z-index: 10;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 40px rgba(232, 93, 52, 0.3);
+}
+
+.cinema-cta-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 60px rgba(232, 93, 52, 0.5);
+}
+
+.cinema-footer {
+  position: absolute;
+  bottom: 24px;
+  text-align: center;
+  z-index: 10;
+}
+
+.cinema-footer p {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.1em;
+  margin: 4px 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .cinema-hero-title { font-size: clamp(3rem, 12vw, 6rem); }
+  .cinema-section-title { font-size: clamp(2.5rem, 10vw, 5rem); }
+  .cinema-frame { max-width: 200px !important; max-height: 130px !important; }
+  .cinema-browser { max-width: 280px !important; max-height: 200px !important; }
+  .cinema-hero-logo { height: 50px; }
+  .cinema-enter-btn { bottom: 30px; font-size: 11px; padding: 12px 24px; }
+}
+
+@media (max-width: 480px) {
+  .cinema-hero-title { font-size: clamp(2.5rem, 14vw, 4rem); }
+  .cinema-frame:nth-child(n+3) { display: none; }
+  .cinema-browser:nth-child(n+3) { display: none; }
+}
