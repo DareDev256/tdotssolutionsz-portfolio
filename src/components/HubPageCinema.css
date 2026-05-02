@@ -3,7 +3,7 @@
    Fixed viewport + tall scroll track architecture
    ============================================ */
 
-.cinema-track { height: 700vh; position: relative; }
+.cinema-track { height: 700vh; position: relative; pointer-events: none; }
 
 .cinema-viewport {
   position: fixed;
