@@ -14,7 +14,7 @@ const FEATURED = topByViews(VIDEOS, 8)
 
 const WEB_PROJECTS = [
   { name: 'Savv4x', type: 'Artist Platform', url: 'https://savv4x.com', preview: '/sites/savv-preview.jpg', icon: '/sites/savv-icon.png' },
-  { name: 'SyrenEffect', type: 'Creator Site', url: 'https://syreneffect-site.vercel.app', preview: null, icon: '/sites/syren-icon.png' },
+  { name: 'SyrenEffect', type: 'Creator Site', url: 'https://syreneffect.com', preview: '/sites/syren-preview.jpg', icon: '/sites/syren-icon.png' },
 ]
 
 function splitIntoLetters(text) {
