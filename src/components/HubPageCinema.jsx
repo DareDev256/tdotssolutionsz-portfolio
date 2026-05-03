@@ -184,39 +184,20 @@ export default function HubPageCinema() {
       { x: (i) => (i === 0 ? -500 : i === 1 ? 500 : 0), y: (i) => (i === 2 ? 400 : 0), rotateY: (i) => (i === 0 ? 45 : i === 1 ? -45 : 0), rotateX: (i) => (i === 2 ? 30 : 0), opacity: 0, scale: 0.5 },
       { x: 0, y: 0, rotateY: 0, rotateX: 0, opacity: 1, scale: 1, stagger: 0.1, duration: 0.6, ease: 'power2.out' }, 0.2)
 
-    // Scatter 3: Scene 3 → Scene 4 Photography (50-56%)
-    const scatter3 = gsap.timeline({ scrollTrigger: st(50, 56) })
+    // Scatter 3: Scene 3 → Scene 4 CTA (55-62%)
+    const scatter3 = gsap.timeline({ scrollTrigger: st(55, 62) })
     scatter3.to('.cinema-s3-title .cinema-letter', { y: () => 100 + Math.random() * 200, opacity: 0, stagger: 0.02, duration: 0.4 }, 0)
     scatter3.to('.cinema-s3-sub', { opacity: 0, duration: 0.2 }, 0)
     scatter3.to('.cinema-browser', { x: (i) => (i === 0 ? -600 : i === 1 ? 600 : 0), y: (i) => (i === 2 ? 500 : 0), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
     scatter3.to('#cinema-scene3', { opacity: 0, duration: 0.3 }, 0.4)
     scatter3.to('#cinema-scene4', { opacity: 1, duration: 0.5 }, 0.4)
 
-    // === SCENE 4: Photography entrance (56-66%) ===
-    const scene4TL = gsap.timeline({ scrollTrigger: st(56, 66) })
-    scene4TL.fromTo('.cinema-s4-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3 }, 0)
-    scene4TL.fromTo('.cinema-s4-title-photo .cinema-line-1 .cinema-letter',
-      { scale: 0, opacity: 0, rotation: () => (Math.random() - 0.5) * 120 },
-      { scale: 1, opacity: 1, rotation: 0, stagger: 0.05, duration: 0.4, ease: 'back.out(2)' }, 0.1)
-    scene4TL.fromTo('.cinema-s4-title-photo .cinema-line-2 .cinema-letter',
-      { scale: 0, opacity: 0, rotation: () => (Math.random() - 0.5) * 120 },
-      { scale: 1, opacity: 1, rotation: 0, stagger: 0.05, duration: 0.4, ease: 'back.out(2)' }, 0.2)
-    scene4TL.fromTo('.cinema-coming-badge', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(3)' }, 0.4)
-    scene4TL.fromTo('.cinema-photo-coming-soon p', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3 }, 0.5)
-
-    // Scatter 4: Scene 4 → Scene 5 CTA (70-76%)
-    const scatter4 = gsap.timeline({ scrollTrigger: st(70, 76) })
-    scatter4.to('.cinema-s4-title-photo .cinema-letter', { y: () => -80 - Math.random() * 200, opacity: 0, stagger: 0.02, duration: 0.4 }, 0)
-    scatter4.to('.cinema-s4-sub, .cinema-photo-coming-soon', { opacity: 0, duration: 0.3 }, 0)
-    scatter4.to('#cinema-scene4', { opacity: 0, duration: 0.3 }, 0.4)
-    scatter4.to('#cinema-scene5', { opacity: 1, duration: 0.5 }, 0.4)
-
-    // === SCENE 5: CTA entrance (76-90%) ===
-    const scene5TL = gsap.timeline({ scrollTrigger: st(76, 90) })
-    scene5TL.fromTo('.cinema-s5-label', { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 0)
-    scene5TL.fromTo('.cinema-s5-title', { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.4)' }, 0.1)
-    scene5TL.fromTo('.cinema-s5-sub', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.3)
-    scene5TL.fromTo('.cinema-cta-btn', { y: 60, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, 0.5)
+    // === SCENE 4: CTA entrance (62-80%) ===
+    const scene4TL = gsap.timeline({ scrollTrigger: st(62, 80) })
+    scene4TL.fromTo('.cinema-s4-label', { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 0)
+    scene4TL.fromTo('.cinema-s4-title', { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.4)' }, 0.1)
+    scene4TL.fromTo('.cinema-s4-sub', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.3)
+    scene4TL.fromTo('.cinema-cta-btn', { y: 60, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, 0.5)
 
     // Progress bar
     gsap.to('.cinema-progress', {
@@ -232,8 +213,8 @@ export default function HubPageCinema() {
     const videos = [
       { id: 'v1', start: 0, end: 0.16 },
       { id: 'v2', start: 0.16, end: 0.36 },
-      { id: 'v3', start: 0.36, end: 0.56 },
-      { id: 'v4', start: 0.70, end: 1.0 },
+      { id: 'v3', start: 0.36, end: 0.55 },
+      { id: 'v4', start: 0.55, end: 1.0 },
     ]
     const loaded = new Set(['v1'])
     let ticking = false
@@ -379,31 +360,15 @@ export default function HubPageCinema() {
           </Link>
         </div>
 
-        {/* SCENE 4: Photography */}
+        {/* SCENE 4: CTA */}
         <div className="cinema-scene cinema-scene--hidden" id="cinema-scene4">
-          <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 40%,rgba(20,15,30,0.6),rgba(0,0,0,0.9))' }} />
-
-          <p className="cinema-s4-sub">PORTRAITS &bull; EVENTS &bull; STREET</p>
-          <h2 className="cinema-s4-title-photo cinema-section-title">
-            <span className="cinema-line-1">{splitIntoLetters('Photo')}</span>
-            <span className="cinema-line-2">{splitIntoLetters('graphy')}</span>
-          </h2>
-
-          <div className="cinema-photo-coming-soon">
-            <span className="cinema-coming-badge">COMING SOON</span>
-            <p>Portraits, events, artist EPKs, and urban street photography</p>
-          </div>
-        </div>
-
-        {/* SCENE 5: CTA */}
-        <div className="cinema-scene cinema-scene--hidden" id="cinema-scene5">
           <video className="cinema-video-bg" ref={setVideoRef('v4')} src="/videos/seedance/scene4-cta.mp4" muted playsInline preload="metadata" />
           <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.4),rgba(0,0,0,0.8))' }} />
 
-          <p className="cinema-s5-label">LET'S WORK</p>
-          <h2 className="cinema-s5-title">Book a<br />Session</h2>
-          <p className="cinema-s5-sub">Ready to bring your vision to life?<br />Let's create something unforgettable.</p>
-          <a href="mailto:tdotssolutionsz@gmail.com" className="cinema-cta-btn">
+          <p className="cinema-s4-label">LET'S WORK</p>
+          <h2 className="cinema-s4-title">Book a<br />Session</h2>
+          <p className="cinema-s4-sub">Ready to bring your vision to life?<br />Let's create something unforgettable.</p>
+          <a href="mailto:info@tdotssolutionsz.com?subject=Project%20Inquiry&body=Hey%20James%2C%0A%0AI%27m%20interested%20in%20working%20together.%0A%0A" className="cinema-cta-btn">
             GET STARTED <span>&rarr;</span>
           </a>
           <footer className="cinema-footer">
