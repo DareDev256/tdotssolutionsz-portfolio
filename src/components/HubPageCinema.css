@@ -400,24 +400,25 @@
   align-items: center;
   gap: 10px;
   padding: 18px 48px;
-  background: #e85d34;
+  background: transparent;
   color: white;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.4);
   border-radius: 60px;
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   cursor: pointer;
   z-index: 10;
   text-decoration: none;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 0 40px rgba(232, 93, 52, 0.3);
 }
 
 .cinema-cta-btn:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 60px rgba(232, 93, 52, 0.5);
+  transform: scale(1.04);
+  background: #4a7cff;
+  border-color: #4a7cff;
+  box-shadow: 0 0 50px rgba(74, 124, 255, 0.4);
 }
 
 .cinema-footer {
