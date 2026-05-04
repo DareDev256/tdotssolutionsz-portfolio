@@ -262,9 +262,20 @@ export default function HubPageCinema() {
         <ParticleCanvas />
         <div className="cinema-flash" />
 
-        {/* SCENE 1: Hero */}
+        {/* SCENE 1: Hero — real CN Tower drift (replaces Seedance arrival) */}
         <div className="cinema-scene" id="cinema-scene1">
-          <video className="cinema-video-bg" ref={setVideoRef('v1')} src="/videos/seedance/scene1-arrival.mp4" muted playsInline preload="auto" />
+          <video
+            className="cinema-video-bg"
+            ref={setVideoRef('v1')}
+            poster="/videos/seedance/scene1-cn-tower-poster.jpg"
+            muted
+            playsInline
+            preload="auto"
+          >
+            <source src="/videos/seedance/scene1-cn-tower.webm" type="video/webm" />
+            <source src="/videos/seedance/scene1-cn-tower.mp4" type="video/mp4" />
+          </video>
+          <div className="cinema-corner-mask" aria-hidden="true" />
           <div className="cinema-video-overlay" style={{ background: 'linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.7))' }} />
 
           <div className="cinema-hero-text">

@@ -2,6 +2,22 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.4.0] - 2026-05-04
+
+### Changed
+- **Hub scene 1 hero video → real CN Tower drift**, replacing the AI-rendered `scene1-arrival.mp4`. Source: `/Users/t./Movies/CN Tower .mp4` (3840×2160 HEVC, 30 fps, 2.23 s). Encoded to 1280×720 **all-intra** H.264 (`-g 1 -keyint_min 1 -sc_threshold 0`, CRF 19, faststart) for stutter-free `currentTime` scrub-seeks across the 0–16% scroll band, plus a VP9 WebM sibling preferred by Chrome/Firefox.
+- **Cross-browser asset chain on scene 1**: `<video poster=…>` + `<source webm>` + `<source mp4>`. Safari hits the MP4, Chrome/FF hit the smaller WebM, all browsers paint the poster JPG before the video buffers (LCP win).
+- **`ffmpeg delogo` + new `.cinema-corner-mask` div** strip the AI watermark from the source corner — delogo masks the pixels, the 110×70 charcoal radial gradient (`z-index: 2`, between video and overlay) hides any residual interpolation ghost.
+
+### Verified
+- Scrub linearity confirmed via Chrome MCP: scroll 0% → 16% maps to video 0.000 s → 2.223 s in even ~0.20 s steps. No stutter, no console errors.
+- 23/23 `videoPlayback.test.js` tests green (CSP, referrer policy, iframe sandbox guards).
+- Build clean. `HubPageCinema.css` 7.45 KB (gz 2.08 KB), `HubPageCinema-*.js` 128.84 KB (gz 49.34 KB) — no regression.
+
+### Notes
+- Hero asset budget: `scene1-cn-tower.webm` 1.9 MB + `.mp4` 1.8 MB + `-poster.jpg` 91 KB. Browser fetches one video + the poster, ~2 MB total over the wire for the hero.
+- Version jump 4.2.0 → 5.4.0 reconciles drift between commit-tag versions (v5.0/5.1/5.2/5.3 shipped in messages) and `package.json`.
+
 ## [4.2.0] - 2026-04-30
 
 ### Added

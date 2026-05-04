@@ -453,3 +453,20 @@
   .cinema-frame:nth-child(n+3) { display: none; }
   .cinema-browser:nth-child(n+3) { display: none; }
 }
+
+/* Top-left corner mask — covers any residual delogo ghost on scene1 hero video */
+.cinema-corner-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 110px;
+  height: 70px;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at top left,
+    rgba(38, 38, 38, 0.95) 0%,
+    rgba(38, 38, 38, 0.7) 55%,
+    rgba(38, 38, 38, 0) 100%
+  );
+}
