@@ -371,9 +371,20 @@ export default function HubPageCinema() {
           </Link>
         </div>
 
-        {/* SCENE 4: CTA */}
+        {/* SCENE 4: CTA — Toronto twilight (replaces fake-tower aerial) */}
         <div className="cinema-scene cinema-scene--hidden" id="cinema-scene4">
-          <video className="cinema-video-bg" ref={setVideoRef('v4')} src="/videos/seedance/scene4-cta.mp4" muted playsInline preload="metadata" />
+          <video
+            className="cinema-video-bg"
+            ref={setVideoRef('v4')}
+            poster="/videos/seedance/scene4-toronto-twilight-poster.jpg"
+            muted
+            playsInline
+            preload="metadata"
+          >
+            <source src="/videos/seedance/scene4-toronto-twilight.webm" type="video/webm" />
+            <source src="/videos/seedance/scene4-toronto-twilight.mp4" type="video/mp4" />
+          </video>
+          <div className="cinema-corner-mask" aria-hidden="true" />
           <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.4),rgba(0,0,0,0.8))' }} />
 
           <p className="cinema-s4-label">LET'S WORK</p>

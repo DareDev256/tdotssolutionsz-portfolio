@@ -2,6 +2,24 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.4.1] - 2026-05-04
+
+### Changed
+- **Hub scene 4 CTA video → realistic CN Tower twilight**, replacing the AI-rendered `scene4-cta.mp4` (aerial wide shot with disproportionate spire). The previous `scene1-arrival.mp4` is the source — believable telephoto twilight composition of the lit pod between two skyscrapers — re-encoded through the same scene-1 pipeline: 1280×720 H.264 all-intra (CRF 19, faststart) + VP9 WebM sibling + JPG poster, `delogo` strip on the AI corner watermark.
+- **Scene 4 markup mirrors scene 1**: `<video poster=…>` + `<source webm>` + `<source mp4>` + `.cinema-corner-mask` div. Cross-browser asset chain consistent across both video scenes.
+
+### Removed
+- `public/videos/seedance/scene1-arrival.mp4` — orphaned by v5.4.0's CN Tower replacement.
+- `public/videos/seedance/scene4-cta.mp4` — replaced by `scene4-toronto-twilight.{mp4,webm,jpg}`. The fake-tower aerial render is gone for good.
+
+### Verified
+- Scene 4 scrub linearity confirmed via Chrome MCP: scroll 55% → 95% maps evenly to video 0.000s → 4.503s (clip duration 5.066s, ~0.11s of video per scroll-percent — slow majestic CTA pacing).
+- 23/23 `videoPlayback.test.js` tests green.
+- Both scene 1 and scene 4 now share the same poster + WebM-first + corner-mask pattern.
+
+### Notes
+- Scene 4 asset budget: `scene4-toronto-twilight.webm` 5.2 MB + `.mp4` 3.4 MB + `-poster.jpg` 95 KB. WebM is heavier than scene 1 because the source is 5s vs 2.23s and the night-skyline detail is harder to compress at all-intra. Browser fetches one video + the poster, ~5 MB over the wire for the CTA scene — preloaded in the background by the time the user scrolls down.
+
 ## [5.4.0] - 2026-05-04
 
 ### Changed
