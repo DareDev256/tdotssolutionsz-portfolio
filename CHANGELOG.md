@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.4.4] - 2026-05-04
+
+### Fixed
+- **Scene 1 watermark blending — re-encoded with crop instead of delogo.** The previous `delogo` approach left vertical interpolation streaks where the "Ai★" mark's vertical strokes (the "i" letter) got averaged into surrounding pixels — visible as faint bars in the top-left when the rest of the corner was uniform sky. New approach: `crop=3520:1980:320:160` chops the watermark region off the source entirely, then scales the remainder to 1280×720. Zero interpolation, zero ghost. Side benefit: the pod is ~9% larger in frame and slightly more centered — actually a stronger composition.
+- **Hero logo bumped** from 80 → 140 px (desktop) and 50 → 90 px (mobile). Was reading as small / barely noticeable on first scroll, especially on phone. Opacity also nudged 0.9 → 0.95.
+
+### Notes
+- Scene 1 file sizes basically unchanged (1.8 MB MP4 / 1.9 MB WebM / 93 KB poster).
+
 ## [5.4.3] - 2026-05-04
 
 ### Fixed

@@ -124,11 +124,11 @@
 .cinema-hero-title .cinema-line-2 { display: block; }
 
 .cinema-hero-logo {
-  height: 80px;
+  height: 140px;
   width: auto;
   filter: invert(1) brightness(1.2);
   margin-bottom: 16px;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .cinema-hero-sub {
@@ -444,7 +444,7 @@
   .cinema-section-title { font-size: clamp(2.5rem, 10vw, 5rem); }
   .cinema-frame { max-width: 200px !important; max-height: 130px !important; }
   .cinema-browser { max-width: 280px !important; max-height: 200px !important; }
-  .cinema-hero-logo { height: 50px; }
+  .cinema-hero-logo { height: 90px; }
   .cinema-enter-btn { bottom: 30px; font-size: 11px; padding: 12px 24px; }
 }
 
