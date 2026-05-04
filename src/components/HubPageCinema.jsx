@@ -299,7 +299,18 @@ export default function HubPageCinema() {
 
         {/* SCENE 2: Music Videos */}
         <div className="cinema-scene cinema-scene--hidden" id="cinema-scene2">
-          <video className="cinema-video-bg" ref={setVideoRef('v2')} src="/videos/seedance/scene2-videos.mp4" muted playsInline preload="metadata" />
+          <video
+            className="cinema-video-bg"
+            ref={setVideoRef('v2')}
+            poster="/videos/seedance/scene2-videos-poster.jpg"
+            muted
+            playsInline
+            preload="metadata"
+          >
+            <source src="/videos/seedance/scene2-videos.webm" type="video/webm" />
+            <source src="/videos/seedance/scene2-videos.mp4" type="video/mp4" />
+          </video>
+          <div className="cinema-corner-mask" aria-hidden="true" />
           <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.3),rgba(0,0,0,0.7))' }} />
 
           <p className="cinema-s2-sub">{PORTFOLIO_STATS.totalVideos} VIDEOS &bull; {PORTFOLIO_STATS.totalArtists} ARTISTS &bull; {formatViews(PORTFOLIO_STATS.totalViews)} VIEWS</p>
@@ -333,7 +344,18 @@ export default function HubPageCinema() {
 
         {/* SCENE 3: Web Design */}
         <div className="cinema-scene cinema-scene--hidden" id="cinema-scene3">
-          <video className="cinema-video-bg" ref={setVideoRef('v3')} src="/videos/seedance/scene3-webdesign.mp4" muted playsInline preload="metadata" />
+          <video
+            className="cinema-video-bg"
+            ref={setVideoRef('v3')}
+            poster="/videos/seedance/scene3-webdesign-poster.jpg"
+            muted
+            playsInline
+            preload="metadata"
+          >
+            <source src="/videos/seedance/scene3-webdesign.webm" type="video/webm" />
+            <source src="/videos/seedance/scene3-webdesign.mp4" type="video/mp4" />
+          </video>
+          <div className="cinema-corner-mask" aria-hidden="true" />
           <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 60% 50%,rgba(0,0,0,0.3),rgba(0,0,0,0.7))' }} />
 
           <p className="cinema-s3-sub">SITES &bull; BRANDS &bull; DIGITAL EXPERIENCES</p>

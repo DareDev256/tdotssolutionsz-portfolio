@@ -2,6 +2,22 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.4.2] - 2026-05-04
+
+### Changed
+- **Hub scenes 2 & 3 → AI watermark stripped** in-place. Same `delogo=x=4:y=4:w=130:h=85` filter that fixed scenes 1 and 4 — top-left "Ai" mark is gone on both `scene2-videos.mp4` (Music Videos aerial) and `scene3-webdesign.mp4` (floating browser grid).
+- **Re-encoded both at H.264 all-intra** (CRF 19, faststart) for smoother `currentTime` scrub-seeks. Original Seedance H.264 was keyframe-sparse; this is a free quality upgrade across the 16–55% scroll band.
+- **Added VP9 WebM siblings + JPG posters** for both scenes. Markup now uses `<video poster=…>` + `<source webm>` + `<source mp4>` + `.cinema-corner-mask` div, matching scenes 1 and 4. All four scenes now share the same asset/markup contract.
+
+### Verified
+- 23/23 `videoPlayback.test.js` tests green.
+- Chrome MCP confirms 4 corner masks in DOM (one per scene), WebM picked on both scenes 2 and 3, scrub linearity matches expected math (16% → 36% maps evenly to 0s → 5.066s on scene 2; 36% → 55% same on scene 3).
+
+### Notes
+- Scene 2 budget: `scene2-videos.webm` 6.4 MB + `.mp4` 3.6 MB + `-poster.jpg` 102 KB.
+- Scene 3 budget: `scene3-webdesign.webm` 4.7 MB + `.mp4` 3.2 MB + `-poster.jpg` 97 KB.
+- WebM is heavier on these night-skyline / starfield scenes — high-frequency detail compresses poorly at all-intra. Acceptable since the videos preload via the scroll handler before the user reaches them.
+
 ## [5.4.1] - 2026-05-04
 
 ### Changed
