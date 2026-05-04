@@ -454,7 +454,9 @@
   .cinema-browser:nth-child(n+3) { display: none; }
 }
 
-/* Top-left corner mask — covers any residual delogo ghost on scene1 hero video */
+/* Top-left corner mask — covers any residual delogo ghost on scene videos.
+   Sized small on mobile (phones don't show the residual ghost as much
+   anyway, and a fixed 110px would cover ~28% of a 390px viewport). */
 .cinema-corner-mask {
   position: absolute;
   top: 0;
@@ -469,4 +471,12 @@
     rgba(38, 38, 38, 0.7) 55%,
     rgba(38, 38, 38, 0) 100%
   );
+}
+
+@media (max-width: 768px) {
+  .cinema-corner-mask { width: 70px; height: 44px; }
+}
+
+@media (max-width: 480px) {
+  .cinema-corner-mask { width: 56px; height: 36px; }
 }

@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.4.3] - 2026-05-04
+
+### Fixed
+- **Corner mask responsive sizing** for mobile. The `.cinema-corner-mask` was a fixed 110×70 px — fine on desktop (~7% of viewport width) but on a 390 px phone it covered ~28% of the width and read as a deliberate dark blob rather than a subtle corner vignette. Worse: phones don't show the residual delogo ghost as much in the first place, so the mask was more conspicuous than the thing it was hiding. Added two media-query overrides: 70×44 below 768 px, 56×36 below 480 px. Desktop look unchanged.
+
 ## [5.4.2] - 2026-05-04
 
 ### Changed
