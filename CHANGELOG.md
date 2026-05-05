@@ -2,6 +2,21 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.5.0] - 2026-05-04
+
+### Added
+- **Ambient audio bed** (`AudioBed.{jsx,css}`) — bottom-right corner toggle pill ("AMBIENT ON / OFF"). Pure Web Audio API drone (60 Hz + 80.5 Hz sine pair, 160 Hz triangle, 0.12 Hz LFO modulating osc1, lowpass @ 1.4 kHz). No external assets. Master gain ramps in over 1.4 s and out over 0.6 s — no clicks. State persists in `localStorage('tdots:audio:enabled')`, default OFF (autoplay-policy safe). Mobile: label hides, icon-only pill.
+- **Vercel Analytics** (`@vercel/analytics@^2.0.1`) — `<Analytics />` mounted in `main.jsx` for traffic + page-view telemetry on tdotssolutionsz.com.
+
+### Changed
+- **Logo-particle bursts in scroll cinema.** `ParticleCanvas` now pre-bakes a white-inverted `/logo.png` onto an offscreen 96×96 canvas (CSS `filter: invert(1) brightness(1.4)` once at load), then renders that sprite per particle with rotation, gravity (0.04 px/frame), and optional color tint (`source-atop` composite). Replaces the previous flat colored circles. Burst counts upped: scatter1 8→18, scatter2 5→14, +new scatter3 burst (16 particles, warm-orange `rgba(232,93,52,0.85)`) at the Scene 3 → CTA transition. Sprite-load fallback: tiny circles so first-paint bursts aren't invisible.
+- **Hero title typography depth.** `.cinema-hero-title` now has a layered text-shadow (warm-orange edge `rgba(232,93,52,0.55)` + cobalt rim `rgba(74,124,255,0.18)` + soft black ground) reading as printed-on-film instead of flat white. Each `.cinema-letter` gets a one-shot diagonal sheen sweep (1.6 s ease, 0.4 s delay) via `background-clip: text` on a 200% gradient.
+
+### Verified
+- 23/23 `videoPlayback.test.js` tests green.
+- `npm audit --omit=dev` clean (0 vulnerabilities).
+- `npm run build` clean (2.91 s, no new warnings beyond the existing three.js vendor-chunk size note).
+
 ## [5.4.4] - 2026-05-04
 
 ### Fixed

@@ -6,6 +6,7 @@ import { VIDEOS, PORTFOLIO_STATS } from '../utils/videoData'
 import { topByViews } from '../utils/videoFilters'
 import { getThumbnailUrl } from '../utils/youtube'
 import { formatViews } from '../utils/formatters'
+import AudioBed from './AudioBed'
 import './HubPageCinema.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -29,6 +30,7 @@ function ParticleCanvas() {
   const canvasRef = useRef(null)
   const particlesRef = useRef([])
   const activeRef = useRef(false)
+  const logoSpriteRef = useRef(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -38,16 +40,32 @@ function ParticleCanvas() {
     resize()
     window.addEventListener('resize', resize)
 
+    // Pre-bake a white-inverted logo sprite onto an offscreen canvas
+    // (logo.png is dark on transparent — we invert it once so canvas drawImage is white).
+    const logo = new Image()
+    logo.src = '/logo.png'
+    logo.onload = () => {
+      const off = document.createElement('canvas')
+      const SIZE = 96
+      off.width = SIZE; off.height = SIZE
+      const offCtx = off.getContext('2d')
+      offCtx.filter = 'invert(1) brightness(1.4)'
+      offCtx.drawImage(logo, 0, 0, SIZE, SIZE)
+      logoSpriteRef.current = off
+    }
+
     window.__spawnParticles = (cx, cy, count, color) => {
       for (let i = 0; i < count; i++) {
         const angle = Math.random() * Math.PI * 2
-        const speed = 2 + Math.random() * 8
+        const speed = 2.5 + Math.random() * 7
         particlesRef.current.push({
           x: cx, y: cy,
           vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-          life: 1, decay: 0.005 + Math.random() * 0.015,
-          size: 1 + Math.random() * 3,
-          color: color || `hsl(${30 + Math.random() * 30}, 90%, ${60 + Math.random() * 30}%)`,
+          life: 1, decay: 0.006 + Math.random() * 0.012,
+          size: 18 + Math.random() * 26,                  // logo render size in px
+          rotation: Math.random() * Math.PI * 2,
+          rotVel: (Math.random() - 0.5) * 0.25,           // spin per frame
+          tint: color || null,                            // optional color overlay
         })
       }
       if (!activeRef.current) { activeRef.current = true; animate() }
@@ -56,18 +74,42 @@ function ParticleCanvas() {
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       particlesRef.current = particlesRef.current.filter(p => p.life > 0)
+      const sprite = logoSpriteRef.current
+
       for (const p of particlesRef.current) {
-        p.x += p.vx; p.y += p.vy; p.vy += 0.02; p.vx *= 0.995; p.life -= p.decay
-        ctx.globalAlpha = p.life
-        ctx.fillStyle = p.color
-        ctx.shadowColor = p.color
-        ctx.shadowBlur = 8
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fill()
+        p.x += p.vx; p.y += p.vy; p.vy += 0.04; p.vx *= 0.995
+        p.rotation += p.rotVel
+        p.life -= p.decay
+
+        ctx.globalAlpha = Math.max(0, Math.min(1, p.life))
+        ctx.save()
+        ctx.translate(p.x, p.y)
+        ctx.rotate(p.rotation)
+
+        if (sprite) {
+          // Logo sprite — soft glow + the white-inverted logo.png
+          ctx.shadowColor = p.tint || 'rgba(255,255,255,0.6)'
+          ctx.shadowBlur = 10
+          ctx.drawImage(sprite, -p.size / 2, -p.size / 2, p.size, p.size)
+          if (p.tint) {
+            // Tint pass — multiply the color over the white logo
+            ctx.globalCompositeOperation = 'source-atop'
+            ctx.fillStyle = p.tint
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size)
+            ctx.globalCompositeOperation = 'source-over'
+          }
+        } else {
+          // Sprite still loading — fall back to a tiny circle so the burst isn't invisible
+          ctx.fillStyle = p.tint || '#fff'
+          ctx.beginPath()
+          ctx.arc(0, 0, 2, 0, Math.PI * 2)
+          ctx.fill()
+        }
+        ctx.restore()
       }
       ctx.shadowBlur = 0
       ctx.globalAlpha = 1
+
       if (particlesRef.current.length > 0) requestAnimationFrame(animate)
       else activeRef.current = false
     }
@@ -115,7 +157,7 @@ export default function HubPageCinema() {
         ...st(10, 16),
         onUpdate: (self) => {
           if (self.progress > 0.75 && self.progress < 0.85 && window.__spawnParticles)
-            window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 8)
+            window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 18)
         }
       }
     })
@@ -156,7 +198,7 @@ export default function HubPageCinema() {
         ...st(30, 36),
         onUpdate: (self) => {
           if (self.progress > 0.4 && self.progress < 0.5 && window.__spawnParticles)
-            window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 5, 'rgba(74,124,255,0.8)')
+            window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 14, 'rgba(74,124,255,0.85)')
         }
       }
     })
@@ -185,7 +227,15 @@ export default function HubPageCinema() {
       { x: 0, y: 0, rotateY: 0, rotateX: 0, opacity: 1, scale: 1, stagger: 0.1, duration: 0.6, ease: 'power2.out' }, 0.2)
 
     // Scatter 3: Scene 3 → Scene 4 CTA (55-62%)
-    const scatter3 = gsap.timeline({ scrollTrigger: st(55, 62) })
+    const scatter3 = gsap.timeline({
+      scrollTrigger: {
+        ...st(55, 62),
+        onUpdate: (self) => {
+          if (self.progress > 0.55 && self.progress < 0.65 && window.__spawnParticles)
+            window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 16, 'rgba(232,93,52,0.85)')
+        }
+      }
+    })
     scatter3.to('.cinema-s3-title .cinema-letter', { y: () => 100 + Math.random() * 200, opacity: 0, stagger: 0.02, duration: 0.4 }, 0)
     scatter3.to('.cinema-s3-sub', { opacity: 0, duration: 0.2 }, 0)
     scatter3.to('.cinema-browser', { x: (i) => (i === 0 ? -600 : i === 1 ? 600 : 0), y: (i) => (i === 2 ? 500 : 0), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
@@ -256,6 +306,7 @@ export default function HubPageCinema() {
   return (
     <div ref={wrapperRef}>
       <div className="cinema-grain" aria-hidden="true" />
+      <AudioBed />
       <div className="cinema-progress" />
 
       <div className="cinema-viewport" ref={viewportRef}>

@@ -14,6 +14,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { useDeviceType } from './hooks/useDeviceType.js'
 import { initSecurityMonitor } from './utils/cspMonitor.js'
+import { Analytics } from '@vercel/analytics/react'
 import './index.css'
 
 /** Boot security monitor — CSP violation logging + runtime integrity checks */
@@ -164,5 +165,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 </Suspense>
             </BrowserRouter>
         </AppErrorBoundary>
+        <Analytics />
     </React.StrictMode>,
 )
