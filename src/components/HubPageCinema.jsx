@@ -147,6 +147,15 @@ export default function HubPageCinema() {
       trigger: track, start: `${start}% top`, end: `${end}% top`, scrub
     })
 
+    // === Pointer-events gate ===
+    // All 4 scenes stay mounted with only opacity changing. Without this,
+    // invisible later scenes (DOM-stacked above earlier ones) intercept clicks
+    // — most notably Scene 4's centered mailto CTA hijacks clicks across the
+    // visible Scene 3 area, and Scene 3's "VIEW WORK" overlaps Scene 2's
+    // "ENTER PORTFOLIO". Only the active scene gets `pointer-events: auto`.
+    gsap.set('#cinema-scene1', { pointerEvents: 'auto' })
+    gsap.set(['#cinema-scene2', '#cinema-scene3', '#cinema-scene4'], { pointerEvents: 'none' })
+
     // === SCENE 1: Hero (0-14%) ===
     const heroTL = gsap.timeline({ scrollTrigger: st(0, 6) })
     heroTL
@@ -187,6 +196,8 @@ export default function HubPageCinema() {
     scatter1.to('.cinema-hero-label, .cinema-hero-sub, .cinema-hero-stats', { y: -200, opacity: 0, scale: 0.5, duration: 0.5 }, 0)
     scatter1.to('#cinema-scene1', { opacity: 0, duration: 0.3 }, 0.6)
     scatter1.to('#cinema-scene2', { opacity: 1, duration: 0.3 }, 0.6)
+    scatter1.set('#cinema-scene1', { pointerEvents: 'none' }, 0.9)
+    scatter1.set('#cinema-scene2', { pointerEvents: 'auto' }, 0.9)
     scatter1.to('.cinema-flash', { opacity: 0.9, duration: 0.15, ease: 'power4.in' }, 0.7)
     scatter1.to('.cinema-flash', { opacity: 0, duration: 0.3, ease: 'power2.out' }, 0.85)
 
@@ -221,6 +232,8 @@ export default function HubPageCinema() {
     scatter2.to('.cinema-frame', { x: (i) => (i % 2 === 0 ? -500 : 500), y: (i) => (i < 3 ? -400 : 400), rotation: (i) => (i % 2 === 0 ? -30 : 20), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
     scatter2.to('#cinema-scene2', { opacity: 0, duration: 0.3 }, 0.5)
     scatter2.to('#cinema-scene3', { opacity: 1, duration: 0.3 }, 0.5)
+    scatter2.set('#cinema-scene2', { pointerEvents: 'none' }, 0.8)
+    scatter2.set('#cinema-scene3', { pointerEvents: 'auto' }, 0.8)
     scatter2.to('.cinema-flash', { opacity: 0.6, duration: 0.1 }, 0.5)
     scatter2.to('.cinema-flash', { opacity: 0, duration: 0.2 }, 0.6)
 
@@ -252,6 +265,8 @@ export default function HubPageCinema() {
     scatter3.to('.cinema-browser', { x: (i) => (i === 0 ? -600 : i === 1 ? 600 : 0), y: (i) => (i === 2 ? 500 : 0), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
     scatter3.to('#cinema-scene3', { opacity: 0, duration: 0.3 }, 0.4)
     scatter3.to('#cinema-scene4', { opacity: 1, duration: 0.5 }, 0.4)
+    scatter3.set('#cinema-scene3', { pointerEvents: 'none' }, 0.7)
+    scatter3.set('#cinema-scene4', { pointerEvents: 'auto' }, 0.7)
 
     // === SCENE 4: CTA entrance (62-80%) ===
     const scene4TL = gsap.timeline({ scrollTrigger: st(62, 80) })

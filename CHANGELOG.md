@@ -2,6 +2,16 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.5.2] - 2026-05-04
+
+### Fixed
+- **Click-blocking on scroll-cinema CTAs.** All four scenes stay mounted with only opacity tweened. Without explicit pointer-events management, invisible later scenes (DOM-stacked above earlier ones) intercepted clicks meant for the visible scene — most painfully, Scene 4's centered `mailto` "GET STARTED" button hijacked clicks across the whole middle of Scene 3, and Scene 3's "VIEW WORK" sat on top of Scene 2's "ENTER PORTFOLIO" at the same `bottom: 60px`. Reported by James's brother trying to click "VIEW WORK" and other CTAs from the hub.
+- **Fix:** GSAP-controlled `pointer-events`. Scenes 2/3/4 initialize to `pointer-events: none`; each scatter timeline `.set()`s the outgoing scene to `none` and the incoming scene to `auto` at progress ~0.7–0.9 (after the cross-fade has resolved). Reverses correctly when scrolling back.
+
+### Verified
+- 23/23 video playback tests green.
+- All routes return 200: `/`, `/web-design`, `/videos`, `/video/:id`.
+
 ## [5.5.1] - 2026-05-04
 
 ### Reverted
