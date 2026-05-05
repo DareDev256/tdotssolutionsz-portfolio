@@ -6,7 +6,6 @@ import { VIDEOS, PORTFOLIO_STATS } from '../utils/videoData'
 import { topByViews } from '../utils/videoFilters'
 import { getThumbnailUrl } from '../utils/youtube'
 import { formatViews } from '../utils/formatters'
-import AudioBed from './AudioBed'
 import './HubPageCinema.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -26,11 +25,36 @@ function splitIntoLetters(text) {
   ))
 }
 
+// Pre-bake one sprite per tint color: the inverted logo + a soft glow halo
+// already composited in. Per-particle render then becomes a single drawImage
+// — no shadowBlur, no source-atop composite, no per-frame canvas state changes.
+function bakeLogoSprite(logoImg, glowColor) {
+  const SIZE = 128             // canvas (extra room for glow halo)
+  const LOGO = 88              // inverted-logo size centered inside
+  const off = document.createElement('canvas')
+  off.width = SIZE; off.height = SIZE
+  const ctx = off.getContext('2d')
+  const cx = SIZE / 2, cy = SIZE / 2
+
+  // Glow halo — radial gradient (much cheaper than runtime shadowBlur).
+  const grad = ctx.createRadialGradient(cx, cy, 8, cx, cy, SIZE / 2)
+  grad.addColorStop(0, glowColor)
+  grad.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, SIZE, SIZE)
+
+  // White-inverted logo on top.
+  ctx.filter = 'invert(1) brightness(1.4)'
+  ctx.drawImage(logoImg, cx - LOGO / 2, cy - LOGO / 2, LOGO, LOGO)
+  ctx.filter = 'none'
+  return off
+}
+
 function ParticleCanvas() {
   const canvasRef = useRef(null)
   const particlesRef = useRef([])
   const activeRef = useRef(false)
-  const logoSpriteRef = useRef(null)
+  const spritesRef = useRef(null)        // { white, blue, orange }
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -40,74 +64,61 @@ function ParticleCanvas() {
     resize()
     window.addEventListener('resize', resize)
 
-    // Pre-bake a white-inverted logo sprite onto an offscreen canvas
-    // (logo.png is dark on transparent — we invert it once so canvas drawImage is white).
     const logo = new Image()
     logo.src = '/logo.png'
     logo.onload = () => {
-      const off = document.createElement('canvas')
-      const SIZE = 96
-      off.width = SIZE; off.height = SIZE
-      const offCtx = off.getContext('2d')
-      offCtx.filter = 'invert(1) brightness(1.4)'
-      offCtx.drawImage(logo, 0, 0, SIZE, SIZE)
-      logoSpriteRef.current = off
+      spritesRef.current = {
+        white:  bakeLogoSprite(logo, 'rgba(255,255,255,0.55)'),
+        blue:   bakeLogoSprite(logo, 'rgba(74,124,255,0.7)'),
+        orange: bakeLogoSprite(logo, 'rgba(232,93,52,0.75)'),
+      }
     }
 
-    window.__spawnParticles = (cx, cy, count, color) => {
-      for (let i = 0; i < count; i++) {
+    // Cap particle count on phones — same visual energy with less GPU overhead.
+    const mobileScale = window.matchMedia('(max-width: 768px)').matches ? 0.55 : 1
+
+    window.__spawnParticles = (cx, cy, count, tag) => {
+      const n = Math.max(1, Math.round(count * mobileScale))
+      for (let i = 0; i < n; i++) {
         const angle = Math.random() * Math.PI * 2
         const speed = 2.5 + Math.random() * 7
         particlesRef.current.push({
           x: cx, y: cy,
           vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
           life: 1, decay: 0.006 + Math.random() * 0.012,
-          size: 18 + Math.random() * 26,                  // logo render size in px
+          size: 22 + Math.random() * 26,
           rotation: Math.random() * Math.PI * 2,
-          rotVel: (Math.random() - 0.5) * 0.25,           // spin per frame
-          tint: color || null,                            // optional color overlay
+          rotVel: (Math.random() - 0.5) * 0.25,
+          variant: tag || 'white',
         })
       }
-      if (!activeRef.current) { activeRef.current = true; animate() }
+      if (!activeRef.current) { activeRef.current = true; requestAnimationFrame(animate) }
     }
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       particlesRef.current = particlesRef.current.filter(p => p.life > 0)
-      const sprite = logoSpriteRef.current
+      const sprites = spritesRef.current
 
       for (const p of particlesRef.current) {
         p.x += p.vx; p.y += p.vy; p.vy += 0.04; p.vx *= 0.995
         p.rotation += p.rotVel
         p.life -= p.decay
 
-        ctx.globalAlpha = Math.max(0, Math.min(1, p.life))
-        ctx.save()
-        ctx.translate(p.x, p.y)
+        ctx.globalAlpha = p.life < 1 ? Math.max(0, p.life) : 1
+        ctx.setTransform(1, 0, 0, 1, p.x, p.y)
         ctx.rotate(p.rotation)
 
-        if (sprite) {
-          // Logo sprite — soft glow + the white-inverted logo.png
-          ctx.shadowColor = p.tint || 'rgba(255,255,255,0.6)'
-          ctx.shadowBlur = 10
+        if (sprites) {
+          const sprite = sprites[p.variant] || sprites.white
           ctx.drawImage(sprite, -p.size / 2, -p.size / 2, p.size, p.size)
-          if (p.tint) {
-            // Tint pass — multiply the color over the white logo
-            ctx.globalCompositeOperation = 'source-atop'
-            ctx.fillStyle = p.tint
-            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size)
-            ctx.globalCompositeOperation = 'source-over'
-          }
         } else {
-          // Sprite still loading — fall back to a tiny circle so the burst isn't invisible
-          ctx.fillStyle = p.tint || '#fff'
-          ctx.beginPath()
-          ctx.arc(0, 0, 2, 0, Math.PI * 2)
-          ctx.fill()
+          // Sprite still loading — minimal fallback
+          ctx.fillStyle = '#fff'
+          ctx.fillRect(-2, -2, 4, 4)
         }
-        ctx.restore()
       }
-      ctx.shadowBlur = 0
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
       ctx.globalAlpha = 1
 
       if (particlesRef.current.length > 0) requestAnimationFrame(animate)
@@ -198,7 +209,7 @@ export default function HubPageCinema() {
         ...st(30, 36),
         onUpdate: (self) => {
           if (self.progress > 0.4 && self.progress < 0.5 && window.__spawnParticles)
-            window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 14, 'rgba(74,124,255,0.85)')
+            window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 14, 'blue')
         }
       }
     })
@@ -232,7 +243,7 @@ export default function HubPageCinema() {
         ...st(55, 62),
         onUpdate: (self) => {
           if (self.progress > 0.55 && self.progress < 0.65 && window.__spawnParticles)
-            window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 16, 'rgba(232,93,52,0.85)')
+            window.__spawnParticles(window.innerWidth / 2, window.innerHeight / 2, 16, 'orange')
         }
       }
     })
@@ -306,7 +317,6 @@ export default function HubPageCinema() {
   return (
     <div ref={wrapperRef}>
       <div className="cinema-grain" aria-hidden="true" />
-      <AudioBed />
       <div className="cinema-progress" />
 
       <div className="cinema-viewport" ref={viewportRef}>

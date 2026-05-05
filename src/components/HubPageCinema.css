@@ -49,6 +49,10 @@
 
 .cinema-scene--hidden { opacity: 0; }
 
+/* Promote each scene to its own compositor layer so the cross-fade
+   opacity tweens run on the GPU instead of triggering whole-viewport repaints. */
+.cinema-scene { transform: translateZ(0); will-change: opacity; }
+
 /* Video backgrounds */
 .cinema-video-bg {
   position: absolute;
@@ -118,41 +122,10 @@
   letter-spacing: -0.03em;
   margin-bottom: 20px;
   color: #fff;
-  /* Cinematic depth: warm-orange edge + soft cobalt rim glow.
-     Renders as printed-on-film instead of flat white. */
-  text-shadow:
-    0 0 1px rgba(232, 93, 52, 0.55),
-    0 2px 18px rgba(74, 124, 255, 0.18),
-    0 0 38px rgba(0, 0, 0, 0.45);
 }
 
 .cinema-hero-title .cinema-line-1,
 .cinema-hero-title .cinema-line-2 { display: block; }
-
-/* Per-letter sheen sweep — subtle diagonal highlight that crosses each
-   letter once during the entrance, then settles. Animation triggered
-   on mount via the existing GSAP timeline. */
-.cinema-hero-title .cinema-letter {
-  background: linear-gradient(
-    115deg,
-    #fff 0%,
-    #fff 38%,
-    rgba(255, 250, 235, 1) 50%,
-    #fff 62%,
-    #fff 100%
-  );
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: cinema-letter-sheen 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
-}
-
-@keyframes cinema-letter-sheen {
-  0%   { background-position: 100% 0; }
-  100% { background-position: 0% 0; }
-}
 
 .cinema-hero-logo {
   height: 140px;
@@ -253,13 +226,10 @@
   pointer-events: auto;
   text-decoration: none;
   color: #fff;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
-.cinema-frame:hover {
-  transform: scale(1.05);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.8);
-}
+.cinema-frame:hover { transform: scale(1.05); }
 
 .cinema-frame-img {
   width: 100%;
@@ -331,13 +301,10 @@
   text-decoration: none;
   color: #fff;
   pointer-events: auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
-.cinema-browser:hover {
-  transform: scale(1.04);
-  box-shadow: 0 35px 100px rgba(0,0,0,0.7);
-}
+.cinema-browser:hover { transform: scale(1.04); }
 
 .cinema-browser-chrome {
   height: 32px;

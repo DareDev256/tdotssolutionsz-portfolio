@@ -2,6 +2,22 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.5.1] - 2026-05-04
+
+### Reverted
+- **Hero title back to flat white.** Removed the v5.5.0 layered text-shadow (orange edge + cobalt rim + black ground) and the per-letter `background-clip: text` sheen sweep. They read as muddy/AI-slop next to the rest of the editorial palette — flat `color: #fff` is stronger.
+- **Ambient audio bed removed entirely.** `AudioBed.{jsx,css}` deleted. The 60Hz/80.5Hz drone-pair was reading as anxious rather than ambient. Mounting point pulled from `HubPageCinema`. The `@vercel/analytics` integration from v5.5.0 stays.
+
+### Performance
+- **Particle bursts: pre-baked tinted sprites with glow halo.** Per-frame `ctx.shadowBlur = 10` and `source-atop` composite tint pass were the dominant cost. Now bake three sprites at logo-load (white / cobalt / orange) with the glow halo composited as a radial gradient inside a 128×128 canvas. Per-particle render is one `drawImage` — no shadow ops, no composite changes, no per-frame `save/restore`. Replaced `save/restore` with `setTransform` for cheaper transform stack manipulation. Burst frame time drops dramatically, especially on mid-range mobile.
+- **Mobile particle scaling.** Particle counts auto-scale to ~55% on viewports ≤768 px (`window.matchMedia` checked once on mount).
+- **Compositor layer per scene.** Added `transform: translateZ(0); will-change: opacity;` to `.cinema-scene` so the cross-fade between scenes runs as a GPU compositor op instead of triggering full-viewport repaints.
+- **Removed `box-shadow` from `transition` declarations** on `.cinema-frame` and `.cinema-browser`. Box-shadow transitions force layout-paint each frame; transform-only hover scales are GPU-cheap. Hover shadows are now static (no transition jank).
+
+### Verified
+- 23/23 `videoPlayback.test.js` tests green.
+- `npm run build` clean.
+
 ## [5.5.0] - 2026-05-04
 
 ### Added
