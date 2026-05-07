@@ -208,18 +208,20 @@ function CameraRig({ progressRef }) {
 // ── TunnelScene ──────────────────────────────────────────────────────
 
 function TunnelScene({ videos, walls, slotsPerWall, onCardClick, activeId, progressRef }) {
-    // Build slot lists per wall — each slot wraps a video (with modulo repeat
-    // across the catalog) plus a unique slot seed so duplicate videos get
-    // different positions/scales on each appearance.
+    // Slot mapping: front-rung-first.  At depth slot `i`, every wall picks the
+    // next `walls.length` videos in sorted order, so the closest 4 cards (one
+    // per wall, smallest i) are always the top 4 most-popular-and-recent
+    // videos.  After the catalog runs out, it wraps so deep slots show the
+    // same content again — but at smaller scale, fading into white fog.
     const slotsByWall = useMemo(() => {
         return walls.map((_, wallIdx) => {
             const slots = []
             for (let i = 0; i < slotsPerWall; i++) {
-                const globalSlot = wallIdx * slotsPerWall + i
-                const video = videos[globalSlot % videos.length]
+                const rungIdx = i * walls.length + wallIdx
+                const video = videos[rungIdx % videos.length]
                 slots.push({
                     video,
-                    slotSeed: globalSlot * 7919 + 13,  // prime-mixed slot id
+                    slotSeed: (wallIdx * slotsPerWall + i) * 7919 + 13,  // unique per slot
                 })
             }
             return slots
@@ -270,10 +272,35 @@ export default function VideoTunnelApp() {
         }
     }, [isMobile])
 
-    // Enrich videos with url for theater mode (no per-card colors — cards are monochrome now)
-    const enrichedVideos = useMemo(() => (
-        VIDEOS.map(v => ({ ...v, color: '#1a1a1a' }))
-    ), [])
+    // Enrich + sort videos so the strongest content (most-viewed AND most-recent)
+    // is placed in the front of the tunnel. Combined rank = avg(viewRank, dateRank),
+    // lower rank = closer to camera. This is robust to different scales — 200K-view
+    // outliers don't dominate, and an old popular video still beats a new flop.
+    const enrichedVideos = useMemo(() => {
+        const byViews = [...VIDEOS]
+            .map((v, i) => ({ id: v.youtubeId, rank: i }))
+            .sort((a, b) => {
+                const va = VIDEOS.find(x => x.youtubeId === a.id).viewCount
+                const vb = VIDEOS.find(x => x.youtubeId === b.id).viewCount
+                return vb - va
+            })
+        const byDate = [...VIDEOS].sort((a, b) =>
+            new Date(b.uploadDate) - new Date(a.uploadDate)
+        )
+
+        const viewRank = new Map()
+        byViews.forEach((entry, idx) => viewRank.set(entry.id, idx))
+        const dateRank = new Map()
+        byDate.forEach((v, idx) => dateRank.set(v.youtubeId, idx))
+
+        return [...VIDEOS]
+            .map(v => ({
+                ...v,
+                color: '#1a1a1a',
+                _frontScore: (viewRank.get(v.youtubeId) + dateRank.get(v.youtubeId)) / 2,
+            }))
+            .sort((a, b) => a._frontScore - b._frontScore)
+    }, [])
 
     const handleCardClick = useCallback((video) => {
         setActiveProject(video)

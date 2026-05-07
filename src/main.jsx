@@ -1,8 +1,8 @@
 /**
  * Application entry point — BrowserRouter wraps active routes:
  *   /              → HubPage (landing page)
- *   /videos        → Desktop 3D experience or Mobile grid view (device-aware)
- *   /oldvideopage  → Preserved original Infinite Drive (post-tunnel migration)
+ *   /videos        → VideoTunnelApp (white-space WebGL card field, v5.6.0+)
+ *   /oldvideopage  → Preserved original Infinite Drive synthwave experience
  *
  * /photos is intentionally DISABLED (Coming Soon). Do NOT re-enable without owner approval.
  *
@@ -29,7 +29,7 @@ const VideoPage = lazy(() => import('./components/VideoPage.jsx'))
 const App = lazy(() => import('./App.jsx'))
 /** Mobile grid view — lightweight chunk without Three.js dependency */
 const MobileApp = lazy(() => import('./MobileApp.jsx'))
-/** Stage 2 tunnel — synthwave 4-wall WebGL card field, staged at /videos-new before swap */
+/** White-space card-field tunnel — primary /videos experience as of v5.6.0 */
 const VideoTunnelApp = lazy(() => import('./components/VideoTunnelApp.jsx'))
 /** Web Design portfolio page */
 const WebDesignPage = lazy(() => import('./components/WebDesignPage.jsx'))
@@ -143,8 +143,7 @@ function RouteCleanup() {
         }
         const isVideoRoute =
             location.pathname === '/videos' ||
-            location.pathname === '/oldvideopage' ||
-            location.pathname === '/videos-new'
+            location.pathname === '/oldvideopage'
         if (!isVideoRoute) {
             document.body.classList.remove('mobile-mode', 'desktop-mode')
             document.body.style.overflow = ''
@@ -164,9 +163,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Routes>
                         <Route path="/" element={<HubPage />} />
                         <Route path="/video/:youtubeId" element={<VideoPage />} />
-                        <Route path="/videos" element={<VideosRoute />} />
+                        <Route path="/videos" element={<VideoTunnelApp />} />
                         <Route path="/oldvideopage" element={<VideosRoute />} />
-                        <Route path="/videos-new" element={<VideoTunnelApp />} />
                         <Route path="/web-design" element={<WebDesignPage />} />
                         {/* DO NOT enable /photos route — Photography is Coming Soon */}
                         <Route path="*" element={<NotFoundPage />} />

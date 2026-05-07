@@ -27,7 +27,8 @@
 | Experience | Link | What You'll See |
 |-----------|------|-----------------|
 | 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Kinetic 5-second logo intro, Spotlight Hero, Latest Drops with hover-to-play overlays, 3D tilt cards, Web Design showcase |
-| 🏙️ **3D City** | [tdotssolutionsz.com/videos](https://tdotssolutionsz.com/videos) | Tron-inspired neon metropolis — scroll the highway, pick a lane |
+| 🎞️ **Tunnel (v5.6.0+)** | [tdotssolutionsz.com/videos](https://tdotssolutionsz.com/videos) | White-space WebGL card field — fly forward through the catalog, top-ranked videos in front, full library deeper |
+| 🏙️ **Original 3D City** | [tdotssolutionsz.com/oldvideopage](https://tdotssolutionsz.com/oldvideopage) | Preserved Tron-inspired neon metropolis — scroll the highway, pick a lane |
 | 🎬 **Video Page** | [tdotssolutionsz.com/video/u3O5PKN9vCQ](https://tdotssolutionsz.com/video/u3O5PKN9vCQ) | Standalone shareable player with related videos & share bar |
 | 🎨 **Web Design** | [tdotssolutionsz.com/web-design](https://tdotssolutionsz.com/web-design) | Interactive particle network showcasing web design projects |
 

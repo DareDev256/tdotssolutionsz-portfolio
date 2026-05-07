@@ -2,6 +2,28 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.6.0] - 2026-05-07
+
+### Added
+- **`/videos` flipped to white-space card-field tunnel.** New default `/videos` experience: 4-wall WebGL tunnel built with R3F + drei `ScrollControls`. The camera flies forward through 240 card slots (60 per wall × 4 walls; catalog of 114 unique videos loops ~2.1× across the field) on an off-white background. Each card is the YouTube thumbnail in a thin dark frame with a serif title strip below. Click any card → existing `TheaterMode` opens.
+- **Front-of-tunnel ranking.** Videos are sorted by combined views + recency rank (avg of two ranks, robust to scale skew) and assigned to depth slots front-first: the closest 4 cards across all 4 walls are always the top 4 most-popular-and-recent videos, then progressively older / less-viewed deeper into the tunnel.
+- **Per-card jitter for organic placement.** Slot-seeded deterministic jitter on lateral position, standoff from wall, Z offset, three-axis rotation tilt, and scale (0.75x–1.25x). Stable across re-renders so each card has a consistent feel. Range tuned so cards never punch through each other (max card width 4.5 < `CARD_SPACING_Z` = 6.0).
+- **`IntroLetters` overlay.** "MUSIC VIDEOS" letters scatter→assemble on mount over 1.4 s entrance, hold, then scatter+fade out as scroll passes 5%. Driven by a shared progress ref read on rAF — no React re-renders per frame. Wrapper has `pointer-events: none` so card clicks underneath pass through (per `gotcha_scroll_cinema_pointer_events.md`).
+- **Hidden DOM mirror.** Cards inside the WebGL canvas are invisible to crawlers and screen readers; an `aria-label`'d offscreen `<ul>` lists every video with `/video/:id` links so SEO and a11y match the visible content.
+
+### Removed
+- **Synthwave landmarks (CN Tower, SynthwaveSun) and neon palette dropped from the new `/videos`.** The new tunnel is monochrome / white-space — frames are near-black, titles are black serif, background is warm off-white (`#f5f5f3`). The synthwave Infinite Drive aesthetic remains preserved at `/oldvideopage`.
+- **Bloom + Vignette postprocessing** removed from the new `/videos` — clean white space doesn't need them, and dropping the postprocessing chain saves ~67 KB on the tunnel chunk.
+
+### Preserved
+- `/oldvideopage` continues to render the original Infinite Drive (`App.jsx` desktop / `MobileApp.jsx` mobile) — unchanged. Useful for reference, fallback, and side-by-side comparison.
+- `?v=<youtubeId>` deep-link support works on the new `/videos` (sets `activeProject` and shows `VideoOverlay` with the Theater Mode entry button — same UX as the original).
+
+### Verified
+- 23/23 video playback tests green (CSP, referrer policy, iframe sandbox, embed URL, video data integrity).
+- 13/13 routing tests green.
+- Production build clean. Tunnel chunk is small (~6.4 KB gzipped) — the heavy lifting is in the existing Three.js vendor bundle.
+
 ## [5.5.3] - 2026-05-07
 
 ### Added
