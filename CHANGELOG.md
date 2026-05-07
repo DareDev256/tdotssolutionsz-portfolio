@@ -2,6 +2,17 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.5.3] - 2026-05-07
+
+### Added
+- **`/oldvideopage` route** — preserves the current Infinite Drive experience as a stable twin of `/videos`. Both routes render the same device-aware `VideosRoute` (desktop `App.jsx` or mobile `MobileApp.jsx`) for now. Sets up the v5.6.0 tunnel migration: when `/videos` is swapped to the new tunnel scene, the original Infinite Drive remains accessible at `/oldvideopage` for reference, fallback, and side-by-side comparison.
+- `RouteCleanup` updated to recognize `/oldvideopage` as a video route so body classes (`mobile-mode` / `desktop-mode`) and overflow are managed identically to `/videos`.
+
+### Verified
+- 23/23 video playback tests green (no regression from route addition).
+- 13/13 routing tests green.
+- Three.js bundle still lazy-loaded — only fires on `/videos` and `/oldvideopage`.
+
 ## [5.5.2] - 2026-05-04
 
 ### Fixed

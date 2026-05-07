@@ -1,12 +1,13 @@
 /**
- * Application entry point — BrowserRouter wraps two active routes:
- *   /        → HubPage (landing page)
- *   /videos  → Desktop 3D experience or Mobile grid view (device-aware)
+ * Application entry point — BrowserRouter wraps active routes:
+ *   /              → HubPage (landing page)
+ *   /videos        → Desktop 3D experience or Mobile grid view (device-aware)
+ *   /oldvideopage  → Preserved original Infinite Drive (post-tunnel migration)
  *
  * /photos is intentionally DISABLED (Coming Soon). Do NOT re-enable without owner approval.
  *
  * All routes are lazy-loaded to keep initial bundle small.
- * Three.js (~1.1MB) only loads on /videos.
+ * Three.js (~1.1MB) only loads on /videos and /oldvideopage.
  * @module main
  */
 import React, { Component, Suspense, lazy, useEffect } from 'react'
@@ -138,7 +139,8 @@ function RouteCleanup() {
             navigate(`/videos${location.search}`, { replace: true })
             return
         }
-        if (location.pathname !== '/videos') {
+        const isVideoRoute = location.pathname === '/videos' || location.pathname === '/oldvideopage'
+        if (!isVideoRoute) {
             document.body.classList.remove('mobile-mode', 'desktop-mode')
             document.body.style.overflow = ''
         }
@@ -158,6 +160,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                         <Route path="/" element={<HubPage />} />
                         <Route path="/video/:youtubeId" element={<VideoPage />} />
                         <Route path="/videos" element={<VideosRoute />} />
+                        <Route path="/oldvideopage" element={<VideosRoute />} />
                         <Route path="/web-design" element={<WebDesignPage />} />
                         {/* DO NOT enable /photos route — Photography is Coming Soon */}
                         <Route path="*" element={<NotFoundPage />} />
