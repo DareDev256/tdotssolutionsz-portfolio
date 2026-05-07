@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.6.1] - 2026-05-07
+
+### Changed
+- **Loading screen replaced.** Dropped the v5.5 synthwave neon "♬ LOADING PORTFOLIO ♬" blinking text + animated bar. Now: TdotsSolutionsz logo zooms in from `scale(0.55)` to `scale(1)` over 780 ms (cubic-bezier ease-out), then a subtle 2.4 s breathing pulse with soft drop-shadow glow while the lazy chunk finishes downloading. Charcoal background (`#262626`) matches the hub palette so the transition into any route feels seamless. `prefers-reduced-motion` short-circuits to a 400 ms fade-only entrance.
+
 ## [5.6.0] - 2026-05-07
 
 ### Added

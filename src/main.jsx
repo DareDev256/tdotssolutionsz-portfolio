@@ -93,14 +93,19 @@ function NotFoundPage() {
     )
 }
 
-/** Synthwave-styled loading screen shown during chunk download */
+/** Editorial loading screen — TdotsSolutionsz logo zooming in. Shown during
+ *  lazy chunk download (Suspense fallback). Replaces the v5.5 synthwave neon
+ *  bar; matches the hub's charcoal palette so the transition into /videos or
+ *  /web-design feels seamless.
+ */
 function LoadingScreen() {
     return (
         <div className="loading-screen">
-            <div className="loading-text">♬ LOADING PORTFOLIO ♬</div>
-            <div className="loading-bar">
-                <div className="loading-progress"></div>
-            </div>
+            <img
+                src="/logo.png"
+                alt="TdotsSolutionsz"
+                className="loading-logo"
+            />
         </div>
     )
 }
