@@ -2,6 +2,15 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.7.0] - 2026-07-08
+
+### Added
+- **Two Toronto drill-artist client sites** on the `/web-design` network page (`src/components/WebDesignPage.jsx`): **KMONEY** (`officialkmoney.com`, Three.js WebGL vault) and **100BandPlan** (`100bandplan.com`, blueprint drafting table), both `Artist Platform`. New 640×400 previews `public/sites/kmoney-preview.jpg` + `100bandplan-preview.jpg`.
+- **Static preview-image support** in the WebDesignPage card (`preview` field → `<img class="webdesign-page__card-shot">`, falls back to the live iframe when absent). Needed because both artist sites correctly ship `X-Frame-Options: DENY` / `frame-ancestors 'none'`, so their live preview can't be iframed — the security header was left intact and a screenshot preview used instead.
+
+### Notes
+- The landing-page (`HubPageCinema.jsx`) web-design teaser still features 2 curated browser windows (Savv4x + SyrenEffect) with a "VIEW WORK →" link to `/web-design`; its layout is hardcoded for exactly 2 and was intentionally left unchanged.
+
 ## [5.6.1] - 2026-05-07
 
 ### Changed

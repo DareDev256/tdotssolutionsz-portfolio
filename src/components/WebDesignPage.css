@@ -231,6 +231,13 @@
   pointer-events: none;
 }
 
+.webdesign-page__card-shot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .webdesign-page__card-cta {
   display: flex;
   align-items: center;

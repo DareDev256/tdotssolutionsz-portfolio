@@ -20,6 +20,24 @@ const SITES = [
     tech: ['Next.js', 'React', 'Vercel'],
   },
   {
+    id: 'kmoney',
+    name: 'KMONEY',
+    type: 'Artist Platform',
+    url: 'https://officialkmoney.com',
+    preview: '/sites/kmoney-preview.jpg',
+    description: 'Drill artist site — immersive Three.js WebGL bank vault, catalogue hung as gold & platinum art, scroll to explore.',
+    tech: ['Three.js', 'WebGL', 'Cloudflare'],
+  },
+  {
+    id: '100bandplan',
+    name: '100BandPlan',
+    type: 'Artist Platform',
+    url: 'https://100bandplan.com',
+    preview: '/sites/100bandplan-preview.jpg',
+    description: 'Drill artist site — blueprint drafting table, photo & video frames drop onto the plan, in-site video lightbox.',
+    tech: ['JavaScript', 'CSS3', 'Cloudflare'],
+  },
+  {
     id: 'savv4x',
     name: 'Savv4x',
     type: 'Artist Platform',
@@ -350,13 +368,22 @@ export default function WebDesignPage() {
             {activeSite.tech.map(t => <span key={t} className="webdesign-page__card-tag">{t}</span>)}
           </div>
           <div className="webdesign-page__card-preview">
-            <iframe
-              src={activeSite.url}
-              title={`${activeSite.name} preview`}
-              className="webdesign-page__card-iframe"
-              loading="lazy"
-              sandbox="allow-scripts allow-same-origin"
-            />
+            {activeSite.preview ? (
+              <img
+                src={activeSite.preview}
+                alt={`${activeSite.name} preview`}
+                className="webdesign-page__card-shot"
+                loading="lazy"
+              />
+            ) : (
+              <iframe
+                src={activeSite.url}
+                title={`${activeSite.name} preview`}
+                className="webdesign-page__card-iframe"
+                loading="lazy"
+                sandbox="allow-scripts allow-same-origin"
+              />
+            )}
           </div>
           <a
             href={activeSite.url}
