@@ -13,8 +13,8 @@ gsap.registerPlugin(ScrollTrigger)
 const FEATURED = topByViews(VIDEOS, 8)
 
 const WEB_PROJECTS = [
-  { name: 'Savv4x', type: 'Artist Platform', url: 'https://savv4x.com', preview: '/sites/savv-preview.jpg', icon: '/sites/savv-icon.png' },
-  { name: 'SyrenEffect', type: 'Creator Site', url: 'https://syreneffect.com', preview: '/sites/syren-preview.jpg', icon: '/sites/syren-icon.png' },
+  { name: 'KMONEY', type: 'Artist Platform', url: 'https://officialkmoney.com', preview: '/sites/kmoney-preview.jpg', icon: null },
+  { name: '100BandPlan', type: 'Artist Platform', url: 'https://100bandplan.com', preview: '/sites/100bandplan-preview.jpg', icon: null },
 ]
 
 function splitIntoLetters(text) {
@@ -452,7 +452,7 @@ export default function HubPageCinema() {
                   <div className="cinema-browser-dot" style={{ background: '#ff5f57' }} />
                   <div className="cinema-browser-dot" style={{ background: '#febc2e' }} />
                   <div className="cinema-browser-dot" style={{ background: '#28c840' }} />
-                  <span className="cinema-browser-url">{project.name.toLowerCase()}.com</span>
+                  <span className="cinema-browser-url">{project.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
                 </div>
                 <div className="cinema-browser-body">
                   {project.preview

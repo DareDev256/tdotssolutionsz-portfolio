@@ -2,6 +2,11 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.7.1] - 2026-07-08
+
+### Changed
+- **Landing-page web-design teaser now features KMONEY + 100BandPlan** (`HubPageCinema.jsx` `WEB_PROJECTS`), replacing Savv4x + SyrenEffect in the 2-window cinematic scene (both still shown on the full `/web-design` page). The fake browser URL bar now derives the real hostname from each project's `url` instead of `name.toLowerCase() + ".com"`, so it shows `officialkmoney.com` correctly.
+
 ## [5.7.0] - 2026-07-08
 
 ### Added
