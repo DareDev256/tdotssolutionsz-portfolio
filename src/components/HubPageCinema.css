@@ -105,9 +105,10 @@
 }
 
 .cinema-hero-label {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-mono, 'Space Mono', monospace);
   font-size: 11px;
-  letter-spacing: 0.35em;
+  font-weight: 700;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: #4a7cff;
   margin-bottom: 24px;
@@ -115,11 +116,12 @@
 }
 
 .cinema-hero-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 900;
-  font-size: clamp(5rem, 14vw, 12rem);
-  line-height: 0.85;
-  letter-spacing: -0.03em;
+  font-family: var(--font-poster, 'Anton', sans-serif);
+  font-weight: 400; /* Anton is single-weight heavy */
+  font-size: clamp(5.5rem, 15vw, 13rem);
+  line-height: 0.82;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
   margin-bottom: 20px;
   color: #fff;
 }
@@ -145,10 +147,11 @@
 }
 
 .cinema-hero-stats {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 13px;
-  color: rgba(255,255,255,0.4);
-  letter-spacing: 0.06em;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.1em;
   opacity: 0;
   transform: translateY(10px);
 }
@@ -160,10 +163,11 @@
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: rgba(255,255,255,0.3);
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
   z-index: 10;
 }
 
@@ -187,19 +191,23 @@
    ============================================ */
 .cinema-s2-sub,
 .cinema-s3-sub {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 13px;
-  color: rgba(255,255,255,0.55);
-  letter-spacing: 0.12em;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.16em;
   z-index: 10;
   margin-bottom: 16px;
 }
 
 .cinema-section-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(3rem, 10vw, 8rem);
-  font-weight: 900;
-  line-height: 0.9;
+  font-family: var(--font-poster, 'Anton', sans-serif);
+  font-size: clamp(3.4rem, 11vw, 9rem);
+  font-weight: 400; /* Anton is single-weight heavy */
+  line-height: 0.88;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
   text-align: center;
   color: #fff;
   z-index: 10;
@@ -263,10 +271,11 @@
   position: absolute;
   bottom: 60px;
   z-index: 10;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-mono, 'Space Mono', monospace);
   font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: #fff;
   text-decoration: none;
   padding: 14px 32px;
@@ -324,10 +333,10 @@
 
 .cinema-browser-url {
   margin-left: 12px;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-mono, 'Space Mono', monospace);
   font-size: 10px;
-  color: rgba(255,255,255,0.4);
-  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.03em;
 }
 
 .cinema-browser-body {
@@ -363,8 +372,10 @@
    SCENE 4: CTA
    ============================================ */
 .cinema-s4-label {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-mono, 'Space Mono', monospace);
   font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
   letter-spacing: 0.3em;
   color: #4a7cff;
   z-index: 10;
@@ -372,14 +383,16 @@
 }
 
 .cinema-s4-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(2.5rem, 8vw, 6rem);
-  font-weight: 900;
+  font-family: var(--font-poster, 'Anton', sans-serif);
+  font-size: clamp(3rem, 9vw, 7rem);
+  font-weight: 400; /* Anton is single-weight heavy */
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
   text-align: center;
   color: #fff;
   z-index: 10;
   margin-bottom: 24px;
-  line-height: 1;
+  line-height: 0.92;
 }
 
 .cinema-s4-sub {
@@ -402,10 +415,11 @@
   color: white;
   border: 1px solid rgba(255,255,255,0.4);
   border-radius: 60px;
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   cursor: pointer;
   z-index: 10;
   text-decoration: none;
@@ -427,10 +441,11 @@
 }
 
 .cinema-footer p {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font-mono, 'Space Mono', monospace);
   font-size: 11px;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.12em;
   margin: 4px 0;
 }
 

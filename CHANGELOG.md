@@ -2,6 +2,22 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.8.0] - 2026-07-13
+
+### Changed — "Studio Heavy" typography overhaul (more sauce)
+- **New type identity across the site.** Replaced the genteel `Playfair Display` serif with a loud, disciplined heavy-grotesk system that matches the energy of the artist-site portfolio (Kmoney / 100BandPlan) without cloning it:
+  - `--font-display` → **Archivo** (heavy grotesk workhorse — every headline/title, cascades to `HubPage`, `VideoPage`, `WebDesignPage` via existing tokens)
+  - `--font-poster` → **Anton** (NEW token — condensed poster weight, reserved for the OTT hero wordmark + section titles + `/videos` intro letters only)
+  - `--font-mono` → **Space Mono** (repurposed dead token — all the tiny tracked labels, stats, meta, buttons, URLs become crisp technical mono)
+  - `--font-body` → **Inter** (unchanged)
+- **Live homepage (`HubPageCinema.jsx`) fully re-sauced** — hardcoded fonts swapped to the tokens: `TDOTS / SOLUTIONSZ` hero wordmark and `MUSIC VIDEOS` / `WEB DESIGN` / `BOOK A SESSION` section titles now render in Anton (uppercase, tight); the `TORONTO — CREATIVE PRODUCTION` label, portfolio stats, `SCROLL` cue, `ENTER PORTFOLIO` / `GET STARTED` buttons, browser URL, and footer all move to tracked uppercase Space Mono.
+- **Font import trimmed** (`index.html`): added `Anton`, `Archivo` (500–900), `Space Mono`; dropped `Playfair Display`. Kept `Orbitron` / `Rajdhani` / `Bebas Neue` (still used by the synthwave 3D `/videos` experience) and `Inter`.
+- Weight/size/tracking polish on the legacy editorial hub components (`SpotlightHero`, `HubPage`, `ImpactNumbers`, `LatestDrops`) for token consistency.
+
+### Unchanged / preserved
+- Video playback config untouched — `videoPlayback.test.js` 23/23 green before and after. No changes to CSP, referrer policy, iframe attributes, or `vercel.json`.
+- Charcoal editorial palette (charcoal / white / cobalt blue + orange spark) kept intact — this is a **type** change, not a synthwave revert.
+
 ## [5.7.1] - 2026-07-08
 
 ### Changed

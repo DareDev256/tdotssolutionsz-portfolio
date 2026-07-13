@@ -21,13 +21,14 @@
 
 /* -- MASSIVE BACKGROUND TYPE -- */
 .spotlight-hero__bigtype {
-  font-family: var(--font-display);
-  font-size: clamp(6rem, 18vw, 16rem);
-  font-weight: 900;
+  font-family: var(--font-poster);
+  font-size: clamp(6.5rem, 19vw, 17rem);
+  font-weight: 400; /* Anton ships a single heavy weight */
   color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.06);
-  letter-spacing: -0.02em;
-  line-height: 0.85;
+  -webkit-text-stroke: 1.25px rgba(255, 255, 255, 0.11);
+  letter-spacing: 0.005em; /* Anton is condensed — let it breathe a hair */
+  line-height: 0.82;
+  text-transform: uppercase;
   position: absolute;
   top: -0.08em;
   left: -0.02em;
@@ -154,34 +155,37 @@
 }
 
 .spotlight-hero__label {
-  font-family: var(--font-body);
-  font-size: 0.55rem;
-  font-weight: 600;
-  letter-spacing: 0.25em;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--accent-blue);
 }
 
 .spotlight-hero__views {
-  font-family: var(--font-body);
-  font-size: 0.55rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
   color: var(--text-tertiary);
 }
 
 .spotlight-hero__artist {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
-  font-weight: 800;
+  font-size: clamp(1.9rem, 4.8vw, 3.4rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
   color: #fff;
-  margin: 0 0 4px;
-  line-height: 1;
+  margin: 0 0 6px;
+  line-height: 0.95;
   animation: hero-slide-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .spotlight-hero__title {
-  font-family: var(--font-display);
-  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+  font-family: var(--font-body);
+  font-size: clamp(0.85rem, 1.8vw, 1.05rem);
   font-weight: 400;
   font-style: italic;
   color: var(--text-secondary);
@@ -199,11 +203,12 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 24px;
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  padding: 11px 26px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   color: #fff;
   text-decoration: none;
   border: 1px solid rgba(255, 255, 255, 0.15);

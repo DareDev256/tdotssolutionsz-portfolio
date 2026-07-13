@@ -57,11 +57,15 @@
     --dark-bg-rgb: 42 42 42;
     --dark-surface-rgb: 38 38 38;
 
-    /* Typography — Editorial */
-    --font-display: 'Playfair Display', 'Georgia', serif;
-    --font-heading: 'Inter', -apple-system, sans-serif;
-    --font-body: 'Inter', -apple-system, sans-serif;
-    --font-mono: 'Orbitron', monospace;
+    /* Typography — Studio Heavy (v5.8.0)
+       Heavy grotesk display + tracked mono labels + clean body.
+       Loud, modern, sibling to the artist-site system (Archivo + Space Mono)
+       without cloning it. Anton reserved for OTT poster hits only. */
+    --font-display: 'Archivo', 'Inter', -apple-system, sans-serif; /* heavy grotesk workhorse — headlines, titles */
+    --font-poster: 'Anton', 'Archivo', sans-serif;                 /* condensed poster — hero watermark / intro only */
+    --font-heading: 'Archivo', 'Inter', sans-serif;                /* section headings */
+    --font-body: 'Inter', -apple-system, sans-serif;               /* body copy */
+    --font-mono: 'Space Mono', ui-monospace, 'SFMono-Regular', monospace; /* tracked technical labels/meta/CTAs */
 }
 
 html,
