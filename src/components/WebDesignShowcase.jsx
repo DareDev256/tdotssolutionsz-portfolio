@@ -9,15 +9,6 @@ import './WebDesignShowcase.css'
 
 const PROJECTS = [
   {
-    name: 'SyrenEffect',
-    type: 'Creator Site',
-    description: 'Custom site for Twitch streamer — dark aesthetic, live integration, brand identity',
-    status: 'Live',
-    icon: '/sites/syren-icon.png',
-    preview: null,
-    url: 'https://syreneffect-site.vercel.app',
-  },
-  {
     name: 'Savv4x',
     type: 'Artist Platform',
     description: 'Personal brand site — portfolio, music, booking. Animated particles, now-playing bar',
@@ -25,6 +16,33 @@ const PROJECTS = [
     icon: '/sites/savv-icon.png',
     preview: '/sites/savv-preview.jpg',
     url: 'https://savv4x.com',
+  },
+  {
+    name: 'KMONEY',
+    type: 'Artist Platform',
+    description: 'Drill artist site — Three.js WebGL vault, catalogue hung as gold & platinum art',
+    status: 'Live',
+    icon: '/sites/kmoney-icon.svg',
+    preview: '/sites/kmoney-preview.jpg',
+    url: 'https://officialkmoney.com',
+  },
+  {
+    name: '100BandPlan',
+    type: 'Artist Platform',
+    description: 'Drill artist site — blueprint drafting table, in-site video lightbox',
+    status: 'Live',
+    icon: '/sites/100bandplan-icon.svg',
+    preview: '/sites/100bandplan-preview.jpg',
+    url: 'https://100bandplan.com',
+  },
+  {
+    name: 'SyrenEffect',
+    type: 'Creator Site',
+    description: 'Custom site for Twitch streamer — dark aesthetic, live integration, brand identity',
+    status: 'Live',
+    icon: '/sites/syren-icon.png',
+    preview: '/sites/syren-preview.jpg',
+    url: 'https://syreneffect-site.vercel.app',
   },
 ]
 

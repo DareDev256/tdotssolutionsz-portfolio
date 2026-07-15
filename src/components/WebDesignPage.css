@@ -222,14 +222,9 @@
   background: #111;
 }
 
-.webdesign-page__card-iframe {
-  width: 200%;
-  height: 200%;
-  border: none;
-  transform: scale(0.5);
-  transform-origin: top left;
-  pointer-events: none;
-}
+/* .webdesign-page__card-iframe removed — it styled a live-site iframe fallback that
+   X-Frame-Options blocked (SyrenEffect SAMEORIGIN, MustHaveFrenchies DENY), so those
+   cards rendered blank. Every site now ships a static preview via __card-shot. */
 
 .webdesign-page__card-shot {
   width: 100%;

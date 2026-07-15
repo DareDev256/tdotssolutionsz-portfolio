@@ -16,6 +16,7 @@ const SITES = [
     type: 'Creator Site',
     url: 'https://syreneffect-site.vercel.app',
     icon: '/sites/syren-icon.png',
+    preview: '/sites/syren-preview.jpg',
     description: 'Custom site for Twitch streamer — dark aesthetic, live integration, brand identity.',
     tech: ['Next.js', 'React', 'Vercel'],
   },
@@ -24,6 +25,7 @@ const SITES = [
     name: 'KMONEY',
     type: 'Artist Platform',
     url: 'https://officialkmoney.com',
+    icon: '/sites/kmoney-icon.svg',
     preview: '/sites/kmoney-preview.jpg',
     description: 'Drill artist site — immersive Three.js WebGL bank vault, catalogue hung as gold & platinum art, scroll to explore.',
     tech: ['Three.js', 'WebGL', 'Cloudflare'],
@@ -33,6 +35,7 @@ const SITES = [
     name: '100BandPlan',
     type: 'Artist Platform',
     url: 'https://100bandplan.com',
+    icon: '/sites/100bandplan-icon.svg',
     preview: '/sites/100bandplan-preview.jpg',
     description: 'Drill artist site — blueprint drafting table, photo & video frames drop onto the plan, in-site video lightbox.',
     tech: ['JavaScript', 'CSS3', 'Cloudflare'],
@@ -43,6 +46,7 @@ const SITES = [
     type: 'Artist Platform',
     url: 'https://savv4x.com',
     icon: '/sites/savv-icon.png',
+    preview: '/sites/savv-preview.jpg',
     description: 'Personal brand site — animated particles, music videos, discography, floating now-playing bar.',
     tech: ['Next.js', 'React', 'Cloudflare'],
   },
@@ -52,6 +56,7 @@ const SITES = [
     type: 'Business Site',
     url: 'https://musthavefrenchies.com',
     icon: '/sites/frenchies-icon.png',
+    preview: '/sites/frenchies-preview.jpg',
     description: 'Premium French Bulldog breeder — puppy listings, litter management, co-ownership program.',
     tech: ['HTML/CSS/JS', 'Vercel'],
   },
@@ -367,23 +372,20 @@ export default function WebDesignPage() {
           <div className="webdesign-page__card-tech">
             {activeSite.tech.map(t => <span key={t} className="webdesign-page__card-tag">{t}</span>)}
           </div>
+          {/*
+            Static preview only — never iframe the live site here.
+            SyrenEffect sends X-Frame-Options: SAMEORIGIN and MustHaveFrenchies sends DENY,
+            so the old iframe fallback rendered a BLANK card for both. Sites that DO allow
+            framing (savv4x) loaded their entire production bundle inside this card.
+            Every entry in SITES now ships a /sites/*-preview.jpg. Keep it that way.
+          */}
           <div className="webdesign-page__card-preview">
-            {activeSite.preview ? (
-              <img
-                src={activeSite.preview}
-                alt={`${activeSite.name} preview`}
-                className="webdesign-page__card-shot"
-                loading="lazy"
-              />
-            ) : (
-              <iframe
-                src={activeSite.url}
-                title={`${activeSite.name} preview`}
-                className="webdesign-page__card-iframe"
-                loading="lazy"
-                sandbox="allow-scripts allow-same-origin"
-              />
-            )}
+            <img
+              src={activeSite.preview}
+              alt={`${activeSite.name} website preview`}
+              className="webdesign-page__card-shot"
+              loading="lazy"
+            />
           </div>
           <a
             href={activeSite.url}

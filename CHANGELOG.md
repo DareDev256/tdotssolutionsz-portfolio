@@ -2,6 +2,21 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.9.0] - 2026-07-15
+
+### Fixed
+- **`/web-design` rendered two BLANK cards.** When a site had no `preview`, the card fell back to an `<iframe>` of the live site. SyrenEffect sends `X-Frame-Options: SAMEORIGIN` and MustHaveFrenchies sends `DENY`, so both were blocked and showed nothing. Savv4x (no XFO) did load — pulling its entire production bundle, video background and YouTube embeds, into a portfolio card. The iframe fallback is deleted; every site now ships a static preview. External requests from `/web-design`: **6 → 0**.
+- **KMONEY and 100BandPlan had no favicon** — both rendered as bare text in the node graph and site list while every other project showed a mark. Added their real favicons, pulled from the live sites.
+
+### Added
+- `kmoney-icon.svg`, `100bandplan-icon.svg` — real favicons fetched from the live sites
+- `frenchies-preview.jpg` — screenshot capture; MustHaveFrenchies previously had no preview at all
+- Wired the already-on-disk-but-unused `syren-preview.jpg` and `savv-preview.jpg` into `/web-design`
+- Homepage `WebDesignShowcase` now lists 4 projects (was 2 — Savv4x + SyrenEffect only), adding KMONEY and 100BandPlan so it stops contradicting `/web-design`
+
+### Changed
+- **Image weight cut 515KB.** `syren-preview.jpg` 290KB→21KB (was 1200x630 for a ~350px card); `frenchies-icon.png` 264KB→18KB (was 1024x1024 for a 14px/28px icon)
+
 ## [5.8.0] - 2026-07-13
 
 ### Changed — "Studio Heavy" typography overhaul (more sauce)
