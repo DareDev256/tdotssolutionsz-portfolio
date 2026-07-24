@@ -5,7 +5,7 @@
  * ArtistShowcase, and EraTimeline with a single source of truth.
  *
  * @param {string}  text  - Label text (e.g. "SPOTLIGHT", "COLLAB WEB")
- * @param {string}  color - Neon accent color (e.g. "rgba(255,0,128,0.6)")
+ * @param {string}  color - Neon accent color (e.g. "rgba(255, 143, 94,0.6)")
  * @param {string}  [as]  - Wrapper element type: "div" (default) or "h2"
  * @param {string}  [className] - Additional class names
  */

@@ -10,13 +10,13 @@
  *
  * @param {Object} props
  * @param {boolean} props.active - Whether the visualizer is visible and animating
- * @param {string} [props.color='#05d9e8'] - Accent color for the center ring
+ * @param {string} [props.color='#4a7cff'] - Accent color for the center ring
  * @param {number} [props.bpm=128] - Beats per minute driving the animation rhythm
  */
 import { useRef, useEffect, useCallback } from 'react'
 import './AudioVisualizer.css'
 
-const NEON = ['#05d9e8', '#ff2a6d', '#d300c5', '#7700ff', '#ff6b35']
+const NEON = ['#4a7cff', '#ff8f5e', '#e85d34', '#3a5fd9', '#ff6b35']
 const BAR_COUNT = 48
 const PARTICLE_COUNT = 20
 const RING_TICKS = 32
@@ -140,7 +140,7 @@ function drawScanner(ctx, W, H, sec, color) {
   ctx.restore()
 }
 
-export default function AudioVisualizer({ active, color = '#05d9e8', bpm = 128 }) {
+export default function AudioVisualizer({ active, color = '#4a7cff', bpm = 128 }) {
   const canvasRef = useRef(null)
   const animRef = useRef(null)
   const particlesRef = useRef(null)

@@ -7,7 +7,7 @@
  */
 import rawVideoData from '../data/videos.json'
 
-export const NEON_COLORS = Object.freeze(['#ff2a6d', '#05d9e8', '#d300c5', '#7700ff', '#ff6b35', '#ffcc00', '#00ff88', '#ff00ff'])
+export const NEON_COLORS = Object.freeze(['#ff8f5e', '#4a7cff', '#e85d34', '#3a5fd9', '#ff6b35', '#ffcc00', '#00ff88', '#e85d34'])
 
 /**
  * Transform raw JSON entries to include full YouTube URLs.

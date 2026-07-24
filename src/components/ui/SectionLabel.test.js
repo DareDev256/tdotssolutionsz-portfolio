@@ -33,8 +33,8 @@ describe('SectionLabel — prop variants', () => {
   })
 
   it('sets --label-color CSS variable from color prop', () => {
-    const result = getSectionLabelProps({ text: 'A', color: 'rgba(255,0,128,0.6)' })
-    expect(result.style['--label-color']).toBe('rgba(255,0,128,0.6)')
+    const result = getSectionLabelProps({ text: 'A', color: 'rgba(255, 143, 94,0.6)' })
+    expect(result.style['--label-color']).toBe('rgba(255, 143, 94,0.6)')
   })
 
   it('wrapper class includes section-label base class', () => {

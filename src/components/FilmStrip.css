@@ -51,7 +51,7 @@
 }
 
 .film-strip__frame:focus-visible {
-  outline: 2px solid var(--neon-cyan, #05d9e8);
+  outline: 2px solid var(--neon-cyan, #4a7cff);
   outline-offset: -2px;
 }
 
@@ -97,7 +97,7 @@
   right: 0;
   padding: 4px 6px;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
-  color: var(--neon-cyan, #05d9e8);
+  color: var(--neon-cyan, #4a7cff);
   font-family: 'JetBrains Mono', 'Courier New', monospace;
   font-size: 9px;
   font-weight: 600;

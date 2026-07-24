@@ -325,7 +325,7 @@ const SpeedLines = ({ reducedEffects }) => {
                 y: spreadY,
                 z: -2 - Math.random() * 4,
                 length,
-                color: i % 3 === 0 ? '#05d9e8' : i % 3 === 1 ? '#ff2a6d' : '#ffffff'
+                color: i % 3 === 0 ? '#4a7cff' : i % 3 === 1 ? '#ff8f5e' : '#ffffff'
             })
         }
         return data
@@ -527,7 +527,7 @@ const SynthwaveRoad = () => {
                             itemSize={3}
                         />
                     </bufferGeometry>
-                    <lineBasicMaterial color="#ff2a6d" transparent opacity={0.2} />
+                    <lineBasicMaterial color="#ff8f5e" transparent opacity={0.2} />
                 </lineSegments>
             </group>
 
@@ -535,8 +535,8 @@ const SynthwaveRoad = () => {
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, roadCenter]}>
                 <planeGeometry args={[0.3, roadLength]} />
                 <meshStandardMaterial
-                    color="#05d9e8"
-                    emissive="#05d9e8"
+                    color="#4a7cff"
+                    emissive="#4a7cff"
                     emissiveIntensity={2}
                     toneMapped={false}
                 />
@@ -574,8 +574,8 @@ const SynthwaveRoad = () => {
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-15, 0.02, roadCenter]}>
                 <planeGeometry args={[0.5, roadLength]} />
                 <meshStandardMaterial
-                    color="#ff2a6d"
-                    emissive="#ff2a6d"
+                    color="#ff8f5e"
+                    emissive="#ff8f5e"
                     emissiveIntensity={2.5}
                     toneMapped={false}
                 />
@@ -583,8 +583,8 @@ const SynthwaveRoad = () => {
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[15, 0.02, roadCenter]}>
                 <planeGeometry args={[0.5, roadLength]} />
                 <meshStandardMaterial
-                    color="#ff2a6d"
-                    emissive="#ff2a6d"
+                    color="#ff8f5e"
+                    emissive="#ff8f5e"
                     emissiveIntensity={2.5}
                     toneMapped={false}
                 />
@@ -593,7 +593,7 @@ const SynthwaveRoad = () => {
             {/* Lane labels on ground */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[LANE_CONFIG.POPULAR.x, 0.02, -10]}>
                 <planeGeometry args={[4, 1]} />
-                <meshBasicMaterial color="#7700ff" transparent opacity={0.15} />
+                <meshBasicMaterial color="#3a5fd9" transparent opacity={0.15} />
             </mesh>
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[LANE_CONFIG.CHRONOLOGICAL.x, 0.02, -10]}>
                 <planeGeometry args={[4, 1]} />
@@ -628,20 +628,20 @@ const Scene = ({ onActiveChange, currentLane, onLaneChange, vehicleType, reduced
             {/* Deep space background */}
             <color attach="background" args={['#030308']} />
             {/* Atmospheric fog - extends with road */}
-            <fog attach="fog" args={['#0d0221', 40, 350]} />
+            <fog attach="fog" args={['#120d0a', 40, 350]} />
 
             {/* Enhanced Lighting Setup */}
             <ambientLight intensity={0.15} color="#1a0a2e" />
             {/* Hemisphere: sky purple, ground pink - synthwave colors */}
             <hemisphereLight
-                skyColor="#7700ff"
-                groundColor="#ff2a6d"
+                skyColor="#3a5fd9"
+                groundColor="#ff8f5e"
                 intensity={0.3}
             />
             {/* Warm backlight from sun */}
             <directionalLight position={[0, 30, -150]} intensity={0.8} color="#ff6600" />
             {/* Cool rim light from front */}
-            <directionalLight position={[0, 10, 50]} intensity={0.2} color="#05d9e8" />
+            <directionalLight position={[0, 10, 50]} intensity={0.2} color="#4a7cff" />
 
             {/* Cosmic background elements - Phase 2 enhanced versions */}
             {!reducedEffects && <EnhancedStarField count={800} radius={400} depth={600} />}

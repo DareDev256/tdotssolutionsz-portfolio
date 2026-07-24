@@ -79,7 +79,7 @@ const CNTower = ({ position = [0, 0, 0] }) => {
                     Math.sin(i * Math.PI / 3) * 1.1
                 ]}>
                     <boxGeometry args={[0.03, 30, 0.03]} />
-                    <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={2} toneMapped={false} />
+                    <meshStandardMaterial color="#4a7cff" emissive="#4a7cff" emissiveIntensity={2} toneMapped={false} />
                 </mesh>
             ))}
             {/* Pod (observation deck) */}
@@ -90,39 +90,39 @@ const CNTower = ({ position = [0, 0, 0] }) => {
             {/* Pod windows glow */}
             <mesh ref={podGlowRef} position={[0, 28, 0]}>
                 <cylinderGeometry args={[3.1, 2.6, 1.5, 12]} />
-                <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={3} transparent opacity={0.9} toneMapped={false} />
+                <meshStandardMaterial color="#4a7cff" emissive="#4a7cff" emissiveIntensity={3} transparent opacity={0.9} toneMapped={false} />
             </mesh>
             {/* Pod neon ring */}
             <mesh position={[0, 26, 0]} rotation={[Math.PI / 2, 0, 0]}>
                 <torusGeometry args={[3.2, 0.05, 8, 24]} />
-                <meshStandardMaterial color="#ff2a6d" emissive="#ff2a6d" emissiveIntensity={3} toneMapped={false} />
+                <meshStandardMaterial color="#ff8f5e" emissive="#ff8f5e" emissiveIntensity={3} toneMapped={false} />
             </mesh>
             <mesh position={[0, 30, 0]} rotation={[Math.PI / 2, 0, 0]}>
                 <torusGeometry args={[3.2, 0.05, 8, 24]} />
-                <meshStandardMaterial color="#ff2a6d" emissive="#ff2a6d" emissiveIntensity={3} toneMapped={false} />
+                <meshStandardMaterial color="#ff8f5e" emissive="#ff8f5e" emissiveIntensity={3} toneMapped={false} />
             </mesh>
             {/* Energy core inside pod */}
             <mesh ref={coreRef} position={[0, 28, 0]}>
                 <sphereGeometry args={[1.2, 12, 12]} />
-                <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={5} transparent opacity={0.6} toneMapped={false} />
+                <meshStandardMaterial color="#4a7cff" emissive="#4a7cff" emissiveIntensity={5} transparent opacity={0.6} toneMapped={false} />
             </mesh>
             {/* Orbiting energy rings */}
             <group ref={ring1Ref} position={[0, 28, 0]}>
                 <mesh rotation={[Math.PI / 2, 0, 0]}>
                     <torusGeometry args={[5, 0.06, 8, 32]} />
-                    <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={3} transparent opacity={0.7} toneMapped={false} />
+                    <meshStandardMaterial color="#4a7cff" emissive="#4a7cff" emissiveIntensity={3} transparent opacity={0.7} toneMapped={false} />
                 </mesh>
             </group>
             <group ref={ring2Ref} position={[0, 28, 0]}>
                 <mesh rotation={[Math.PI / 3, 0, 0]}>
                     <torusGeometry args={[6.5, 0.04, 8, 32]} />
-                    <meshStandardMaterial color="#ff2a6d" emissive="#ff2a6d" emissiveIntensity={2.5} transparent opacity={0.5} toneMapped={false} />
+                    <meshStandardMaterial color="#ff8f5e" emissive="#ff8f5e" emissiveIntensity={2.5} transparent opacity={0.5} toneMapped={false} />
                 </mesh>
             </group>
             <group ref={ring3Ref} position={[0, 28, 0]}>
                 <mesh rotation={[Math.PI / 4, Math.PI / 6, 0]}>
                     <torusGeometry args={[8, 0.03, 8, 32]} />
-                    <meshStandardMaterial color="#d300c5" emissive="#d300c5" emissiveIntensity={2} transparent opacity={0.4} toneMapped={false} />
+                    <meshStandardMaterial color="#e85d34" emissive="#e85d34" emissiveIntensity={2} transparent opacity={0.4} toneMapped={false} />
                 </mesh>
             </group>
             {/* Upper shaft */}
@@ -138,24 +138,24 @@ const CNTower = ({ position = [0, 0, 0] }) => {
             {/* Antenna neon tip */}
             <mesh position={[0, 57, 0]}>
                 <sphereGeometry args={[0.3, 8, 8]} />
-                <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={4} toneMapped={false} />
+                <meshStandardMaterial color="#4a7cff" emissive="#4a7cff" emissiveIntensity={4} toneMapped={false} />
             </mesh>
             {/* Beacon outer glow */}
             <mesh ref={glowRef} position={[0, 58, 0]}>
                 <sphereGeometry args={[2.5, 16, 16]} />
-                <meshBasicMaterial color="#ff2a6d" transparent opacity={0.15} blending={THREE.AdditiveBlending} depthWrite={false} />
+                <meshBasicMaterial color="#ff8f5e" transparent opacity={0.15} blending={THREE.AdditiveBlending} depthWrite={false} />
             </mesh>
             {/* Beacon */}
             <mesh ref={beaconRef} position={[0, 58, 0]}>
                 <sphereGeometry args={[0.8, 8, 8]} />
-                <meshStandardMaterial color="#ff2a6d" emissive="#ff2a6d" emissiveIntensity={5} toneMapped={false} />
+                <meshStandardMaterial color="#ff8f5e" emissive="#ff8f5e" emissiveIntensity={5} toneMapped={false} />
             </mesh>
             {/* Beacon point light */}
-            <pointLight position={[0, 58, 0]} color="#ff2a6d" intensity={50} distance={100} />
+            <pointLight position={[0, 58, 0]} color="#ff8f5e" intensity={50} distance={100} />
             {/* Base platform */}
             <mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                 <ringGeometry args={[2, 6, 6]} />
-                <meshStandardMaterial color="#05d9e8" emissive="#05d9e8" emissiveIntensity={1.5} transparent opacity={0.3} toneMapped={false} side={THREE.DoubleSide} />
+                <meshStandardMaterial color="#4a7cff" emissive="#4a7cff" emissiveIntensity={1.5} transparent opacity={0.3} toneMapped={false} side={THREE.DoubleSide} />
             </mesh>
         </group>
     )

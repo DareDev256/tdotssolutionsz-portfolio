@@ -6,18 +6,18 @@ import { useState, useEffect, useCallback, useRef } from 'react'
  * @returns {{ name: string, color: string, intensity: number }}
  */
 const SECTION_MOODS = [
-  { selector: '.hub-header',     color: '119, 0, 255',   name: 'origins' },
-  { selector: '.impact-numbers', color: '211, 0, 197',   name: 'impact' },
-  { selector: '.film-strip',     color: '255, 42, 109',  name: 'filmstrip' },
-  { selector: '.artist-showcase',color: '255, 0, 128',   name: 'artists' },
-  { selector: '.now-playing',    color: '5, 217, 232',   name: 'spotlight' },
+  { selector: '.hub-header',     color: '58, 95, 217',   name: 'origins' },
+  { selector: '.impact-numbers', color: '232, 93, 52',   name: 'impact' },
+  { selector: '.film-strip',     color: '255, 143, 94',  name: 'filmstrip' },
+  { selector: '.artist-showcase',color: '255, 143, 94',   name: 'artists' },
+  { selector: '.now-playing',    color: '74, 124, 255',   name: 'spotlight' },
   { selector: '.top-hits',       color: '255, 107, 53',  name: 'tophits' },
   { selector: '.era-timeline',   color: '0, 255, 136',   name: 'eras' },
-  { selector: '.hub-footer',     color: '119, 0, 255',   name: 'footer' },
+  { selector: '.hub-footer',     color: '58, 95, 217',   name: 'footer' },
 ]
 
 export default function useAtmosphereScroll() {
-  const [mood, setMood] = useState({ name: 'origins', color: '119, 0, 255', intensity: 0.15 })
+  const [mood, setMood] = useState({ name: 'origins', color: '58, 95, 217', intensity: 0.15 })
   const rafRef = useRef(null)
   const lastMoodRef = useRef('origins')
 

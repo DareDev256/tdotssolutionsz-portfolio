@@ -18,7 +18,7 @@ const SynthwaveSun = ({ zPosition = -300 }) => {
             {[...Array(5)].map((_, i) => (
                 <mesh key={`line-${i}`} position={[0, -4 - i * 2.5, 0.1]}>
                     <planeGeometry args={[55, 1.2 + i * 0.3]} />
-                    <meshBasicMaterial color="#0d0221" />
+                    <meshBasicMaterial color="#120d0a" />
                 </mesh>
             ))}
         </group>

@@ -6,12 +6,12 @@
  * visual rhythm along the highway.
  *
  * @param {number} props.zPos - Z position along the road
- * @param {string} [props.color='#05d9e8'] - Neon accent color
+ * @param {string} [props.color='#4a7cff'] - Neon accent color
  */
 import React from 'react'
 import * as THREE from 'three'
 
-const HighwayArch = ({ zPos, color = '#05d9e8' }) => {
+const HighwayArch = ({ zPos, color = '#4a7cff' }) => {
     return (
         <group position={[0, 0, zPos]}>
             {/* Left pillar */}

@@ -4,10 +4,10 @@
  * emissive flux capacitor and red time circuits, plus a cyan underglow plane.
  *
  * @param {Object} props
- * @param {string} [props.color='#05d9e8'] - Accent color for flux capacitor glow
- *   and underglow. Red time circuits use a fixed '#ff2a6d'.
+ * @param {string} [props.color='#4a7cff'] - Accent color for flux capacitor glow
+ *   and underglow. Red time circuits use a fixed '#ff8f5e'.
  */
-const DeLorean = ({ color = '#05d9e8' }) => {
+const DeLorean = ({ color = '#4a7cff' }) => {
     return (
         <group position={[0, 0.5, -6]}>
             {/* Main body */}
@@ -34,8 +34,8 @@ const DeLorean = ({ color = '#05d9e8' }) => {
             <mesh position={[0, 0.8, -0.2]}>
                 <boxGeometry args={[0.8, 0.15, 0.4]} />
                 <meshStandardMaterial
-                    color="#ff2a6d"
-                    emissive="#ff2a6d"
+                    color="#ff8f5e"
+                    emissive="#ff8f5e"
                     emissiveIntensity={2}
                     toneMapped={false}
                 />

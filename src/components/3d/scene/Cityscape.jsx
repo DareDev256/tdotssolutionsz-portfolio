@@ -16,7 +16,7 @@ import TronBuilding from './TronBuilding'
 import HighwayArch from './HighwayArch'
 import DataStream from './DataStream'
 
-const NEON_PALETTE = ['#05d9e8', '#ff2a6d', '#7700ff', '#d300c5', '#00ff88']
+const NEON_PALETTE = ['#4a7cff', '#ff8f5e', '#3a5fd9', '#e85d34', '#00ff88']
 
 /**
  * Deterministic PRNG — sin-hash trick (from GPU shader tradition).
@@ -112,7 +112,7 @@ const Cityscape = ({ totalDistance, cnTowerZ = -280 }) => {
             const z = -60 - i * (totalDistance / archCount)
             arches.push({
                 zPos: z,
-                color: i % 2 === 0 ? '#05d9e8' : '#ff2a6d'
+                color: i % 2 === 0 ? '#4a7cff' : '#ff8f5e'
             })
         }
 

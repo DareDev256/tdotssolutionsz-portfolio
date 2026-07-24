@@ -4,10 +4,10 @@
  * a rear tail light bar, and a forward-facing point light.
  *
  * @param {Object} props
- * @param {string} [props.color='#ff2a6d'] - Primary neon accent applied to
- *   side strips. Tail light uses fixed '#ff2a6d' regardless of this prop.
+ * @param {string} [props.color='#ff8f5e'] - Primary neon accent applied to
+ *   side strips. Tail light uses fixed '#ff8f5e' regardless of this prop.
  */
-const CyberBike = ({ color = '#ff2a6d' }) => {
+const CyberBike = ({ color = '#ff8f5e' }) => {
     return (
         <group position={[0, 0.5, -5]}>
             {/* Frame */}
@@ -53,8 +53,8 @@ const CyberBike = ({ color = '#ff2a6d' }) => {
             <mesh position={[0, 0.35, 1.1]}>
                 <boxGeometry args={[0.25, 0.1, 0.02]} />
                 <meshStandardMaterial
-                    color="#ff2a6d"
-                    emissive="#ff2a6d"
+                    color="#ff8f5e"
+                    emissive="#ff8f5e"
                     emissiveIntensity={5}
                     toneMapped={false}
                 />
