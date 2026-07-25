@@ -55,7 +55,7 @@ The site uses an editorial 3-color palette. Do NOT revert to synthwave/neon aest
 - **Text**: White hierarchy (`#fff`, `rgba(255,255,255,0.55)`, `rgba(255,255,255,0.3)`)
 - **Accent 1**: Cobalt blue `#4a7cff` — section labels, subtitles, hover states, CTAs
 - **Accent 2**: Warm orange `#e85d34` — badges, "Book a Session" CTA only. Use SPARINGLY
-- **Typography** (v5.8.0 "Studio Heavy" — supersedes the old Playfair serif): `Archivo` (heavy grotesk) for headlines/titles via `--font-display`, `Anton` (condensed poster) for the hero wordmark + section titles via `--font-poster`, `Space Mono` for all tracked labels/stats/buttons via `--font-mono`, `Inter` for body via `--font-body`. Do NOT revert to Playfair. Do NOT add Orbitron back to HubPage (it belongs to the `/videos` synthwave experience only).
+- **Typography** (v5.8.0 "Studio Heavy" — supersedes the old Playfair serif): `Archivo` (heavy grotesk) for headlines/titles via `--font-display`, `Anton` (condensed poster) for the hero wordmark + section titles via `--font-poster`, `Space Mono` for all tracked labels/stats/buttons via `--font-mono`, `Inter` for body via `--font-body`. Do NOT revert to Playfair. Do NOT add Orbitron back to HubPage (it belongs to the `/videos` 3D experience only — NOTE v5.10.0: the /videos experience is no longer synthwave; its palette was recolored to the cinematic cobalt+orange system in the 2026-07-24 divergence pass. The Orbitron restriction stands; the neon palette does not).
 - **Effects**: Film grain texture only. No neon glows, no text-shadow colors, no radial gradient orbs, no particle effects on HubPage
 - **3D experience** (`/videos`, `App.jsx`): Synthwave aesthetic is fine here — that's the viewing experience, not the landing page
 
