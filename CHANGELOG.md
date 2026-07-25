@@ -2,6 +2,12 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [5.10.0] - 2026-07-24
+
+### Changed
+- **Completed the cobalt+orange cinematic identity — synthwave layer retired (approved divergence from jamesdare.com).** Token VALUES re-pointed in `src/index.css` (variable names kept as a stable contract; JS reads them): `--neon-cyan` #05d9e8 → cobalt #4a7cff, `--neon-purple` #d300c5 → warm orange #e85d34, `--neon-pink` #ff2a6d → warm amber #ff8f5e, `--neon-blue` #7700ff → deep cobalt #3a5fd9, plus the matching `--*-rgb` channel triplets.
+- **487 color literals recolored across 40 source files** — same mapping applied to hex/rgba literals CSS variables can't reach: Three.js scene colors (CN Tower, Cityscape, vehicles, nebula, fog `#0d0221` → warm near-black `#120d0a`), the pure-cyan `rgba(0,255,255)` / hot-pink `rgba(255,0,128)` residual family in MobileApp/VideoCard/TheaterMode CSS, and palette arrays (`NEON_COLORS`, `NEON_PALETTE`, TopHits ranks). No geometry, shader structure, layout, or motion touched. Rank-gold `#ffcc00` and green `#00ff88` kept (semantic/out of synthwave family).
+
 ## [5.9.0] - 2026-07-15
 
 ### Fixed

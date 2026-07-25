@@ -6,13 +6,13 @@
  *
  * @param {[number,number,number]} props.position - World position
  * @param {number} [props.height=30] - Pillar height in world units
- * @param {string} [props.color='#05d9e8'] - Neon color
+ * @param {string} [props.color='#4a7cff'] - Neon color
  */
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-const DataStream = ({ position, height = 30, color = '#05d9e8' }) => {
+const DataStream = ({ position, height = 30, color = '#4a7cff' }) => {
     const streamRef = useRef()
     const basePhase = useMemo(() => Math.random() * Math.PI * 2, [])
 

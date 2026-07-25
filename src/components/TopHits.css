@@ -142,7 +142,7 @@
     105deg,
     transparent 40%,
     color-mix(in srgb, var(--rank-color) 40%, transparent) 47%,
-    rgba(5, 217, 232, 0.2) 50%,
+    rgba(74, 124, 255, 0.2) 50%,
     color-mix(in srgb, var(--rank-color) 30%, transparent) 53%,
     transparent 60%
   );

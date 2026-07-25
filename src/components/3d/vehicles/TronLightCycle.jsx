@@ -7,10 +7,10 @@ import * as THREE from 'three'
  * using additive blending for depth. Includes a headlight point light.
  *
  * @param {Object} props
- * @param {string} [props.color='#05d9e8'] - Primary neon color applied to windscreen,
+ * @param {string} [props.color='#4a7cff'] - Primary neon color applied to windscreen,
  *   wheel rings, body strips, and trail. Accepts any CSS color string.
  */
-const TronLightCycle = ({ color = '#05d9e8' }) => {
+const TronLightCycle = ({ color = '#4a7cff' }) => {
     return (
         <group position={[0, 0.6, -5]} rotation={[0, 0, 0]}>
             {/* Main body - sleek angular shape */}
@@ -94,8 +94,8 @@ const TronLightCycle = ({ color = '#05d9e8' }) => {
             <mesh position={[0, 0.2, 1.4]}>
                 <boxGeometry args={[0.35, 0.08, 0.02]} />
                 <meshStandardMaterial
-                    color="#ff2a6d"
-                    emissive="#ff2a6d"
+                    color="#ff8f5e"
+                    emissive="#ff8f5e"
                     emissiveIntensity={5}
                     toneMapped={false}
                 />

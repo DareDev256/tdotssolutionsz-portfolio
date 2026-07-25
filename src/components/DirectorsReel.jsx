@@ -42,7 +42,7 @@ export default function DirectorsReel() {
       ref={sectionRef}
       aria-label="Director's Reel — Featured montage"
     >
-      <SectionLabel text="DIRECTOR'S REEL" color="rgba(255, 0, 128, 0.6)" />
+      <SectionLabel text="DIRECTOR'S REEL" color="rgba(255, 143, 94, 0.6)" />
       <div className="directors-reel__grid">
         {REEL_VIDEOS.map((video, i) => (
           <Link

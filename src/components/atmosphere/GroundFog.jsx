@@ -12,7 +12,7 @@ export function GroundFog({
   length = 600,
   height = 3,
   color = '#1a0a2e',
-  secondaryColor = '#ff2a6d',
+  secondaryColor = '#ff8f5e',
   opacity = 0.4,
   scrollOffset = 0
 }) {
@@ -135,7 +135,7 @@ export function GroundFog({
  */
 export function DistanceHaze({
   scrollOffset = 0,
-  color = '#0d0221',
+  color = '#120d0a',
   intensity = 0.6
 }) {
   const meshRef = useRef();

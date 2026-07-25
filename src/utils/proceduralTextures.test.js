@@ -94,7 +94,7 @@ describe('createHexBokehTexture', () => {
     })
 
     it('returns a texture with needsUpdate = true', () => {
-        const tex = createHexBokehTexture(32, '#ff00ff')
+        const tex = createHexBokehTexture(32, '#e85d34')
         expect(tex.needsUpdate).toBe(true)
     })
 })

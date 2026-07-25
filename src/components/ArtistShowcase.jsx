@@ -76,7 +76,7 @@ export default function ArtistShowcase() {
       </div>
 
       {/* Section Label */}
-      <SectionLabel text="TOP ARTISTS" color="rgba(255, 42, 109, 0.6)" className="showcase-label" />
+      <SectionLabel text="TOP ARTISTS" color="rgba(255, 143, 94, 0.6)" className="showcase-label" />
 
       {/* Infinite Marquee Ticker */}
       <div

@@ -75,8 +75,8 @@ function NotFoundPage() {
         <div className="loading-screen" style={{ gap: '16px' }}>
             <div style={{
                 fontFamily: "'Orbitron', monospace", fontSize: '5rem', fontWeight: 900,
-                color: '#ff2a6d',
-                textShadow: '0 0 20px rgba(255, 42, 109, 0.6), 0 0 60px rgba(255, 42, 109, 0.3)',
+                color: '#ff8f5e',
+                textShadow: '0 0 20px rgba(255, 143, 94, 0.6), 0 0 60px rgba(255, 143, 94, 0.3)',
                 animation: 'loading-blink 1.5s ease-in-out infinite'
             }}>404</div>
             <p style={{
@@ -85,8 +85,8 @@ function NotFoundPage() {
             }}>This page doesn't exist.</p>
             <a href="/" style={{
                 fontFamily: "'Orbitron', monospace", fontSize: '0.75rem', fontWeight: 700,
-                letterSpacing: '0.15em', color: '#05d9e8', textDecoration: 'none',
-                padding: '12px 28px', border: '1px solid rgba(5, 217, 232, 0.4)',
+                letterSpacing: '0.15em', color: '#4a7cff', textDecoration: 'none',
+                padding: '12px 28px', border: '1px solid rgba(74, 124, 255, 0.4)',
                 borderRadius: '24px', transition: 'all 0.3s ease'
             }}>← BACK TO HUB</a>
         </div>

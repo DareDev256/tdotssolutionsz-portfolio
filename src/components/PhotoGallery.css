@@ -16,8 +16,8 @@
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 0, 128, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 0, 128, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(255, 143, 94, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 143, 94, 0.04) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
@@ -28,8 +28,8 @@
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(5, 217, 232, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(255, 42, 109, 0.08) 0%, transparent 50%);
+    radial-gradient(ellipse at 50% 0%, rgba(74, 124, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(255, 143, 94, 0.08) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -53,20 +53,20 @@
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: rgba(5, 217, 232, 0.7);
+  color: rgba(74, 124, 255, 0.7);
   text-decoration: none;
   padding: 8px 16px;
-  border: 1px solid rgba(5, 217, 232, 0.3);
+  border: 1px solid rgba(74, 124, 255, 0.3);
   border-radius: 20px;
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
 
 .gallery-back:hover {
-  color: #05d9e8;
-  border-color: #05d9e8;
-  background: rgba(5, 217, 232, 0.1);
-  box-shadow: 0 0 15px rgba(5, 217, 232, 0.2);
+  color: #4a7cff;
+  border-color: #4a7cff;
+  background: rgba(74, 124, 255, 0.1);
+  box-shadow: 0 0 15px rgba(74, 124, 255, 0.2);
 }
 
 .gallery-header-text {
@@ -80,7 +80,7 @@
 .gallery-logo {
   height: 40px;
   width: auto;
-  filter: invert(1) brightness(1.5) drop-shadow(0 0 8px rgba(5, 217, 232, 0.5));
+  filter: invert(1) brightness(1.5) drop-shadow(0 0 8px rgba(74, 124, 255, 0.5));
 }
 
 .gallery-title {
@@ -88,8 +88,8 @@
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 0.15em;
-  color: #05d9e8;
-  text-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
+  color: #4a7cff;
+  text-shadow: 0 0 10px rgba(74, 124, 255, 0.5);
   margin: 0;
   white-space: nowrap;
 }
@@ -119,8 +119,8 @@
   align-items: center;
   gap: 6px;
   padding: 10px 20px;
-  border: 1px solid rgba(5, 217, 232, 0.25);
-  background: rgba(5, 217, 232, 0.04);
+  border: 1px solid rgba(74, 124, 255, 0.25);
+  background: rgba(74, 124, 255, 0.04);
   color: rgba(255, 255, 255, 0.6);
   font-family: 'Orbitron', monospace;
   font-size: 0.7rem;
@@ -132,16 +132,16 @@
 }
 
 .gallery-tab:hover {
-  border-color: rgba(5, 217, 232, 0.5);
+  border-color: rgba(74, 124, 255, 0.5);
   color: #fff;
-  background: rgba(5, 217, 232, 0.08);
+  background: rgba(74, 124, 255, 0.08);
 }
 
 .gallery-tab.active {
-  background: linear-gradient(135deg, rgba(5, 217, 232, 0.3), rgba(5, 217, 232, 0.15));
-  border-color: #05d9e8;
+  background: linear-gradient(135deg, rgba(74, 124, 255, 0.3), rgba(74, 124, 255, 0.15));
+  border-color: #4a7cff;
   color: #fff;
-  box-shadow: 0 0 20px rgba(5, 217, 232, 0.2);
+  box-shadow: 0 0 20px rgba(74, 124, 255, 0.2);
 }
 
 .gallery-tab-count {
@@ -151,7 +151,7 @@
 
 .gallery-tab.active .gallery-tab-count {
   opacity: 0.8;
-  color: #05d9e8;
+  color: #4a7cff;
 }
 
 /* Grid */
@@ -169,7 +169,7 @@
   overflow: hidden;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(5, 217, 232, 0.1);
+  border: 1px solid rgba(74, 124, 255, 0.1);
   cursor: pointer;
   opacity: 0;
   transform: translateY(8px);
@@ -182,8 +182,8 @@
 }
 
 .gallery-img-wrap:hover {
-  border-color: rgba(5, 217, 232, 0.4);
-  box-shadow: 0 0 24px rgba(5, 217, 232, 0.15);
+  border-color: rgba(74, 124, 255, 0.4);
+  box-shadow: 0 0 24px rgba(74, 124, 255, 0.15);
 }
 
 .gallery-img {
@@ -240,7 +240,7 @@
   max-height: 75vh;
   object-fit: contain;
   border-radius: 4px;
-  box-shadow: 0 0 60px rgba(5, 217, 232, 0.15);
+  box-shadow: 0 0 60px rgba(74, 124, 255, 0.15);
 }
 
 .lightbox-close {
@@ -258,16 +258,16 @@
 }
 
 .lightbox-close:hover {
-  color: #ff2a6d;
+  color: #ff8f5e;
 }
 
 .lightbox-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(13, 2, 33, 0.8);
-  border: 1px solid rgba(5, 217, 232, 0.3);
-  color: #05d9e8;
+  background: rgba(18, 13, 10, 0.8);
+  border: 1px solid rgba(74, 124, 255, 0.3);
+  color: #4a7cff;
   font-size: 2rem;
   width: 44px;
   height: 44px;
@@ -281,8 +281,8 @@
 }
 
 .lightbox-nav:hover {
-  background: rgba(5, 217, 232, 0.15);
-  box-shadow: 0 0 20px rgba(5, 217, 232, 0.3);
+  background: rgba(74, 124, 255, 0.15);
+  box-shadow: 0 0 20px rgba(74, 124, 255, 0.3);
 }
 
 .lightbox-prev {
@@ -303,8 +303,8 @@
   font-family: 'Orbitron', monospace;
   font-size: 0.9rem;
   letter-spacing: 0.1em;
-  color: #05d9e8;
-  text-shadow: 0 0 8px rgba(5, 217, 232, 0.4);
+  color: #4a7cff;
+  text-shadow: 0 0 8px rgba(74, 124, 255, 0.4);
   margin: 0 0 6px;
 }
 
@@ -318,7 +318,7 @@
 .lightbox-meta {
   font-family: 'Orbitron', monospace;
   font-size: 0.55rem;
-  color: rgba(255, 0, 128, 0.5);
+  color: rgba(255, 143, 94, 0.5);
   letter-spacing: 0.1em;
 }
 
@@ -334,7 +334,7 @@
   display: block;
   font-family: 'Orbitron', monospace;
   font-size: 0.65rem;
-  color: rgba(5, 217, 232, 0.4);
+  color: rgba(74, 124, 255, 0.4);
   letter-spacing: 0.3em;
   font-weight: 700;
 }
@@ -343,7 +343,7 @@
   display: block;
   font-family: 'Orbitron', monospace;
   font-size: 0.5rem;
-  color: rgba(255, 0, 128, 0.3);
+  color: rgba(255, 143, 94, 0.3);
   letter-spacing: 0.2em;
   margin-top: 4px;
 }

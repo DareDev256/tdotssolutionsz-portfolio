@@ -66,9 +66,9 @@ const ERA_ICONS = { origins: VinylIcon, rise: ClapboardIcon, peak: WaveformIcon,
 
 /** Era definitions — each represents a chapter in the production journey */
 export const ERA_DEFS = [
-  { id: 'origins', label: 'THE ORIGINS', range: [2010, 2014], color: '#7700ff', pinnedVideoId: 'L1ECRyART6o' },
-  { id: 'rise', label: 'THE RISE', range: [2015, 2017], color: '#ff2a6d' },
-  { id: 'peak', label: 'NEW ERA', range: [2018, 2020], color: '#05d9e8' },
+  { id: 'origins', label: 'THE ORIGINS', range: [2010, 2014], color: '#3a5fd9', pinnedVideoId: 'L1ECRyART6o' },
+  { id: 'rise', label: 'THE RISE', range: [2015, 2017], color: '#ff8f5e' },
+  { id: 'peak', label: 'NEW ERA', range: [2018, 2020], color: '#4a7cff' },
   { id: 'modern', label: 'NEW WAVE', range: [2021, 2026], color: '#00ff88' },
 ]
 

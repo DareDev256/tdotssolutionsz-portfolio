@@ -23,9 +23,9 @@ export function ProceduralNebula({
         uScrollOffset: { value: 0 },
         uIntensity: { value: intensity },
         uColor1: { value: new THREE.Color('#1a0a2e') },  // Deep purple
-        uColor2: { value: new THREE.Color('#ff2a6d') },  // Neon pink
-        uColor3: { value: new THREE.Color('#05d9e8') },  // Cyan
-        uColor4: { value: new THREE.Color('#7700ff') },  // Violet
+        uColor2: { value: new THREE.Color('#ff8f5e') },  // Neon pink
+        uColor3: { value: new THREE.Color('#4a7cff') },  // Cyan
+        uColor4: { value: new THREE.Color('#3a5fd9') },  // Violet
       },
       vertexShader: `
         varying vec2 vUv;

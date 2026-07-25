@@ -21,14 +21,14 @@ import './TopHits.css'
 /** Neon accent colors cycling through the synthwave palette per rank */
 const RANK_COLORS = [
   '#ffcc00', // #1 — Gold
-  '#ff2a6d', // #2 — Neon pink
-  '#05d9e8', // #3 — Neon cyan
-  '#d300c5', // #4 — Neon purple
+  '#ff8f5e', // #2 — Neon pink
+  '#4a7cff', // #3 — Neon cyan
+  '#e85d34', // #4 — Neon purple
   '#ff6b35', // #5 — Neon orange
   '#00ff88', // #6 — Neon green
-  '#7700ff', // #7 — Neon blue
-  '#ff2a6d', // #8 — Pink
-  '#05d9e8', // #9 — Cyan
+  '#3a5fd9', // #7 — Neon blue
+  '#ff8f5e', // #8 — Pink
+  '#4a7cff', // #9 — Cyan
   '#ffcc00', // #10 — Gold
 ]
 

@@ -35,7 +35,7 @@ export function createSoftCircleTexture(size = 64, color = '#ffffff') {
  * @param {string} color - Hex color (default cyan)
  * @returns {THREE.CanvasTexture}
  */
-export function createHexBokehTexture(size = 64, color = '#05d9e8') {
+export function createHexBokehTexture(size = 64, color = '#4a7cff') {
   const canvas = document.createElement('canvas');
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext('2d');

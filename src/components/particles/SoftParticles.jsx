@@ -7,9 +7,9 @@ import { createAtmosphericMaterial } from '../../utils/shaderFactory';
 
 // Color palette
 const PARTICLE_COLORS = [
-  '#ff2a6d', // pink
-  '#05d9e8', // cyan
-  '#d300c5', // purple
+  '#ff8f5e', // pink
+  '#4a7cff', // cyan
+  '#e85d34', // purple
   '#ff6b35', // orange
 ];
 

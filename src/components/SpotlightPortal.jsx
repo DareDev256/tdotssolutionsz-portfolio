@@ -13,7 +13,7 @@ import * as THREE from 'three'
 
 const RING_COUNT = 2
 const PARTICLE_COUNT = 40
-const NEON_PALETTE = ['#ff2a6d', '#05d9e8', '#d300c5', '#7700ff']
+const NEON_PALETTE = ['#ff8f5e', '#4a7cff', '#e85d34', '#3a5fd9']
 
 /** Rotating neon ring pair that frames the viewport */
 function PortalRings({ color, reducedMotion }) {

@@ -82,7 +82,7 @@ describe('VideoSpotlight — diverseShuffle sliding-window logic', () => {
 })
 
 describe('SpotlightPortal — color cycling', () => {
-  const NEON_PALETTE = ['#ff2a6d', '#05d9e8', '#d300c5', '#7700ff']
+  const NEON_PALETTE = ['#ff8f5e', '#4a7cff', '#e85d34', '#3a5fd9']
 
   it('colorIndex maps to NEON_PALETTE via modulo', () => {
     for (let i = 0; i < 20; i++) {

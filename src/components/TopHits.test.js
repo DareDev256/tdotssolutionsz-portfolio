@@ -122,8 +122,8 @@ describe('TopHits — data integrity', () => {
   it('rank colors array has exactly 10 entries', () => {
     // Validates the RANK_COLORS constant matches the top 10 count
     const RANK_COLORS = [
-      '#ffcc00', '#ff2a6d', '#05d9e8', '#d300c5', '#ff6b35',
-      '#00ff88', '#7700ff', '#ff2a6d', '#05d9e8', '#ffcc00',
+      '#ffcc00', '#ff8f5e', '#4a7cff', '#e85d34', '#ff6b35',
+      '#00ff88', '#3a5fd9', '#ff8f5e', '#4a7cff', '#ffcc00',
     ]
     expect(RANK_COLORS).toHaveLength(10)
     RANK_COLORS.forEach(color => {
