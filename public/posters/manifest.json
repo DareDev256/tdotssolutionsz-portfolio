@@ -1,24 +1,28 @@
 {
  "generated": 101,
  "ok": [
+  "9hRUzEGfW7o",
   "EmrpNsyVtDQ",
+  "Xedv19NEX-E",
+  "8p4i1b5IW2k",
   "u3O5PKN9vCQ",
   "E7ZStZMn-ac",
   "L1ECRyART6o",
   "gOid4x6kpAk",
   "B28ZQ0l2loc",
-  "d5ganmZS6aY",
   "rFoNntvuQA8",
   "pPVPBMPShkQ",
   "kgIISZzhQBE",
   "7MZ3YfQPZrs",
   "FkVtdPrgtsU",
   "AKuI1b-o69M",
+  "cUnESoCRPsw",
   "_ijbOhWdGHQ",
   "L75mTYXcRHw",
   "gwXOTijyua4",
   "0l5xIst3VME",
   "Jp9BsyBZJz4",
+  "_ermU7tanb4",
   "s6aNn4UWPV0",
   "xLxMS9K4g-Y",
   "yhpVsvjnBEU",
@@ -26,7 +30,6 @@
   "QUqHboPhea8",
   "X8zj9clGQO4",
   "NbJnT5j365M",
-  "82_xVuYR45c",
   "HueUBufXMbs",
   "iiYmh9-D_14",
   "z2BL7wgPsaI",
@@ -46,6 +49,7 @@
   "KJJDYqkUlRk",
   "jttmvMAEriI",
   "3ws47CNzqQM",
+  "wL8JXkxqyJI",
   "sJMGY1k2lBk",
   "6uIeW3GJpjk",
   "woYX-ovFlro",
@@ -61,6 +65,7 @@
   "2qPhvy5G3N8",
   "t-YqhrUi66I",
   "MWfvb1wjWe0",
+  "QW2UM8ggxSo",
   "NdHBiO024hY",
   "4kC6wYSyfQY",
   "hlmkyakpOyc",
@@ -81,43 +86,38 @@
   "l0kNVJaF5as",
   "XUgWB1Rl638",
   "62HLNuAGBv0",
-  "uHMelzjjBOg",
   "4En8HNY6Z9I",
   "KnRl27ZuSuk",
   "aJ70-2vEGYs",
   "vrVYG0twJtw",
-  "m5EtDEfS0zM",
   "p4Zz57ahuYA",
   "LfUtxs8uJJs",
   "YktjZEivGKI",
   "eND_IlhIG2k",
   "OsVQ2gAT6sU",
   "0Lx6a3c2YEg",
-  "HAYu3ktkcyk",
-  "9hRUzEGfW7o",
-  "Xedv19NEX-E",
-  "8p4i1b5IW2k"
+  "HAYu3ktkcyk"
  ],
  "failed": [
   {
-   "id": "cUnESoCRPsw",
-   "reason": "Command failed: yt-dlp -f bestvideo[height<=720][ext=mp4]/bestvideo[height<=720]/best[height<=720] --download-sections *71-116 --force-keyframes-at-cuts --no-playlist --quiet --no-warnings -o /Users/t./Documents/Projects/tdotssolutionsz.com/.poster-tmp/cUnESoCRPsw.mp4 https://www.youtube.com/watch?v=cUnESoCRPsw\n\n\nERROR: ffmpeg exited with code 8\n"
+   "id": "d5ganmZS6aY",
+   "reason": "Command failed: yt-dlp -f bestvideo[height<=720][ext=mp4]/bestvideo[height<=720]/best[height<=720] --download-sections *65-110 --force-keyframes-at-cuts --no-playlist --quiet --no-warnings -o /Users/t./Documents/Projects/tdotssolutionsz.com/.poster-tmp/d5ganmZS6aY.mp4 https://www.youtube.com/watch?v=d5ganmZS6aY\n\n\nERROR: ffmpeg exited with code 8\n"
   },
   {
-   "id": "_ermU7tanb4",
-   "reason": "Command failed: yt-dlp -f bestvideo[height<=720][ext=mp4]/bestvideo[height<=720]/best[height<=720] --download-sections *72-117 --force-keyframes-at-cuts --no-playlist --quiet --no-warnings -o /Users/t./Documents/Projects/tdotssolutionsz.com/.poster-tmp/_ermU7tanb4.mp4 https://www.youtube.com/watch?v=_ermU7tanb4\n\n\nERROR: ffmpeg exited with code 8\n"
-  },
-  {
-   "id": "wL8JXkxqyJI",
-   "reason": "Command failed: yt-dlp -f bestvideo[height<=720][ext=mp4]/bestvideo[height<=720]/best[height<=720] --download-sections *76-121 --force-keyframes-at-cuts --no-playlist --quiet --no-warnings -o /Users/t./Documents/Projects/tdotssolutionsz.com/.poster-tmp/wL8JXkxqyJI.mp4 https://www.youtube.com/watch?v=wL8JXkxqyJI\n\n\nERROR: ffmpeg exited with code 8\n"
+   "id": "82_xVuYR45c",
+   "reason": "no usable frame (best luma 31, best spread 45)"
   },
   {
    "id": "kOrg9v-pL1I",
    "reason": "no duration (private/removed?)"
   },
   {
-   "id": "QW2UM8ggxSo",
-   "reason": "Command failed: yt-dlp -f bestvideo[height<=720][ext=mp4]/bestvideo[height<=720]/best[height<=720] --download-sections *153-198 --force-keyframes-at-cuts --no-playlist --quiet --no-warnings -o /Users/t./Documents/Projects/tdotssolutionsz.com/.poster-tmp/QW2UM8ggxSo.mp4 https://www.youtube.com/watch?v=QW2UM8ggxSo\n\n\nERROR: ffmpeg exited with code 8\n"
+   "id": "uHMelzjjBOg",
+   "reason": "Command failed: yt-dlp -f bestvideo[height<=720][ext=mp4]/bestvideo[height<=720]/best[height<=720] --download-sections *52-97 --force-keyframes-at-cuts --no-playlist --quiet --no-warnings -o /Users/t./Documents/Projects/tdotssolutionsz.com/.poster-tmp/uHMelzjjBOg.mp4 https://www.youtube.com/watch?v=uHMelzjjBOg\n\n\nERROR: ffmpeg exited with code 8\n"
+  },
+  {
+   "id": "m5EtDEfS0zM",
+   "reason": "Command failed: yt-dlp -f bestvideo[height<=720][ext=mp4]/bestvideo[height<=720]/best[height<=720] --download-sections *89-134 --force-keyframes-at-cuts --no-playlist --quiet --no-warnings -o /Users/t./Documents/Projects/tdotssolutionsz.com/.poster-tmp/m5EtDEfS0zM.mp4 https://www.youtube.com/watch?v=m5EtDEfS0zM\n\n\nERROR: ffmpeg exited with code 8\n"
   }
  ]
 }

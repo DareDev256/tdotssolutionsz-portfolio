@@ -27,17 +27,22 @@ const WEB_PROJECTS = [
   {
     name: 'KMONEY', type: 'Artist Platform',
     url: 'https://officialkmoney.com', preview: '/sites/kmoney-preview.jpg', icon: null,
-    layout: { width: 400, height: 280, top: '10%', left: '7%' },
+    layout: { width: 380, height: 266, top: '9%', left: '5%' },
+  },
+  {
+    name: 'SAVV4X', type: 'Artist Platform',
+    url: 'https://savv4x.com', preview: '/sites/savv-preview.jpg', icon: null,
+    layout: { width: 330, height: 231, top: '11%', right: '5%' },
+  },
+  {
+    name: 'SyrenEffect', type: 'Creator Site',
+    url: 'https://syreneffect.com', preview: '/sites/syren-preview.jpg', icon: null,
+    layout: { width: 300, height: 210, top: '63%', left: '7%' },
   },
   {
     name: '100BandPlan', type: 'Artist Platform',
     url: 'https://100bandplan.com', preview: '/sites/100bandplan-preview.jpg', icon: null,
-    layout: { width: 360, height: 250, top: '52%', right: '7%' },
-  },
-  {
-    name: 'NirvanaDeshaun', type: 'Business Site',
-    url: 'https://nirvanadeshaunbuilds.com', preview: '/sites/nirvana-preview.jpg', icon: null,
-    layout: { width: 320, height: 225, top: '62%', left: '5%' },
+    layout: { width: 340, height: 238, top: '58%', right: '6%' },
   },
 ]
 
