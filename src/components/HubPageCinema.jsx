@@ -1,12 +1,14 @@
-import { useEffect, useRef, useCallback, useMemo } from 'react'
+import { useEffect, useRef, useCallback, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { VIDEOS, PORTFOLIO_STATS } from '../utils/videoData'
 import { topByViews } from '../utils/videoFilters'
-import { getThumbnailUrl } from '../utils/youtube'
 import { formatViews } from '../utils/formatters'
 import './HubPageCinema.css'
+import ScrambleText from './ScrambleText'
+import FilmStill from './FilmStill'
+import useCountUp from '../hooks/useCountUp'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -16,6 +18,26 @@ const WEB_PROJECTS = [
   { name: 'KMONEY', type: 'Artist Platform', url: 'https://officialkmoney.com', preview: '/sites/kmoney-preview.jpg', icon: null },
   { name: '100BandPlan', type: 'Artist Platform', url: 'https://100bandplan.com', preview: '/sites/100bandplan-preview.jpg', icon: null },
 ]
+
+/**
+ * Animated stat — counts up once the hero settles. The numbers are the
+ * portfolio's only hard proof, so they should arrive rather than just sit there.
+ */
+function CountStat({ value, suffix = '', decimals = 0, trigger }) {
+  // useCountUp rounds to an integer, so a target of 25.3 lands on 25. Count in
+  // tenths and scale back down to keep the decimal.
+  const factor = 10 ** decimals
+  const n = useCountUp(Math.round(value * factor), 1800, trigger)
+  const shown = n / factor
+  return (
+    <>
+      {decimals
+        ? shown.toFixed(decimals)
+        : shown.toLocaleString()}
+      {suffix}
+    </>
+  )
+}
 
 function splitIntoLetters(text) {
   return text.split('').map((char, i) => (
@@ -30,7 +52,7 @@ function splitIntoLetters(text) {
 // — no shadowBlur, no source-atop composite, no per-frame canvas state changes.
 function bakeLogoSprite(logoImg, glowColor) {
   const SIZE = 128             // canvas (extra room for glow halo)
-  const LOGO = 88              // inverted-logo size centered inside
+  const LOGO = 88              // logo size centered inside
   const off = document.createElement('canvas')
   off.width = SIZE; off.height = SIZE
   const ctx = off.getContext('2d')
@@ -43,8 +65,9 @@ function bakeLogoSprite(logoImg, glowColor) {
   ctx.fillStyle = grad
   ctx.fillRect(0, 0, SIZE, SIZE)
 
-  // White-inverted logo on top.
-  ctx.filter = 'invert(1) brightness(1.4)'
+  // Logo on top. logo.png is white artwork on transparency as of v5.11, so it
+  // no longer needs inverting — brightness alone keeps the particle hot.
+  ctx.filter = 'brightness(1.4)'
   ctx.drawImage(logoImg, cx - LOGO / 2, cy - LOGO / 2, LOGO, LOGO)
   ctx.filter = 'none'
   return off
@@ -326,6 +349,14 @@ export default function HubPageCinema() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Hold the count-up until the hero intro has landed, so the numbers arrive
+  // as a beat of their own rather than competing with the wordmark reveal.
+  const [statsIn, setStatsIn] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setStatsIn(true), 1200)
+    return () => clearTimeout(t)
+  }, [])
+
   // Scene dots
   const sceneBreaks = useMemo(() => [0, 0.25, 0.55, 0.85], [])
 
@@ -351,23 +382,22 @@ export default function HubPageCinema() {
             <source src="/videos/seedance/scene1-cn-tower.webm" type="video/webm" />
             <source src="/videos/seedance/scene1-cn-tower.mp4" type="video/mp4" />
           </video>
-          <div className="cinema-corner-mask" aria-hidden="true" />
           <div className="cinema-video-overlay" style={{ background: 'linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.7))' }} />
 
           <div className="cinema-hero-text">
-            <p className="cinema-hero-label">Toronto — Creative Production</p>
+            <ScrambleText as="p" className="cinema-hero-label" text="TORONTO · 2012 — PRESENT" />
             <h1 className="cinema-hero-title">
               <span className="cinema-line-1">{splitIntoLetters('TDOTS')}</span>
               <span className="cinema-line-2">{splitIntoLetters('SOLUTIONSZ')}</span>
             </h1>
             <img src="/logo.png" alt="TdotsSolutionsz" className="cinema-hero-logo" />
-            <p className="cinema-hero-sub">Music Video Direction &bull; Web Design &bull; Visual Storytelling</p>
+            <p className="cinema-hero-sub">We were rolling before the city had a sound.</p>
             <div className="cinema-hero-stats">
-              <span>{PORTFOLIO_STATS.totalVideos} Videos</span>
+              <span><b><CountStat value={PORTFOLIO_STATS.totalVideos} trigger={statsIn} /></b> Films</span>
               <span className="cinema-stat-dot">&bull;</span>
-              <span>{PORTFOLIO_STATS.totalArtists} Artists</span>
+              <span><b><CountStat value={PORTFOLIO_STATS.totalArtists} trigger={statsIn} /></b> Artists</span>
               <span className="cinema-stat-dot">&bull;</span>
-              <span>{formatViews(PORTFOLIO_STATS.totalViews)} Views</span>
+              <span><b><CountStat value={PORTFOLIO_STATS.totalViews / 1_000_000} decimals={1} suffix="M" trigger={statsIn} /></b> Plays</span>
             </div>
           </div>
           <div className="cinema-scroll-cue">SCROLL</div>
@@ -386,10 +416,13 @@ export default function HubPageCinema() {
             <source src="/videos/seedance/scene2-videos.webm" type="video/webm" />
             <source src="/videos/seedance/scene2-videos.mp4" type="video/mp4" />
           </video>
-          <div className="cinema-corner-mask" aria-hidden="true" />
           <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.3),rgba(0,0,0,0.7))' }} />
 
-          <p className="cinema-s2-sub">{PORTFOLIO_STATS.totalVideos} VIDEOS &bull; {PORTFOLIO_STATS.totalArtists} ARTISTS &bull; {formatViews(PORTFOLIO_STATS.totalViews)} VIEWS</p>
+          <ScrambleText
+            as="p"
+            className="cinema-s2-sub"
+            text={`${PORTFOLIO_STATS.totalVideos} FILMS · ${PORTFOLIO_STATS.totalArtists} ARTISTS · ${formatViews(PORTFOLIO_STATS.totalViews)} PLAYS · ONE CITY`}
+          />
           <h2 className="cinema-s2-title cinema-section-title">
             <span className="cinema-line-1">{splitIntoLetters('Music')}</span>
             <span className="cinema-line-2">{splitIntoLetters('Videos')}</span>
@@ -404,7 +437,7 @@ export default function HubPageCinema() {
                 left: [8, undefined, 12, undefined, 3, undefined][i] != null ? `${[8, 0, 12, 0, 3, 0][i]}%` : undefined,
                 right: [undefined, 5, undefined, 18, undefined, 10][i] != null ? `${[0, 5, 0, 18, 0, 10][i]}%` : undefined,
               }}>
-                <img src={getThumbnailUrl(video.youtubeId, 'hqdefault')} alt={video.title} className="cinema-frame-img" loading="lazy" />
+                <FilmStill videoId={video.youtubeId} alt={video.title} className="cinema-frame-img" />
                 <div className="cinema-frame-label">
                   {video.title}
                   <span>{video.artist} &bull; {formatViews(video.viewCount)} views</span>
@@ -431,10 +464,9 @@ export default function HubPageCinema() {
             <source src="/videos/seedance/scene3-webdesign.webm" type="video/webm" />
             <source src="/videos/seedance/scene3-webdesign.mp4" type="video/mp4" />
           </video>
-          <div className="cinema-corner-mask" aria-hidden="true" />
           <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 60% 50%,rgba(0,0,0,0.3),rgba(0,0,0,0.7))' }} />
 
-          <p className="cinema-s3-sub">SITES &bull; BRANDS &bull; DIGITAL EXPERIENCES</p>
+          <ScrambleText as="p" className="cinema-s3-sub" text="SHIPPED · NOT MOCKED UP · LIVE IN PRODUCTION" />
           <h2 className="cinema-s3-title cinema-section-title">
             <span className="cinema-line-1">{splitIntoLetters('Web')}</span>
             <span className="cinema-line-2">{splitIntoLetters('Design')}</span>
@@ -482,13 +514,12 @@ export default function HubPageCinema() {
             <source src="/videos/seedance/scene4-toronto-twilight.webm" type="video/webm" />
             <source src="/videos/seedance/scene4-toronto-twilight.mp4" type="video/mp4" />
           </video>
-          <div className="cinema-corner-mask" aria-hidden="true" />
           <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.4),rgba(0,0,0,0.8))' }} />
 
-          <p className="cinema-s4-label">LET'S WORK</p>
+          <ScrambleText as="p" className="cinema-s4-label" text="LET'S WORK" />
           <h2 className="cinema-s4-title">Book a<br />Session</h2>
-          <p className="cinema-s4-sub">Ready to bring your vision to life?<br />Let's create something unforgettable.</p>
-          <a href="mailto:info@tdotssolutionsz.com?subject=Project%20Inquiry&body=Hey%20James%2C%0A%0AI%27m%20interested%20in%20working%20together.%0A%0A" className="cinema-cta-btn">
+          <p className="cinema-s4-sub">Bring the record.<br />We&rsquo;ll bring the camera, the crew,<br />and the site it lives on.</p>
+          <a href="mailto:dev@jamesdare.com?subject=Project%20Inquiry&body=Hey%20James%2C%0A%0AI%27m%20interested%20in%20working%20together.%0A%0A" className="cinema-cta-btn">
             GET STARTED <span>&rarr;</span>
           </a>
           <footer className="cinema-footer">

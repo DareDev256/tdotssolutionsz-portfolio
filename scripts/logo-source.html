@@ -1,0 +1,93 @@
+<!doctype html>
+<!--
+  logo-source.html — Source for public/logo.png.
+
+  The shipped logo.png was cropped: its canvas cut the leading "TD" and the
+  trailing "S", so it rendered as "OTS / OLUTIONSZ" at every size on the live
+  site, including the hero watermark. The mark itself is fine — a crosshair
+  reticle, per old-site/logo.svg — so this rebuilds the same lockup complete,
+  with the arms stopping clear of the wordmark the way the original did.
+
+  Authored at 900x900 native (no transform) so the capture needs no correction.
+  Rendered white-on-black, then keyed to alpha by luminance — exact for white
+  artwork on black, so edges stay clean with no halo.
+
+  Regenerate: node scripts/build-logo.mjs
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 900px; height: 900px;
+      background: #000;
+      overflow: hidden;
+      /* Must be positioned: .lockup uses inset:0, and without this it resolves
+         against the viewport (1440 wide) instead of the 900px canvas, throwing
+         the artwork off-centre in the capture. */
+      position: relative;
+    }
+    .lockup {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    /* Reticle. Arms stop 200px short of centre so the wordmark sits in clear
+       air — the original SVG had the same generous gap. */
+    .reticle { position: absolute; inset: 90px; }
+    .reticle i { position: absolute; background: #fff; border-radius: 4px; }
+    .arm-t { top: 0;    left: 50%; width: 7px; height: 128px; transform: translateX(-50%); }
+    .arm-b { bottom: 0; left: 50%; width: 7px; height: 128px; transform: translateX(-50%); }
+    .arm-l { left: 0;   top: 50%;  height: 7px; width: 128px; transform: translateY(-50%); }
+    .arm-r { right: 0;  top: 50%;  height: 7px; width: 128px; transform: translateY(-50%); }
+
+    .ring {
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 470px; height: 470px;
+      transform: translate(-50%, -50%);
+      border: 6px solid rgba(255, 255, 255, 0.34);
+      border-radius: 50%;
+    }
+
+    .word {
+      position: relative;
+      text-align: center;
+      font-family: 'Archivo', sans-serif;
+      color: #fff;
+      line-height: 0.9;
+    }
+    .word b {
+      display: block;
+      font-weight: 900;
+      font-size: 108px;
+      letter-spacing: -0.035em;
+    }
+    .word s {
+      display: block;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 52px;
+      letter-spacing: 0.055em;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="lockup">
+    <div class="reticle">
+      <i class="arm-t"></i><i class="arm-b"></i><i class="arm-l"></i><i class="arm-r"></i>
+      <div class="ring"></div>
+    </div>
+    <div class="word">
+      <b>TDOTS</b>
+      <s>SOLUTIONSZ</s>
+    </div>
+  </div>
+</body>
+</html>

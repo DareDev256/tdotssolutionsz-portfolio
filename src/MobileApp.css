@@ -57,17 +57,17 @@
 .mobile-logo {
     height: 80px;
     width: auto;
-    filter: invert(1) brightness(1.5) drop-shadow(0 0 14px rgba(74, 124, 255, 0.7));
+    filter: brightness(1.5) drop-shadow(0 0 14px rgba(74, 124, 255, 0.7));
     animation: logo-glow 2s ease-in-out infinite alternate;
     margin-bottom: 4px;
 }
 
 @keyframes logo-glow {
     from {
-        filter: invert(1) brightness(1.5) drop-shadow(0 0 10px rgba(74, 124, 255, 0.5));
+        filter: brightness(1.5) drop-shadow(0 0 10px rgba(74, 124, 255, 0.5));
     }
     to {
-        filter: invert(1) brightness(1.5) drop-shadow(0 0 22px rgba(74, 124, 255, 0.9));
+        filter: brightness(1.5) drop-shadow(0 0 22px rgba(74, 124, 255, 0.9));
     }
 }
 

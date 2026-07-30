@@ -30,7 +30,9 @@ import {
     ALL_VIDEOS,
     compactViews
 } from '../../data/studio'
+import { VillageProvider, useVillage, Slate, Frame, Scope } from './VideoVillage'
 import './StudioHome.css'
+import './VideoVillage.css'
 
 /** YouTube serves several thumbnail sizes; the 320px one is enough for the hero wall. */
 const smallThumb = (url) => (url || '').replace('maxresdefault', 'mqdefault')
@@ -196,6 +198,7 @@ function Ledger() {
  * @param {{video: any, lead?: boolean}} props
  */
 function ScrubFrame({ video, lead = false }) {
+    const { sound, claimScope } = useVillage()
     const wrapRef = useRef(null)
     const videoRef = useRef(null)
     const idleRef = useRef(null)
@@ -248,7 +251,14 @@ function ScrubFrame({ video, lead = false }) {
         setReady(false)
         setArmed(false)
         setProgress(0)
+        claimScope(null)
     }
+
+    // The SOUND ON arm is global, so a clip already playing has to follow it.
+    useEffect(() => {
+        const el = videoRef.current
+        if (el) el.muted = !sound
+    }, [sound, ready])
 
     // Keep playback progress in the rail while the clip runs on its own.
     useEffect(() => {
@@ -283,14 +293,18 @@ function ScrubFrame({ video, lead = false }) {
                     ref={videoRef}
                     className="v6-film__clip"
                     muted
+                    crossOrigin="anonymous"
                     loop
                     playsInline
                     preload="auto"
                     aria-hidden="true"
                     tabIndex={-1}
                     onCanPlay={(e) => {
+                        const el = e.currentTarget
                         setReady(true)
-                        e.currentTarget.play?.().catch(() => {})
+                        el.muted = !sound
+                        claimScope(el)
+                        el.play?.().catch(() => {})
                     }}
                     onError={() => setArmed(false)}
                 >
@@ -319,13 +333,61 @@ function ScrubFrame({ video, lead = false }) {
     )
 }
 
+/**
+ * Threshold — the entry ritual.
+ *
+ * Every one of James's client sites makes you cross something before it hands
+ * over content: "SCROLL TO ENTER" on KMONEY, "ENTER" on Syren Effect. This is
+ * the studio's version — ROLL arms the take (REC on the slate) and the sound,
+ * then runs you into the reel.
+ *
+ * Deliberately NOT a hard gate. The whole page stays scrollable, crawlable and
+ * keyboard-reachable whether or not you press it; the ritual is an affordance,
+ * not a paywall. A modal gate would cost more in reach than it buys in mood.
+ */
+function Threshold() {
+    const { entered, enter, sound, toggleSound } = useVillage()
+
+    const roll = () => {
+        enter()
+        if (!sound) toggleSound()
+        document.getElementById('film')?.scrollIntoView({
+            behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+                ? 'auto'
+                : 'smooth'
+        })
+    }
+
+    return (
+        <div className="v6-hero__actions">
+            <button type="button" className="vv-roll" onClick={roll}>
+                <span className="vv-roll__dot" aria-hidden="true" />
+                <span className="vv-roll__label">
+                    {entered ? 'Rolling' : 'Roll to enter'}
+                </span>
+                <span className="vv-roll__sub" aria-hidden="true">
+                    {sound ? '♪ sound on' : '♪ sound off'}
+                </span>
+            </button>
+            <a
+                className="v6-btn v6-btn--ghost"
+                href={CONTACT.booking}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Book a call
+            </a>
+        </div>
+    )
+}
+
 /** Six films, credited, with real view counts. Clicking opens the detail route. */
 function Reel() {
     return (
         <section className="v6-section v6-section--ink" id="film">
             <div className="v6-shell">
                 <Reveal className="v6-head">
-                    <span className="v6-eyebrow">01 — Selected film</span>
+                    <span className="v6-eyebrow">ROLL 01 · SELECTED FILM · SCRUB TO SEEK</span>
                     <h2 className="v6-h2">
                         Thirteen years of<br />
                         <em>Toronto on camera.</em>
@@ -368,7 +430,7 @@ function Pipeline() {
         <section className="v6-section v6-section--paper" id="studio">
             <div className="v6-shell">
                 <Reveal className="v6-head">
-                    <span className="v6-eyebrow">02 — The studio</span>
+                    <span className="v6-eyebrow">ROLL 02 · THE STUDIO · A-CAM</span>
                     <h2 className="v6-h2">
                         Most people need three vendors.<br />
                         <em>This is one.</em>
@@ -396,7 +458,7 @@ function Builds() {
         <section className="v6-section v6-section--ink" id="build">
             <div className="v6-shell">
                 <Reveal className="v6-head">
-                    <span className="v6-eyebrow">03 — Selected build</span>
+                    <span className="v6-eyebrow">ROLL 03 · SELECTED BUILD · SHIPPED</span>
                     <h2 className="v6-h2">
                         Software that runs<br />
                         <em>without us.</em>
@@ -447,7 +509,7 @@ function Roster() {
         <section className="v6-section v6-section--ink v6-section--tight" id="roster">
             <div className="v6-shell">
                 <Reveal className="v6-head v6-head--slim">
-                    <span className="v6-eyebrow">04 — Credits</span>
+                    <span className="v6-eyebrow">ROLL 04 · CREDITS · 53 NAMES</span>
                 </Reveal>
                 <Reveal className="v6-roster">
                     {ROSTER.map((name, i) => (
@@ -468,7 +530,7 @@ function Contact() {
         <section className="v6-section v6-section--paper v6-contact" id="contact">
             <div className="v6-shell">
                 <Reveal className="v6-contact__inner">
-                    <span className="v6-eyebrow">05 — Next</span>
+                    <span className="v6-eyebrow">ROLL 05 · NEXT · CALL SHEET</span>
                     <h2 className="v6-contact__h">
                         Bring the record.<br />
                         We&rsquo;ll bring<br />
@@ -549,6 +611,14 @@ function Nav() {
  * @returns {JSX.Element}
  */
 export default function StudioHome() {
+    return (
+        <VillageProvider>
+            <StudioHomeInner />
+        </VillageProvider>
+    )
+}
+
+function StudioHomeInner() {
     useEffect(() => {
         document.body.classList.add('v6-body')
         return () => document.body.classList.remove('v6-body')
@@ -557,6 +627,11 @@ export default function StudioHome() {
     return (
         <main className="v6" id="top">
             <a className="skip-nav" href="#film">Skip to work</a>
+            <Frame />
+            <Slate
+                reelCount={STATS.films}
+                views={`${(STATS.views / 1_000_000).toFixed(1)}M`}
+            />
             <Nav />
 
             <section className="v6-hero">
@@ -576,25 +651,12 @@ export default function StudioHome() {
                         product — {STATS.films} films for {STATS.artists} artists, and six
                         applications live in production.
                     </p>
-                    <div className="v6-hero__actions">
-                        <a href="#film" className="v6-btn v6-btn--solid">
-                            See the work
-                            <span aria-hidden="true">→</span>
-                        </a>
-                        <a
-                            className="v6-btn v6-btn--ghost"
-                            href={CONTACT.booking}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Book a call
-                        </a>
-                    </div>
+                    <Threshold />
                 </div>
-                <div className="v6-hero__rule" aria-hidden="true">
+                <div className="v6-hero__rule">
                     <span>{STATS.firstYear}—{STATS.lastYear}</span>
+                    <Scope className="vv-scope--rule" />
                     <span>{CONTACT.location}</span>
-                    <span>Scroll</span>
                 </div>
             </section>
 

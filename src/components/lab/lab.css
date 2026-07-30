@@ -1,0 +1,582 @@
+/**
+ * lab.css — styling for the three concept demos.
+ *
+ * Deliberately plain: the demos are being judged on the IDEA, and a heavily
+ * art-directed shell would make it impossible to tell whether a concept works
+ * or whether the chrome is carrying it. Near-black ground, one amber accent,
+ * mono labels, and then get out of the footage's way.
+ */
+
+.lab {
+    --ink: #08080a;
+    --ink-2: #0f0f12;
+    --ink-3: #16161a;
+    --on: #f4f2ee;
+    --on-2: rgba(244, 242, 238, 0.58);
+    --on-3: rgba(244, 242, 238, 0.3);
+    --hair: rgba(244, 242, 238, 0.12);
+    --amber: #ffa51f;
+    --rec: #ff3b14;
+    --mono: 'Space Mono', ui-monospace, monospace;
+    --disp: 'Archivo', 'Inter', sans-serif;
+
+    min-height: 100vh;
+    background: var(--ink);
+    color: var(--on);
+    font-family: 'Inter', sans-serif;
+    padding-bottom: 80px;
+}
+
+body.lab-body { background: #08080a; }
+
+/* ============================ HEAD ============================ */
+.lab-head {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 12px clamp(14px, 3vw, 30px);
+    background: rgba(8, 8, 10, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--hair);
+}
+
+.lab-head__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--on-2);
+}
+
+.lab-head__brand svg { color: var(--amber); }
+.lab-head__brand i { color: var(--amber); font-style: normal; }
+
+.lab-head__tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.lab-tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--on-2);
+    background: transparent;
+    border: 1px solid var(--hair);
+    border-radius: 999px;
+    padding: 9px 16px;
+    cursor: pointer;
+    min-height: 38px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.lab-tab b { color: var(--on-3); margin-right: 4px; }
+.lab-tab:hover { color: var(--on); border-color: rgba(255, 165, 31, 0.4); }
+
+.lab-tab.is-on {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: #08080a;
+}
+
+.lab-tab.is-on b { color: rgba(8, 8, 10, 0.5); }
+
+.lab-sound {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--on-2);
+    background: transparent;
+    border: 1px solid var(--hair);
+    border-radius: 999px;
+    padding: 9px 15px;
+    cursor: pointer;
+    min-height: 38px;
+}
+
+.lab-sound.is-on { background: var(--amber); border-color: var(--amber); color: #08080a; }
+
+/* ============================ INTRO ============================ */
+.lab-intro {
+    padding: clamp(28px, 4vw, 52px) clamp(14px, 3vw, 30px) clamp(20px, 2.5vw, 30px);
+    max-width: 1600px;
+    margin-inline: auto;
+}
+
+.lab-intro h1 {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 14px;
+}
+
+.lab-intro p {
+    max-width: 74ch;
+    color: var(--on-2);
+    line-height: 1.62;
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+}
+
+.lab-intro__stat {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--amber);
+}
+
+.lab-stage {
+    padding-inline: clamp(14px, 3vw, 30px);
+    max-width: 1600px;
+    margin-inline: auto;
+}
+
+.lab-empty {
+    color: var(--on-3);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.lab-empty code { color: var(--amber); }
+
+/* ============================ SHARED BAR ============================ */
+.lab-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.lab-bar--wrap { margin-bottom: 18px; margin-top: 0; }
+.lab-bar__group { display: inline-flex; gap: 5px; flex-wrap: wrap; }
+
+.lab-bar__read {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--on-3);
+}
+
+.lab-btn, .lab-chip {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--on-2);
+    background: var(--ink-2);
+    border: 1px solid var(--hair);
+    border-radius: 999px;
+    padding: 10px 16px;
+    cursor: pointer;
+    min-height: 38px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s, opacity 0.2s;
+}
+
+.lab-chip { padding: 8px 13px; min-height: 34px; }
+
+.lab-btn:hover:not(:disabled), .lab-chip:hover:not(:disabled) {
+    color: var(--on);
+    border-color: rgba(255, 165, 31, 0.45);
+}
+
+.lab-btn:disabled, .lab-chip:disabled { opacity: 0.32; cursor: not-allowed; }
+
+.lab-btn--hot:not(:disabled), .lab-chip.is-on {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: #08080a;
+}
+
+.lab-btn--rec {
+    background: var(--rec);
+    border-color: var(--rec);
+    color: #fff;
+    animation: lab-pulse 1.3s ease-in-out infinite;
+}
+
+@keyframes lab-pulse { 50% { opacity: 0.66; } }
+
+.lab-chip--hue { display: inline-flex; align-items: center; gap: 7px; }
+
+.lab-swatch { width: 9px; height: 9px; border-radius: 2px; display: block; }
+.lab-swatch--red { background: #c0392b; }
+.lab-swatch--amber { background: #d68910; }
+.lab-swatch--green { background: #3f7a4b; }
+.lab-swatch--blue { background: #35618f; }
+.lab-swatch--violet { background: #6c4a86; }
+.lab-swatch--mono { background: #7a7a7a; }
+
+.lab-select {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    color: var(--on-2);
+    background: var(--ink-2);
+    border: 1px solid var(--hair);
+    border-radius: 999px;
+    padding: 10px 14px;
+    min-height: 38px;
+    cursor: pointer;
+}
+
+.lab *:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+/* ============================ 01 RECUT ============================ */
+.lab-recut__stage {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+    border: 1px solid var(--hair);
+}
+
+.lab-recut__deck {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    /* No fade: a dissolve between every shot would read as a slideshow.
+       Hard cuts are the point. */
+}
+
+.lab-recut__deck.is-on { opacity: 1; }
+
+.lab-recut__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: max-content;
+    height: max-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 30px;
+    background: var(--amber);
+    color: #08080a;
+    border: 0;
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lab-recut__playdot {
+    width: 10px; height: 10px; border-radius: 50%; background: #08080a;
+}
+
+.lab-recut__lower {
+    position: absolute;
+    left: 22px;
+    bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
+    pointer-events: none;
+}
+
+.lab-recut__artist {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: clamp(1.2rem, 2.4vw, 2rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.lab-recut__title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.lab-recut__seed {
+    position: absolute;
+    right: 18px;
+    top: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--amber);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 999px;
+}
+
+/* The edit, as a colour strip. Reads as a timeline and as a palette at once. */
+.lab-recut__strip {
+    display: flex;
+    gap: 1px;
+    height: 26px;
+    margin-top: 8px;
+}
+
+.lab-recut__strip i {
+    flex: 1;
+    display: block;
+    opacity: 0.34;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.lab-recut__strip i.is-past { opacity: 0.62; }
+
+.lab-recut__strip i.is-now {
+    opacity: 1;
+    transform: scaleY(1.5);
+    box-shadow: 0 0 0 1px var(--amber) inset;
+}
+
+/* ============================ 02 ARCHIVE ============================ */
+.lab-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(156px, 1fr));
+    gap: 6px;
+}
+
+.lab-tile {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background: var(--ink-3);
+    cursor: pointer;
+    outline-offset: -2px;
+}
+
+.lab-tile img,
+.lab-tile__clip {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.lab-tile img { transition: filter 0.3s, transform 0.5s; filter: saturate(0.88); }
+
+.lab-tile__clip { opacity: 0; transition: opacity 0.25s; }
+.lab-tile__clip.is-on { opacity: 1; }
+
+.lab-tile:hover img { filter: saturate(1.05); }
+
+.lab-tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 2px var(--tint);
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+
+.lab-tile:hover::after { opacity: 0.9; }
+
+.lab-tile__meta {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 16px 8px 6px;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.82));
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+
+.lab-tile:hover .lab-tile__meta { opacity: 1; }
+.lab-tile__meta b { color: #fff; font-weight: 400; }
+.lab-tile__meta i { color: var(--amber); font-style: normal; }
+
+.lab-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(4, 4, 5, 0.94);
+    display: grid;
+    place-items: center;
+    gap: 18px;
+    padding: 5vw;
+    cursor: zoom-out;
+}
+
+.lab-lightbox video {
+    max-width: min(1100px, 92vw);
+    max-height: 68vh;
+    background: #000;
+}
+
+.lab-lightbox__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+}
+
+.lab-lightbox__meta b { font-family: var(--disp); font-size: 1.5rem; letter-spacing: -0.02em; }
+.lab-lightbox__meta span { color: var(--on-2); font-size: 0.9rem; }
+
+.lab-lightbox__tc {
+    font-family: var(--mono);
+    font-size: 10px !important;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber) !important;
+}
+
+.lab-lightbox__x {
+    position: absolute;
+    top: 20px; right: 22px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid var(--hair);
+    color: var(--on);
+    cursor: pointer;
+}
+
+/* ============================ 03 PAD ============================ */
+.lab-pad {
+    display: grid;
+    grid-template-columns: 1fr minmax(300px, 460px);
+    gap: 18px;
+    align-items: start;
+}
+
+.lab-pad__screen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 1px solid var(--hair);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+}
+
+.lab-pad__still { width: 100%; height: 100%; object-fit: cover; }
+
+.lab-pad__now {
+    position: absolute;
+    left: 20px; bottom: 18px;
+    display: flex; flex-direction: column; gap: 3px;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+}
+
+.lab-pad__now b {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: clamp(1.1rem, 2.2vw, 1.8rem);
+    letter-spacing: -0.02em;
+}
+
+.lab-pad__now span {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.lab-pad__idle {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--on-3);
+    text-align: center;
+    line-height: 2;
+}
+
+.lab-pad__idle code { color: var(--amber); font-size: 12px; letter-spacing: 0.2em; }
+
+.lab-pad__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.lab-pad__key {
+    position: relative;
+    aspect-ratio: 1;
+    padding: 0;
+    border: 1px solid var(--hair);
+    background: var(--ink-3);
+    overflow: hidden;
+    cursor: pointer;
+    /* Instant, not eased — a pad that fades has latency you can feel. */
+    transition: transform 0.06s linear, box-shadow 0.12s linear;
+}
+
+.lab-pad__key img,
+.lab-pad__keyvid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.lab-pad__key img { filter: saturate(0.7) brightness(0.62); transition: filter 0.15s; }
+.lab-pad__keyvid { opacity: 0; }
+
+.lab-pad__key.is-lit {
+    transform: scale(0.955);
+    box-shadow: 0 0 0 2px var(--amber) inset, 0 0 26px rgba(255, 165, 31, 0.4);
+}
+
+.lab-pad__key.is-lit img { filter: saturate(1.1) brightness(1); }
+
+.lab-pad__label {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 14px 7px 5px;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.8));
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.lab-pad__label b { color: var(--amber); }
+.lab-pad__label i {
+    color: rgba(255, 255, 255, 0.6);
+    font-style: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .lab-pad { grid-template-columns: 1fr; }
+    .lab-bar__read { margin-left: 0; width: 100%; }
+}

@@ -183,7 +183,8 @@ async function buildOne(video) {
         if (!existsSync(source)) {
             // Cap at 720p — we downscale to 640 anyway, and this keeps the pull fast.
             await run('yt-dlp', [
-                '-f', 'bestvideo[height<=720][ext=mp4]/bestvideo[height<=720]/best[height<=720]',
+                '-f', 'bestvideo[height<=720][ext=mp4]+bestaudio/best[height<=720]',
+                '--merge-output-format', 'mp4',
                 '--no-playlist',
                 '--quiet', '--no-warnings',
                 '-o', source,
@@ -199,13 +200,18 @@ async function buildOne(video) {
         const pre = crop ? `${crop},` : ''
         const start = await pickStart(source, duration, crop)
 
+        // Audio is kept. The player mutes by default (browsers require it for
+        // autoplay) and a global SOUND ON toggle unmutes — the reel then plays
+        // the actual track under the picture. Loudness-normalised so six tiles
+        // mastered a decade apart don't jump in level as you move between them.
         const common = [
             '-y',
             '-ss', String(start),
             '-t', String(CLIP_SECONDS),
             '-i', source,
-            '-an',                                  // silent: these autoplay on hover
             '-vf', `${pre}scale=${WIDTH}:-2:flags=lanczos,fps=24`,
+            '-af', 'loudnorm=I=-18:TP=-1.5:LRA=11,afade=t=in:st=0:d=0.35,' +
+                   `afade=t=out:st=${CLIP_SECONDS - 0.45}:d=0.45`,
             '-movflags', '+faststart'
         ]
 
@@ -213,6 +219,7 @@ async function buildOne(video) {
             ...common,
             '-c:v', 'libvpx-vp9', '-crf', '36', '-b:v', '0', '-row-mt', '1',
             '-deadline', 'good', '-cpu-used', '2',
+            '-c:a', 'libopus', '-b:a', '96k', '-ac', '2',
             webm
         ], { maxBuffer: 1024 * 1024 * 32 })
 
@@ -220,6 +227,7 @@ async function buildOne(video) {
             ...common,
             '-c:v', 'libx264', '-crf', '27', '-preset', 'slow',
             '-pix_fmt', 'yuv420p', '-profile:v', 'main',
+            '-c:a', 'aac', '-b:a', '112k', '-ac', '2',
             mp4
         ], { maxBuffer: 1024 * 1024 * 32 })
 
@@ -236,6 +244,7 @@ async function buildOne(video) {
             '-ss', String(start),
             '-t', String(CLIP_SECONDS),
             '-i', source,
+            '-an',
             '-vf', `${pre}thumbnail=90,scale=1280:-2:flags=lanczos`,
             '-frames:v', '1',
             '-q:v', '3',

@@ -21,10 +21,10 @@ import './index.css'
 /** Boot security monitor — CSP violation logging + runtime integrity checks */
 initSecurityMonitor()
 
-/** v6 studio homepage — evidence-first editorial landing (no Three.js) */
-const StudioHome = lazy(() => import('./components/v6/StudioHome.jsx'))
-/** Previous scroll-cinema hub, kept at /hub-legacy as a one-line rollback */
+/** Hub landing page — the scroll-cinema experience. This is the site. */
 const HubPage = lazy(() => import('./components/HubPageCinema.jsx'))
+/** v6 editorial experiment, parked at /v6 */
+const StudioHome = lazy(() => import('./components/v6/StudioHome.jsx'))
 /** Standalone video detail page — lightweight, shareable, no Three.js */
 const VideoPage = lazy(() => import('./components/VideoPage.jsx'))
 /** Desktop 3D cityscape — lazy-loaded to separate chunk (~1.1MB with Three.js) */
@@ -33,6 +33,8 @@ const App = lazy(() => import('./App.jsx'))
 const MobileApp = lazy(() => import('./MobileApp.jsx'))
 /** White-space card-field tunnel — primary /videos experience as of v5.6.0 */
 const VideoTunnelApp = lazy(() => import('./components/VideoTunnelApp.jsx'))
+/** Shot Lab — three concept demos built from the catalogue's own footage (/lab) */
+const ShotLab = lazy(() => import('./components/lab/ShotLab.jsx'))
 /** Web Design portfolio page */
 const WebDesignPage = lazy(() => import('./components/WebDesignPage.jsx'))
 /** Photography gallery — DO NOT enable until owner explicitly requests it */
@@ -177,12 +179,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <RouteCleanup />
                 <Suspense fallback={<LoadingScreen />}>
                     <Routes>
-                        <Route path="/" element={<StudioHome />} />
-                        <Route path="/hub-legacy" element={<HubPage />} />
+                        <Route path="/" element={<HubPage />} />
+                        {/* v6 editorial experiment — parked, not shipped. Owner
+                            preferred the original hub; kept for reference only. */}
+                        <Route path="/v6" element={<StudioHome />} />
                         <Route path="/video/:youtubeId" element={<VideoPage />} />
                         <Route path="/videos" element={<VideoTunnelApp />} />
                         <Route path="/oldvideopage" element={<VideosRoute />} />
                         <Route path="/web-design" element={<WebDesignPage />} />
+                        <Route path="/lab" element={<ShotLab />} />
                         {/* DO NOT enable /photos route — Photography is Coming Soon */}
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>

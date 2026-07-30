@@ -80,7 +80,7 @@
 .gallery-logo {
   height: 40px;
   width: auto;
-  filter: invert(1) brightness(1.5) drop-shadow(0 0 8px rgba(74, 124, 255, 0.5));
+  filter: brightness(1.5) drop-shadow(0 0 8px rgba(74, 124, 255, 0.5));
 }
 
 .gallery-title {

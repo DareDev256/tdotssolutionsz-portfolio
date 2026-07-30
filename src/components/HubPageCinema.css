@@ -132,7 +132,10 @@
 .cinema-hero-logo {
   height: 140px;
   width: auto;
-  filter: invert(1) brightness(1.2);
+  /* v5.11: logo.png was rebuilt as white artwork on transparency (the old file
+     was dark-on-white AND cropped to "OTS / OLUTIONSZ"). The invert(1) that
+     corrected the old asset now turns the new one black — removed. */
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.55));
   margin-bottom: 16px;
   opacity: 0.95;
 }
@@ -467,29 +470,167 @@
   .cinema-browser:nth-child(n+3) { display: none; }
 }
 
-/* Top-left corner mask — covers any residual delogo ghost on scene videos.
-   Sized small on mobile (phones don't show the residual ghost as much
-   anyway, and a fixed 110px would cover ~28% of a 390px viewport). */
-.cinema-corner-mask {
+/* The top-left corner mask was removed in v5.11. It existed to cover a
+   "residual delogo ghost" on the scene plates; frame-1 extractions of all four
+   current plates show clean corners, so the element was covering nothing and
+   rendering as a dark smudge over open sky. */
+
+/* ============================================================
+   v5.11 FLAVOUR PASS
+   Enhancements to existing elements only — no new sections.
+   ============================================================ */
+
+/* Screen-reader text for ScrambleText's real string (the visible glyph noise
+   is aria-hidden, so the accessible name must come from somewhere). */
+.sr-only {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 110px;
-  height: 70px;
-  z-index: 2;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at top left,
-    rgba(38, 38, 38, 0.95) 0%,
-    rgba(38, 38, 38, 0.7) 55%,
-    rgba(38, 38, 38, 0) 100%
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Tracked labels get a monospace lock so the scramble doesn't reflow the line
+   as glyph widths change — without this the label jitters horizontally. */
+.cinema-hero-label,
+.cinema-s2-sub,
+.cinema-s3-sub,
+.cinema-s4-label {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* The counted numbers carry the proof — give them weight against the labels. */
+.cinema-hero-stats b {
+  font-family: var(--font-display, 'Archivo', sans-serif);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-right: 0.18em;
+}
+
+/* Hero wordmark: a slow specular sweep, as if a light were passing the letters.
+   Masked to the text itself so it never becomes a rectangle crossing the page. */
+.cinema-hero-title {
+  position: relative;
+}
+
+.cinema-hero-title .cinema-letter {
+  background-image: linear-gradient(
+    100deg,
+    #fff 0%, #fff 38%,
+    rgba(255, 255, 255, 0.62) 48%,
+    #fff 58%, #fff 100%
   );
+  background-size: 260% 100%;
+  background-position: 130% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: cinema-sheen 7s ease-in-out infinite;
 }
 
-@media (max-width: 768px) {
-  .cinema-corner-mask { width: 70px; height: 44px; }
+@keyframes cinema-sheen {
+  0%, 62% { background-position: 130% 0; }
+  86%, 100% { background-position: -30% 0; }
 }
 
-@media (max-width: 480px) {
-  .cinema-corner-mask { width: 56px; height: 36px; }
+/* Per-letter lift on hover — the wordmark becomes something you can touch. */
+.cinema-hero-title .cinema-letter {
+  display: inline-block;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 0.32s ease;
+}
+
+.cinema-hero-title:hover .cinema-letter:hover {
+  transform: translateY(-0.06em) scale(1.04);
+  filter: drop-shadow(0 6px 22px rgba(255, 143, 94, 0.42));
+}
+
+/* Floating video frames: real depth on hover instead of a flat image swap. */
+.cinema-frame {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 0.4s ease;
+  will-change: transform;
+}
+
+.cinema-frame:hover {
+  transform: translateY(-8px) scale(1.045);
+  box-shadow:
+    0 26px 60px rgba(0, 0, 0, 0.62),
+    0 0 0 1px rgba(255, 143, 94, 0.5);
+  z-index: 6;
+}
+
+.cinema-frame:hover .cinema-frame-img {
+  filter: saturate(1.12) contrast(1.04);
+}
+
+.cinema-frame-img {
+  transition: filter 0.4s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The label sits over the still; on hover it earns a warm rule above it. */
+.cinema-frame-label {
+  position: relative;
+}
+
+.cinema-frame-label::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  height: 2px;
+  width: 0;
+  background: var(--accent-orange, #e85d34);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cinema-frame:hover .cinema-frame-label::before { width: 100%; }
+
+/* Browser cards on the web-design scene get the same lift, keyed to cobalt so
+   the two scenes stay visually distinct. */
+.cinema-browser {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cinema-browser:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.66),
+    0 0 0 1px rgba(74, 124, 255, 0.55);
+  z-index: 6;
+}
+
+/* CTA gets a travelling highlight so the last thing on the page has a pulse. */
+.cinema-cta-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.cinema-cta-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.26) 50%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.7s ease;
+}
+
+.cinema-cta-btn:hover::after { transform: translateX(100%); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cinema-hero-title .cinema-letter { animation: none; background-image: none; }
+  .cinema-frame:hover,
+  .cinema-browser:hover { transform: none; }
+  .cinema-cta-btn::after { display: none; }
 }
