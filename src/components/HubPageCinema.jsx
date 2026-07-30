@@ -14,9 +14,31 @@ gsap.registerPlugin(ScrollTrigger)
 
 const FEATURED = topByViews(VIDEOS, 8)
 
+/**
+ * Scene 3 browser cards.
+ *
+ * `layout` lives on the entry rather than in positional arrays indexed by `i`.
+ * The previous form was `width: [400, 360][i]` etc., which silently produced
+ * `undefined` width/top/left for any third project — adding one rendered an
+ * unpositioned card. Keeping placement with the data means a new site can be
+ * appended without touching the render.
+ */
 const WEB_PROJECTS = [
-  { name: 'KMONEY', type: 'Artist Platform', url: 'https://officialkmoney.com', preview: '/sites/kmoney-preview.jpg', icon: null },
-  { name: '100BandPlan', type: 'Artist Platform', url: 'https://100bandplan.com', preview: '/sites/100bandplan-preview.jpg', icon: null },
+  {
+    name: 'KMONEY', type: 'Artist Platform',
+    url: 'https://officialkmoney.com', preview: '/sites/kmoney-preview.jpg', icon: null,
+    layout: { width: 400, height: 280, top: '10%', left: '7%' },
+  },
+  {
+    name: '100BandPlan', type: 'Artist Platform',
+    url: 'https://100bandplan.com', preview: '/sites/100bandplan-preview.jpg', icon: null,
+    layout: { width: 360, height: 250, top: '52%', right: '7%' },
+  },
+  {
+    name: 'NirvanaDeshaun', type: 'Business Site',
+    url: 'https://nirvanadeshaunbuilds.com', preview: '/sites/nirvana-preview.jpg', icon: null,
+    layout: { width: 320, height: 225, top: '62%', left: '5%' },
+  },
 ]
 
 /**
@@ -475,10 +497,11 @@ export default function HubPageCinema() {
           <div className="cinema-browsers">
             {WEB_PROJECTS.map((project, i) => (
               <a key={project.name} href={project.url} target="_blank" rel="noopener noreferrer" className="cinema-browser" style={{
-                width: [400, 360][i], height: [280, 250][i],
-                top: ['12%', '55%'][i],
-                left: i === 0 ? '8%' : undefined,
-                right: i === 1 ? '8%' : undefined,
+                width: project.layout.width,
+                height: project.layout.height,
+                top: project.layout.top,
+                left: project.layout.left,
+                right: project.layout.right,
               }}>
                 <div className="cinema-browser-chrome">
                   <div className="cinema-browser-dot" style={{ background: '#ff5f57' }} />

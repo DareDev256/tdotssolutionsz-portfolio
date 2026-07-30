@@ -51,6 +51,16 @@ const SITES = [
     tech: ['Next.js', 'React', 'Cloudflare'],
   },
   {
+    id: 'nirvanadeshaun',
+    name: 'NirvanaDeshaun',
+    type: 'Business Site',
+    url: 'https://nirvanadeshaunbuilds.com',
+    icon: '/sites/nirvana-icon.svg',
+    preview: '/sites/nirvana-preview.jpg',
+    description: 'Custom home builder in Metro Atlanta — editorial serif identity, full-bleed build photography, project enquiry funnel.',
+    tech: ['React', 'Vite', 'Vercel'],
+  },
+  {
     id: 'frenchies',
     name: 'MustHaveFrenchies',
     type: 'Business Site',
