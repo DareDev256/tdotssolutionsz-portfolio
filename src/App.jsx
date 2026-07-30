@@ -42,13 +42,14 @@ import { Cityscape, CNTower } from './components/3d/scene'
 
 // Shared data & utilities (single source of truth with MobileApp)
 import { NEON_COLORS, LANE_CONFIG, processVideosIntoLanes, isDeceasedArtist, ALL_ARTISTS } from './utils/videoData'
-import { extractVideoId, getThumbnailUrl } from './utils/youtube'
+import { extractVideoId } from './utils/youtube'
 import useVideoDeepLink from './hooks/useVideoDeepLink'
 import useVideoNavigation from './hooks/useVideoNavigation'
 import useShufflePlay from './hooks/useShufflePlay'
 import useClosingGuard from './hooks/useClosingGuard'
 import useKeyboardShortcuts from './hooks/useKeyboardShortcuts'
 import { getVolumeFromDistance, AUDIO_SILENCE_DISTANCE, AUDIO_MAX_VOLUME, AUDIO_UPDATE_INTERVAL, AUDIO_VOLUME_EPSILON } from './utils/audioAttenuation'
+import { loadFilmTexture } from './utils/filmTexture'
 
 const LANES = processVideosIntoLanes()
 
@@ -107,16 +108,10 @@ const BillboardFrame = ({ project, isActive }) => {
     // Extract video ID for thumbnail URL
     const videoId = useMemo(() => extractVideoId(url), [url])
 
-    // YouTube thumbnail URL (hqdefault is always available)
-    const thumbnailUrl = getThumbnailUrl(videoId)
-
-    // Load YouTube thumbnail as texture
-    const texture = useMemo(() => {
-        const loader = new THREE.TextureLoader()
-        const tex = loader.load(thumbnailUrl)
+    // Card texture — our own extracted frame first, YouTube as fallback.
+    const texture = useMemo(() => loadFilmTexture(THREE, videoId, (tex) => {
         tex.colorSpace = THREE.SRGBColorSpace
-        return tex
-    }, [thumbnailUrl])
+    }), [videoId])
 
     return (
         <group position={position}>

@@ -1,4 +1,4 @@
-# TdotsSolutionsz — Toronto's Hip-Hop Visual Engine
+# TdotsSolutionsz — Toronto Creative Production & Software
 
 ```
  ████████╗██████╗  ██████╗ ████████╗███████╗
@@ -8,25 +8,28 @@
     ██║   ██████╔╝╚██████╔╝   ██║   ███████║
     ╚═╝   ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝
     S O L U T I O N S Z  ·  T O R O N T O
-    ─── music video production since 2010 ───
+  ─ we direct the film · we build the machine ─
 ```
 
 [![Live Site](https://img.shields.io/badge/LIVE-tdotssolutionsz.com-ff6ec7?style=for-the-badge&logo=vercel&logoColor=white)](https://tdotssolutionsz.com)
 [![Catalog](https://img.shields.io/badge/101_VIDEOS-54_ARTISTS-00ffff?style=for-the-badge)](https://tdotssolutionsz.com/videos)
 [![Views](https://img.shields.io/badge/25.3M+-TOTAL_VIEWS-ff00ff?style=for-the-badge)](https://tdotssolutionsz.com)
 [![Tests](https://img.shields.io/badge/710_TESTS-49_SUITES-00ff41?style=for-the-badge)](.)
-[![Version](https://img.shields.io/badge/v4.2.0-editorial-4a7cff?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/v6.0.0-studio-ff3b14?style=for-the-badge)](CHANGELOG.md)
 [![Security](https://img.shields.io/badge/OWASP_AUDIT-CLEAN-00ff41?style=for-the-badge)](CHANGELOG.md)
 
-> **If a music video label had its own streaming platform, it would look like this.**
+> **We direct the film. We build the machine that sells it.**
 >
-> An immersive, cinematic portfolio showcasing **101 music videos** across **54 artists** — 14 years of Toronto hip-hop production. Editorial grey aesthetic with a 3-color palette (charcoal, white, cobalt blue). Kinetic 5-second hub intro (drifting dust, cobalt hairline draw, logo bloom-in, single warm-orange spark), magazine-style layouts, and a 3D metropolis you drive through. Now also featuring a **Web Design** showcase for artist and creator websites.
+> One Toronto studio doing what most people hire three vendors for: **101 music videos** across **54 artists** (25.3M views, 2012–2025), the art direction around them, and **six web applications live in production**.
+>
+> The homepage (v6.0.0) leads with evidence rather than atmosphere — the numbers, six credited films you can **scrub with your cursor**, six shipped products, and the full artist credit wall. The 3D catalogue experiences live on at `/videos` and `/oldvideopage`.
 
 ### ⚡ Jump In
 
 | Experience | Link | What You'll See |
 |-----------|------|-----------------|
-| 🏠 **Hub** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | Kinetic 5-second logo intro, Spotlight Hero, Latest Drops with hover-to-play overlays, 3D tilt cards, Web Design showcase |
+| 🏠 **Studio** | [tdotssolutionsz.com](https://tdotssolutionsz.com) | v6 editorial homepage — hover-scrub film tiles cut from the real films, the ledger, Direct/Design/Ship, shipped products, credit wall |
+| 🕰️ **Legacy hub** | [tdotssolutionsz.com/hub-legacy](https://tdotssolutionsz.com/hub-legacy) | The previous scroll-cinema hub, kept for rollback |
 | 🎞️ **Tunnel (v5.6.0+)** | [tdotssolutionsz.com/videos](https://tdotssolutionsz.com/videos) | White-space WebGL card field — fly forward through the catalog, top-ranked videos in front, full library deeper |
 | 🏙️ **Original 3D City** | [tdotssolutionsz.com/oldvideopage](https://tdotssolutionsz.com/oldvideopage) | Preserved Tron-inspired neon metropolis — scroll the highway, pick a lane |
 | 🎬 **Video Page** | [tdotssolutionsz.com/video/u3O5PKN9vCQ](https://tdotssolutionsz.com/video/u3O5PKN9vCQ) | Standalone shareable player with related videos & share bar |
@@ -157,8 +160,9 @@ Plus Dundas Dolla, Moshine, Hypa, SLOC, Arez, RoadKidd, LV, Da Kid Bluntz, Daz D
 npm install
 npm run dev              # Start dev server (http://localhost:5173)
 npm run build            # Fetch YouTube data + production build
+npm run build-previews   # Re-cut the homepage hover-scrub clips (needs yt-dlp + ffmpeg)
 npm run preview          # Preview production build locally
-npm test                 # Run 691 tests across 47 suites
+npm test                 # Run 710 tests across 49 suites
 npm run test:watch       # Tests in watch mode
 npm run prescan          # Scan for leaked secrets
 npm run audit:security   # Dependency vulnerability check
@@ -179,7 +183,9 @@ src/
 ├── App.jsx                    # Desktop 3D experience (~1,022 lines)
 ├── MobileApp.jsx              # Mobile grid view
 ├── components/
-│   ├── HubPage.jsx            # Landing — cinematic hub with Now Playing hero
+│   ├── v6/StudioHome.jsx      # Landing (/) — evidence-first studio page, no Three.js (16.5 kB)
+│   ├── v6/StudioHome.css      # v6 design system, scoped under `.v6` so it cannot leak
+│   ├── HubPageCinema.jsx      # Previous hub, preserved at /hub-legacy
 │   ├── VideoPage.jsx          # Standalone video detail (shareable, no Three.js)
 │   ├── VideoSpotlight.jsx     # Full-bleed hover-to-play hero with 3D portal frame
 │   ├── SpotlightPortal.jsx    # Three.js neon rings + particle backdrop for spotlight
@@ -196,8 +202,26 @@ src/
 │                              # SectionLabel, AudioVisualizer
 ├── hooks/                     # 12 shared hooks (+ 3 inline hooks in components)
 ├── utils/                     # videoData, youtube, urlSafety, apiSanitizer, youtubeSanitizer, searchScoring, easing, formatters, audioAttenuation, imageFallback
-└── data/                      # videos.json (101 entries), photos.json (25 entries)
+└── data/                      # videos.json (101 entries), photos.json (25 entries),
+                               # studio.js (v6 copy + builds; stats DERIVED from videos.json)
+
+public/
+├── previews/                  # Hover-scrub loops: {youtubeId}.webm/.mp4/.jpg — built by
+│                              # scripts/build-preview-clips.mjs, preload="none"
+├── brand/mark.svg             # Primary favicon / nav mark
+└── sites/                     # Client site screenshots for the Builds section
+
+scripts/
+├── build-preview-clips.mjs    # yt-dlp + ffmpeg: cropdetect debarring, signalstats
+│                              # frame scoring, poster extraction
+└── og-card.html               # Source for public/og-image.png (render at 1200x630)
 ```
+
+### Social card
+
+`public/og-image.png` is a screenshot of `scripts/og-card.html` at exactly 1200x630,
+so it uses the site's own Archivo / Space Mono. Regenerate it whenever the headline
+or the four numbers change.
 
 ---
 

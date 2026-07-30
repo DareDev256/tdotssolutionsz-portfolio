@@ -21,8 +21,10 @@ import './index.css'
 /** Boot security monitor — CSP violation logging + runtime integrity checks */
 initSecurityMonitor()
 
-/** Hub landing page — scroll-cinema redesign with GSAP + Seedance videos */
+/** Hub landing page — the scroll-cinema experience. This is the site. */
 const HubPage = lazy(() => import('./components/HubPageCinema.jsx'))
+/** v6 editorial experiment, parked at /v6 */
+const StudioHome = lazy(() => import('./components/v6/StudioHome.jsx'))
 /** Standalone video detail page — lightweight, shareable, no Three.js */
 const VideoPage = lazy(() => import('./components/VideoPage.jsx'))
 /** Desktop 3D cityscape — lazy-loaded to separate chunk (~1.1MB with Three.js) */
@@ -31,6 +33,8 @@ const App = lazy(() => import('./App.jsx'))
 const MobileApp = lazy(() => import('./MobileApp.jsx'))
 /** White-space card-field tunnel — primary /videos experience as of v5.6.0 */
 const VideoTunnelApp = lazy(() => import('./components/VideoTunnelApp.jsx'))
+/** Shot Lab — three concept demos built from the catalogue's own footage (/lab) */
+const ShotLab = lazy(() => import('./components/lab/ShotLab.jsx'))
 /** Web Design portfolio page */
 const WebDesignPage = lazy(() => import('./components/WebDesignPage.jsx'))
 /** Photography gallery — DO NOT enable until owner explicitly requests it */
@@ -38,10 +42,16 @@ const WebDesignPage = lazy(() => import('./components/WebDesignPage.jsx'))
 
 /** Catches Three.js/WebGL crashes so the page doesn't blank out */
 class AppErrorBoundary extends Component {
-    state = { hasError: false }
+    state = { hasError: false, message: '' }
 
-    static getDerivedStateFromError() {
-        return { hasError: true }
+    static getDerivedStateFromError(error) {
+        return { hasError: true, message: error?.message || '' }
+    }
+
+    componentDidCatch(error, info) {
+        // Surface the real cause — the generic "3D rendering failed" copy below
+        // hid a plain data error for a whole debug cycle during the v6 build.
+        console.error('[AppErrorBoundary]', error, info?.componentStack)
     }
 
     render() {
@@ -50,7 +60,10 @@ class AppErrorBoundary extends Component {
                 <div className="loading-screen">
                     <div className="loading-text">Something went wrong</div>
                     <p style={{ color: '#ff6ec7', textAlign: 'center', padding: '0 1rem' }}>
-                        3D rendering failed. Try refreshing or use a different browser.
+                        Something failed to load. Try refreshing.
+                        {import.meta.env.DEV && this.state.message
+                            ? ` (${this.state.message})`
+                            : ''}
                     </p>
                     <button
                         onClick={() => window.location.reload()}
@@ -167,10 +180,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Suspense fallback={<LoadingScreen />}>
                     <Routes>
                         <Route path="/" element={<HubPage />} />
+                        {/* v6 editorial experiment — parked, not shipped. Owner
+                            preferred the original hub; kept for reference only. */}
+                        <Route path="/v6" element={<StudioHome />} />
                         <Route path="/video/:youtubeId" element={<VideoPage />} />
                         <Route path="/videos" element={<VideoTunnelApp />} />
                         <Route path="/oldvideopage" element={<VideosRoute />} />
                         <Route path="/web-design" element={<WebDesignPage />} />
+                        <Route path="/lab" element={<ShotLab />} />
                         {/* DO NOT enable /photos route — Photography is Coming Soon */}
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>

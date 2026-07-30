@@ -1,0 +1,322 @@
+/**
+ * VideoVillage.css — the premise layer's chrome.
+ *
+ * Everything here is monitor furniture: the slate running head, the framing
+ * brackets, the level scope, the ROLL control. It sits over the page rather
+ * than inside the content grid, so the page reads as a feed being watched.
+ *
+ * Sodium amber is the studio's hue. Vault green (KMONEY), blueprint cyan
+ * (100BandPlan), problem red (SAVV4X) and stream purple (Syren Effect) are each
+ * already spoken for by a client; the studio needed its own and amber is the
+ * colour a broadcast monitor's readout actually is.
+ */
+
+.v6 {
+    --amber: #ffa51f;
+    --amber-hot: #ffc25c;
+    --amber-dim: rgba(255, 165, 31, 0.22);
+    --rec: #ff3b14;
+    --hud: 'Space Mono', ui-monospace, monospace;
+}
+
+/* ============================================================
+   SLATE — the running head
+   ============================================================ */
+.vv-slate {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 1.6vw, 26px);
+    padding: 7px clamp(14px, 3vw, 26px);
+    background: rgba(6, 6, 7, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 165, 31, 0.18);
+    font-family: var(--hud);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 165, 31, 0.66);
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.vv-slate__id { color: var(--amber); font-weight: 700; }
+
+.vv-slate__rec {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(247, 245, 241, 0.4);
+}
+
+.vv-slate__rec i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(247, 245, 241, 0.28);
+    flex: none;
+}
+
+.vv-slate__rec.is-on { color: var(--rec); }
+
+.vv-slate__rec.is-on i {
+    background: var(--rec);
+    box-shadow: 0 0 0 0 rgba(255, 59, 20, 0.7);
+    animation: vv-rec 1.6s ease-out infinite;
+}
+
+@keyframes vv-rec {
+    0%   { box-shadow: 0 0 0 0 rgba(255, 59, 20, 0.55); }
+    70%  { box-shadow: 0 0 0 7px rgba(255, 59, 20, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 59, 20, 0); }
+}
+
+/* Tabular so the timecode doesn't jitter the row every frame. */
+.vv-slate__tc {
+    font-variant-numeric: tabular-nums;
+    color: var(--amber-hot);
+    letter-spacing: 0.1em;
+}
+
+.vv-slate__cam,
+.vv-slate__meta { color: rgba(247, 245, 241, 0.34); }
+
+.vv-slate__meta { margin-left: auto; }
+
+.vv-sound {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: inherit;
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(247, 245, 241, 0.5);
+    background: transparent;
+    border: 1px solid rgba(247, 245, 241, 0.16);
+    border-radius: 999px;
+    padding: 5px 11px;
+    cursor: pointer;
+    transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    /* Small control, but it must still be a real target on touch. */
+    min-height: 28px;
+}
+
+.vv-sound:hover { color: var(--amber); border-color: var(--amber-dim); }
+
+.vv-sound.is-on {
+    color: #0a0a0b;
+    background: var(--amber);
+    border-color: var(--amber);
+}
+
+.vv-sound:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+    .vv-slate__cam, .vv-slate__meta { display: none; }
+    .vv-sound { margin-left: auto; }
+}
+
+@media (max-width: 460px) {
+    .vv-slate__id { font-size: 9px; }
+    .vv-slate { gap: 10px; }
+}
+
+/* The slate occupies the top strip, so the nav sits under it. */
+.v6-nav { top: 34px; }
+
+/* ============================================================
+   FRAME — viewfinder brackets + safe area
+   ============================================================ */
+.vv-frame {
+    position: fixed;
+    inset: 34px 0 0 0;
+    z-index: 8000;
+    pointer-events: none;
+}
+
+.vv-frame__c {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border: 1px solid rgba(255, 165, 31, 0.34);
+    transition: border-color 0.5s ease, width 0.5s ease, height 0.5s ease;
+}
+
+.vv-frame.is-live .vv-frame__c { border-color: rgba(255, 165, 31, 0.62); }
+
+.vv-frame__c--tl { top: 14px; left: 14px; border-right: 0; border-bottom: 0; }
+.vv-frame__c--tr { top: 14px; right: 14px; border-left: 0; border-bottom: 0; }
+.vv-frame__c--bl { bottom: 14px; left: 14px; border-right: 0; border-top: 0; }
+.vv-frame__c--br { bottom: 14px; right: 14px; border-left: 0; border-top: 0; }
+
+/* Action-safe guide. Barely there — a director's monitor overlay, not a border. */
+.vv-frame__safe {
+    position: absolute;
+    inset: 30px;
+    border: 1px dashed rgba(255, 165, 31, 0.07);
+}
+
+@media (max-width: 620px) {
+    .vv-frame__c { width: 14px; height: 14px; }
+    .vv-frame__c--tl, .vv-frame__c--tr { top: 8px; }
+    .vv-frame__c--bl, .vv-frame__c--br { bottom: 8px; }
+    .vv-frame__c--tl, .vv-frame__c--bl { left: 8px; }
+    .vv-frame__c--tr, .vv-frame__c--br { right: 8px; }
+    .vv-frame__safe { display: none; }
+}
+
+/* ============================================================
+   SCOPE — level meter
+   ============================================================ */
+.vv-scope {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 15px;
+}
+
+.vv-scope i {
+    display: block;
+    width: 2px;
+    height: 100%;
+    background: rgba(247, 245, 241, 0.22);
+    transform-origin: bottom center;
+    transform: scaleY(0.08);
+    /* No CSS transition: the bars are driven per-frame from rAF, and a
+       transition would fight the analyser and smear the response. */
+}
+
+.vv-scope.is-live i { background: var(--amber); }
+
+.vv-scope--rule { height: 13px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .vv-scope i { transform: scaleY(0.28); }
+}
+
+/* ============================================================
+   ROLL — the threshold control
+   ============================================================ */
+.vv-roll {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    padding: 14px 24px;
+    border-radius: 999px;
+    border: 1px solid var(--amber);
+    background: var(--amber);
+    color: #0a0a0b;
+    font-family: var(--hud);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    min-height: 48px;
+    transition: background 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease;
+}
+
+.vv-roll:hover {
+    background: var(--amber-hot);
+    box-shadow: 0 0 0 6px rgba(255, 165, 31, 0.14);
+}
+
+.vv-roll:focus-visible {
+    outline: 2px solid var(--amber-hot);
+    outline-offset: 3px;
+}
+
+.vv-roll__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #0a0a0b;
+    flex: none;
+}
+
+.vv-roll__label { font-weight: 700; }
+
+.vv-roll__sub {
+    color: rgba(10, 10, 11, 0.58);
+    letter-spacing: 0.12em;
+    border-left: 1px solid rgba(10, 10, 11, 0.24);
+    padding-left: 11px;
+}
+
+@media (max-width: 460px) {
+    .vv-roll__sub { display: none; }
+}
+
+/* ============================================================
+   REPALETTE — the studio hue replaces the generic editorial red.
+   Loaded after StudioHome.css, so these win.
+   ============================================================ */
+.v6 { --signal: var(--amber); }
+
+.v6-eyebrow,
+.v6-pipe__n {
+    color: var(--amber);
+    /* Slugs are document metadata now, not section labels. */
+    font-family: var(--hud);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+}
+
+.v6-hero__h em,
+.v6-contact__h em { color: var(--amber); }
+
+.v6-btn--solid {
+    background: var(--amber);
+    color: #0a0a0b;
+}
+
+.v6-btn--solid:hover { background: var(--amber-hot); }
+
+.v6-nav__mark { color: var(--amber); }
+
+.v6-nav__cta:hover {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: #0a0a0b;
+}
+
+.v6-film__rail i { background: var(--amber); }
+
+.v6-film__frame.is-scrubbing .v6-film__play {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: #0a0a0b;
+}
+
+.v6-build__link:hover,
+.v6-build__link:focus-visible { border-color: rgba(255, 165, 31, 0.5); }
+
+.v6-build__link:hover .v6-build__go { color: var(--amber); }
+
+.v6-roster__sep { color: var(--amber); }
+
+.v6-dot { color: var(--amber); }
+
+.v6 a:focus-visible,
+.v6 button:focus-visible { outline-color: var(--amber); }
+
+.v6-btn--quiet:hover {
+    color: #b26a00;
+    border-bottom-color: #b26a00;
+}
+
+/* The bone sections read as the paperwork in a video village — call sheet,
+   spec sheet — so amber-on-bone needs darkening to stay legible. */
+.v6-section--paper .v6-eyebrow,
+.v6-section--paper .v6-pipe__n { color: #a35f00; }
+
+/* Hero sits below the slate. */
+.v6-hero { padding-top: 168px; }

@@ -171,3 +171,24 @@ export function getThumbnailUrl(videoId, quality = 'hqdefault') {
     const safeQuality = VALID_QUALITIES.has(quality) ? quality : 'hqdefault'
     return `https://img.youtube.com/vi/${videoId}/${safeQuality}.jpg`
 }
+
+/**
+ * Path to the studio's own poster frame for a film.
+ *
+ * YouTube's thumbnail is whatever frame the intro card landed on, which for
+ * this catalogue means a distributor's logo burned into the picture —
+ * 6IXBUZZ CERTIFIED, 6IXBUZZENT.COM, WORLDSTARHIPHOP.COM, VEVO — sitting on
+ * top of James's own work on his own site. Several are letterboxed, and
+ * pre-2016 uploads have no maxres at all.
+ *
+ * scripts/build-poster-frames.mjs extracts a clean, debarred, well-exposed
+ * frame from mid-film instead. Callers should fall back to
+ * `getThumbnailUrl()` on error — not every film yields one.
+ *
+ * @param {string} videoId
+ * @returns {string} local poster path, or '' if the id is invalid
+ */
+export function getPosterUrl(videoId) {
+    if (!isValidYouTubeId(videoId)) return ''
+    return `/posters/${videoId}.jpg`
+}

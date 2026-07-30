@@ -19,6 +19,7 @@ import useVideoNavigation from './hooks/useVideoNavigation'
 import useCopyLink from './hooks/useCopyLink'
 import useShufflePlay from './hooks/useShufflePlay'
 import './MobileApp.css'
+import FilmStill from './components/FilmStill'
 
 // Validate shared data loaded correctly
 const LOAD_ERROR = (!VIDEOS || VIDEOS.length === 0) ? 'Failed to load video data' : null
@@ -383,11 +384,11 @@ export default function MobileApp() {
             {/* Hero Card */}
             {heroVideo && (
                 <div className="hero-card" onClick={() => handleVideoClick(heroVideo)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleVideoClick(heroVideo) } }} role="button" tabIndex={0} aria-label={`Play ${heroVideo.title}`}>
-                    <img
+                    <FilmStill
                         className="hero-card__bg"
-                        src={getThumbnailUrl(heroVideo.youtubeId, 'hqdefault')}
+                        videoId={heroVideo.youtubeId}
                         alt={heroVideo.title}
-                        onError={(e) => { e.currentTarget.src = THUMBNAIL_FALLBACK }}
+                        loading="eager"
                     />
                     <div className="hero-card__overlay" />
                     <div className="hero-card__content">

@@ -2,6 +2,47 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [6.0.0] - 2026-07-31
+
+### Changed — v6 studio homepage: evidence-first, and a new position
+
+- **The homepage is replaced.** `/` was five consecutive full-screen CN Tower panels — each one a headline, a subtitle, a ghost button, and the same stock skyline behind it. It showed no work, no results, and no story; the portfolio's only proof (101 films, 54 artists, 25.3M views) appeared once, in 10px monospace. The new page argues in order: positioning line over a wall of the studio's own work → the four numbers on inverted ground → six films as credited case tiles → Direct/Design/Ship → six shipped products → the full artist credit wall → one CTA.
+- **Position is now singular: one studio that directs the film AND ships the software.** The site previously read as two half-businesses (a music-video house and a "web design network"). Copy, metadata, and structured data all now say the same thing. Owner-approved 2026-07-31.
+- **Two grounds instead of one.** Ink (`#0a0a0b`) and bone (`#f2efe8`) alternate by section. Three colours total, one signal red (`#ff3b14`) reserved for what you click or must read.
+- **Route map**: `/` → `StudioHome`. The previous hub is preserved at `/hub-legacy` as a one-line rollback. `/videos`, `/video/:id`, `/web-design` untouched.
+
+### Added
+
+- **Hover-scrub film tiles.** Hovering a reel tile loads a silent 6-second loop cut from the actual film and plays it; moving the cursor across the tile seeks `currentTime` to the cursor's horizontal position, so the film scrubs under your hand. Idling for 420ms hands control back to playback. Degrades to the static still on touch pointers, `prefers-reduced-motion`, a missing clip, or a decode failure.
+- **`scripts/build-preview-clips.mjs`** (`npm run build-previews`) — pulls the six reel films once with yt-dlp and encodes webm+mp4 loops plus a poster. Three things it does that a naive cut does not:
+  - `cropdetect` strips baked-in letterbox/pillarbox bars (five of six sources had them) so clips don't render a frame inside a frame.
+  - `signalstats` (YAVG/YSTD) scores six candidate moments per film and picks the best-exposed, highest-detail one, instead of cutting at a fixed timestamp — the fixed 33% mark landed on a hand in the dark and a tree.
+  - Posters come from the chosen moment rather than from YouTube, because YouTube's thumbnails have distributor watermarks (6IXBUZZ CERTIFIED, WORLDSTARHIPHOP) burned into the intro card.
+- `public/brand/mark.svg` — framing-bracket mark, legible at 16px, now the primary favicon.
+- `public/sites/betmetrics-preview.jpg` — BetMetrics was the highest-value client and the only build with no screenshot.
+- `public/og-image.png` regenerated from `scripts/og-card.html`, so the social card uses the site's own Archivo/Space Mono and can be rebuilt when the numbers change.
+- `src/data/studio.js` — headline stats are **derived from `videos.json` at build time**, so the hero can never drift from the portfolio.
+
+### Fixed
+
+- **Half the reel rendered grey placeholders.** YouTube serves a 120x90 stub with a **200**, not a 404, when `maxresdefault.jpg` doesn't exist — common for pre-2016 uploads. An `onError` handler alone never fires. The `Thumb` component now checks decoded size on load and falls back local poster → maxres → `hqdefault` (which exists for every video). Masicka (the lead tile, 5.7M views), King Louie, and Street Bud were all affected.
+- **`public/logo.png` is cropped** — it renders as "OTS / OLUTIONSZ", with the `TD` and `S` off-canvas. This is why the wordmark was illegible at every size. Superseded as the favicon by `mark.svg`; **the source PNG still needs redrawing.**
+- Section headings broke one word per line: a `24ch` max-width sat on the wrapper, so it measured against 16px body text rather than the 70px display type. The cap moved onto the element that uses the display font.
+- A blanket `.v6 > *` rule overrode `position:absolute` on the skip link and `position:fixed` on the nav, leaving both in flow — a 95px phantom gap above the hero and a permanently visible "Skip to work" pill.
+- Page grain sat *under* content at `z-index: 1`; it now overlays at `9000`.
+- `AppErrorBoundary` reported "3D rendering failed" for every error including plain data errors, and swallowed the cause. It now logs the real error and the component stack.
+
+### Performance
+
+- Homepage JS **131 kB → 16.5 kB** (gzip 49.8 kB → 5.6 kB). No Three.js on `/`.
+- Preview clips are `preload="none"` — 0 bytes until hover.
+
+### Security
+
+- **`react-router-dom` 7.13.0 → 7.18.2.** Do NOT run `npm audit fix` on this — it recommends pinning *back* to 7.11.0, which is worse: 7.11.0 carries 14 advisories including "XSS via Open Redirects", "Open redirect leading to XSS", "SSR XSS in ScrollRestoration", and the Action/Server-Action CSRF issue. 7.18.2 carries 12 and drops exactly those four. There is no 8.x of `react-router-dom` published, so no version currently clears every advisory.
+- **Residual advisories at 7.18.2 are SSR / RSC / framework-mode only** — `__manifest` DoS, single-fetch reflected input, `deserializeErrors()` hydration, RSC redirect handling. This site is a static client-side SPA on Vercel with no loaders, no server actions, and no RSC, so none of those code paths exist here. Re-evaluate if the site ever adopts React Router framework mode.
+- Secret scan clean (`npm run prescan`). CSP already had `media-src 'self'`, so the self-hosted preview clips needed no header change.
+
 ## [5.10.0] - 2026-07-24
 
 ### Changed

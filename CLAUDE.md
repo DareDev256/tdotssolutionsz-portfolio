@@ -18,10 +18,14 @@ These items have been broken by automated agents before. Do NOT change them:
    - Any new "showcase", "gallery", "ticker", "timeline", or "reel" sections on the HubPage
    - Neon glow effects, synthwave gradients, animated background grids/orbs on HubPage
    
-   **HubPage structure is LOCKED to**: Logo Intro → Header → SpotlightHero → LatestDrops → ImpactNumbers → Cards (Music Videos / Web Design / Photography) → WebDesignShowcase → Footer. Do NOT add new sections without explicit owner approval.
+   **SUPERSEDED 2026-07-31 (v6.0.0), with explicit owner approval.** `/` is now `src/components/v6/StudioHome.jsx`, not `HubPageCinema`. The old hub is preserved at `/hub-legacy` for rollback and the lock above still governs THAT component. The v6 homepage structure is now the locked one:
+
+   **StudioHome structure is LOCKED to**: Nav → Hero (work wall) → Ledger → Reel (Selected film) → Pipeline (Direct/Design/Ship) → Builds (Selected build) → Roster → Contact → Footer. Do NOT add new sections without explicit owner approval. The same standing bans apply: no neon glows, no synthwave gradients, no animated orbs, no new "showcase"/"ticker"/"timeline"/"reel" sections beyond the ones listed.
    
    **What IS welcome**: Interactive enhancements to EXISTING sections (better hover states, micro-interactions, accessibility improvements), performance optimizations, and new features on the 3D `/videos` experience or `/video/:id` pages. Make the existing pieces better, don't add more pieces.
-9. **CSP `connect-src` MUST include `cdn.jsdelivr.net`** — Troika (drei's `<Text>` component) fetches fonts from jsdelivr inside Web Workers at runtime. Worker `fetch()` calls are governed by `connect-src`, not `font-src`. Removing jsdelivr breaks ALL 3D text labels. This has now been broken and fixed TWICE (v3.16.0 added it, v3.22.0 wrongly removed it). Do NOT remove it again regardless of "not found in source code" reasoning — it's a runtime dependency loaded by a third-party library inside a Worker.
+9. **YouTube `maxresdefault.jpg` returns a 200, not a 404, when it does not exist** — it serves a 120x90 grey stub. An `onError` handler will NEVER fire for it. Any component rendering a YouTube thumbnail must check `naturalWidth <= 120` on load and fall back to `hqdefault.jpg`. This silently turned half the v6 reel into grey boxes, including the lead 5.7M-view tile. See `Thumb` in `src/components/v6/StudioHome.jsx`.
+10. **`public/logo.png` is CROPPED and wrong** — it renders as "OTS / OLUTIONSZ"; the `TD` and trailing `S` are off-canvas. Do not "fix" its display with CSS. It needs redrawing at source. `/brand/mark.svg` is the working mark in the meantime.
+11. **CSP `connect-src` MUST include `cdn.jsdelivr.net`** — Troika (drei's `<Text>` component) fetches fonts from jsdelivr inside Web Workers at runtime. Worker `fetch()` calls are governed by `connect-src`, not `font-src`. Removing jsdelivr breaks ALL 3D text labels. This has now been broken and fixed TWICE (v3.16.0 added it, v3.22.0 wrongly removed it). Do NOT remove it again regardless of "not found in source code" reasoning — it's a runtime dependency loaded by a third-party library inside a Worker.
 
 ## VIDEO PLAYBACK — THE #1 PRIORITY
 
@@ -50,6 +54,8 @@ Security hardening on this project has broken videos **three times** (COEP, Trus
 ## DESIGN SYSTEM — v4.0.0 (DO NOT REVERT)
 
 The site uses an editorial 3-color palette. Do NOT revert to synthwave/neon aesthetics.
+
+> **Scope note (v6.0.0):** the palette below governs `/videos`, `/video/:id`, `/web-design` and `/hub-legacy`. The v6 homepage (`/`) runs its own three-colour system, scoped under `.v6` in `StudioHome.css` — ink `#0a0a0b`, bone `#f2efe8`, signal red `#ff3b14`. Do not merge the two; the scoping is deliberate so a change to one cannot leak into the other.
 
 - **Background**: Charcoal grey (`#262626` surface, `#303030` raised, `#363636` hover) — NOT black, NOT purple
 - **Text**: White hierarchy (`#fff`, `rgba(255,255,255,0.55)`, `rgba(255,255,255,0.3)`)

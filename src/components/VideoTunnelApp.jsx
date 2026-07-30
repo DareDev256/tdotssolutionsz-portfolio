@@ -19,12 +19,13 @@ import { ScrollControls, useScroll, Text } from '@react-three/drei'
 import * as THREE from 'three'
 
 import { VIDEOS } from '../utils/videoData'
-import { extractVideoId, getThumbnailUrl } from '../utils/youtube'
+import { extractVideoId } from '../utils/youtube'
 import { TheaterMode, VideoOverlay } from './ui'
 import useClosingGuard from '../hooks/useClosingGuard'
 import useVideoDeepLink from '../hooks/useVideoDeepLink'
 import { useDeviceType } from '../hooks/useDeviceType'
 import IntroLetters from './IntroLetters'
+import { loadFilmTexture } from '../utils/filmTexture'
 
 // ── Tunnel geometry ──────────────────────────────────────────────────
 const CARD_W = 3.6
@@ -74,18 +75,14 @@ const FRAME_COLOR = '#1a1a1a' // near-black thin frame around each card
 
 function VideoCard({ video, isActive, onClick }) {
     const videoId = useMemo(() => extractVideoId(video.url), [video.url])
-    const thumbnailUrl = getThumbnailUrl(videoId)
-
-    // Lazy texture load — non-mipmapped to save GPU memory at scale (100+ cards)
-    const texture = useMemo(() => {
-        const loader = new THREE.TextureLoader()
-        const tex = loader.load(thumbnailUrl)
+    // Lazy texture load — non-mipmapped to save GPU memory at scale (100+ cards).
+    // Prefers our own extracted frame over YouTube's watermarked thumbnail.
+    const texture = useMemo(() => loadFilmTexture(THREE, videoId, (tex) => {
         tex.colorSpace = THREE.SRGBColorSpace
         tex.generateMipmaps = false
         tex.minFilter = THREE.LinearFilter
         tex.magFilter = THREE.LinearFilter
-        return tex
-    }, [thumbnailUrl])
+    }), [videoId])
 
     const handleClick = useCallback((e) => {
         e.stopPropagation()

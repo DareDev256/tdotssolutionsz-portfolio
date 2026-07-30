@@ -79,8 +79,8 @@
 .hub-intro-kinetic__logo {
   height: 240px;
   width: auto;
-  /* logo.png is dark on transparent — invert to render white */
-  filter: invert(1) brightness(1.2) blur(28px);
+  /* logo.png is white artwork on transparency as of v5.11 — no invert */
+  filter: brightness(1.2) blur(28px);
   opacity: 0;
   transform: scale(1.18);
   animation:
@@ -92,22 +92,22 @@
 @keyframes hubikin-logo-bloom {
   0% {
     opacity: 0;
-    filter: invert(1) brightness(1.4) blur(28px);
+    filter: brightness(1.4) blur(28px);
     transform: scale(1.18);
   }
   35% {
     opacity: 0.45;
-    filter: invert(1) brightness(1.4) blur(14px);
+    filter: brightness(1.4) blur(14px);
     transform: scale(1.08);
   }
   70% {
     opacity: 0.95;
-    filter: invert(1) brightness(1.25) blur(2px);
+    filter: brightness(1.25) blur(2px);
     transform: scale(1.01);
   }
   100% {
     opacity: 1;
-    filter: invert(1) brightness(1.18) blur(0);
+    filter: brightness(1.18) blur(0);
     transform: scale(1);
   }
 }
@@ -244,7 +244,7 @@
   }
   .hub-intro-kinetic__logo {
     opacity: 1;
-    filter: invert(1) brightness(1.2);
+    filter: brightness(1.2);
     transform: none;
     animation: none;
   }
