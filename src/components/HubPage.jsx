@@ -26,7 +26,7 @@ export default function HubPage() {
 
       <header className="hub-header">
         <img
-          src="/logo-v2.png"
+          src="/logo-mark.png"
           alt="TdotsSolutionsz Logo"
           className="hub-logo"
           width="200"
