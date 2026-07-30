@@ -88,7 +88,7 @@ function ParticleCanvas() {
     window.addEventListener('resize', resize)
 
     const logo = new Image()
-    logo.src = '/logo.png'
+    logo.src = '/logo-v2.png'
     logo.onload = () => {
       spritesRef.current = {
         white:  bakeLogoSprite(logo, 'rgba(255,255,255,0.55)'),
@@ -390,7 +390,7 @@ export default function HubPageCinema() {
               <span className="cinema-line-1">{splitIntoLetters('TDOTS')}</span>
               <span className="cinema-line-2">{splitIntoLetters('SOLUTIONSZ')}</span>
             </h1>
-            <img src="/logo.png" alt="TdotsSolutionsz" className="cinema-hero-logo" />
+            <img src="/logo-v2.png" alt="TdotsSolutionsz" className="cinema-hero-logo" />
             <p className="cinema-hero-sub">We were rolling before the city had a sound.</p>
             <div className="cinema-hero-stats">
               <span><b><CountStat value={PORTFOLIO_STATS.totalVideos} trigger={statsIn} /></b> Films</span>

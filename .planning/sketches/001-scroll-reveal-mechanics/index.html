@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TdotsSolutionsz — Scroll Reveal Sketch</title>
+  <link rel="stylesheet" href="../themes/default.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    /* ========== SHARED BASE ========== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+    }
+
+    /* Film grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10000;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px;
+    }
+
+    /* Variant nav */
+    #variant-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 99999;
+      background: rgba(20, 20, 20, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-border);
+      padding: 10px 16px;
+      display: flex;
+      gap: 8px;
+      font-family: var(--font-sans);
+      align-items: center;
+    }
+
+    #variant-nav span {
+      font-size: 11px;
+      color: var(--color-text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-right: 12px;
+    }
+
+    .variant-tab {
+      padding: 6px 14px;
+      border: 1px solid var(--color-border);
+      background: transparent;
+      color: var(--color-text-muted);
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .variant-tab:hover {
+      border-color: var(--color-primary);
+      color: var(--color-text);
+    }
+
+    .variant-tab.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: white;
+    }
+
+    .variant { display: none; }
+    .variant.active { display: block; }
+
+    /* Shared section styles */
+    .act {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 80px 24px;
+    }
+
+    .act-label {
+      font-family: var(--font-sans);
+      font-size: var(--text-xs);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: var(--space-4);
+    }
+
+    .act-title {
+      font-family: var(--font-display);
+      font-size: var(--text-hero);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      text-align: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .act-subtitle {
+      font-family: var(--font-sans);
+      font-size: var(--text-lg);
+      color: var(--color-text-muted);
+      text-align: center;
+      max-width: 500px;
+    }
+
+    /* Video cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-6);
+      max-width: 1100px;
+      width: 100%;
+      margin-top: var(--space-12);
+    }
+
+    .card {
+      background: var(--color-surface);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--color-surface-raised);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(74,124,255,0.15), rgba(232,93,52,0.1));
+    }
+
+    .card-info {
+      padding: var(--space-4);
+    }
+
+    .card-info h3 {
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      font-weight: 600;
+      margin-bottom: var(--space-1);
+    }
+
+    .card-info p {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+
+    /* CTA button */
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 40px;
+      background: var(--color-accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-glow-orange);
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px rgba(232, 93, 52, 0.5);
+    }
+
+    /* Animated background gradients (Seedance video placeholders) */
+    .seedance-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+
+    .seedance-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(74,124,255,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(232,93,52,0.08) 0%, transparent 50%),
+        linear-gradient(180deg, #1a1a1a, #0f0f0f);
+      animation: ambientShift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes ambientShift {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    /* Subtle floating particles (CSS-only) */
+    .particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      animation: float 20s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
+    }
+
+    /* ========================================
+       VARIANT A: CN Tower Silhouette Clip-Path
+       ========================================
+       The signature move: a CN Tower + skyline
+       silhouette clips upward as you scroll,
+       revealing the next section beneath it.
+    */
+    #variant-a .silhouette-mask {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: var(--color-bg);
+      z-index: 10;
+      clip-path: polygon(
+        /* Toronto skyline left side */
+        0% 100%,
+        0% 45%,
+        3% 45%, 3% 40%, 5% 40%, 5% 42%, 7% 42%,
+        7% 35%, 9% 35%, 9% 38%, 11% 38%, 11% 30%,
+        13% 30%, 13% 35%, 15% 35%,
+        /* Buildings leading to CN Tower */
+        15% 28%, 17% 28%, 17% 32%, 19% 32%,
+        19% 25%, 21% 25%, 21% 30%, 23% 30%,
+        /* Rogers Centre dome */
+        23% 35%, 25% 33%, 27% 31%, 29% 30%, 31% 30%, 33% 31%, 35% 33%, 37% 35%,
+        /* CN Tower base */
+        37% 33%, 39% 33%, 39% 30%,
+        40% 30%, 41% 28%, 42% 25%,
+        /* CN Tower shaft */
+        43% 25%, 44% 22%, 45% 18%, 46% 15%,
+        /* CN Tower pod */
+        44.5% 14%, 44% 12%, 44% 10%, 44.5% 8%,
+        46% 7%, 48% 6.5%, 50% 6.5%, 52% 6.5%,
+        54% 7%, 55.5% 8%,
+        56% 10%, 56% 12%, 55.5% 14%,
+        /* CN Tower antenna */
+        54% 15%, 53% 12%, 52% 8%, 51.5% 5%,
+        51% 3%, 50.5% 1%, 50% 0%,
+        50% 0%, 49.5% 1%, 49% 3%,
+        48.5% 5%, 48% 8%, 47% 12%, 46% 15%,
+        /* Right side of CN Tower */
+        55% 18%, 56% 22%, 57% 25%,
+        58% 25%, 59% 28%, 60% 30%,
+        61% 30%, 61% 33%, 63% 33%,
+        /* Right skyline */
+        63% 35%, 65% 32%, 67% 32%, 67% 28%,
+        69% 28%, 69% 33%, 71% 33%,
+        71% 26%, 73% 26%, 73% 30%, 75% 30%,
+        75% 22%, 77% 22%, 77% 28%, 79% 28%,
+        79% 32%, 81% 32%, 81% 35%,
+        83% 35%, 83% 30%, 85% 30%, 85% 33%,
+        87% 33%, 87% 38%, 89% 38%, 89% 40%,
+        91% 40%, 91% 42%, 93% 42%,
+        93% 38%, 95% 38%, 95% 43%,
+        97% 43%, 97% 45%, 100% 45%,
+        100% 100%
+      );
+      transition: transform 0.1s linear;
+    }
+
+    #variant-a .silhouette-mask--lit {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      z-index: 11;
+      pointer-events: none;
+      opacity: 0;
+      clip-path: polygon(
+        /* Same skyline shape - just the tower section for LED glow */
+        44% 15%, 44% 10%, 44.5% 8%,
+        46% 7%, 48% 6.5%, 50% 6.5%, 52% 6.5%,
+        54% 7%, 55.5% 8%,
+        56% 10%, 56% 15%,
+        44% 15%
+      );
+      background: linear-gradient(
+        0deg,
+        rgba(232, 93, 52, 0.8) 0%,
+        rgba(255, 200, 50, 0.6) 40%,
+        rgba(255, 255, 255, 0.9) 70%,
+        rgba(74, 124, 255, 0.6) 100%
+      );
+      filter: blur(2px);
+    }
+
+    /* ========================================
+       VARIANT B: Shadow Overlay Dissolve
+       ========================================
+       Dark shadow panels that dissolve/transform
+       away revealing content. More film-like,
+       like curtains being pulled.
+    */
+    #variant-b .shadow-panel {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    #variant-b .shadow-panel__left {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 55%;
+      background: var(--color-bg);
+      transform-origin: left center;
+      transition: transform 0.1s linear;
+    }
+
+    #variant-b .shadow-panel__right {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 55%;
+      background: var(--color-bg);
+      transform-origin: right center;
+      transition: transform 0.1s linear;
+    }
+
+    #variant-b .shadow-panel__top {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 50%;
+      background: linear-gradient(180deg, var(--color-bg), transparent);
+      transition: opacity 0.1s linear;
+    }
+
+    #variant-b .dissolve-edge {
+      position: absolute;
+      width: 100px;
+      top: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, var(--color-bg));
+      filter: blur(20px);
+    }
+
+    /* ========================================
+       VARIANT C: Parallax Layer Peel
+       ========================================
+       Sections physically peel away with 3D
+       perspective transform, like lifting a page.
+       Content beneath is revealed as the top
+       layer rotates up on its top edge.
+    */
+    #variant-c {
+      perspective: 1200px;
+    }
+
+    #variant-c .peel-section {
+      position: relative;
+      transform-origin: top center;
+      transform-style: preserve-3d;
+      transition: transform 0.1s linear;
+      will-change: transform;
+    }
+
+    #variant-c .peel-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.7));
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    #variant-c .peel-section.peeling::after {
+      opacity: 1;
+    }
+
+    .peel-shadow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.5), transparent);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 5;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .act-title { font-size: clamp(2.5rem, 10vw, 5rem); }
+      .card-grid { grid-template-columns: 1fr; padding: 0 16px; }
+      #variant-nav { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body style="padding-top: 52px;">
+
+<!-- Variant Navigation -->
+<div id="variant-nav">
+  <span>Sketch 001</span>
+  <button class="variant-tab active" onclick="showVariant('a')">A: Silhouette Clip</button>
+  <button class="variant-tab" onclick="showVariant('b')">B: Shadow Dissolve</button>
+  <button class="variant-tab" onclick="showVariant('c')">C: Layer Peel</button>
+</div>
+
+<!-- ================================================
+     VARIANT A: CN Tower Silhouette Clip-Path Reveal
+     ================================================ -->
+<div id="variant-a" class="variant active">
+
+  <!-- ACT 1: Hero -->
+  <section class="act act--hero" data-act="a-hero">
+    <div class="seedance-bg">
+      <div class="particles">
+        <div class="particle" style="left:10%;animation-delay:0s;animation-duration:18s"></div>
+        <div class="particle" style="left:25%;animation-delay:3s;animation-duration:22s"></div>
+        <div class="particle" style="left:40%;animation-delay:1s;animation-duration:16s"></div>
+        <div class="particle" style="left:55%;animation-delay:5s;animation-duration:20s"></div>
+        <div class="particle" style="left:70%;animation-delay:2s;animation-duration:24s"></div>
+        <div class="particle" style="left:85%;animation-delay:4s;animation-duration:19s"></div>
+        <div class="particle" style="left:95%;animation-delay:6s;animation-duration:21s"></div>
+      </div>
+    </div>
+    <span class="act-label">Toronto — Creative Production</span>
+    <h1 class="act-title">TDOTS<br>SOLUTIONSZ</h1>
+    <p class="act-subtitle">Music video direction, web design, and visual storytelling</p>
+    <div style="margin-top:40px;font-size:12px;color:var(--color-text-subtle);letter-spacing:0.15em;animation: pulse 2s ease-in-out infinite;">SCROLL TO EXPLORE</div>
+
+    <!-- The silhouette mask that rises on scroll -->
+    <div class="silhouette-mask" id="mask-a1"></div>
+    <div class="silhouette-mask--lit" id="mask-a1-lit"></div>
+  </section>
+
+  <!-- ACT 2: Music Videos -->
+  <section class="act" data-act="a-videos" style="background:#0f0f0f;">
+    <div class="seedance-bg"></div>
+    <span class="act-label">Portfolio</span>
+    <h2 class="act-title" style="font-size:var(--text-5xl);">Music Videos</h2>
+    <p class="act-subtitle">A decade of Toronto hip-hop — 101 videos, 54 artists, 5M+ views</p>
+    <div class="card-grid" id="cards-a2">
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#1a1a3e,#2a1a1a)"></div><div class="card-info"><h3>Dungeons</h3><p>Casper TNG &bull; 1.2M views</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#1a2a1a,#1a1a2a)"></div><div class="card-info"><h3>Dungeons Pt. 2</h3><p>Casper TNG &bull; 890K views</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#2a1a2a,#1a2a2a)"></div><div class="card-info"><h3>Retro Flow</h3><p>FM &bull; 650K views</p></div></div>
+    </div>
+
+    <!-- Second silhouette between Act 2 and 3 -->
+    <div class="silhouette-mask" id="mask-a2" style="clip-path: polygon(0% 100%, 0% 60%, 5% 58%, 10% 55%, 15% 60%, 20% 52%, 25% 48%, 30% 55%, 35% 50%, 40% 52%, 42% 48%, 45% 45%, 48% 48%, 50% 42%, 52% 45%, 55% 48%, 58% 50%, 60% 46%, 65% 52%, 70% 48%, 75% 55%, 80% 50%, 85% 53%, 90% 56%, 95% 52%, 100% 58%, 100% 100%);"></div>
+  </section>
+
+  <!-- ACT 3: Web Design -->
+  <section class="act" data-act="a-webdesign" style="background:#111;">
+    <div class="seedance-bg" style="opacity:0.5"></div>
+    <span class="act-label">Services</span>
+    <h2 class="act-title" style="font-size:var(--text-5xl);">Web Design</h2>
+    <p class="act-subtitle">Custom websites for artists, brands, and creative projects</p>
+    <div class="card-grid" id="cards-a3">
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#0a1a3a,#1a0a2a)"></div><div class="card-info"><h3>BetMetrics.ca</h3><p>Sports betting analytics platform</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#1a0a0a,#2a1a1a)"></div><div class="card-info"><h3>Savv4x.com</h3><p>Artist portfolio &amp; brand site</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#0a0a1a,#1a2a1a)"></div><div class="card-info"><h3>SyrenEffect.com</h3><p>R&amp;B artist visual experience</p></div></div>
+    </div>
+  </section>
+
+  <!-- ACT 4: CTA / Footer -->
+  <section class="act" data-act="a-cta" style="background:#0a0a0a;">
+    <span class="act-label">Let's Work</span>
+    <h2 class="act-title" style="font-size:var(--text-5xl);">Book a Session</h2>
+    <p class="act-subtitle" style="margin-bottom:40px;">Ready to bring your vision to life? Let's create something unforgettable.</p>
+    <button class="cta-btn">GET STARTED <span style="font-size:18px;">&rarr;</span></button>
+    <footer style="margin-top:80px;text-align:center;color:var(--color-text-subtle);font-size:var(--text-sm);">
+      <p style="letter-spacing:0.1em;">&copy; 2026 TdotsSolutionsz &bull; Toronto, Ontario</p>
+    </footer>
+  </section>
+</div>
+
+<!-- ================================================
+     VARIANT B: Shadow Overlay Dissolve
+     ================================================ -->
+<div id="variant-b" class="variant">
+
+  <!-- ACT 1: Hero -->
+  <section class="act act--hero" data-act="b-hero">
+    <div class="seedance-bg">
+      <div class="particles">
+        <div class="particle" style="left:15%;animation-delay:0s;animation-duration:18s"></div>
+        <div class="particle" style="left:35%;animation-delay:2s;animation-duration:20s"></div>
+        <div class="particle" style="left:60%;animation-delay:4s;animation-duration:22s"></div>
+        <div class="particle" style="left:80%;animation-delay:1s;animation-duration:17s"></div>
+      </div>
+    </div>
+    <span class="act-label">Toronto — Creative Production</span>
+    <h1 class="act-title">TDOTS<br>SOLUTIONSZ</h1>
+    <p class="act-subtitle">Music video direction, web design, and visual storytelling</p>
+    <div style="margin-top:40px;font-size:12px;color:var(--color-text-subtle);letter-spacing:0.15em;">SCROLL TO EXPLORE</div>
+  </section>
+
+  <!-- Dissolve transition between acts -->
+  <div class="shadow-panel" id="shadow-b1">
+    <div class="shadow-panel__left"></div>
+    <div class="shadow-panel__right"></div>
+  </div>
+
+  <!-- ACT 2: Music Videos -->
+  <section class="act" data-act="b-videos" style="background:#0f0f0f;">
+    <span class="act-label">Portfolio</span>
+    <h2 class="act-title" style="font-size:var(--text-5xl);">Music Videos</h2>
+    <p class="act-subtitle">A decade of Toronto hip-hop — 101 videos, 54 artists, 5M+ views</p>
+    <div class="card-grid" id="cards-b2">
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#1a1a3e,#2a1a1a)"></div><div class="card-info"><h3>Dungeons</h3><p>Casper TNG &bull; 1.2M views</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#1a2a1a,#1a1a2a)"></div><div class="card-info"><h3>Dungeons Pt. 2</h3><p>Casper TNG &bull; 890K views</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#2a1a2a,#1a2a2a)"></div><div class="card-info"><h3>Retro Flow</h3><p>FM &bull; 650K views</p></div></div>
+    </div>
+  </section>
+
+  <!-- Second dissolve -->
+  <div class="shadow-panel" id="shadow-b2">
+    <div class="shadow-panel__left"></div>
+    <div class="shadow-panel__right"></div>
+  </div>
+
+  <!-- ACT 3: Web Design -->
+  <section class="act" data-act="b-webdesign" style="background:#111;">
+    <span class="act-label">Services</span>
+    <h2 class="act-title" style="font-size:var(--text-5xl);">Web Design</h2>
+    <p class="act-subtitle">Custom websites for artists, brands, and creative projects</p>
+    <div class="card-grid" id="cards-b3">
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#0a1a3a,#1a0a2a)"></div><div class="card-info"><h3>BetMetrics.ca</h3><p>Sports betting analytics platform</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#1a0a0a,#2a1a1a)"></div><div class="card-info"><h3>Savv4x.com</h3><p>Artist portfolio &amp; brand site</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#0a0a1a,#1a2a1a)"></div><div class="card-info"><h3>SyrenEffect.com</h3><p>R&amp;B artist visual experience</p></div></div>
+    </div>
+  </section>
+
+  <!-- ACT 4: CTA -->
+  <section class="act" data-act="b-cta" style="background:#0a0a0a;">
+    <span class="act-label">Let's Work</span>
+    <h2 class="act-title" style="font-size:var(--text-5xl);">Book a Session</h2>
+    <p class="act-subtitle" style="margin-bottom:40px;">Ready to bring your vision to life? Let's create something unforgettable.</p>
+    <button class="cta-btn">GET STARTED <span style="font-size:18px;">&rarr;</span></button>
+    <footer style="margin-top:80px;text-align:center;color:var(--color-text-subtle);font-size:var(--text-sm);">
+      <p style="letter-spacing:0.1em;">&copy; 2026 TdotsSolutionsz &bull; Toronto, Ontario</p>
+    </footer>
+  </section>
+</div>
+
+<!-- ================================================
+     VARIANT C: Parallax Layer Peel
+     ================================================ -->
+<div id="variant-c" class="variant">
+
+  <!-- ACT 1: Hero (peels up to reveal Act 2) -->
+  <section class="act peel-section" data-act="c-hero" id="peel-1">
+    <div class="seedance-bg">
+      <div class="particles">
+        <div class="particle" style="left:20%;animation-delay:1s;animation-duration:19s"></div>
+        <div class="particle" style="left:45%;animation-delay:3s;animation-duration:21s"></div>
+        <div class="particle" style="left:70%;animation-delay:0s;animation-duration:17s"></div>
+        <div class="particle" style="left:90%;animation-delay:5s;animation-duration:23s"></div>
+      </div>
+    </div>
+    <span class="act-label">Toronto — Creative Production</span>
+    <h1 class="act-title">TDOTS<br>SOLUTIONSZ</h1>
+    <p class="act-subtitle">Music video direction, web design, and visual storytelling</p>
+    <div style="margin-top:40px;font-size:12px;color:var(--color-text-subtle);letter-spacing:0.15em;">SCROLL TO EXPLORE</div>
+  </section>
+
+  <div class="peel-shadow" id="peel-shadow-1"></div>
+
+  <!-- ACT 2: Music Videos (peels to reveal Act 3) -->
+  <section class="act peel-section" data-act="c-videos" id="peel-2" style="background:#0f0f0f;">
+    <span class="act-label">Portfolio</span>
+    <h2 class="act-title" style="font-size:var(--text-5xl);">Music Videos</h2>
+    <p class="act-subtitle">A decade of Toronto hip-hop — 101 videos, 54 artists, 5M+ views</p>
+    <div class="card-grid" id="cards-c2">
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#1a1a3e,#2a1a1a)"></div><div class="card-info"><h3>Dungeons</h3><p>Casper TNG &bull; 1.2M views</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#1a2a1a,#1a1a2a)"></div><div class="card-info"><h3>Dungeons Pt. 2</h3><p>Casper TNG &bull; 890K views</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#2a1a2a,#1a2a2a)"></div><div class="card-info"><h3>Retro Flow</h3><p>FM &bull; 650K views</p></div></div>
+    </div>
+  </section>
+
+  <div class="peel-shadow" id="peel-shadow-2"></div>
+
+  <!-- ACT 3: Web Design -->
+  <section class="act peel-section" data-act="c-webdesign" id="peel-3" style="background:#111;">
+    <span class="act-label">Services</span>
+    <h2 class="act-title" style="font-size:var(--text-5xl);">Web Design</h2>
+    <p class="act-subtitle">Custom websites for artists, brands, and creative projects</p>
+    <div class="card-grid" id="cards-c3">
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#0a1a3a,#1a0a2a)"></div><div class="card-info"><h3>BetMetrics.ca</h3><p>Sports betting analytics platform</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#1a0a0a,#2a1a1a)"></div><div class="card-info"><h3>Savv4x.com</h3><p>Artist portfolio &amp; brand site</p></div></div>
+      <div class="card"><div class="card-thumb" style="background:linear-gradient(135deg,#0a0a1a,#1a2a1a)"></div><div class="card-info"><h3>SyrenEffect.com</h3><p>R&amp;B artist visual experience</p></div></div>
+    </div>
+  </section>
+
+  <!-- ACT 4: CTA (doesn't peel — final resting place) -->
+  <section class="act" data-act="c-cta" style="background:#0a0a0a;">
+    <span class="act-label">Let's Work</span>
+    <h2 class="act-title" style="font-size:var(--text-5xl);">Book a Session</h2>
+    <p class="act-subtitle" style="margin-bottom:40px;">Ready to bring your vision to life? Let's create something unforgettable.</p>
+    <button class="cta-btn">GET STARTED <span style="font-size:18px;">&rarr;</span></button>
+    <footer style="margin-top:80px;text-align:center;color:var(--color-text-subtle);font-size:var(--text-sm);">
+      <p style="letter-spacing:0.1em;">&copy; 2026 TdotsSolutionsz &bull; Toronto, Ontario</p>
+    </footer>
+  </section>
+</div>
+
+<!-- Sketch Toolbar -->
+<div id="sketch-tools" style="position:fixed;bottom:12px;right:12px;z-index:99999;font-family:system-ui;font-size:12px;background:rgba(0,0,0,0.85);color:white;padding:10px 14px;border-radius:10px;opacity:0.4;transition:opacity 0.2s;display:flex;gap:12px;align-items:center;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.4'">
+  <span style="color:var(--color-text-muted);">Viewport:</span>
+  <button onclick="setViewport('375px')" style="all:unset;cursor:pointer;padding:4px 8px;border-radius:4px;background:rgba(255,255,255,0.1);">Phone</button>
+  <button onclick="setViewport('768px')" style="all:unset;cursor:pointer;padding:4px 8px;border-radius:4px;background:rgba(255,255,255,0.1);">Tablet</button>
+  <button onclick="setViewport('100%')" style="all:unset;cursor:pointer;padding:4px 8px;border-radius:4px;background:rgba(255,255,255,0.1);">Desktop</button>
+</div>
+
+<script>
+  // ========== Variant Switching ==========
+  function showVariant(id) {
+    document.querySelectorAll('.variant').forEach(v => v.style.display = 'none');
+    document.querySelectorAll('.variant-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('variant-' + id).style.display = 'block';
+    event.target.classList.add('active');
+    window.scrollTo(0, 0);
+    ScrollTrigger.refresh();
+  }
+
+  // ========== Viewport Switcher ==========
+  function setViewport(w) {
+    document.querySelectorAll('.variant').forEach(v => {
+      v.style.maxWidth = w;
+      v.style.margin = w === '100%' ? '0' : '0 auto';
+    });
+  }
+
+  // ========== GSAP ScrollTrigger Setup ==========
+  gsap.registerPlugin(ScrollTrigger);
+
+  // --- VARIANT A: Silhouette Clip-Path ---
+  // Mask rises up as you scroll past the hero
+  gsap.to('#mask-a1', {
+    y: '-100%',
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '[data-act="a-hero"]',
+      start: 'center center',
+      end: 'bottom top',
+      scrub: 1.2,
+    }
+  });
+
+  // Tower LED glow appears during the reveal
+  gsap.to('#mask-a1-lit', {
+    opacity: 1,
+    ease: 'power1.in',
+    scrollTrigger: {
+      trigger: '[data-act="a-hero"]',
+      start: '60% center',
+      end: 'bottom top',
+      scrub: 1,
+    }
+  });
+
+  // Second mask (between Act 2 and 3)
+  gsap.to('#mask-a2', {
+    y: '-100%',
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '[data-act="a-videos"]',
+      start: 'center center',
+      end: 'bottom top',
+      scrub: 1.2,
+    }
+  });
+
+  // Cards slide in from sides
+  gsap.utils.toArray('#cards-a2 .card').forEach((card, i) => {
+    gsap.from(card, {
+      x: i % 2 === 0 ? -80 : 80,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+  });
+
+  gsap.utils.toArray('#cards-a3 .card').forEach((card, i) => {
+    gsap.from(card, {
+      x: i % 2 === 0 ? -80 : 80,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+  });
+
+  // --- VARIANT B: Shadow Dissolve ---
+  // Left panel slides left, right panel slides right
+  gsap.to('#shadow-b1 .shadow-panel__left', {
+    x: '-100%',
+    ease: 'power3.inOut',
+    scrollTrigger: {
+      trigger: '#shadow-b1',
+      start: 'top center',
+      end: 'bottom center',
+      scrub: 0.8,
+    }
+  });
+
+  gsap.to('#shadow-b1 .shadow-panel__right', {
+    x: '100%',
+    ease: 'power3.inOut',
+    scrollTrigger: {
+      trigger: '#shadow-b1',
+      start: 'top center',
+      end: 'bottom center',
+      scrub: 0.8,
+    }
+  });
+
+  gsap.to('#shadow-b2 .shadow-panel__left', {
+    x: '-100%',
+    ease: 'power3.inOut',
+    scrollTrigger: {
+      trigger: '#shadow-b2',
+      start: 'top center',
+      end: 'bottom center',
+      scrub: 0.8,
+    }
+  });
+
+  gsap.to('#shadow-b2 .shadow-panel__right', {
+    x: '100%',
+    ease: 'power3.inOut',
+    scrollTrigger: {
+      trigger: '#shadow-b2',
+      start: 'top center',
+      end: 'bottom center',
+      scrub: 0.8,
+    }
+  });
+
+  // Cards for variant B
+  gsap.utils.toArray('#cards-b2 .card').forEach((card, i) => {
+    gsap.from(card, {
+      y: 60,
+      opacity: 0,
+      duration: 0.6,
+      delay: i * 0.15,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 90%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+  });
+
+  gsap.utils.toArray('#cards-b3 .card').forEach((card, i) => {
+    gsap.from(card, {
+      y: 60,
+      opacity: 0,
+      duration: 0.6,
+      delay: i * 0.15,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 90%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+  });
+
+  // --- VARIANT C: Layer Peel ---
+  // Each section rotates up on its top edge as you scroll past
+  gsap.to('#peel-1', {
+    rotateX: -45,
+    y: '-30%',
+    opacity: 0.3,
+    ease: 'power2.in',
+    scrollTrigger: {
+      trigger: '#peel-1',
+      start: 'bottom bottom',
+      end: 'bottom top',
+      scrub: 1,
+      pin: false,
+      onUpdate: (self) => {
+        const shadow = document.getElementById('peel-shadow-1');
+        shadow.style.opacity = self.progress;
+      }
+    }
+  });
+
+  gsap.to('#peel-2', {
+    rotateX: -45,
+    y: '-30%',
+    opacity: 0.3,
+    ease: 'power2.in',
+    scrollTrigger: {
+      trigger: '#peel-2',
+      start: 'bottom bottom',
+      end: 'bottom top',
+      scrub: 1,
+      onUpdate: (self) => {
+        const shadow = document.getElementById('peel-shadow-2');
+        shadow.style.opacity = self.progress;
+      }
+    }
+  });
+
+  gsap.to('#peel-3', {
+    rotateX: -30,
+    y: '-20%',
+    opacity: 0.5,
+    ease: 'power2.in',
+    scrollTrigger: {
+      trigger: '#peel-3',
+      start: 'bottom bottom',
+      end: 'bottom top',
+      scrub: 1,
+    }
+  });
+
+  // Cards for variant C — scale up from small
+  gsap.utils.toArray('#cards-c2 .card, #cards-c3 .card').forEach((card, i) => {
+    gsap.from(card, {
+      scale: 0.85,
+      opacity: 0,
+      duration: 0.6,
+      delay: i * 0.1,
+      ease: 'back.out(1.4)',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      }
+    });
+  });
+
+  // Pulse animation
+  const style = document.createElement('style');
+  style.textContent = `@keyframes pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }`;
+  document.head.appendChild(style);
+</script>
+
+</body>
+</html>

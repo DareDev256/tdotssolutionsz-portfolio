@@ -112,7 +112,7 @@ export default function PhotoGallery() {
           ← BACK
         </Link>
         <div className="gallery-header-text">
-          <img src="/logo.png" alt="" className="gallery-logo" width="60" height="60" />
+          <img src="/logo-v2.png" alt="" className="gallery-logo" width="60" height="60" />
           <h1 className="gallery-title">PHOTOGRAPHY</h1>
           <p className="gallery-subtitle">{photos.length} PHOTOS — TORONTO CREATIVE PRODUCTION</p>
         </div>

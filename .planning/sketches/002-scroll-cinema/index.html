@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TdotsSolutionsz — Scroll Cinema Sketch</title>
+  <link rel="stylesheet" href="../themes/default.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+    }
+
+    /* The scroll track — this is what makes the page tall enough for scrubbing */
+    .scroll-track {
+      height: 1200vh;
+      position: relative;
+    }
+
+    /* Fixed viewport — everything composites here */
+    .viewport {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    /* Film grain */
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px;
+      mix-blend-mode: overlay;
+    }
+
+    /* Scene video backgrounds */
+    .scene-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .scene-video-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ========================================
+       SCENE 1: THE ARRIVAL
+       Night sky → Toronto skyline materializes
+       ======================================== */
+    .scene-1 {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    /* Animated night sky gradient (fallback behind video) */
+    .sky {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        #050510 0%,
+        #0a0a2a 30%,
+        #0f1535 50%,
+        #1a1040 70%,
+        #0a0a15 100%
+      );
+    }
+
+    /* Stars */
+    .stars {
+      position: absolute;
+      inset: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .star--twinkle {
+      animation: twinkle var(--dur, 3s) ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.2; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* City skyline silhouette */
+    .skyline {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 45vh;
+    }
+
+    .skyline svg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      bottom: 0;
+    }
+
+    /* CN Tower glow */
+    .tower-glow {
+      position: absolute;
+      bottom: 20vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 35vh;
+      background: linear-gradient(0deg,
+        rgba(232,93,52,0.8),
+        rgba(255,200,50,0.6) 40%,
+        rgba(255,255,255,0.9) 70%,
+        rgba(74,124,255,0.4) 100%
+      );
+      filter: blur(8px);
+      opacity: 0;
+    }
+
+    .tower-glow::after {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, rgba(255,255,255,0.9), transparent 70%);
+      border-radius: 50%;
+    }
+
+    /* Hero text */
+    .hero-text {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      will-change: transform;
+    }
+
+    .hero-label {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 24px;
+      opacity: 0;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(5rem, 14vw, 12rem);
+      line-height: 0.85;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      overflow: visible;
+    }
+
+    /* Each letter wraps in a span for individual animation */
+    .letter {
+      display: inline-block;
+      will-change: transform, opacity;
+      transition: none;
+    }
+
+    .hero-sub {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      color: var(--color-text-muted);
+      letter-spacing: 0.08em;
+      opacity: 0;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--color-text-subtle);
+      z-index: 10;
+    }
+
+    .scroll-cue::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(180deg, var(--color-text-subtle), transparent);
+      margin: 12px auto 0;
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; height: 30px; }
+      50% { opacity: 1; height: 50px; }
+    }
+
+    /* ========================================
+       TRANSITION 1: THE FLASH
+       Letters scatter → white flash → particles
+       ======================================== */
+    .flash-overlay {
+      position: absolute;
+      inset: 0;
+      background: white;
+      opacity: 0;
+      z-index: 50;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    /* Particle canvas for explosion */
+    #particle-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    /* ========================================
+       SCENE 2: MUSIC VIDEOS
+       Emerges from the void with floating frames
+       ======================================== */
+    .scene-2 {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      opacity: 0;
+    }
+
+    .scene-2-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, #111528, #0a0a0f);
+    }
+
+    .scene-2-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 900;
+      line-height: 0.9;
+      text-align: center;
+      z-index: 10;
+      margin-bottom: 16px;
+    }
+
+    .scene-2-sub {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      letter-spacing: 0.1em;
+      z-index: 10;
+      margin-bottom: 48px;
+    }
+
+    /* Floating video frames */
+    .floating-frames {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .frame {
+      position: absolute;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      will-change: transform;
+    }
+
+    .frame-inner {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .frame-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 12px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .frame-label span {
+      display: block;
+      font-size: 10px;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    /* ========================================
+       TRANSITION 2: THE DISSOLVE
+       Scene breaks into floating shards
+       ======================================== */
+
+    /* ========================================
+       SCENE 3: WEB DESIGN
+       Dark void → browser windows float in
+       ======================================== */
+    .scene-3 {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      opacity: 0;
+    }
+
+    .scene-3-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 50%, #0f1a0f, #0a0a0a);
+    }
+
+    .scene-3-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 900;
+      line-height: 0.9;
+      text-align: center;
+      z-index: 10;
+      margin-bottom: 16px;
+    }
+
+    .scene-3-sub {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      letter-spacing: 0.1em;
+      z-index: 10;
+      margin-bottom: 48px;
+    }
+
+    /* Browser windows */
+    .browser-frame {
+      position: absolute;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+      will-change: transform;
+      z-index: 5;
+    }
+
+    .browser-chrome {
+      height: 28px;
+      background: #1e1e1e;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 6px;
+    }
+
+    .browser-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .browser-body {
+      width: 100%;
+      height: calc(100% - 28px);
+      background-size: cover;
+      background-position: top center;
+    }
+
+    /* ========================================
+       SCENE 4: CTA
+       Everything converges
+       ======================================== */
+    .scene-4 {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      opacity: 0;
+    }
+
+    .scene-4-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, #151520, #0a0a0a);
+    }
+
+    .scene-4-label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--color-primary);
+      z-index: 10;
+      margin-bottom: 24px;
+    }
+
+    .scene-4-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      font-weight: 900;
+      text-align: center;
+      z-index: 10;
+      margin-bottom: 24px;
+    }
+
+    .scene-4-sub {
+      font-size: 16px;
+      color: var(--color-text-muted);
+      text-align: center;
+      max-width: 450px;
+      line-height: 1.6;
+      z-index: 10;
+      margin-bottom: 40px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 48px;
+      background: var(--color-accent);
+      color: white;
+      border: none;
+      border-radius: 60px;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 40px rgba(232, 93, 52, 0.3);
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 60px rgba(232, 93, 52, 0.5);
+    }
+
+    .footer-text {
+      position: absolute;
+      bottom: 24px;
+      font-size: 11px;
+      color: var(--color-text-subtle);
+      letter-spacing: 0.1em;
+      z-index: 10;
+    }
+
+    /* ========================================
+       SCROLL PROGRESS INDICATOR
+       ======================================== */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+      z-index: 9999;
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+
+    /* Scene indicator dots */
+    .scene-dots {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 9998;
+    }
+
+    .scene-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .scene-dot.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      box-shadow: 0 0 10px rgba(74, 124, 255, 0.5);
+    }
+
+    .scene-dot-label {
+      position: absolute;
+      right: 20px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--color-text-muted);
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    .scene-dot:hover .scene-dot-label {
+      opacity: 1;
+    }
+
+    /* ========================================
+       RESPONSIVE
+       ======================================== */
+    @media (max-width: 768px) {
+      .scene-dots { display: none; }
+      .frame { transform: scale(0.7) !important; }
+      .browser-frame { transform: scale(0.6) !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="progress-bar" id="progress"></div>
+
+<!-- Scene nav dots -->
+<div class="scene-dots">
+  <div class="scene-dot active" onclick="scrollToScene(0)" style="position:relative">
+    <span class="scene-dot-label">ARRIVAL</span>
+  </div>
+  <div class="scene-dot" onclick="scrollToScene(1)" style="position:relative">
+    <span class="scene-dot-label">VIDEOS</span>
+  </div>
+  <div class="scene-dot" onclick="scrollToScene(2)" style="position:relative">
+    <span class="scene-dot-label">WEB DESIGN</span>
+  </div>
+  <div class="scene-dot" onclick="scrollToScene(3)" style="position:relative">
+    <span class="scene-dot-label">LET'S WORK</span>
+  </div>
+</div>
+
+<!-- Fixed viewport — all scenes composite here -->
+<div class="viewport">
+
+  <!-- SCENE 1: The Arrival -->
+  <div class="scene-1" id="scene1">
+    <video class="scene-video" id="video1" src="videos/scene1-arrival.mp4" muted playsinline preload="auto"></video>
+    <div class="scene-video-overlay" style="background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.6))"></div>
+    <div class="sky" id="sky" style="opacity:0.3"></div>
+    <div class="stars" id="stars"></div>
+
+    <!-- Toronto skyline SVG -->
+    <div class="skyline" id="skyline">
+      <svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax meet" fill="#0a0a12">
+        <!-- Background layer buildings -->
+        <g opacity="0.4">
+          <rect x="50" y="200" width="40" height="200" />
+          <rect x="100" y="180" width="30" height="220" />
+          <rect x="200" y="150" width="50" height="250" />
+          <rect x="260" y="170" width="35" height="230" />
+          <rect x="1100" y="160" width="45" height="240" />
+          <rect x="1160" y="190" width="30" height="210" />
+          <rect x="1250" y="170" width="55" height="230" />
+          <rect x="1320" y="200" width="40" height="200" />
+          <rect x="1380" y="220" width="60" height="180" />
+        </g>
+        <!-- Midground buildings -->
+        <g opacity="0.7">
+          <rect x="140" y="130" width="55" height="270" />
+          <rect x="310" y="100" width="40" height="300" />
+          <rect x="360" y="120" width="60" height="280" />
+          <rect x="430" y="90" width="35" height="310" />
+          <!-- Scotia Plaza -->
+          <rect x="500" y="60" width="50" height="340" />
+          <polygon points="510,60 525,30 540,60" />
+          <!-- TD Tower -->
+          <rect x="560" y="80" width="45" height="320" />
+          <!-- First Canadian Place -->
+          <rect x="620" y="40" width="55" height="360" />
+          <rect x="640" y="25" width="15" height="15" />
+          <!-- Commerce Court -->
+          <rect x="690" y="110" width="40" height="290" />
+          <rect x="900" y="90" width="50" height="310" />
+          <rect x="960" y="70" width="45" height="330" />
+          <rect x="1020" y="100" width="55" height="300" />
+        </g>
+        <!-- CN Tower -->
+        <g id="cn-tower-svg">
+          <!-- Base legs -->
+          <polygon points="740,400 755,280 760,280 748,400" fill="#0d0d18" />
+          <polygon points="810,400 795,280 790,280 802,400" fill="#0d0d18" />
+          <polygon points="770,400 772,280 778,280 780,400" fill="#0d0d18" />
+          <!-- Main shaft -->
+          <rect x="770" y="80" width="10" height="200" fill="#0d0d18" />
+          <!-- SkyPod -->
+          <ellipse cx="775" cy="90" rx="30" ry="10" fill="#0d0d18" />
+          <rect x="755" y="80" width="40" height="15" rx="3" fill="#0d0d18" />
+          <!-- Antenna -->
+          <rect x="773" y="10" width="4" height="70" fill="#0d0d18" />
+          <circle cx="775" cy="8" r="3" fill="#0d0d18" />
+          <!-- Window lights on tower pod -->
+          <g id="tower-lights" opacity="0">
+            <rect x="757" y="83" width="3" height="2" fill="#e85d34" rx="1" />
+            <rect x="763" y="83" width="3" height="2" fill="#ffcc33" rx="1" />
+            <rect x="769" y="83" width="3" height="2" fill="#fff" rx="1" />
+            <rect x="775" y="83" width="3" height="2" fill="#4a7cff" rx="1" />
+            <rect x="781" y="83" width="3" height="2" fill="#e85d34" rx="1" />
+            <rect x="787" y="83" width="3" height="2" fill="#ffcc33" rx="1" />
+          </g>
+          <!-- LED strip on shaft -->
+          <rect x="774" y="90" width="2" height="0" fill="url(#led-gradient)" id="led-strip" />
+        </g>
+        <!-- LED gradient definition -->
+        <defs>
+          <linearGradient id="led-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4a7cff" />
+            <stop offset="30%" stop-color="#ffffff" />
+            <stop offset="60%" stop-color="#ffcc33" />
+            <stop offset="100%" stop-color="#e85d34" />
+          </linearGradient>
+        </defs>
+        <!-- Window lights on buildings -->
+        <g id="building-lights" opacity="0">
+          <rect x="505" y="80" width="2" height="2" fill="#ffdd88" />
+          <rect x="515" y="100" width="2" height="2" fill="#ffdd88" />
+          <rect x="525" y="120" width="2" height="2" fill="#ffdd88" />
+          <rect x="510" y="140" width="2" height="2" fill="#ffdd88" />
+          <rect x="520" y="160" width="2" height="2" fill="#ffdd88" />
+          <rect x="630" y="60" width="2" height="2" fill="#ffdd88" />
+          <rect x="640" y="80" width="2" height="2" fill="#ffdd88" />
+          <rect x="650" y="100" width="2" height="2" fill="#ffdd88" />
+          <rect x="635" y="130" width="2" height="2" fill="#ffdd88" />
+          <rect x="645" y="150" width="2" height="2" fill="#ffdd88" />
+          <rect x="660" y="170" width="2" height="2" fill="#ffdd88" />
+          <rect x="905" y="110" width="2" height="2" fill="#ffdd88" />
+          <rect x="915" y="130" width="2" height="2" fill="#ffdd88" />
+          <rect x="925" y="150" width="2" height="2" fill="#ffdd88" />
+          <rect x="965" y="90" width="2" height="2" fill="#ffdd88" />
+          <rect x="975" y="110" width="2" height="2" fill="#ffdd88" />
+          <rect x="985" y="130" width="2" height="2" fill="#ffdd88" />
+          <rect x="150" y="150" width="2" height="2" fill="#ffdd88" />
+          <rect x="160" y="170" width="2" height="2" fill="#ffdd88" />
+          <rect x="375" y="140" width="2" height="2" fill="#ffdd88" />
+          <rect x="385" y="160" width="2" height="2" fill="#ffdd88" />
+        </g>
+        <!-- Ground line -->
+        <rect x="0" y="398" width="1440" height="2" fill="#151520" />
+      </svg>
+    </div>
+
+    <div class="tower-glow" id="towerGlow"></div>
+
+    <div class="hero-text" id="heroText">
+      <p class="hero-label" id="heroLabel">Toronto — Creative Production</p>
+      <h1 class="hero-title" id="heroTitle">
+        <span class="line-1"></span>
+        <span class="line-2"></span>
+      </h1>
+      <p class="hero-sub" id="heroSub">Music video direction &bull; Web design &bull; Visual storytelling</p>
+    </div>
+
+    <div class="scroll-cue" id="scrollCue">SCROLL</div>
+  </div>
+
+  <!-- Flash transition -->
+  <div class="flash-overlay" id="flash"></div>
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- SCENE 2: Music Videos -->
+  <div class="scene-2" id="scene2">
+    <video class="scene-video" id="video2" src="videos/scene2-videos.mp4" muted playsinline preload="auto"></video>
+    <div class="scene-video-overlay" style="background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.3),rgba(0,0,0,0.7))"></div>
+    <div class="scene-2-bg" style="opacity:0.3"></div>
+
+    <p class="scene-2-sub" id="s2sub">101 VIDEOS &bull; 54 ARTISTS &bull; 5M+ VIEWS</p>
+    <h2 class="scene-2-title" id="s2title">
+      <span class="line-1"></span>
+      <span class="line-2"></span>
+    </h2>
+
+    <!-- Floating video frames -->
+    <div class="floating-frames">
+      <div class="frame" id="frame1" style="width:280px;height:180px;top:15%;left:8%;">
+        <div class="frame-inner" style="background:linear-gradient(135deg,#1a1a3e,#2a1a1a);"></div>
+        <div class="frame-label">Dungeons<span>Casper TNG &bull; 1.2M views</span></div>
+      </div>
+      <div class="frame" id="frame2" style="width:320px;height:200px;top:60%;right:5%;">
+        <div class="frame-inner" style="background:linear-gradient(135deg,#1a2a1a,#1a1a2a);"></div>
+        <div class="frame-label">Dungeons Pt. 2<span>Casper TNG &bull; 890K views</span></div>
+      </div>
+      <div class="frame" id="frame3" style="width:240px;height:155px;bottom:10%;left:15%;">
+        <div class="frame-inner" style="background:linear-gradient(135deg,#2a1a2a,#1a2a2a);"></div>
+        <div class="frame-label">Retro Flow<span>FM &bull; 650K views</span></div>
+      </div>
+      <div class="frame" id="frame4" style="width:200px;height:130px;top:10%;right:20%;">
+        <div class="frame-inner" style="background:linear-gradient(135deg,#2a2a1a,#1a1a1a);"></div>
+        <div class="frame-label">The Message<span>Houdini &bull; 2.1M views</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 3: Web Design -->
+  <div class="scene-3" id="scene3">
+    <video class="scene-video" id="video3" src="videos/scene3-webdesign.mp4" muted playsinline preload="auto"></video>
+    <div class="scene-video-overlay" style="background:radial-gradient(ellipse at 60% 50%,rgba(0,0,0,0.3),rgba(0,0,0,0.7))"></div>
+    <div class="scene-3-bg" style="opacity:0.2"></div>
+
+    <p class="scene-3-sub" id="s3sub">SITES &bull; BRANDS &bull; DIGITAL EXPERIENCES</p>
+    <h2 class="scene-3-title" id="s3title">
+      <span class="line-1"></span>
+      <span class="line-2"></span>
+    </h2>
+
+    <!-- Browser windows -->
+    <div class="browser-frame" id="browser1" style="width:400px;height:280px;top:12%;left:5%;">
+      <div class="browser-chrome">
+        <div class="browser-dot" style="background:#ff5f57;"></div>
+        <div class="browser-dot" style="background:#febc2e;"></div>
+        <div class="browser-dot" style="background:#28c840;"></div>
+      </div>
+      <div class="browser-body" style="background:linear-gradient(135deg,#0a1a3a,#1a0a2a);"></div>
+    </div>
+    <div class="browser-frame" id="browser2" style="width:360px;height:250px;bottom:15%;right:8%;">
+      <div class="browser-chrome">
+        <div class="browser-dot" style="background:#ff5f57;"></div>
+        <div class="browser-dot" style="background:#febc2e;"></div>
+        <div class="browser-dot" style="background:#28c840;"></div>
+      </div>
+      <div class="browser-body" style="background:linear-gradient(135deg,#1a0a0a,#2a1a1a);"></div>
+    </div>
+    <div class="browser-frame" id="browser3" style="width:300px;height:210px;top:55%;left:25%;">
+      <div class="browser-chrome">
+        <div class="browser-dot" style="background:#ff5f57;"></div>
+        <div class="browser-dot" style="background:#febc2e;"></div>
+        <div class="browser-dot" style="background:#28c840;"></div>
+      </div>
+      <div class="browser-body" style="background:linear-gradient(135deg,#0a0a1a,#1a2a1a);"></div>
+    </div>
+  </div>
+
+  <!-- SCENE 4: CTA -->
+  <div class="scene-4" id="scene4">
+    <video class="scene-video" id="video4" src="videos/scene4-cta.mp4" muted playsinline preload="auto"></video>
+    <div class="scene-video-overlay" style="background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.4),rgba(0,0,0,0.8))"></div>
+    <div class="scene-4-bg" style="opacity:0.2"></div>
+    <p class="scene-4-label">LET'S WORK</p>
+    <h2 class="scene-4-title" id="s4title">Book a<br>Session</h2>
+    <p class="scene-4-sub">Ready to bring your vision to life?<br>Let's create something unforgettable.</p>
+    <button class="cta-btn" onclick="this.textContent='LET\'S GO →'; this.style.background='var(--color-primary)';">
+      GET STARTED <span style="font-size:20px;">&rarr;</span>
+    </button>
+    <p class="footer-text">&copy; 2026 TdotsSolutionsz &bull; Toronto, Ontario</p>
+  </div>
+
+</div>
+
+<!-- The scroll track that drives everything -->
+<div class="scroll-track"></div>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ========== GENERATE STARS ==========
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 120; i++) {
+  const star = document.createElement('div');
+  star.className = 'star' + (Math.random() > 0.6 ? ' star--twinkle' : '');
+  const size = 1 + Math.random() * 2;
+  star.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}%; top:${Math.random()*70}%;
+    opacity:${0.3 + Math.random()*0.7};
+    --dur:${2 + Math.random()*4}s;
+    animation-delay:${Math.random()*5}s;
+  `;
+  starsEl.appendChild(star);
+}
+
+// ========== SPLIT TEXT INTO LETTERS ==========
+function splitText(el, text) {
+  el.innerHTML = '';
+  text.split('').forEach((char, i) => {
+    const span = document.createElement('span');
+    span.className = 'letter';
+    span.textContent = char === ' ' ? ' ' : char;
+    span.style.animationDelay = `${i * 0.03}s`;
+    el.appendChild(span);
+  });
+}
+
+// Hero title
+splitText(document.querySelector('#heroTitle .line-1'), 'TDOTS');
+splitText(document.querySelector('#heroTitle .line-2'), 'SOLUTIONSZ');
+
+// Scene 2 title
+splitText(document.querySelector('#s2title .line-1'), 'Music');
+splitText(document.querySelector('#s2title .line-2'), 'Videos');
+
+// Scene 3 title
+splitText(document.querySelector('#s3title .line-1'), 'Web');
+splitText(document.querySelector('#s3title .line-2'), 'Design');
+
+// ========== PARTICLE SYSTEM ==========
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let particleActive = false;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function spawnParticles(cx, cy, count, color) {
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 2 + Math.random() * 8;
+    particles.push({
+      x: cx, y: cy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      decay: 0.005 + Math.random() * 0.015,
+      size: 1 + Math.random() * 3,
+      color: color || `hsl(${30 + Math.random()*30}, 90%, ${60 + Math.random()*30}%)`,
+    });
+  }
+  if (!particleActive) {
+    particleActive = true;
+    animateParticles();
+  }
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles = particles.filter(p => p.life > 0);
+  for (const p of particles) {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.02;
+    p.vx *= 0.995;
+    p.life -= p.decay;
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color;
+    ctx.shadowColor = p.color;
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 1;
+  if (particles.length > 0) {
+    requestAnimationFrame(animateParticles);
+  } else {
+    particleActive = false;
+  }
+}
+
+// ========== PROGRESS BAR ==========
+gsap.to('#progress', {
+  scaleX: 1,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 0.3,
+  }
+});
+
+// ========== SCENE 1: THE ARRIVAL ==========
+// Hero text entrance
+const heroTL = gsap.timeline({
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: 'top top',
+    end: '8% top',
+    scrub: 1,
+  }
+});
+
+heroTL
+  .to('#heroLabel', { opacity: 1, duration: 0.3 })
+  .from('#heroTitle .line-1 .letter', {
+    y: 80, opacity: 0, rotateX: -90,
+    stagger: 0.05, duration: 0.3, ease: 'back.out(1.4)',
+  }, 0.1)
+  .from('#heroTitle .line-2 .letter', {
+    y: 80, opacity: 0, rotateX: -90,
+    stagger: 0.05, duration: 0.3, ease: 'back.out(1.4)',
+  }, 0.25)
+  .to('#heroSub', { opacity: 1, duration: 0.2 }, 0.5);
+
+// Skyline rises from bottom
+gsap.from('#skyline', {
+  y: '100%',
+  ease: 'power2.out',
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '3% top',
+    end: '12% top',
+    scrub: 1.5,
+  }
+});
+
+// Building lights fade in
+gsap.to('#building-lights', {
+  opacity: 1,
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '10% top',
+    end: '15% top',
+    scrub: 1,
+  }
+});
+
+// CN Tower LED strip grows
+gsap.to('#led-strip', {
+  attr: { height: 190 },
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '12% top',
+    end: '18% top',
+    scrub: 1,
+  }
+});
+
+// Tower pod lights
+gsap.to('#tower-lights', {
+  opacity: 1,
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '14% top',
+    end: '17% top',
+    scrub: 1,
+  }
+});
+
+// Tower beacon glow
+gsap.to('#towerGlow', {
+  opacity: 0.8,
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '15% top',
+    end: '18% top',
+    scrub: 1,
+  }
+});
+
+// Scroll cue fades out
+gsap.to('#scrollCue', {
+  opacity: 0,
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '2% top',
+    end: '5% top',
+    scrub: 0.5,
+  }
+});
+
+// ========== TRANSITION 1: LETTERS SCATTER + FLASH ==========
+// Letters fly apart in different directions
+const scatterTL = gsap.timeline({
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '18% top',
+    end: '25% top',
+    scrub: 1,
+    onUpdate: (self) => {
+      // Spawn particles at 80% through the scatter
+      if (self.progress > 0.75 && self.progress < 0.85) {
+        spawnParticles(
+          window.innerWidth / 2,
+          window.innerHeight / 2,
+          8,
+          undefined
+        );
+      }
+    }
+  }
+});
+
+// Each letter scatters in a random direction
+scatterTL.to('#heroTitle .line-1 .letter', {
+  x: () => (Math.random() - 0.5) * window.innerWidth * 1.5,
+  y: () => (Math.random() - 0.5) * window.innerHeight * 1.5,
+  rotation: () => (Math.random() - 0.5) * 720,
+  scale: () => 0.1 + Math.random() * 2,
+  opacity: 0,
+  stagger: 0.02,
+  duration: 1,
+  ease: 'power3.in',
+}, 0);
+
+scatterTL.to('#heroTitle .line-2 .letter', {
+  x: () => (Math.random() - 0.5) * window.innerWidth * 1.5,
+  y: () => (Math.random() - 0.5) * window.innerHeight * 1.5,
+  rotation: () => (Math.random() - 0.5) * 720,
+  scale: () => 0.1 + Math.random() * 2,
+  opacity: 0,
+  stagger: 0.02,
+  duration: 1,
+  ease: 'power3.in',
+}, 0.1);
+
+// Label and sub also scatter
+scatterTL.to('#heroLabel', {
+  y: -200, opacity: 0, scale: 0.5,
+  duration: 0.5, ease: 'power2.in',
+}, 0);
+
+scatterTL.to('#heroSub', {
+  y: 200, opacity: 0, scale: 0.5,
+  duration: 0.5, ease: 'power2.in',
+}, 0);
+
+// Skyline sinks down
+scatterTL.to('#skyline', {
+  y: '60%', opacity: 0,
+  duration: 1, ease: 'power2.in',
+}, 0.2);
+
+scatterTL.to('#towerGlow', {
+  opacity: 0, y: 100,
+  duration: 0.5,
+}, 0.2);
+
+// Stars fade
+scatterTL.to('#stars', {
+  opacity: 0,
+  duration: 0.5,
+}, 0.3);
+
+// White flash
+scatterTL.to('#flash', {
+  opacity: 0.9,
+  duration: 0.15,
+  ease: 'power4.in',
+}, 0.7);
+
+scatterTL.to('#flash', {
+  opacity: 0,
+  duration: 0.3,
+  ease: 'power2.out',
+}, 0.85);
+
+// ========== SCENE 2: MUSIC VIDEOS EMERGE ==========
+const scene2TL = gsap.timeline({
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '25% top',
+    end: '40% top',
+    scrub: 1,
+  }
+});
+
+// Scene fades in
+scene2TL.to('#scene2', { opacity: 1, duration: 0.3 }, 0);
+// Scene 1 fades out
+scene2TL.to('#scene1', { opacity: 0, duration: 0.2 }, 0);
+
+// Title letters fly in from all directions
+scene2TL.from('#s2title .line-1 .letter', {
+  x: () => (Math.random() - 0.5) * 400,
+  y: () => (Math.random() - 0.5) * 400,
+  rotation: () => (Math.random() - 0.5) * 180,
+  opacity: 0,
+  scale: 0,
+  stagger: 0.04,
+  duration: 0.5,
+  ease: 'back.out(2)',
+}, 0.2);
+
+scene2TL.from('#s2title .line-2 .letter', {
+  x: () => (Math.random() - 0.5) * 400,
+  y: () => (Math.random() - 0.5) * 400,
+  rotation: () => (Math.random() - 0.5) * 180,
+  opacity: 0,
+  scale: 0,
+  stagger: 0.04,
+  duration: 0.5,
+  ease: 'back.out(2)',
+}, 0.3);
+
+scene2TL.from('#s2sub', { opacity: 0, y: 30, duration: 0.3 }, 0.5);
+
+// Frames float in from offscreen
+scene2TL.from('#frame1', {
+  x: -300, y: -200, rotation: -15, opacity: 0, scale: 0.6,
+  duration: 0.6, ease: 'power2.out',
+}, 0.3);
+
+scene2TL.from('#frame2', {
+  x: 300, y: 200, rotation: 10, opacity: 0, scale: 0.6,
+  duration: 0.6, ease: 'power2.out',
+}, 0.4);
+
+scene2TL.from('#frame3', {
+  x: -200, y: 300, rotation: -8, opacity: 0, scale: 0.6,
+  duration: 0.6, ease: 'power2.out',
+}, 0.5);
+
+scene2TL.from('#frame4', {
+  x: 200, y: -300, rotation: 12, opacity: 0, scale: 0.6,
+  duration: 0.6, ease: 'power2.out',
+}, 0.35);
+
+// Frames gently float while scene is active
+gsap.to('#frame1', {
+  y: '+=15', rotation: '+=2',
+  duration: 4, yoyo: true, repeat: -1, ease: 'sine.inOut',
+});
+gsap.to('#frame2', {
+  y: '-=12', rotation: '-=1.5',
+  duration: 5, yoyo: true, repeat: -1, ease: 'sine.inOut',
+});
+gsap.to('#frame3', {
+  y: '+=10', rotation: '+=1',
+  duration: 3.5, yoyo: true, repeat: -1, ease: 'sine.inOut',
+});
+gsap.to('#frame4', {
+  y: '-=8', rotation: '-=2',
+  duration: 4.5, yoyo: true, repeat: -1, ease: 'sine.inOut',
+});
+
+// ========== TRANSITION 2: SCENE 2 → SCENE 3 ==========
+const trans2TL = gsap.timeline({
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '45% top',
+    end: '55% top',
+    scrub: 1,
+    onUpdate: (self) => {
+      if (self.progress > 0.4 && self.progress < 0.5) {
+        spawnParticles(
+          window.innerWidth / 2,
+          window.innerHeight / 2,
+          5,
+          'rgba(74, 124, 255, 0.8)'
+        );
+      }
+    }
+  }
+});
+
+// Scene 2 title letters scatter
+trans2TL.to('#s2title .line-1 .letter', {
+  y: () => -100 - Math.random() * 300,
+  x: () => (Math.random() - 0.5) * 600,
+  rotation: () => (Math.random() - 0.5) * 360,
+  opacity: 0,
+  stagger: 0.02,
+  duration: 0.5,
+}, 0);
+
+trans2TL.to('#s2title .line-2 .letter', {
+  y: () => -100 - Math.random() * 300,
+  x: () => (Math.random() - 0.5) * 600,
+  rotation: () => (Math.random() - 0.5) * 360,
+  opacity: 0,
+  stagger: 0.02,
+  duration: 0.5,
+}, 0.05);
+
+trans2TL.to('#s2sub', { opacity: 0, y: -50, duration: 0.3 }, 0);
+
+// Frames fly off
+trans2TL.to('#frame1', { x: -500, y: -400, rotation: -30, opacity: 0, duration: 0.5 }, 0.1);
+trans2TL.to('#frame2', { x: 500, y: 400, rotation: 20, opacity: 0, duration: 0.5 }, 0.15);
+trans2TL.to('#frame3', { x: -400, y: 300, rotation: -25, opacity: 0, duration: 0.5 }, 0.2);
+trans2TL.to('#frame4', { x: 400, y: -300, rotation: 15, opacity: 0, duration: 0.5 }, 0.1);
+
+// Flash
+trans2TL.to('#flash', { opacity: 0.6, duration: 0.1 }, 0.5);
+trans2TL.to('#flash', { opacity: 0, duration: 0.2 }, 0.6);
+
+// Scene 2 out, Scene 3 in
+trans2TL.to('#scene2', { opacity: 0, duration: 0.2 }, 0.5);
+trans2TL.to('#scene3', { opacity: 1, duration: 0.3 }, 0.5);
+
+// ========== SCENE 3: WEB DESIGN ==========
+const scene3TL = gsap.timeline({
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '55% top',
+    end: '70% top',
+    scrub: 1,
+  }
+});
+
+scene3TL.from('#s3title .line-1 .letter', {
+  scale: 3, opacity: 0, rotation: () => (Math.random() - 0.5) * 90,
+  stagger: 0.06, duration: 0.4, ease: 'expo.out',
+}, 0);
+
+scene3TL.from('#s3title .line-2 .letter', {
+  scale: 3, opacity: 0, rotation: () => (Math.random() - 0.5) * 90,
+  stagger: 0.06, duration: 0.4, ease: 'expo.out',
+}, 0.15);
+
+scene3TL.from('#s3sub', { opacity: 0, y: 30, duration: 0.3 }, 0.3);
+
+// Browser windows fly in with perspective
+scene3TL.from('#browser1', {
+  x: -500, rotateY: 45, opacity: 0, scale: 0.5,
+  duration: 0.6, ease: 'power2.out',
+}, 0.2);
+
+scene3TL.from('#browser2', {
+  x: 500, rotateY: -45, opacity: 0, scale: 0.5,
+  duration: 0.6, ease: 'power2.out',
+}, 0.3);
+
+scene3TL.from('#browser3', {
+  y: 400, rotateX: 30, opacity: 0, scale: 0.5,
+  duration: 0.6, ease: 'power2.out',
+}, 0.4);
+
+// Gentle float
+gsap.to('#browser1', {
+  y: '+=10', rotation: '+=1',
+  duration: 5, yoyo: true, repeat: -1, ease: 'sine.inOut',
+});
+gsap.to('#browser2', {
+  y: '-=8', rotation: '-=0.5',
+  duration: 4, yoyo: true, repeat: -1, ease: 'sine.inOut',
+});
+
+// ========== TRANSITION 3: SCENE 3 → SCENE 4 ==========
+const trans3TL = gsap.timeline({
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '75% top',
+    end: '85% top',
+    scrub: 1,
+  }
+});
+
+trans3TL.to('#s3title .line-1 .letter, #s3title .line-2 .letter', {
+  y: () => 100 + Math.random() * 200,
+  opacity: 0,
+  stagger: 0.02,
+  duration: 0.4,
+}, 0);
+
+trans3TL.to('#s3sub', { opacity: 0, duration: 0.2 }, 0);
+trans3TL.to('#browser1', { x: -600, rotation: -20, opacity: 0, duration: 0.5 }, 0.1);
+trans3TL.to('#browser2', { x: 600, rotation: 15, opacity: 0, duration: 0.5 }, 0.15);
+trans3TL.to('#browser3', { y: 500, opacity: 0, duration: 0.5 }, 0.2);
+
+trans3TL.to('#scene3', { opacity: 0, duration: 0.2 }, 0.5);
+trans3TL.to('#scene4', { opacity: 1, duration: 0.4 }, 0.5);
+
+// ========== SCENE 4: CTA CONVERGE ==========
+const scene4TL = gsap.timeline({
+  scrollTrigger: {
+    trigger: '.scroll-track',
+    start: '85% top',
+    end: '95% top',
+    scrub: 1,
+  }
+});
+
+scene4TL.from('.scene-4-label', { y: -50, opacity: 0, duration: 0.3 }, 0);
+scene4TL.from('.scene-4-title', { scale: 0.5, opacity: 0, duration: 0.4, ease: 'back.out(1.4)' }, 0.1);
+scene4TL.from('.scene-4-sub', { y: 40, opacity: 0, duration: 0.3 }, 0.3);
+scene4TL.from('.cta-btn', { y: 60, opacity: 0, scale: 0.8, duration: 0.4, ease: 'back.out(2)' }, 0.4);
+scene4TL.from('.footer-text', { opacity: 0, duration: 0.3 }, 0.6);
+
+// ========== SCENE NAV DOTS ==========
+const dots = document.querySelectorAll('.scene-dot');
+const sceneBreaks = [0, 0.25, 0.55, 0.85];
+
+ScrollTrigger.create({
+  trigger: '.scroll-track',
+  start: 'top top',
+  end: 'bottom bottom',
+  onUpdate: (self) => {
+    let active = 0;
+    for (let i = sceneBreaks.length - 1; i >= 0; i--) {
+      if (self.progress >= sceneBreaks[i]) { active = i; break; }
+    }
+    dots.forEach((d, i) => d.classList.toggle('active', i === active));
+  }
+});
+
+function scrollToScene(idx) {
+  const scrollHeight = document.querySelector('.scroll-track').scrollHeight;
+  window.scrollTo({
+    top: sceneBreaks[idx] * scrollHeight,
+    behavior: 'smooth'
+  });
+}
+
+// ========== SCROLL-SCRUBBED VIDEO BACKGROUNDS ==========
+const videos = [
+  { el: document.getElementById('video1'), start: 0, end: 0.25 },
+  { el: document.getElementById('video2'), start: 0.25, end: 0.55 },
+  { el: document.getElementById('video3'), start: 0.55, end: 0.85 },
+  { el: document.getElementById('video4'), start: 0.85, end: 1.0 },
+];
+
+// Wait for video metadata to load
+videos.forEach(v => {
+  if (v.el) {
+    v.el.pause();
+    v.el.addEventListener('loadedmetadata', () => {
+      v.duration = v.el.duration;
+    });
+  }
+});
+
+const track = document.querySelector('.scroll-track');
+let ticking = false;
+
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      const progress = window.scrollY / (track.scrollHeight - window.innerHeight);
+      videos.forEach(v => {
+        if (!v.el || !v.duration) return;
+        if (progress >= v.start && progress <= v.end) {
+          const localProgress = (progress - v.start) / (v.end - v.start);
+          v.el.currentTime = Math.min(localProgress * v.duration, v.duration - 0.01);
+        }
+      });
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+</script>
+
+</body>
+</html>

@@ -4,7 +4,7 @@
  * Layered composite (no AI video, no Seedance — pixel-perfect logo, painterly motion):
  *   1. Drifting charcoal dust canvas    (ambient, full viewport)
  *   2. Cobalt hairline draw L→R         (1.4s draw, behind logo)
- *   3. Real /logo.png bloom-in           (blur → focus, 24fps micro-jitter)
+ *   3. Real /logo-v2.png bloom-in           (blur → focus, 24fps micro-jitter)
  *   4. Warm-orange spark burst           (single accent, 600ms)
  *   5. Radial vignette breathe           (settles into hold)
  *   6. Crossfade out                     (reveals real .hub-header below)
@@ -205,7 +205,7 @@ export default function HubIntroKinetic({ onComplete }) {
         <div className="hub-intro-kinetic__line" />
         <div className="hub-intro-kinetic__logo-wrap">
           <img
-            src="/logo.png"
+            src="/logo-v2.png"
             alt=""
             className="hub-intro-kinetic__logo"
             width="240"

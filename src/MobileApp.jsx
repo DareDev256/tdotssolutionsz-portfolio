@@ -252,7 +252,7 @@ export default function MobileApp() {
 
             {/* Header */}
             <header className="mobile-header">
-                <img src="/logo.png" alt="TDots Solutionsz" className="mobile-logo" />
+                <img src="/logo-v2.png" alt="TDots Solutionsz" className="mobile-logo" />
                 <h1 className="mobile-title">
                     <span className="title-infinite">MUSIC VIDEO</span>
                     <span className="title-drive">PORTFOLIO</span>
