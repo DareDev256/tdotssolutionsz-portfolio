@@ -574,11 +574,12 @@
   transition: filter 0.4s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* The label sits over the still; on hover it earns a warm rule above it. */
-.cinema-frame-label {
-  position: relative;
-}
-
+/* The label sits over the still; on hover it earns a warm rule above it.
+   NOTE: do NOT set `position: relative` here. The base rule above is
+   `position: absolute; bottom: 0`, and overriding it drops the label into
+   normal flow below the image, where the card's `overflow: hidden` clips it
+   out of existence. `position: absolute` is already a containing block for
+   ::before, so no override is needed. */
 .cinema-frame-label::before {
   content: '';
   position: absolute;
