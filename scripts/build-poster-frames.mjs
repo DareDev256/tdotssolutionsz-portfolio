@@ -79,23 +79,50 @@ async function detectCrop(file) {
  * Below this mean luma we refuse the frame and fall back to YouTube.
  */
 const MIN_LUMA = 42
+/** Tonal spread below this is a flat wall, a fade, or an out-of-focus plate. */
+const MIN_SPREAD = 55
 
-/** Exposure + detail score for one moment. Returns {score, avg, std}. */
+/**
+ * Exposure + contrast + colour score for one moment.
+ *
+ * NOTE: ffmpeg's `signalstats` does NOT emit a YSTD key — it reports
+ * YMIN/YLOW/YAVG/YHIGH/YMAX. An earlier version of this scorer parsed YSTD,
+ * got NaN, and contributed exactly zero on every frame, so selection was driven
+ * by exposure alone. Contrast now comes from the YHIGH-YLOW percentile spread,
+ * which is more robust than YMAX-YMIN anyway (a single blown highlight or
+ * crushed shadow can't dominate it).
+ *
+ * @returns {{score:number, avg:number, spread:number, sat:number}}
+ */
 async function score(file, t, cropExpr) {
+    const NONE = { score: 0, avg: 0, spread: 0, sat: 0 }
     try {
         const { stderr } = await run('ffmpeg', ['-ss', String(t), '-i', file, '-frames:v', '1',
             '-vf', `${cropExpr ? cropExpr + ',' : ''}signalstats,metadata=print`,
             '-an', '-f', 'null', '-'], { maxBuffer: 1024 * 1024 * 8 })
             .catch((e) => ({ stderr: e.stderr || '' }))
         const txt = String(stderr)
-        const avg = Number(txt.match(/YAVG=([\d.]+)/)?.[1])
-        const std = Number(txt.match(/YSTD=([\d.]+)/)?.[1])
-        if (!Number.isFinite(avg) || !Number.isFinite(std)) return { score: 0, avg: 0, std: 0 }
+        const num = (k) => Number(txt.match(new RegExp(`${k}=([\\d.]+)`))?.[1])
+        const avg = num('YAVG')
+        const low = num('YLOW')
+        const high = num('YHIGH')
+        const sat = num('SATAVG')
+        if (![avg, low, high].every(Number.isFinite)) return NONE
+
+        const spread = high - low
+        // Peak at mid-grey; fall off toward either clipped end.
         const exposure = 1 - Math.min(1, Math.abs(avg - 118) / 118)
-        const detail = Math.min(1, std / 55)
-        return { score: exposure * 0.45 + detail * 0.55, avg, std }
+        // ~150 of tonal spread is a well-lit frame with real depth.
+        const contrast = Math.min(1, spread / 150)
+        // Colour breaks ties: a flat grey frame and a lit one can otherwise score alike.
+        const colour = Math.min(1, (Number.isFinite(sat) ? sat : 0) / 60)
+
+        return {
+            score: exposure * 0.4 + contrast * 0.45 + colour * 0.15,
+            avg, spread, sat: Number.isFinite(sat) ? sat : 0
+        }
     } catch {
-        return { score: 0, avg: 0, std: 0 }
+        return NONE
     }
 }
 
@@ -135,10 +162,11 @@ async function buildOne(v, i, total) {
         // Only consider frames above the brightness floor. Sorting first and
         // then filtering would still hand back a black frame when every
         // candidate is dark — which is exactly what shipped on the first pass.
-        const usable = scored.filter((c) => c.avg >= MIN_LUMA)
+        const usable = scored.filter((c) => c.avg >= MIN_LUMA && c.spread >= MIN_SPREAD)
         if (!usable.length) {
             const brightest = Math.max(...scored.map((c) => c.avg)).toFixed(0)
-            throw new Error(`no frame above luma floor (brightest ${brightest})`)
+            const widest = Math.max(...scored.map((c) => c.spread)).toFixed(0)
+            throw new Error(`no usable frame (best luma ${brightest}, best spread ${widest})`)
         }
         usable.sort((a, b) => b.score - a.score)
         const best = usable[0].t

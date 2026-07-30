@@ -28,8 +28,8 @@ const DIR = path.join(ROOT, 'public', 'posters')
 
 /** Must match MIN_LUMA in build-poster-frames.mjs. */
 const MIN_LUMA = 42
-/** A frame with almost no tonal spread is a flat wall or a fade, not a shot. */
-const MIN_STD = 12
+/** Tonal spread (YHIGH-YLOW). Below this is a flat wall, a fade, or mush. */
+const MIN_STD = 55
 
 const DELETE = process.argv.includes('--delete')
 
@@ -37,10 +37,9 @@ async function measure(file) {
     const { stderr } = await run('ffmpeg', ['-i', file, '-vf', 'signalstats,metadata=print',
         '-f', 'null', '-'], { maxBuffer: 1024 * 1024 * 8 }).catch((e) => ({ stderr: e.stderr || '' }))
     const txt = String(stderr)
-    return {
-        avg: Number(txt.match(/YAVG=([\d.]+)/)?.[1]) || 0,
-        std: Number(txt.match(/YSTD=([\d.]+)/)?.[1]) || 0
-    }
+    const num = (k) => Number(txt.match(new RegExp(`${k}=([\\d.]+)`))?.[1]) || 0
+    // signalstats has no YSTD key; use the YHIGH-YLOW percentile spread.
+    return { avg: num('YAVG'), std: num('YHIGH') - num('YLOW') }
 }
 
 const files = (await readdir(DIR)).filter((f) => f.endsWith('.jpg'))
