@@ -21,7 +21,9 @@ import './index.css'
 /** Boot security monitor — CSP violation logging + runtime integrity checks */
 initSecurityMonitor()
 
-/** Hub landing page — scroll-cinema redesign with GSAP + Seedance videos */
+/** v6 studio homepage — evidence-first editorial landing (no Three.js) */
+const StudioHome = lazy(() => import('./components/v6/StudioHome.jsx'))
+/** Previous scroll-cinema hub, kept at /hub-legacy as a one-line rollback */
 const HubPage = lazy(() => import('./components/HubPageCinema.jsx'))
 /** Standalone video detail page — lightweight, shareable, no Three.js */
 const VideoPage = lazy(() => import('./components/VideoPage.jsx'))
@@ -38,10 +40,16 @@ const WebDesignPage = lazy(() => import('./components/WebDesignPage.jsx'))
 
 /** Catches Three.js/WebGL crashes so the page doesn't blank out */
 class AppErrorBoundary extends Component {
-    state = { hasError: false }
+    state = { hasError: false, message: '' }
 
-    static getDerivedStateFromError() {
-        return { hasError: true }
+    static getDerivedStateFromError(error) {
+        return { hasError: true, message: error?.message || '' }
+    }
+
+    componentDidCatch(error, info) {
+        // Surface the real cause — the generic "3D rendering failed" copy below
+        // hid a plain data error for a whole debug cycle during the v6 build.
+        console.error('[AppErrorBoundary]', error, info?.componentStack)
     }
 
     render() {
@@ -50,7 +58,10 @@ class AppErrorBoundary extends Component {
                 <div className="loading-screen">
                     <div className="loading-text">Something went wrong</div>
                     <p style={{ color: '#ff6ec7', textAlign: 'center', padding: '0 1rem' }}>
-                        3D rendering failed. Try refreshing or use a different browser.
+                        Something failed to load. Try refreshing.
+                        {import.meta.env.DEV && this.state.message
+                            ? ` (${this.state.message})`
+                            : ''}
                     </p>
                     <button
                         onClick={() => window.location.reload()}
@@ -166,7 +177,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <RouteCleanup />
                 <Suspense fallback={<LoadingScreen />}>
                     <Routes>
-                        <Route path="/" element={<HubPage />} />
+                        <Route path="/" element={<StudioHome />} />
+                        <Route path="/hub-legacy" element={<HubPage />} />
                         <Route path="/video/:youtubeId" element={<VideoPage />} />
                         <Route path="/videos" element={<VideoTunnelApp />} />
                         <Route path="/oldvideopage" element={<VideosRoute />} />

@@ -24,3 +24,6 @@ logs/
 
 # Script-generated backups — never commit
 src/data/videos.backup.json
+
+# Raw downloads used to cut hover-scrub clips (encoded output is committed)
+.preview-tmp/
