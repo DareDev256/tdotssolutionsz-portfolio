@@ -127,7 +127,7 @@ export const BUILDS = [
         summary:
             'Atlanta rapper signed by Quavo to Huncho Records at fourteen, champion of Lifetime’s The Rap Game season 4, independent now. A WebGL night street you walk down where every streetlight holds one of his music videos, ordered by year so the walk is the career.',
         stack: ['Three.js', 'Vanilla JS', 'Vercel'],
-        url: 'https://streetbud.vercel.app',
+        url: 'https://officialstreetbud.com',
         preview: '/sites/streetbud-preview.jpg'
     },
     {
