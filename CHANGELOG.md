@@ -2,6 +2,19 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [6.1.0] - 2026-08-08
+
+### Added — Street Bud joins BUILDS
+
+- **Street Bud** — Atlanta recording artist, signed by Quavo to Huncho Records at fourteen, champion of Lifetime's The Rap Game season 4, independent now. A Three.js night street you walk down where every streetlight holds one of his music videos, ordered by year so the walk down the block is the career. Live at `officialstreetbud.com`.
+- Placed above SAVV4X in the roster. Preview generated from the site's own OG card.
+- Two of the ten videos on that site were directed by this studio, including *No Cap* at 1,144,101 views, the most-viewed video on the artist's channel.
+
+### Notes
+
+- The roster now spans cities: Toronto (SAVV4X, KMONEY, 100 Band Plan) and Atlanta (Street Bud, and NirvanaDeshaun on the jamesdare.com roster). Nothing in the copy is Toronto-scoped, so no positioning change was needed.
+- `npx vitest run src/utils/videoPlayback.test.js` — 23/23 passing after the change.
+
 ## [6.0.0] - 2026-07-31
 
 ### Changed — v6 studio homepage: evidence-first, and a new position
