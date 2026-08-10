@@ -2,6 +2,24 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [6.2.0] - 2026-08-10
+
+### Added — Google Analytics 4
+
+- GA4 measurement tag (`G-YBX25V70TJ`) wired into `index.html`.
+- `public/ga4.js` holds the dataLayer bootstrap and `config` call. Kept as an
+  external file rather than an inline `<script>` so the CSP does not need
+  `script-src unsafe-inline`.
+
+### Changed — CSP
+
+- `script-src` += `https://www.googletagmanager.com`
+- `connect-src` += `https://www.google-analytics.com`, `https://*.google-analytics.com`,
+  `https://*.analytics.google.com`, `https://www.googletagmanager.com`
+- `img-src` += `https://www.google-analytics.com`, `https://*.google-analytics.com`
+
+Video-playback guard suite re-run after the CSP change: 23/23 passing.
+
 ## [6.1.0] - 2026-08-08
 
 ### Added — Street Bud joins BUILDS
