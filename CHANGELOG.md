@@ -2,6 +2,20 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [6.2.1] - 2026-08-31
+
+### Removed — committed `node_modules` and a tracked `.DS_Store`
+
+- Untracked 8,330 files under `node_modules/` plus the repo-root `.DS_Store` with
+  `git rm -r --cached`. Both paths were already listed in `.gitignore`; they were
+  committed before that file existed, so git kept tracking them.
+- The published file list was 8,925 files, 93 percent of it vendor code, including
+  two 9.9MB esbuild binaries and two MediaPipe wasm blobs of 9.5MB and 9.4MB. It is
+  now 594 files, all of them this project's own source and media.
+- Dependencies are installed from `package-lock.json` with `npm ci`, unchanged.
+- This does not shrink the repository. The blobs remain in history, so the pack size
+  is the same until someone rewrites history, which is a separate decision.
+
 ## [6.2.0] - 2026-08-10
 
 ### Added — Google Analytics 4
