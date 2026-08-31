@@ -31,8 +31,16 @@ npm run prescan   # pre-commit secret scanner
 
 ## Routes
 
-`/` cinematic hub · `/videos` WebGL card field · `/oldvideopage` the original 3D city ·
-`/video/:youtubeId` shareable per-video page · `/web-design` · `/lab`
+Reachable on the deployed site: `/` cinematic hub · `/videos` WebGL card field ·
+`/video/:youtubeId` shareable per-video page · `/web-design`.
+
+Declared in `src/main.jsx` but **not reachable in production**: `/oldvideopage` (the
+original 3D city), `/lab`, `/v6`. `vercel.json` rewrites only `/videos`,
+`/video/:youtubeId`, `/web-design` and `/photos` to `index.html`, so every other client
+route hard-404s at the edge before React Router sees it. Confirm with
+`curl -sI https://tdotssolutionsz.com/oldvideopage` (404, `content-type: text/plain`)
+against `curl -sI https://tdotssolutionsz.com/videos` (200, `text/html`). Adding them to
+the `rewrites` array is the fix.
 
 <details>
 <summary>Stack and architecture</summary>
@@ -60,6 +68,7 @@ Deep dives: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) ·
 <summary>Note on <code>/v6</code></summary>
 
 `/v6` is an editorial homepage experiment that was built and parked. The owner preferred
-the original hub, which is what `/` serves. It is kept in the tree for reference.
+the original hub, which is what `/` serves. It is kept in the tree for reference and is
+not rewritten in `vercel.json`, so it 404s in production.
 
 </details>
