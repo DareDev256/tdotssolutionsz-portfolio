@@ -162,6 +162,28 @@ export const BUILDS = [
         url: 'https://musthavefrenchies.com',
         preview: '/sites/frenchies-preview.jpg',
         icon: '/sites/frenchies-icon.png'
+    },
+    {
+        slug: 'shairbraiding',
+        client: 'ShairBraiding',
+        sector: 'Mobile braider, Bali',
+        summary:
+            'A braider who comes to your villa. Styles by hair type, pre-typed WhatsApp booking, built from her own photos and rate card.',
+        stack: ['Static', 'WhatsApp rail', 'Vercel'],
+        url: 'https://shairbraiding.com',
+        preview: '/sites/shair-preview.jpg',
+        icon: '/sites/shair-icon.svg'
+    },
+    {
+        slug: 'baliwhisper',
+        client: 'Bali Whisper',
+        sector: 'Private driver, Ubud',
+        summary:
+            'A scroll-driven site for a Bali driver: the route draws itself, a day-builder composes the WhatsApp booking, and every photo has him in it.',
+        stack: ['scroll-craft', 'Static', 'Vercel'],
+        url: 'https://baliwhisper.com',
+        preview: '/sites/baliwhisper-preview.jpg',
+        icon: '/sites/baliwhisper-icon.png'
     }
 ]
 

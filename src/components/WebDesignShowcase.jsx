@@ -44,6 +44,24 @@ const PROJECTS = [
     preview: '/sites/syren-preview.jpg',
     url: 'https://syreneffect-site.vercel.app',
   },
+  {
+    name: 'ShairBraiding',
+    type: 'Mobile Braider',
+    description: 'Bali braider who comes to your villa — styles by hair type, WhatsApp booking pre-typed',
+    status: 'Live',
+    icon: '/sites/shair-icon.svg',
+    preview: '/sites/shair-preview.jpg',
+    url: 'https://shairbraiding.com',
+  },
+  {
+    name: 'Bali Whisper',
+    type: 'Private Driver',
+    description: 'Scroll-driven driver site — the route draws itself, a day-builder writes the WhatsApp booking',
+    status: 'Live',
+    icon: '/sites/baliwhisper-icon.png',
+    preview: '/sites/baliwhisper-preview.jpg',
+    url: 'https://baliwhisper.com',
+  },
 ]
 
 export default function WebDesignShowcase() {

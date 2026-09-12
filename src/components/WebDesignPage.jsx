@@ -70,6 +70,26 @@ const SITES = [
     description: 'Premium French Bulldog breeder — puppy listings, litter management, co-ownership program.',
     tech: ['HTML/CSS/JS', 'Vercel'],
   },
+  {
+    id: 'shairbraiding',
+    name: 'ShairBraiding',
+    type: 'Mobile Braider',
+    url: 'https://shairbraiding.com',
+    icon: '/sites/shair-icon.svg',
+    preview: '/sites/shair-preview.jpg',
+    description: 'Bali braider who comes to your villa — styles by hair type, built from her own photos and rate card, WhatsApp booking pre-typed.',
+    tech: ['Static', 'WhatsApp rail', 'Vercel'],
+  },
+  {
+    id: 'baliwhisper',
+    name: 'Bali Whisper',
+    type: 'Private Driver',
+    url: 'https://baliwhisper.com',
+    icon: '/sites/baliwhisper-icon.png',
+    preview: '/sites/baliwhisper-preview.jpg',
+    description: 'Scroll-driven site for an Ubud driver — the route draws itself, a day-builder composes the WhatsApp booking, every photo has him in it.',
+    tech: ['scroll-craft', 'Static', 'Vercel'],
+  },
 ]
 
 /** Create floating background particles */

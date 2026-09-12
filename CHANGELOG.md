@@ -2,6 +2,14 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [6.3.0] - 2026-09-12
+
+### Added
+- ShairBraiding and Bali Whisper in all three client lists (StudioHome BUILDS, HubPage showcase, /web-design), with 640x400 previews and icons. The three lists had drifted (7 / 4 / 6 entries); both new sites are in all of them.
+
+### Fixed
+- `npm run build` runs `fetch-data`, which rewrote `public/videos-enriched.json` with placeholder data when no API key is present. Reverted before commit; build with `npx vite build` when the key is absent.
+
 ## [6.2.1] - 2026-08-31
 
 ### Removed — committed `node_modules` and a tracked `.DS_Store`

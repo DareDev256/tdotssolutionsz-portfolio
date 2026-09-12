@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ShairBraiding">
+  <!-- Two strands crossing: the plait from the intro overlay, reduced to the one
+       gesture that survives at 16px. A letterform would depend on a font the OS may
+       not have; this is pure geometry and renders identically everywhere. -->
+  <rect width="64" height="64" rx="12" fill="#1A1512"/>
+  <g fill="none" stroke="#F2EDE4" stroke-width="5.5" stroke-linecap="round">
+    <path d="M23 10 C23 20 41 19 41 27 C41 35 23 34 23 42 C23 50 41 49 41 55"/>
+    <path d="M41 10 C41 20 23 19 23 27 C23 35 41 34 41 42 C41 50 23 49 23 55" stroke="#C9C6BE"/>
+  </g>
+</svg>
