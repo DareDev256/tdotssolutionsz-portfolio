@@ -2,6 +2,33 @@
 
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
+## [6.4.0] - 2026-09-13
+
+### Added — Wave 2 audit fixes: static h1/contact, 404, privacy, terms
+
+- **Static `<h1>` + contact link in the served document.** `index.html`'s `#root`
+  now ships real markup (the same "We direct the film. We build the machine that
+  sells it." line already carried in the OG/twitter meta tags, plus a
+  `mailto:dev@jamesdare.com` CTA) as its initial children. `ReactDOM.createRoot(...).render()`
+  replaces this the instant the app mounts, so it costs nothing visually — a
+  crawler or `curl` that never runs JS now sees a real h1 and a real contact
+  link where before there was only `<div id="root"></div>`.
+- **`public/404.html`** — standalone static page (own `<style>`, no bundle
+  dependency), dark palette, one line of copy, home link + the same contact CTA.
+  Vercel serves this automatically for any static asset path that matches no
+  rewrite and has no route; see the note in the Wave 2 audit report about the
+  per-route `rewrites` list vs. a catch-all.
+- **`/privacy` and `/terms` routes** — new `LegalPage` shell (`src/components/LegalPage.jsx`
+  + `.css`) shared by `PrivacyPage.jsx` and `TermsPage.jsx`, matching the site's
+  existing typography tokens (`--font-display`/`--font-mono`/`--dark-bg`/`--accent-blue`).
+  Privacy covers GA4 (the only tracker on the site), no forms/no accounts, PIPEDA/Ontario
+  jurisdiction. Terms cover the two service lines (video production, software), indicative
+  pricing confirmed at booking, and Ontario governing law. Both routes added to
+  `vercel.json` rewrites. Linked from the homepage footer (`HubPageCinema.jsx`).
+- Contact chosen: `dev@jamesdare.com` — the email already used by the live "/" homepage's
+  own "Book a Session" CTA (`HubPageCinema.jsx`), not `tdotssolutionsz@gmail.com` (used only
+  by `VideoPage.jsx` and the unused `HubPage.jsx`, which `main.jsx` does not route to).
+
 ## [6.3.0] - 2026-09-12
 
 ### Added

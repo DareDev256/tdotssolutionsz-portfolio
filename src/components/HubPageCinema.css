@@ -452,6 +452,15 @@
   margin: 4px 0;
 }
 
+.cinema-footer-legal a {
+  color: rgba(255,255,255,0.35);
+  text-decoration: none;
+}
+
+.cinema-footer-legal a:hover {
+  color: #4a7cff;
+}
+
 /* ============================================
    RESPONSIVE
    ============================================ */

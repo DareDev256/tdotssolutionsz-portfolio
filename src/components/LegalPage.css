@@ -1,0 +1,105 @@
+/* LegalPage — shared /privacy + /terms shell. Dark palette matches the
+   site's existing tokens (--dark-bg, --font-display, --font-mono, --accent-blue).
+   No neon, no gradients — plain readable legal copy. */
+
+.legal-page {
+    min-height: 100vh;
+    background: var(--dark-bg, #262626);
+    color: rgba(255, 255, 255, 0.87);
+    font-family: var(--font-body, 'Inter', -apple-system, sans-serif);
+    display: flex;
+    flex-direction: column;
+}
+
+.legal-header {
+    padding: 24px 24px 0;
+}
+
+.legal-home-link {
+    font-family: var(--font-mono, 'Space Mono', monospace);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+}
+
+.legal-home-link:hover {
+    color: var(--accent-blue, #4a7cff);
+}
+
+.legal-body {
+    max-width: 680px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+    flex: 1;
+}
+
+.legal-title {
+    font-family: var(--font-display, 'Archivo', sans-serif);
+    font-weight: 800;
+    font-size: clamp(28px, 5vw, 42px);
+    margin: 0 0 8px;
+    color: #fff;
+}
+
+.legal-updated {
+    font-family: var(--font-mono, 'Space Mono', monospace);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0 0 40px;
+}
+
+.legal-body h2 {
+    font-family: var(--font-display, 'Archivo', sans-serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-blue, #4a7cff);
+    margin: 32px 0 12px;
+}
+
+.legal-body p,
+.legal-body li {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0 0 14px;
+}
+
+.legal-body ul {
+    padding-left: 20px;
+    margin: 0 0 14px;
+}
+
+.legal-body a {
+    color: var(--accent-blue, #4a7cff);
+}
+
+.legal-contact {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legal-footer-nav {
+    margin-top: 24px;
+    display: flex;
+    gap: 10px;
+    font-family: var(--font-mono, 'Space Mono', monospace);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.legal-footer-nav a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+}
+
+.legal-footer-nav a:hover {
+    color: var(--accent-blue, #4a7cff);
+}

@@ -37,6 +37,9 @@ const VideoTunnelApp = lazy(() => import('./components/VideoTunnelApp.jsx'))
 const ShotLab = lazy(() => import('./components/lab/ShotLab.jsx'))
 /** Web Design portfolio page */
 const WebDesignPage = lazy(() => import('./components/WebDesignPage.jsx'))
+/** Legal pages — plain static shells, no Three.js dependency */
+const PrivacyPage = lazy(() => import('./components/PrivacyPage.jsx'))
+const TermsPage = lazy(() => import('./components/TermsPage.jsx'))
 /** Photography gallery — DO NOT enable until owner explicitly requests it */
 // const PhotoGallery = lazy(() => import('./components/PhotoGallery.jsx'))
 
@@ -188,6 +191,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                         <Route path="/oldvideopage" element={<VideosRoute />} />
                         <Route path="/web-design" element={<WebDesignPage />} />
                         <Route path="/lab" element={<ShotLab />} />
+                        <Route path="/privacy" element={<PrivacyPage />} />
+                        <Route path="/terms" element={<TermsPage />} />
                         {/* DO NOT enable /photos route — Photography is Coming Soon */}
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>

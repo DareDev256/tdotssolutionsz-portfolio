@@ -32,13 +32,16 @@ npm run prescan   # pre-commit secret scanner
 ## Routes
 
 Reachable on the deployed site: `/` cinematic hub · `/videos` WebGL card field ·
-`/video/:youtubeId` shareable per-video page · `/web-design`.
+`/video/:youtubeId` shareable per-video page · `/web-design` · `/privacy` · `/terms`.
+
+A real static `404.html` ships at the build output root — Vercel serves it for any
+static path that matches none of the `rewrites` below and has no other route.
 
 Declared in `src/main.jsx` but **not reachable in production**: `/oldvideopage` (the
 original 3D city), `/lab`, `/v6`. `vercel.json` rewrites only `/videos`,
-`/video/:youtubeId`, `/web-design` and `/photos` to `index.html`, so every other client
-route hard-404s at the edge before React Router sees it. Confirm with
-`curl -sI https://tdotssolutionsz.com/oldvideopage` (404, `content-type: text/plain`)
+`/video/:youtubeId`, `/web-design`, `/photos`, `/privacy` and `/terms` to `index.html`,
+so every other client route hard-404s at the edge before React Router sees it. Confirm
+with `curl -sI https://tdotssolutionsz.com/oldvideopage` (404, `content-type: text/plain`)
 against `curl -sI https://tdotssolutionsz.com/videos` (200, `text/html`). Adding them to
 the `rewrites` array is the fix.
 

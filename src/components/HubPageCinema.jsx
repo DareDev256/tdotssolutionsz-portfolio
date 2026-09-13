@@ -553,6 +553,11 @@ export default function HubPageCinema() {
           <footer className="cinema-footer">
             <p>TdotsSolutionsz</p>
             <p>Toronto, Ontario &bull; &copy; {new Date().getFullYear()}</p>
+            <p className="cinema-footer-legal">
+              <Link to="/privacy">Privacy</Link>
+              <span aria-hidden="true"> &middot; </span>
+              <Link to="/terms">Terms</Link>
+            </p>
           </footer>
         </div>
       </div>

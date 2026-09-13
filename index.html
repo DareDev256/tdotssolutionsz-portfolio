@@ -223,7 +223,29 @@
 <body>
   <!-- Skip to main content for keyboard users -->
   <a href="#root" class="skip-nav">Skip to content</a>
-  <div id="root"></div>
+  <div id="root">
+    <!--
+      Static pre-render fallback — real markup, not JS-only content.
+      React's createRoot(...).render() replaces this the instant the app
+      mounts, so a real user never sees it for more than a frame. It exists
+      so a crawler, a `curl`, or a client that never runs JS still gets a
+      real <h1> and a real contact link in the served document. Copy is
+      the same line already carried in the OG/twitter meta tags above —
+      do not let this drift from that line.
+    -->
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:32px;text-align:center;background:#0a0a0b;color:#fff;font-family:Archivo,Arial,sans-serif;">
+      <h1 style="font-family:'Anton',Arial,sans-serif;font-weight:400;font-size:clamp(28px,6vw,60px);line-height:1.08;letter-spacing:0.01em;max-width:920px;margin:0;">
+        We direct the film. We build the machine that sells it.
+      </h1>
+      <p style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin:0;">
+        Toronto &mdash; music video direction &amp; production software
+      </p>
+      <a
+        href="mailto:dev@jamesdare.com?subject=Project%20Inquiry&body=Hey%20James%2C%0A%0AI%27m%20interested%20in%20working%20together.%0A%0A"
+        style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#0a0a0b;background:#e85d34;padding:14px 28px;border-radius:24px;text-decoration:none;"
+      >Get Started &rarr;</a>
+    </div>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

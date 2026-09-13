@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Page not found — TdotsSolutionsz</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+    crossorigin="anonymous" />
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      background: #0a0a0b;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 32px;
+      text-align: center;
+      font-family: 'Archivo', -apple-system, sans-serif;
+    }
+    .code {
+      font-family: 'Anton', 'Archivo', sans-serif;
+      font-weight: 400;
+      font-size: clamp(64px, 16vw, 140px);
+      line-height: 1;
+      margin: 0;
+      color: #fff;
+    }
+    .msg {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
+      margin: 0;
+    }
+    .actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+    }
+    a.btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 24px;
+    }
+    a.btn--primary {
+      color: #0a0a0b;
+      background: #e85d34;
+    }
+    a.btn--quiet {
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    a.btn--quiet:hover {
+      border-color: #4a7cff;
+      color: #4a7cff;
+    }
+  </style>
+</head>
+<body>
+  <p class="code">404</p>
+  <p class="msg">This page doesn't exist.</p>
+  <div class="actions">
+    <a class="btn btn--quiet" href="/">Back to home</a>
+    <a
+      class="btn btn--primary"
+      href="mailto:dev@jamesdare.com?subject=Project%20Inquiry&body=Hey%20James%2C%0A%0AI%27m%20interested%20in%20working%20together.%0A%0A"
+    >Get in touch</a>
+  </div>
+</body>
+</html>
