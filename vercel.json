@@ -30,7 +30,7 @@
     },
     {
       "source": "/privacy",
-      "destination": "/index.html"
+      "destination": "/privacy.html"
     },
     {
       "source": "/terms",
