@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sites for Operators · TdotsSolutionsz</title>
+<meta name="description" content="A website for braiders, barbers, drivers, detailers and builders, built from the Instagram you already run. $500 to build, $30 a month to keep it live. Toronto and anywhere.">
+<link rel="canonical" href="https://tdotssolutionsz.com/sites/">
+<meta property="og:title" content="Your business, on a site that gets messages.">
+<meta property="og:description" content="$500 build · $30/mo. Built from your Instagram. Live in a week.">
+<meta property="og:image" content="https://tdotssolutionsz.com/og-image.png">
+<link rel="icon" href="/logo-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#000;--paper:#fff;--signal:#ff3b14;--mute:#9a9a9a;--line:#262626;--gutter:clamp(16px,4vw,48px)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:Archivo,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--gutter)}
+.mono{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+h1,h2,.price{font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;line-height:.92;letter-spacing:.005em}
+h1{font-size:clamp(46px,9vw,124px)}
+h2{font-size:clamp(30px,4.6vw,56px)}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:18px var(--gutter);border-bottom:1px solid var(--line)}
+.nav img{height:34px;width:auto;display:block}
+.nav a.cta{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;background:var(--signal);color:#000;padding:10px 16px;border-radius:999px;font-weight:700}
+.hero{padding:clamp(56px,9vw,120px) 0 clamp(40px,6vw,72px)}
+.hero h1 em{font-style:normal;color:var(--signal)}
+.hero p.lede{max-width:56ch;font-size:clamp(17px,1.6vw,21px);margin:28px 0 0;color:#d6d6d6}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;padding:16px 22px;border-radius:999px;font-weight:700;font-size:16px;min-height:52px}
+.btn.primary{background:var(--signal);color:#000}
+.btn.primary:hover{background:#ff5a38}
+.btn.ghost{border:1px solid #444;color:#fff}
+.btn.ghost:hover{border-color:#fff}
+.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0}
+.strip .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
+.strip b{display:block;font-family:Anton,Impact,sans-serif;font-weight:400;font-size:28px;line-height:1;margin-bottom:6px}
+.strip span{color:var(--mute);font-size:14px}
+section{padding:clamp(56px,8vw,104px) 0}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:36px}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+.tile{display:block;text-decoration:none;border:1px solid var(--line);background:#0a0a0a;overflow:hidden}
+.tile img{width:100%;height:auto;aspect-ratio:8/5;object-fit:cover;object-position:top;display:block;filter:saturate(1.05)}
+.tile figcaption{padding:14px 16px 16px;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.tile figcaption b{font-weight:700}
+.tile figcaption span{color:var(--mute);font-size:13px}
+.tile:hover img{filter:saturate(1.15) brightness(1.05)}
+.tile:focus-visible{outline:3px solid var(--signal);outline-offset:3px}
+.offer{background:var(--paper);color:var(--ink)}
+.offer .mono{color:#666}
+.offer .cols{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;margin-top:36px;align-items:start}
+.price{font-size:clamp(64px,12vw,160px);line-height:.9}
+.price small{display:block;font-family:Archivo,Arial,sans-serif;font-size:clamp(16px,1.6vw,20px);text-transform:none;letter-spacing:0;line-height:1.4;margin-top:14px;color:#333;max-width:34ch}
+.offer ul{list-style:none;padding:0;border-top:1px solid #000}
+.offer li{padding:14px 0;border-bottom:1px solid #000;display:grid;grid-template-columns:28px 1fr;gap:12px;font-size:17px}
+.offer li::before{content:"■";color:var(--signal);font-size:12px;line-height:1.9}
+.offer .btn.primary{background:#000;color:#fff;margin-top:24px}
+.offer .btn.primary:hover{background:var(--signal);color:#000}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;margin-top:36px}
+.step{border-top:2px solid var(--signal);padding-top:16px}
+.step .n{font-family:Anton,Impact,sans-serif;font-size:44px;line-height:1;color:var(--signal)}
+.step h3{font-size:19px;margin:10px 0 8px}
+.step p{color:#c9c9c9}
+.fit{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:28px}
+.fit div{border:1px solid var(--line);padding:16px}
+.fit b{display:block;margin-bottom:4px}
+.fit span{color:var(--mute);font-size:14px}
+.close{border-top:1px solid var(--line);text-align:left}
+.close h2{max-width:14ch}
+footer{border-top:1px solid var(--line);padding:26px var(--gutter);display:flex;flex-wrap:wrap;gap:14px 28px;justify-content:space-between;color:var(--mute);font-size:13px}
+footer a{color:#ddd;text-decoration:none}
+@media (max-width:760px){.offer .cols{grid-template-columns:1fr;gap:28px}.nav a.cta{padding:9px 12px}.btn{width:100%;justify-content:center}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Site">
+  <a href="/" aria-label="TdotsSolutionsz home"><img src="/logo-mark.png" alt="TdotsSolutionsz" width="28" height="28"></a>
+  <a class="cta" href="https://wa.me/14165286149?text=Hi%20James%2C%20I%20want%20a%20site.%20My%20Instagram%20is%20%40">Message on WhatsApp</a>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="mono">Sites for operators · Toronto and anywhere</p>
+    <h1>Your business,<br>on a site that<br><em>gets messages.</em></h1>
+    <p class="lede">You already run an Instagram. I turn it into a website with your real photos, your real prices, and one button that opens WhatsApp with the booking half-written. No stock photos, no contact form nobody checks.</p>
+    <div class="actions">
+      <a class="btn primary" href="https://wa.me/14165286149?text=Hi%20James%2C%20I%20want%20a%20site.%20My%20Instagram%20is%20%40">Send me your Instagram</a>
+      <a class="btn ghost" href="#work">See the sites</a>
+    </div>
+  </div>
+</header>
+
+<div class="strip" aria-label="Terms in brief">
+  <div class="wrap">
+    <div><b>$500</b><span>one-time build, half to start, half when it is live</span></div>
+    <div><b>$30 / mo</b><span>hosting, domain, security, edits when your prices change</span></div>
+    <div><b>1 week</b><span>preview in 48 hours, live within seven days</span></div>
+    <div><b>Yours</b><span>the domain is in your name; walk away any month</span></div>
+  </div>
+</div>
+
+<section id="work">
+  <div class="wrap">
+    <p class="mono">Built for people like you</p>
+    <h2>Live right now.</h2>
+    <div class="grid">
+      <a class="tile" href="https://shairbraiding.com" target="_blank" rel="noopener"><figure><img src="/sites/shair-preview.jpg" alt="ShairBraiding site: braids in Bali, book before you land" width="960" height="600" loading="lazy"><figcaption><b>ShairBraiding</b><span>Hair braider · outcall</span></figcaption></figure></a>
+      <a class="tile" href="https://baliwhisper.com" target="_blank" rel="noopener"><figure><img src="/sites/baliwhisper-preview.jpg" alt="Bali Whisper site: private driver and local host" width="960" height="600" loading="lazy"><figcaption><b>Bali Whisper</b><span>Private driver</span></figcaption></figure></a>
+      <a class="tile" href="https://lodiieharmonytour.com" target="_blank" rel="noopener"><figure><img src="/sites/lodiie-preview.jpg" alt="Lodiie Harmony Tour site: one car, your whole group, sunrise on Batur" width="960" height="600" loading="lazy"><figcaption><b>Lodiie Harmony Tour</b><span>Tours · group cars</span></figcaption></figure></a>
+      <a class="tile" href="https://nirvanadeshaunbuilds.com" target="_blank" rel="noopener"><figure><img src="/sites/nirvana-preview.jpg" alt="NirvanaDeshaun Custom Builds site: built once, built right" width="960" height="600" loading="lazy"><figcaption><b>NirvanaDeshaun Builds</b><span>Home builder</span></figcaption></figure></a>
+    </div>
+  </div>
+</section>
+
+<section class="offer" id="offer">
+  <div class="wrap">
+    <p class="mono">What $500 buys</p>
+    <div class="cols">
+      <div>
+        <p class="price">$500<small>Then $30 a month. That covers the domain, hosting, the security headers, and me changing your prices or photos when you message me. No contract. Stop paying and the site comes down, nothing else happens.</small></p>
+        <a class="btn primary" href="https://wa.me/14165286149?text=Hi%20James%2C%20I%20want%20a%20site.%20My%20Instagram%20is%20%40">Start with your Instagram</a>
+      </div>
+      <ul>
+        <li>Your photos and videos, pulled from the Instagram you already run, cleaned up for the web</li>
+        <li>Your services and prices, written the way you say them, not the way an agency would</li>
+        <li>One WhatsApp button on every screen that opens with the booking message already typed</li>
+        <li>Your own domain, in your name, with the email set up if you want one</li>
+        <li>Found on Google for your trade and your area, with the map, hours and reviews wired in</li>
+        <li>Fast on a phone, because that is where every one of your customers is</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <p class="mono">How it goes</p>
+    <h2>Three messages.</h2>
+    <div class="steps">
+      <div class="step"><div class="n">01</div><h3>Send your Instagram</h3><p>One message with your handle and what you charge. That is the whole brief. I read the feed, the bio, the highlights.</p></div>
+      <div class="step"><div class="n">02</div><h3>Preview in 48 hours</h3><p>A link to the real site on a temporary address. You tell me what is wrong. I fix it. You pay the first $250 here if you want it.</p></div>
+      <div class="step"><div class="n">03</div><h3>Live within a week</h3><p>Your domain, your name, the WhatsApp button proven with a test message to your phone. Second $250 when you can see it live.</p></div>
+    </div>
+    <p class="mono" style="margin-top:44px">Who this is for</p>
+    <div class="fit">
+      <div><b>Braiders, barbers, lash and nail techs</b><span>Book by DM today. A site that books by WhatsApp tomorrow.</span></div>
+      <div><b>Drivers, tours, movers</b><span>Rates, routes, and a quote form that writes the message for them.</span></div>
+      <div><b>Detailers, cleaners, contractors</b><span>Before-and-after work, service areas, and a call button that actually rings.</span></div>
+      <div><b>Anyone with an Instagram and no website</b><span>If your customers already find you there, this is the next step.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <div class="wrap">
+    <h2>Send the handle. I'll send the preview.</h2>
+    <div class="actions">
+      <a class="btn primary" href="https://wa.me/14165286149?text=Hi%20James%2C%20I%20want%20a%20site.%20My%20Instagram%20is%20%40">WhatsApp James</a>
+      <a class="btn ghost" href="tel:+14165286149">Call 416 528 6149</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>TdotsSolutionsz · Toronto</span>
+  <span><a href="/">Home</a> · <a href="/videos">Music videos</a> · <a href="/privacy">Privacy</a></span>
+</footer>
+</body>
+</html>
