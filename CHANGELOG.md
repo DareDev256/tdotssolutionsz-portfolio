@@ -1,5 +1,15 @@
 # Changelog
 
+## [6.5.0] - 2026-09-19
+
+### Added
+- `/sites/` — operator-site offer page. $500 build + $30/mo, four live sites as proof, every CTA a prefilled wa.me link. Static HTML + `/sites/sites.js` (CSP forbids inline script).
+- Pinned scroll act on `/sites/`: a WhatsApp thread that writes itself as you scroll (the three steps, told as the product), kinetic trade marquee, slide-from-right reveals, counters on the terms strip. Reduced-motion: everything renders static.
+
+### Fixed
+- CSP: Cloudflare Web Analytics beacon was blocked on every load (`static.cloudflareinsights.com` in script-src, `cloudflareinsights.com` in connect-src).
+- Three film posters 404'd and fell back to YouTube thumbnails (82_xVuYR45c, kOrg9v-pL1I, m5EtDEfS0zM); poster audit 101/101 pass.
+
 All notable changes to TdotsSolutionsz Music Video Portfolio.
 
 ## [6.4.0] - 2026-09-13

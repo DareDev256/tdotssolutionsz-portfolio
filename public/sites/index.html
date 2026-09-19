@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#000;--paper:#fff;--signal:#ff3b14;--mute:#9a9a9a;--line:#262626;--gutter:clamp(16px,4vw,48px)}
+:root{--ink:#0a0a0b;--paper:#fff;--signal:#ff3b14;--mute:#9a9a9a;--line:#262626;--gutter:clamp(16px,4vw,48px)}
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
 body{background:var(--ink);color:var(--paper);font-family:Archivo,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
@@ -76,6 +76,45 @@ footer{border-top:1px solid var(--line);padding:26px var(--gutter);display:flex;
 footer a{color:#ddd;text-decoration:none}
 @media (max-width:760px){.offer .cols{grid-template-columns:1fr;gap:28px}.nav a.cta{padding:9px 12px}.btn{width:100%;justify-content:center}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ---- motion + acts ---- */
+.reveal,.reveal-stagger>*{opacity:0;transform:translateX(64px);filter:blur(3px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1),filter .7s cubic-bezier(.16,1,.3,1)}
+.reveal.on,.reveal-stagger.on>*{opacity:1;transform:none;filter:none}
+.reveal-stagger.on>*:nth-child(2){transition-delay:.08s}.reveal-stagger.on>*:nth-child(3){transition-delay:.16s}.reveal-stagger.on>*:nth-child(4){transition-delay:.24s}
+.live{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--signal);margin-left:auto;margin-right:10px}
+.live::before{content:"";display:inline-block;width:6px;height:6px;background:var(--signal);margin-right:6px;vertical-align:middle;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+.strip b{font-variant-numeric:tabular-nums}
+.act{position:relative;padding:0}
+.stage{position:sticky;top:0;height:100svh;display:grid;align-items:center;overflow:hidden}
+.stage__grid{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:center;width:100%}
+.stage__copy .lede{max-width:44ch;color:#d6d6d6;font-size:clamp(16px,1.4vw,19px);margin-top:20px}
+.beats{list-style:none;padding:0;margin:36px 0 0;border-top:1px solid var(--line)}
+.beats li{padding:12px 0;border-bottom:1px solid var(--line);font-size:17px;color:var(--mute);display:flex;gap:14px;transition:color .3s}
+.beats li b{font-family:Anton,Impact,sans-serif;font-weight:400;color:#444;transition:color .3s}
+.beats li.on{color:#fff}.beats li.on b{color:var(--signal)}
+.phone{background:#111;border:1px solid #2a2a2a;box-shadow:0 30px 80px rgba(0,0,0,.6);height:min(640px,78svh);display:flex;flex-direction:column;justify-self:end;width:100%;max-width:380px}
+.phone__bar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #222;font-size:13px;color:#ddd}
+.phone__dot{width:10px;height:10px;background:var(--signal)}
+.thread{flex:1;padding:16px;display:flex;flex-direction:column;gap:10px;overflow:hidden;justify-content:flex-end}
+.msg{display:none;max-width:86%;padding:10px 12px;background:#1e1e1e;color:#eee;font-size:14.5px;line-height:1.35}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.msg.me{align-self:flex-end;background:var(--signal);color:#000}
+.msg.sys{align-self:center;background:transparent;color:var(--mute);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;border:1px solid #2a2a2a}
+.msg.on{display:block;animation:pop .35s cubic-bezier(.16,1,.3,1) both}
+.msg u{text-decoration-color:currentColor}
+.phone__input{display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid #222;color:#555;font-size:14px}
+.phone__input i{width:2px;height:16px;background:var(--signal);animation:blink 1s steps(2) infinite}
+.who{padding:clamp(56px,8vw,96px) 0 clamp(48px,7vw,88px);border-top:1px solid var(--line);overflow:hidden}
+.marquee{margin:22px 0 28px;white-space:nowrap;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee__track{display:inline-flex;gap:0;animation:run 42s linear infinite;will-change:transform}
+.marquee__track span{font-family:Anton,Impact,sans-serif;text-transform:uppercase;font-size:clamp(56px,9vw,132px);line-height:1;padding:0 .35em;color:#fff}
+.marquee__track span:nth-child(odd){color:transparent;-webkit-text-stroke:2px #fff}
+.marquee__track span:nth-child(6n+3){color:var(--signal);-webkit-text-stroke:0}
+@keyframes run{to{transform:translateX(-50%)}}
+.who__line{max-width:60ch;color:#d6d6d6;font-size:clamp(16px,1.4vw,19px)}
+@media (max-width:860px){.stage__grid{grid-template-columns:1fr;gap:20px;align-content:start;padding-top:72px}.stage__copy h2{font-size:34px}.stage__copy .lede{display:none}.beats{margin-top:14px}.beats li{padding:8px 0;font-size:14px}.phone{height:min(440px,52svh);justify-self:stretch;max-width:none}.msg{font-size:13.5px}}
+@media (prefers-reduced-motion:reduce){.reveal,.reveal-stagger>*{opacity:1;transform:none;filter:none;transition:none}.marquee__track{animation:none}.msg{display:block;animation:none}.beats li{color:#fff}.beats li b{color:var(--signal)}.stage{position:static;height:auto;padding:64px 0}.act{height:auto!important}}
 </style>
 </head>
 <body>
@@ -98,9 +137,9 @@ footer a{color:#ddd;text-decoration:none}
 
 <div class="strip" aria-label="Terms in brief">
   <div class="wrap">
-    <div><b>$500</b><span>one-time build, half to start, half when it is live</span></div>
-    <div><b>$30 / mo</b><span>hosting, domain, security, edits when your prices change</span></div>
-    <div><b>1 week</b><span>preview in 48 hours, live within seven days</span></div>
+    <div><b data-count="500" data-prefix="$">$500</b><span>one-time build, half to start, half when it is live</span></div>
+    <div><b data-count="30" data-prefix="$" data-suffix=" / mo">$30 / mo</b><span>hosting, domain, security, edits when your prices change</span></div>
+    <div><b data-count="7" data-suffix=" days">7 days</b><span>preview in 48 hours, live within seven days</span></div>
     <div><b>Yours</b><span>the domain is in your name; walk away any month</span></div>
   </div>
 </div>
@@ -108,12 +147,12 @@ footer a{color:#ddd;text-decoration:none}
 <section id="work">
   <div class="wrap">
     <p class="mono">Built for people like you</p>
-    <h2>Live right now.</h2>
-    <div class="grid">
-      <a class="tile" href="https://shairbraiding.com" target="_blank" rel="noopener"><figure><img src="/sites/shair-preview.jpg" alt="ShairBraiding site: braids in Bali, book before you land" width="960" height="600" loading="lazy"><figcaption><b>ShairBraiding</b><span>Hair braider · outcall</span></figcaption></figure></a>
-      <a class="tile" href="https://baliwhisper.com" target="_blank" rel="noopener"><figure><img src="/sites/baliwhisper-preview.jpg" alt="Bali Whisper site: private driver and local host" width="960" height="600" loading="lazy"><figcaption><b>Bali Whisper</b><span>Private driver</span></figcaption></figure></a>
-      <a class="tile" href="https://lodiieharmonytour.com" target="_blank" rel="noopener"><figure><img src="/sites/lodiie-preview.jpg" alt="Lodiie Harmony Tour site: one car, your whole group, sunrise on Batur" width="960" height="600" loading="lazy"><figcaption><b>Lodiie Harmony Tour</b><span>Tours · group cars</span></figcaption></figure></a>
-      <a class="tile" href="https://nirvanadeshaunbuilds.com" target="_blank" rel="noopener"><figure><img src="/sites/nirvana-preview.jpg" alt="NirvanaDeshaun Custom Builds site: built once, built right" width="960" height="600" loading="lazy"><figcaption><b>NirvanaDeshaun Builds</b><span>Home builder</span></figcaption></figure></a>
+    <h2 class="reveal">Live right now.</h2>
+    <div class="grid reveal-stagger">
+      <a class="tile" href="https://shairbraiding.com" target="_blank" rel="noopener"><figure><img src="/sites/shair-preview.jpg" alt="ShairBraiding site: braids in Bali, book before you land" width="960" height="600" loading="lazy"><figcaption><b>ShairBraiding</b><span class="live">live</span><span>Hair braider · outcall</span></figcaption></figure></a>
+      <a class="tile" href="https://baliwhisper.com" target="_blank" rel="noopener"><figure><img src="/sites/baliwhisper-preview.jpg" alt="Bali Whisper site: private driver and local host" width="960" height="600" loading="lazy"><figcaption><b>Bali Whisper</b><span class="live">live</span><span>Private driver</span></figcaption></figure></a>
+      <a class="tile" href="https://lodiieharmonytour.com" target="_blank" rel="noopener"><figure><img src="/sites/lodiie-preview.jpg" alt="Lodiie Harmony Tour site: one car, your whole group, sunrise on Batur" width="960" height="600" loading="lazy"><figcaption><b>Lodiie Harmony Tour</b><span class="live">live</span><span>Tours · group cars</span></figcaption></figure></a>
+      <a class="tile" href="https://nirvanadeshaunbuilds.com" target="_blank" rel="noopener"><figure><img src="/sites/nirvana-preview.jpg" alt="NirvanaDeshaun Custom Builds site: built once, built right" width="960" height="600" loading="lazy"><figcaption><b>NirvanaDeshaun Builds</b><span class="live">live</span><span>Home builder</span></figcaption></figure></a>
     </div>
   </div>
 </section>
@@ -138,28 +177,49 @@ footer a{color:#ddd;text-decoration:none}
   </div>
 </section>
 
-<section id="how">
-  <div class="wrap">
-    <p class="mono">How it goes</p>
-    <h2>Three messages.</h2>
-    <div class="steps">
-      <div class="step"><div class="n">01</div><h3>Send your Instagram</h3><p>One message with your handle and what you charge. That is the whole brief. I read the feed, the bio, the highlights.</p></div>
-      <div class="step"><div class="n">02</div><h3>Preview in 48 hours</h3><p>A link to the real site on a temporary address. You tell me what is wrong. I fix it. You pay the first $250 here if you want it.</p></div>
-      <div class="step"><div class="n">03</div><h3>Live within a week</h3><p>Your domain, your name, the WhatsApp button proven with a test message to your phone. Second $250 when you can see it live.</p></div>
-    </div>
-    <p class="mono" style="margin-top:44px">Who this is for</p>
-    <div class="fit">
-      <div><b>Braiders, barbers, lash and nail techs</b><span>Book by DM today. A site that books by WhatsApp tomorrow.</span></div>
-      <div><b>Drivers, tours, movers</b><span>Rates, routes, and a quote form that writes the message for them.</span></div>
-      <div><b>Detailers, cleaners, contractors</b><span>Before-and-after work, service areas, and a call button that actually rings.</span></div>
-      <div><b>Anyone with an Instagram and no website</b><span>If your customers already find you there, this is the next step.</span></div>
+<section id="how" class="act" data-span="4">
+  <div class="stage">
+    <div class="wrap stage__grid">
+      <div class="stage__copy">
+        <p class="mono">How it goes</p>
+        <h2>The whole job<br>is one thread.</h2>
+        <p class="lede">Send the handle. Get a preview. Go live. Every step is a WhatsApp message, because that is how your customers will book you too.</p>
+        <ol class="beats" aria-hidden="true">
+          <li data-beat="1"><b>01</b> Send your Instagram</li>
+          <li data-beat="2"><b>02</b> Preview in 48 hours</li>
+          <li data-beat="3"><b>03</b> Live within a week</li>
+        </ol>
+      </div>
+      <div class="phone" role="img" aria-label="A WhatsApp thread: you send your Instagram handle, James sends a preview link in 48 hours, then the site goes live on your domain.">
+        <div class="phone__bar"><span class="phone__dot"></span><span>James · TdotsSolutionsz</span></div>
+        <div class="thread">
+          <div class="msg me" data-at="0.04">Hey, I want a site. My Instagram is @shairbraiding</div>
+          <div class="msg" data-at="0.16">Got it. Reading the feed now. Prices are in the highlights, that is all I need.</div>
+          <div class="msg" data-at="0.30">Preview is up: <u>shair-preview.vercel.app</u> — your photos, your prices, WhatsApp button on every screen.</div>
+          <div class="msg me" data-at="0.46">Swap the second photo and put Canggu first</div>
+          <div class="msg" data-at="0.58">Done. First $250 whenever you are happy with it.</div>
+          <div class="msg sys" data-at="0.70">e-Transfer received · $250.00</div>
+          <div class="msg" data-at="0.82">Live at <u>shairbraiding.com</u>. Test booking just hit your phone. Second $250 when you see it.</div>
+          <div class="msg me" data-at="0.94">🔥 sent</div>
+        </div>
+        <div class="phone__input"><span>Message</span><i></i></div>
+      </div>
     </div>
   </div>
 </section>
 
+<section class="who" aria-label="Who this is for">
+  <p class="mono wrap">Who this is for</p>
+  <div class="marquee" aria-hidden="true"><div class="marquee__track">
+    <span>Braiders</span><span>Barbers</span><span>Lash techs</span><span>Nail techs</span><span>Drivers</span><span>Tours</span><span>Movers</span><span>Detailers</span><span>Cleaners</span><span>Contractors</span><span>Tattoo artists</span><span>Trainers</span>
+    <span>Braiders</span><span>Barbers</span><span>Lash techs</span><span>Nail techs</span><span>Drivers</span><span>Tours</span><span>Movers</span><span>Detailers</span><span>Cleaners</span><span>Contractors</span><span>Tattoo artists</span><span>Trainers</span>
+  </div></div>
+  <p class="wrap who__line">If your customers already find you on Instagram, this is the next step. If you book by DM today, you book by WhatsApp with a site behind it tomorrow.</p>
+</section>
+
 <section class="close">
   <div class="wrap">
-    <h2>Send the handle. I'll send the preview.</h2>
+    <h2 class="reveal">Send the handle.<br>I'll send the preview.</h2>
     <div class="actions">
       <a class="btn primary" href="https://wa.me/14165286149?text=Hi%20James%2C%20I%20want%20a%20site.%20My%20Instagram%20is%20%40">WhatsApp James</a>
       <a class="btn ghost" href="tel:+14165286149">Call 416 528 6149</a>
@@ -171,5 +231,6 @@ footer a{color:#ddd;text-decoration:none}
   <span>TdotsSolutionsz · Toronto</span>
   <span><a href="/">Home</a> · <a href="/videos">Music videos</a> · <a href="/privacy">Privacy</a></span>
 </footer>
+<script src="/sites/sites.js" defer></script>
 </body>
 </html>
