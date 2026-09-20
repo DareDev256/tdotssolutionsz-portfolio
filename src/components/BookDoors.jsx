@@ -8,8 +8,8 @@ import './BookDoors.css'
  * Why not a button: the page has just spent three floors proving things, and
  * the old close asked for nothing specific (a mailto with a canned body, to an
  * inbox the audience does not use). A pick makes the visitor say what they
- * want; the slide makes the send deliberate; WhatsApp is where this audience
- * already lives, and the message arrives prefilled with the pick.
+ * want; the slide makes the send deliberate; the email arrives in the tdots
+ * inbox prefilled with the pick.
  *
  * Two Bencho finds, adapted (bencho.dev/finds, MIT blocks vendored at
  * ~/Projects/tools/bencho-blocks): "Pills into cards" — press a pill and it
@@ -23,7 +23,9 @@ import './BookDoors.css'
  * no published rate, and an invented one is the thing this site refuses.
  */
 
-const WA = 'https://wa.me/14165286149'
+/* the door lands in the tdots inbox — James's call, 2026-09-20 */
+const TO = 'tdotssolutionsz@gmail.com'
+const mailto = (subject, body) => `mailto:${TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 
 const DOORS = [
   {
@@ -34,7 +36,8 @@ const DOORS = [
       'Send the record and the idea.',
       'You get a treatment back, a shoot day with a crew, the edit and colour, and the cut delivered for YouTube with verticals for the feed.',
     ],
-    text: "Hi James, I want a music video. The record is ",
+    subject: 'Music video',
+    body: 'Hi James,\n\nI want a music video.\n\nThe record: \nThe idea: \nWhen: \n\n',
   },
   {
     id: 'site',
@@ -45,7 +48,8 @@ const DOORS = [
       '$500 to build, half at preview and half at live. $30 a month keeps it up, with the domain and edits. Live in a week.',
     ],
     href: '/sites/',
-    text: 'Hi James, I want a site. My Instagram is @',
+    subject: 'Website',
+    body: 'Hi James,\n\nI want a site.\n\nMy Instagram: @\nWhat I do: \n\n',
   },
 ]
 
@@ -56,8 +60,9 @@ export function BookDoors({ videoMeta, siteMeta }) {
   const META = { video: videoMeta, site: siteMeta }
   const [pick, setPick] = useState(null)
   const door = DOORS.find(d => d.id === pick)
-  const text = door ? door.text : 'Hi James, I want to book a session. '
-  const href = `${WA}?text=${encodeURIComponent(text)}`
+  const href = door
+    ? mailto(`${door.subject} — booking`, door.body)
+    : mailto('Booking', 'Hi James,\n\nI want to book a session.\n\n')
 
   return (
     <div className="bd">
@@ -90,7 +95,7 @@ export function BookDoors({ videoMeta, siteMeta }) {
 
 /* ── Slide to confirm ───────────────────────────────────────
    The handle is a real link, so keyboard and reduced-motion users get a
-   plain "open WhatsApp" press. With a pointer, the click is suppressed
+   plain "open email" press. With a pointer, the click is suppressed
    unless the drag reached the end: the commit is the arrival, not the
    press. Released early it springs home with a small squash. */
 function SlideToConfirm({ href, label }) {
@@ -132,7 +137,7 @@ function SlideToConfirm({ href, label }) {
     if (max > 0 && dx >= max - 4) {
       setX(max)
       setState('done')
-      window.setTimeout(() => window.open(href, '_blank', 'noopener,noreferrer'), 420)
+      window.setTimeout(() => { window.location.href = href }, 420)
     } else {
       setX(0)
       setState('rest')
@@ -153,13 +158,11 @@ function SlideToConfirm({ href, label }) {
       style={{ '--x': `${x}px`, '--max': `${max}px` }}
     >
       <span className="bd-slide-fill" aria-hidden="true" />
-      <span className="bd-slide-label" aria-hidden="true">{done ? 'Opening WhatsApp' : label}</span>
+      <span className="bd-slide-label" aria-hidden="true">{done ? 'Opening your email' : label}</span>
       <a
         href={href}
-        target="_blank"
-        rel="noopener noreferrer"
         className="bd-slide-handle"
-        aria-label={`${label} on WhatsApp`}
+        aria-label={`${label} by email`}
         onPointerDown={down}
         onPointerMove={move}
         onPointerUp={up}

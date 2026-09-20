@@ -1,5 +1,10 @@
 # Changelog
 
+## [6.8.1] - 2026-09-20
+
+### Changed
+- The Book a Session slide sends an **email to tdotssolutionsz@gmail.com** (James's call), subject and body prefilled by the pick ("Music video — booking" / "Website — booking" with record/idea/when or Instagram/what-I-do lines). WhatsApp removed from `/`. `/sites` keeps its own WhatsApp door.
+
 ## [6.8.0] - 2026-09-20
 
 ### Changed
