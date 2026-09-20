@@ -53,6 +53,25 @@
    opacity tweens run on the GPU instead of triggering whole-viewport repaints. */
 .cinema-scene { transform: translateZ(0); will-change: opacity; }
 
+/* ── the tower descent (desktop, motion-ok; class set by the component) ──
+   The plate is laid out at viewport width and translated by the scroll loop.
+   Opacity and transform only. Under the gate the scene videos give way; their
+   gradient overlays stay so the type keeps its ground. */
+.cinema-tower {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.6s ease-out;
+}
+.cinema--tower .cinema-tower { opacity: 1; }
+.cinema--tower .cinema-video-bg { opacity: 0; }
+.cinema--tower .cinema-scene { background: transparent; }
+
 /* Video backgrounds */
 .cinema-video-bg {
   position: absolute;

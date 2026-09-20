@@ -185,6 +185,10 @@ export default function HubPageCinema() {
   const wrapperRef = useRef(null)
   const viewportRef = useRef(null)
   const videoRefs = useRef({})
+  const towerRef = useRef(null)
+  /* the tower descent is on only when the plate has loaded AND the gate holds;
+     until then the scene videos carry the page exactly as before */
+  const towerOn = useRef(false)
   const sessionPlayed = useRef(false)
 
   const setVideoRef = useCallback((id) => (el) => { videoRefs.current[id] = el }, [])
@@ -350,7 +354,20 @@ export default function HubPageCinema() {
         const maxScroll = document.documentElement.scrollHeight - window.innerHeight
         if (maxScroll <= 0) { ticking = false; return }
         const progress = Math.min(window.scrollY / maxScroll, 1)
+        /* ── the tower descent ─────────────────────────────────────────
+           One continuous plate, top = the real pod (the same frame the
+           hero video opens on), bottom = the skyline. The page's own
+           progress scrubs it: the plate is laid out at viewport width, so
+           its travel is its rendered height minus the viewport, and the
+           four scenes are the floors. Frame-to-frame drift between
+           separate stills is the fake tell; one plate has none. */
+        const tower = towerRef.current
+        if (towerOn.current && tower) {
+          const travel = Math.max(0, tower.offsetHeight - window.innerHeight)
+          tower.style.setProperty('transform', `translate3d(0, ${-(progress * travel).toFixed(1)}px, 0)`)
+        }
         videos.forEach(v => {
+          if (towerOn.current) return
           const el = videoRefs.current[v.id]
           if (!el) return
           if (!loaded.has(v.id) && progress >= v.start - 0.05) {
@@ -376,6 +393,27 @@ export default function HubPageCinema() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Tower descent gate: desktop + motion-ok + plate loaded. Adds a class on
+  // the wrapper; every tower rule in the CSS hangs off it, so with JS off or
+  // on a phone nothing changes. Re-evaluated on resize so a window dragged
+  // narrow drops back to the videos.
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1081px) and (prefers-reduced-motion: no-preference)')
+    const img = towerRef.current
+    const wrap = wrapperRef.current
+    if (!img || !wrap) return
+    const apply = () => {
+      const on = mq.matches && img.complete && img.naturalWidth > 0
+      towerOn.current = on
+      wrap.classList.toggle('cinema--tower', on)
+      if (on) window.dispatchEvent(new Event('scroll'))
+    }
+    apply()
+    img.addEventListener('load', apply)
+    mq.addEventListener('change', apply)
+    return () => { img.removeEventListener('load', apply); mq.removeEventListener('change', apply) }
+  }, [])
+
   // Hold the count-up until the hero intro has landed, so the numbers arrive
   // as a beat of their own rather than competing with the wordmark reveal.
   const [statsIn, setStatsIn] = useState(false)
@@ -393,6 +431,20 @@ export default function HubPageCinema() {
       <div className="cinema-progress" />
 
       <div className="cinema-viewport" ref={viewportRef}>
+        {/* the descent plate: the real pod frame outpainted downward into one
+            tall photograph (docs/screenshots/2026-09-20_tower-master-plate.jpg).
+            Under every scene; the scenes are the floors. */}
+        <img
+          ref={towerRef}
+          className="cinema-tower"
+          src="/videos/seedance/tower-descent.webp"
+          width="1536"
+          height="2752"
+          alt=""
+          aria-hidden="true"
+          decoding="async"
+          fetchPriority="high"
+        />
         <ParticleCanvas />
         <div className="cinema-flash" />
 

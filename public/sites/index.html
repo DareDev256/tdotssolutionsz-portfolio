@@ -115,6 +115,20 @@ footer a{color:#ddd;text-decoration:none}
 .who__line{max-width:60ch;color:#d6d6d6;font-size:clamp(16px,1.4vw,19px)}
 @media (max-width:860px){.stage__grid{grid-template-columns:1fr;gap:20px;align-content:start;padding-top:72px}.stage__copy h2{font-size:34px}.stage__copy .lede{display:none}.beats{margin-top:14px}.beats li{padding:8px 0;font-size:14px}.phone{height:min(440px,52svh);justify-self:stretch;max-width:none}.msg{font-size:13.5px}}
 @media (prefers-reduced-motion:reduce){.reveal,.reveal-stagger>*{opacity:1;transform:none;filter:none;transition:none}.marquee__track{animation:none}.msg{display:block;animation:none}.beats li{color:#fff}.beats li b{color:var(--signal)}.stage{position:static;height:auto;padding:64px 0}.act{height:auto!important}}
+/* ---- bencho blocks: tilt card + slide to confirm (see /sites/blocks.js) ---- */
+.tlt{position:relative}
+.tlt-card{position:relative;transform-style:preserve-3d}
+.tlt-sheen{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2}
+.stc{position:relative;height:56px;width:min(100%,380px);min-width:220px;border-radius:28px;background:#0a0a0b;margin-top:24px;overflow:hidden;user-select:none;-webkit-user-select:none}
+.stc-wash{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(255,59,20,.22);border-radius:inherit;pointer-events:none}
+.stc-say{position:absolute;inset:0;display:grid;place-items:center;padding-left:44px;font-weight:700;font-size:16px;color:#fff;pointer-events:none;z-index:2;transition:color .2s}
+.stc-grip{position:absolute;top:4px;left:4px;height:48px;width:48px;border-radius:24px;background:var(--signal);color:#000;display:grid;place-items:center;transform-origin:left center;touch-action:none;cursor:grab;text-decoration:none;z-index:1}
+.stc.is-held .stc-grip{cursor:grabbing}
+.stc-grip:focus-visible{outline:3px solid #000;outline-offset:3px}
+.stc-grip svg{position:absolute;right:13px;top:13px;transition:opacity .15s}
+.stc-check{opacity:0}
+.stc.is-done .stc-say{color:#000}
+.stc.is-done .stc-grip{cursor:default}
 </style>
 </head>
 <body>
@@ -232,5 +246,6 @@ footer a{color:#ddd;text-decoration:none}
   <span><a href="/">Home</a> · <a href="/videos">Music videos</a> · <a href="/privacy">Privacy</a></span>
 </footer>
 <script src="/sites/sites.js" defer></script>
+<script src="/sites/blocks.js" defer></script>
 </body>
 </html>

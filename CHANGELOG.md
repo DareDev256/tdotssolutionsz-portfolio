@@ -1,5 +1,15 @@
 # Changelog
 
+## [6.6.0] - 2026-09-20
+
+### Added
+- **Tower descent on `/`.** One continuous 2K plate (`public/videos/seedance/tower-descent.webp`, 200 KB) — the real scene-1 pod frame outpainted downward with Nano Banana Pro into shaft, base and blue-hour skyline; garbled stadium lettering inpainted out through a local crop. The page's own scroll progress translates it (travel = plate height − viewport, 1,680 px at 1440×900), so the four scenes ride down the tower as floors: pod → Music Videos on the upper shaft → Web Design mid-shaft → Book a Session on the skyline. Gated to `(min-width: 1081px) and (prefers-reduced-motion: no-preference)` plus a loaded plate via a `cinema--tower` class on the wrapper; under it the scene videos give way and their gradient overlays stay. Phone and reduced motion: unchanged (the videos, as before). Verified by scrub at 0/25/50/75/100 %, `docs/screenshots/2026-09-20_tower-descent-*.png`. No new section; the hub structure lock stands.
+- **`/sites/`: Tilt card + Slide to confirm** (`/sites/blocks.js`, vanilla ports of two Bencho blocks, MIT). The four proof tiles sink under the pointer instead of lifting (rotation + a dent gradient + a shadow that tightens; sprung, `(hover: hover) and (pointer: fine)` only). The offer CTA is a handle you slide across the track; at the end it unfurls into the track with a check and opens the prefilled WhatsApp link. The handle stays a real link, so keyboard, screen reader and reduced-motion users get the button they had.
+
+### Notes
+- Pre-existing, not touched: `/_vercel/insights/script.js` 404s on local preview; the `/sites/` marquee overflows the viewport on phones behind its own `overflow: hidden` mask.
+- Both plates/frames looked at as images before shipping, per house rule.
+
 ## [6.5.0] - 2026-09-19
 
 ### Added

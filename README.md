@@ -31,8 +31,11 @@ npm run prescan   # pre-commit secret scanner
 
 ## Routes
 
-Reachable on the deployed site: `/` cinematic hub · `/videos` WebGL card field ·
-`/video/:youtubeId` shareable per-video page · `/web-design` · `/privacy` · `/terms`.
+Reachable on the deployed site: `/` cinematic hub (on desktop the four scenes descend one
+continuous CN Tower plate, `public/videos/seedance/tower-descent.webp`; phones keep the scene
+videos) · `/sites/` operator-site offer (static HTML; `/sites/blocks.js` carries the tilt tiles
+and the slide-to-confirm CTA) · `/videos` WebGL card field · `/video/:youtubeId` shareable
+per-video page · `/web-design` · `/privacy` · `/terms`.
 
 A real static `404.html` ships at the build output root — Vercel serves it for any
 static path that matches none of the `rewrites` below and has no other route.
