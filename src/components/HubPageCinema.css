@@ -69,6 +69,13 @@
   transition: opacity 0.6s ease-out;
 }
 .cinema--tower .cinema-tower { opacity: 1; }
+/* phones: the plate is 1536x2752, so at viewport WIDTH it is shorter than the
+   screen and has nothing to travel. Size it by height instead and centre it;
+   the sides crop, the shaft stays in the middle. `translate` is its own
+   property so the JS transform (the scrub) does not fight it. */
+@media (max-width: 1080px) {
+  .cinema-tower { width: auto; height: 300svh; max-width: none; left: 50%; translate: -50% 0; }
+}
 .cinema--tower .cinema-video-bg { opacity: 0; }
 .cinema--tower .cinema-scene { background: transparent; }
 
@@ -495,7 +502,9 @@
 @media (max-width: 480px) {
   .cinema-hero-title { font-size: clamp(2.5rem, 14vw, 4rem); }
   .cinema-frame:nth-child(n+3) { display: none; }
-  .cinema-browser:nth-child(n+3) { display: none; }
+  /* four sites on a phone, the newest four, one per corner of the floor */
+  .cinema-browser { max-width: 168px !important; max-height: 112px !important; }
+  .cinema-browser:nth-child(n+5) { display: none; }
 }
 
 /* The top-left corner mask was removed in v5.11. It existed to cover a

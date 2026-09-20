@@ -31,9 +31,10 @@ npm run prescan   # pre-commit secret scanner
 
 ## Routes
 
-Reachable on the deployed site: `/` cinematic hub (on desktop the four scenes descend one
-continuous CN Tower plate, `public/videos/seedance/tower-descent.webp`; phones keep the scene
-videos) · `/sites/` operator-site offer (static HTML; `/sites/blocks.js` carries the tilt tiles
+Reachable on the deployed site: `/` cinematic hub (the four floors — pod, Web Design with
+all 13 shipped sites, Music Videos, Book a Session — descend one continuous CN Tower plate,
+`public/videos/seedance/tower-descent.webp`, on desktop and phones alike; reduced-motion
+keeps the scene videos) · `/sites/` operator-site offer (static HTML; `/sites/blocks.js` carries the tilt tiles
 and the slide-to-confirm CTA) · `/videos` WebGL card field · `/video/:youtubeId` shareable
 per-video page · `/web-design` · `/privacy` · `/terms`.
 

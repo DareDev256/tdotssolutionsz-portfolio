@@ -24,26 +24,50 @@ const FEATURED = topByViews(VIDEOS, 8)
  * appended without touching the render.
  */
 const WEB_PROJECTS = [
-  {
-    name: 'KMONEY', type: 'Artist Platform',
-    url: 'https://officialkmoney.com', preview: '/sites/kmoney-preview.jpg', icon: null,
-    layout: { width: 380, height: 266, top: '9%', left: '5%' },
-  },
-  {
-    name: 'SAVV4X', type: 'Artist Platform',
+  /* newest first: the first four are what a phone shows (CSS hides the rest
+     under 480px), so the order is the claim. Every entry is a site James
+     shipped that answers 200 on its own domain (probed 2026-09-20).
+     edsonlegal.com is the firm's own site, not ours, and stays out.
+     Layouts keep the middle third clear for the title and the tower shaft. */
+  { name: 'Shortiie Raw', type: 'Artist Platform',
+    url: 'https://shortiieraw.com', preview: '/sites/shortiieraw-preview.jpg', icon: null,
+    layout: { width: 300, height: 188, top: '5%', left: '2%' } },
+  { name: 'ShairBraiding', type: 'Operator Site',
+    url: 'https://shairbraiding.com', preview: '/sites/shair-preview.jpg', icon: null,
+    layout: { width: 300, height: 188, top: '5%', right: '2%' } },
+  { name: 'Bali Whisper', type: 'Operator Site',
+    url: 'https://baliwhisper.com', preview: '/sites/baliwhisper-preview.jpg', icon: null,
+    layout: { width: 280, height: 175, top: '74%', left: '2%' } },
+  { name: 'Lodiie Harmony Tour', type: 'Artist Platform',
+    url: 'https://lodiieharmonytour.com', preview: '/sites/lodiie-preview.jpg', icon: null,
+    layout: { width: 280, height: 175, top: '74%', right: '2%' } },
+  { name: 'ShopBayHQ', type: 'Product',
+    url: 'https://shopbayhq.com', preview: '/sites/shopbayhq-preview.jpg', icon: null,
+    layout: { width: 240, height: 150, top: '31%', left: '1%' } },
+  { name: 'BetMetrics', type: 'Product',
+    url: 'https://betmetrics.ca', preview: '/sites/betmetrics-preview.jpg', icon: null,
+    layout: { width: 240, height: 150, top: '31%', right: '1%' } },
+  { name: 'NirvanaDeshaun Builds', type: 'Business Site',
+    url: 'https://nirvanadeshaunbuilds.com', preview: '/sites/nirvana-preview.jpg', icon: null,
+    layout: { width: 240, height: 150, top: '53%', left: '1%' } },
+  { name: 'MustHaveFrenchies', type: 'Business Site',
+    url: 'https://musthavefrenchies.com', preview: '/sites/frenchies-preview.jpg', icon: null,
+    layout: { width: 240, height: 150, top: '53%', right: '1%' } },
+  { name: 'Street Bud', type: 'Artist Platform',
+    url: 'https://officialstreetbud.com', preview: '/sites/streetbud-preview.jpg', icon: null,
+    layout: { width: 210, height: 131, top: '20%', left: '25%' } },
+  { name: 'SAVV4X', type: 'Artist Platform',
     url: 'https://savv4x.com', preview: '/sites/savv-preview.jpg', icon: null,
-    layout: { width: 330, height: 231, top: '11%', right: '5%' },
-  },
-  {
-    name: 'SyrenEffect', type: 'Creator Site',
+    layout: { width: 210, height: 131, top: '20%', right: '25%' } },
+  { name: 'KMONEY', type: 'Artist Platform',
+    url: 'https://officialkmoney.com', preview: '/sites/kmoney-preview.jpg', icon: null,
+    layout: { width: 210, height: 131, top: '66%', left: '25%' } },
+  { name: 'SyrenEffect', type: 'Creator Site',
     url: 'https://syreneffect.com', preview: '/sites/syren-preview.jpg', icon: null,
-    layout: { width: 300, height: 210, top: '63%', left: '7%' },
-  },
-  {
-    name: '100BandPlan', type: 'Artist Platform',
+    layout: { width: 210, height: 131, top: '66%', right: '25%' } },
+  { name: '100BandPlan', type: 'Artist Platform',
     url: 'https://100bandplan.com', preview: '/sites/100bandplan-preview.jpg', icon: null,
-    layout: { width: 340, height: 238, top: '58%', right: '6%' },
-  },
+    layout: { width: 200, height: 125, top: '43%', left: '25%' } },
 ]
 
 /**
@@ -255,8 +279,8 @@ export default function HubPageCinema() {
     scatter1.to('.cinema-flash', { opacity: 0.9, duration: 0.15, ease: 'power4.in' }, 0.7)
     scatter1.to('.cinema-flash', { opacity: 0, duration: 0.3, ease: 'power2.out' }, 0.85)
 
-    // === SCENE 2: Music Videos entrance (16-26%) ===
-    const scene2TL = gsap.timeline({ scrollTrigger: st(16, 26) })
+    // === SCENE 3: Music Videos entrance (36-46%) — second floor now; Web Design leads ===
+    const scene2TL = gsap.timeline({ scrollTrigger: st(36, 46) })
     scene2TL.fromTo('.cinema-s2-title .cinema-line-1 .cinema-letter',
       { x: () => (Math.random() - 0.5) * 400, y: () => (Math.random() - 0.5) * 400, rotation: () => (Math.random() - 0.5) * 180, opacity: 0, scale: 0 },
       { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.04, duration: 0.5, ease: 'back.out(2)' }, 0)
@@ -278,12 +302,12 @@ export default function HubPageCinema() {
         }
       }
     })
-    scatter2.to('.cinema-s2-title .cinema-letter', {
+    scatter2.to('.cinema-s3-title .cinema-letter', {
       y: () => -100 - Math.random() * 300, x: () => (Math.random() - 0.5) * 600,
       rotation: () => (Math.random() - 0.5) * 360, opacity: 0, stagger: 0.02, duration: 0.5,
     }, 0)
-    scatter2.to('.cinema-s2-sub', { opacity: 0, y: -50, duration: 0.3 }, 0)
-    scatter2.to('.cinema-frame', { x: (i) => (i % 2 === 0 ? -500 : 500), y: (i) => (i < 3 ? -400 : 400), rotation: (i) => (i % 2 === 0 ? -30 : 20), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
+    scatter2.to('.cinema-s3-sub', { opacity: 0, y: -50, duration: 0.3 }, 0)
+    scatter2.to('.cinema-browser', { x: (i) => (i % 2 === 0 ? -600 : 600), y: (i) => (i < 4 ? -300 : 300), opacity: 0, duration: 0.5, stagger: 0.03 }, 0.1)
     scatter2.to('#cinema-scene2', { opacity: 0, duration: 0.3 }, 0.5)
     scatter2.to('#cinema-scene3', { opacity: 1, duration: 0.3 }, 0.5)
     scatter2.set('#cinema-scene2', { pointerEvents: 'none' }, 0.8)
@@ -291,8 +315,8 @@ export default function HubPageCinema() {
     scatter2.to('.cinema-flash', { opacity: 0.6, duration: 0.1 }, 0.5)
     scatter2.to('.cinema-flash', { opacity: 0, duration: 0.2 }, 0.6)
 
-    // === SCENE 3: Web Design entrance (36-46%) ===
-    const scene3TL = gsap.timeline({ scrollTrigger: st(36, 46) })
+    // === SCENE 2: Web Design entrance (16-26%) — leads, it is the current work ===
+    const scene3TL = gsap.timeline({ scrollTrigger: st(16, 26) })
     scene3TL.fromTo('.cinema-s3-title .cinema-line-1 .cinema-letter',
       { scale: 3, opacity: 0, rotation: () => (Math.random() - 0.5) * 90 },
       { scale: 1, opacity: 1, rotation: 0, stagger: 0.06, duration: 0.4, ease: 'expo.out' }, 0)
@@ -301,8 +325,8 @@ export default function HubPageCinema() {
       { scale: 1, opacity: 1, rotation: 0, stagger: 0.06, duration: 0.4, ease: 'expo.out' }, 0.15)
     scene3TL.fromTo('.cinema-s3-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3 }, 0.3)
     scene3TL.fromTo('.cinema-browser',
-      { x: (i) => (i === 0 ? -500 : i === 1 ? 500 : 0), y: (i) => (i === 2 ? 400 : 0), rotateY: (i) => (i === 0 ? 45 : i === 1 ? -45 : 0), rotateX: (i) => (i === 2 ? 30 : 0), opacity: 0, scale: 0.5 },
-      { x: 0, y: 0, rotateY: 0, rotateX: 0, opacity: 1, scale: 1, stagger: 0.1, duration: 0.6, ease: 'power2.out' }, 0.2)
+      { x: (i) => (i % 2 === 0 ? -500 : 500), y: (i) => (i < 4 ? -200 : 200), rotateY: (i) => (i % 2 === 0 ? 45 : -45), opacity: 0, scale: 0.5 },
+      { x: 0, y: 0, rotateY: 0, rotateX: 0, opacity: 1, scale: 1, stagger: 0.04, duration: 0.6, ease: 'power2.out' }, 0.2)
 
     // Scatter 3: Scene 3 → Scene 4 CTA (55-62%)
     const scatter3 = gsap.timeline({
@@ -314,9 +338,9 @@ export default function HubPageCinema() {
         }
       }
     })
-    scatter3.to('.cinema-s3-title .cinema-letter', { y: () => 100 + Math.random() * 200, opacity: 0, stagger: 0.02, duration: 0.4 }, 0)
-    scatter3.to('.cinema-s3-sub', { opacity: 0, duration: 0.2 }, 0)
-    scatter3.to('.cinema-browser', { x: (i) => (i === 0 ? -600 : i === 1 ? 600 : 0), y: (i) => (i === 2 ? 500 : 0), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
+    scatter3.to('.cinema-s2-title .cinema-letter', { y: () => 100 + Math.random() * 200, opacity: 0, stagger: 0.02, duration: 0.4 }, 0)
+    scatter3.to('.cinema-s2-sub', { opacity: 0, duration: 0.2 }, 0)
+    scatter3.to('.cinema-frame', { x: (i) => (i % 2 === 0 ? -500 : 500), y: (i) => (i < 3 ? -400 : 400), rotation: (i) => (i % 2 === 0 ? -30 : 20), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
     scatter3.to('#cinema-scene3', { opacity: 0, duration: 0.3 }, 0.4)
     scatter3.to('#cinema-scene4', { opacity: 1, duration: 0.5 }, 0.4)
     scatter3.set('#cinema-scene3', { pointerEvents: 'none' }, 0.7)
@@ -393,12 +417,15 @@ export default function HubPageCinema() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Tower descent gate: desktop + motion-ok + plate loaded. Adds a class on
+  // Tower descent gate: motion-ok + plate loaded. Adds a class on
   // the wrapper; every tower rule in the CSS hangs off it, so with JS off or
   // on a phone nothing changes. Re-evaluated on resize so a window dragged
   // narrow drops back to the videos.
   useEffect(() => {
-    const mq = window.matchMedia('(min-width: 1081px) and (prefers-reduced-motion: no-preference)')
+    /* phones get the descent too (2026-09-20): the plate is sized by height
+       there (CSS), so the travel is the same arithmetic. Only reduced motion
+       opts out. */
+    const mq = window.matchMedia('(prefers-reduced-motion: no-preference)')
     const img = towerRef.current
     const wrap = wrapperRef.current
     if (!img || !wrap) return
@@ -482,59 +509,11 @@ export default function HubPageCinema() {
           <div className="cinema-scroll-cue">SCROLL</div>
         </div>
 
-        {/* SCENE 2: Music Videos */}
+        {/* SCENE 2: Web Design — first, because it is the current work */}
         <div className="cinema-scene cinema-scene--hidden" id="cinema-scene2">
           <video
             className="cinema-video-bg"
             ref={setVideoRef('v2')}
-            poster="/videos/seedance/scene2-videos-poster.jpg"
-            muted
-            playsInline
-            preload="metadata"
-          >
-            <source src="/videos/seedance/scene2-videos.webm" type="video/webm" />
-            <source src="/videos/seedance/scene2-videos.mp4" type="video/mp4" />
-          </video>
-          <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.3),rgba(0,0,0,0.7))' }} />
-
-          <ScrambleText
-            as="p"
-            className="cinema-s2-sub"
-            text={`${PORTFOLIO_STATS.totalVideos} FILMS · ${PORTFOLIO_STATS.totalArtists} ARTISTS · ${formatViews(PORTFOLIO_STATS.totalViews)} PLAYS · ONE CITY`}
-          />
-          <h2 className="cinema-s2-title cinema-section-title">
-            <span className="cinema-line-1">{splitIntoLetters('Music')}</span>
-            <span className="cinema-line-2">{splitIntoLetters('Videos')}</span>
-          </h2>
-
-          <div className="cinema-floating-frames">
-            {FEATURED.slice(0, 6).map((video, i) => (
-              <Link to={`/video/${video.youtubeId}`} key={video.id} className="cinema-frame" style={{
-                width: [280, 300, 240, 220, 260, 200][i],
-                height: [180, 190, 155, 140, 165, 130][i],
-                top: ['8%', '55%', '72%', '5%', '40%', '80%'][i],
-                left: [8, undefined, 12, undefined, 3, undefined][i] != null ? `${[8, 0, 12, 0, 3, 0][i]}%` : undefined,
-                right: [undefined, 5, undefined, 18, undefined, 10][i] != null ? `${[0, 5, 0, 18, 0, 10][i]}%` : undefined,
-              }}>
-                <FilmStill videoId={video.youtubeId} alt={video.title} className="cinema-frame-img" />
-                <div className="cinema-frame-label">
-                  {video.title}
-                  <span>{video.artist} &bull; {formatViews(video.viewCount)} views</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <Link to="/videos" className="cinema-enter-btn">
-            ENTER PORTFOLIO <span aria-hidden="true">&rarr;</span>
-          </Link>
-        </div>
-
-        {/* SCENE 3: Web Design */}
-        <div className="cinema-scene cinema-scene--hidden" id="cinema-scene3">
-          <video
-            className="cinema-video-bg"
-            ref={setVideoRef('v3')}
             poster="/videos/seedance/scene3-webdesign-poster.jpg"
             muted
             playsInline
@@ -578,6 +557,54 @@ export default function HubPageCinema() {
 
           <Link to="/web-design" className="cinema-enter-btn">
             VIEW WORK <span aria-hidden="true">&rarr;</span>
+          </Link>
+        </div>
+
+        {/* SCENE 3: Music Videos */}
+        <div className="cinema-scene cinema-scene--hidden" id="cinema-scene3">
+          <video
+            className="cinema-video-bg"
+            ref={setVideoRef('v3')}
+            poster="/videos/seedance/scene2-videos-poster.jpg"
+            muted
+            playsInline
+            preload="metadata"
+          >
+            <source src="/videos/seedance/scene2-videos.webm" type="video/webm" />
+            <source src="/videos/seedance/scene2-videos.mp4" type="video/mp4" />
+          </video>
+          <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.3),rgba(0,0,0,0.7))' }} />
+
+          <ScrambleText
+            as="p"
+            className="cinema-s2-sub"
+            text={`${PORTFOLIO_STATS.totalVideos} FILMS · ${PORTFOLIO_STATS.totalArtists} ARTISTS · ${formatViews(PORTFOLIO_STATS.totalViews)} PLAYS · ONE CITY`}
+          />
+          <h2 className="cinema-s2-title cinema-section-title">
+            <span className="cinema-line-1">{splitIntoLetters('Music')}</span>
+            <span className="cinema-line-2">{splitIntoLetters('Videos')}</span>
+          </h2>
+
+          <div className="cinema-floating-frames">
+            {FEATURED.slice(0, 6).map((video, i) => (
+              <Link to={`/video/${video.youtubeId}`} key={video.id} className="cinema-frame" style={{
+                width: [280, 300, 240, 220, 260, 200][i],
+                height: [180, 190, 155, 140, 165, 130][i],
+                top: ['8%', '55%', '72%', '5%', '40%', '80%'][i],
+                left: [8, undefined, 12, undefined, 3, undefined][i] != null ? `${[8, 0, 12, 0, 3, 0][i]}%` : undefined,
+                right: [undefined, 5, undefined, 18, undefined, 10][i] != null ? `${[0, 5, 0, 18, 0, 10][i]}%` : undefined,
+              }}>
+                <FilmStill videoId={video.youtubeId} alt={video.title} className="cinema-frame-img" />
+                <div className="cinema-frame-label">
+                  {video.title}
+                  <span>{video.artist} &bull; {formatViews(video.viewCount)} views</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <Link to="/videos" className="cinema-enter-btn">
+            ENTER PORTFOLIO <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
 

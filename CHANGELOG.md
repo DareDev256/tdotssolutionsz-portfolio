@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.7.0] - 2026-09-20
+
+### Changed
+- **Web Design now leads the descent.** Floor order on `/` is pod → Web Design → Music Videos → Book a Session (was videos first). The entrance/scatter windows swapped with the scenes; the video ref ids stay positional so phones with no tower still scrub the right clip.
+- **Every shipped site on the Web Design floor** — 13 browser tiles, newest first (Shortiie Raw, ShairBraiding, Bali Whisper, Lodiie Harmony Tour, ShopBayHQ, BetMetrics, NirvanaDeshaun Builds, MustHaveFrenchies, Street Bud, SAVV4X, KMONEY, SyrenEffect, 100BandPlan), each probed 200 on its own domain today. Layout keeps the middle third clear for the title and the shaft; measured zero overlapping tiles at the settled floor (1440×900). edsonlegal.com is the firm's own site, not ours, and is not shown. New previews: `shortiieraw-preview.jpg`, `shopbayhq-preview.jpg`.
+- **Tower descent on phones.** The gate is now motion-preference only; under 1080px the plate is sized by height (`300svh`) and centred so the shaft stays in the middle and the sides crop. Scrubbed 0/25/50/75/100 at 390×844: one scene per stop, no horizontal scroll, zero errors. Phones show the newest four sites, one per corner.
+
 ## [6.6.0] - 2026-09-20
 
 ### Added
