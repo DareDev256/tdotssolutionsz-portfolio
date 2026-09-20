@@ -675,3 +675,7 @@
   .cinema-browser:hover { transform: none; }
   .cinema-cta-btn::after { display: none; }
 }
+
+/* v6.8: the close is two doors and a slide (BookDoors.jsx); this wrapper only
+   carries the scene-4 entrance tween. */
+.cinema-cta-doors { position: relative; z-index: 10; width: 100%; display: flex; justify-content: center; }

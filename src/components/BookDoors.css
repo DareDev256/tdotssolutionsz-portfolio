@@ -1,0 +1,88 @@
+/* ══ Book a Session — two doors and a slide ═══════════════════
+   Scoped under .bd. Cobalt is the page's CTA accent (CLAUDE.md); nothing
+   here adds a hue. Transform/opacity only. */
+.bd { position: relative; z-index: 10; width: min(560px, calc(100vw - 32px)); margin: 8px auto 0; display: grid; gap: 14px; }
+
+.bd-pills { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: start; }
+
+/* ── the pill, which is also the card ─────────────────────── */
+.bd-pill {
+  position: relative; display: block; width: 100%; text-align: left;
+  padding: 0; border: 1px solid rgba(255,255,255,0.22); border-radius: 999px;
+  background: rgba(10,10,11,0.55); color: #fff; cursor: pointer;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transition: border-radius .42s cubic-bezier(.2,.8,.2,1), border-color .3s, background .3s;
+  overflow: hidden;
+}
+.bd-pill:hover { border-color: rgba(255,255,255,0.5); }
+.bd-pill:focus-visible { outline: 2px solid #4a7cff; outline-offset: 2px; }
+.bd-pill[data-open="true"] { border-radius: 14px; border-color: #4a7cff; background: rgba(10,10,11,0.82); }
+
+/* the label sits in the closed pill and blurs OUT as the box opens —
+   the card's contents come into focus in its place */
+.bd-pill-label {
+  display: block; padding: 14px 20px;
+  font-family: var(--font-mono, 'Space Mono', monospace); font-size: 12px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  transition: opacity .28s, filter .28s, transform .28s;
+}
+.bd-pill[data-open="true"] .bd-pill-label { opacity: 0; filter: blur(6px); transform: translateY(-6px); position: absolute; inset: 0 0 auto 0; pointer-events: none; }
+
+.bd-card {
+  display: grid; gap: 8px; padding: 0 20px;
+  max-height: 0; opacity: 0; filter: blur(8px);
+  transition: max-height .46s cubic-bezier(.2,.8,.2,1), opacity .32s .08s, filter .32s .08s, padding .46s cubic-bezier(.2,.8,.2,1);
+}
+.bd-pill[data-open="true"] .bd-card { max-height: 320px; opacity: 1; filter: blur(0); padding: 18px 20px 16px; }
+
+.bd-card-title { font-family: var(--font-poster, 'Anton', sans-serif); font-size: 26px; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1; }
+.bd-card-line { font-family: 'Inter', system-ui, sans-serif; font-size: 13.5px; line-height: 1.5; color: rgba(255,255,255,0.78); }
+.bd-card-line:first-of-type { color: #fff; font-weight: 600; }
+.bd-card-meta { font-family: var(--font-mono, 'Space Mono', monospace); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #4a7cff; margin-top: 4px; }
+.bd-card-meta a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── the slide ─────────────────────────────────────────────── */
+.bd-slide {
+  position: relative; height: 64px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.26); background: rgba(10,10,11,0.6);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  user-select: none; -webkit-user-select: none; touch-action: pan-y; overflow: hidden;
+}
+/* the wash follows the handle: one element scaled from the left, no width animation */
+.bd-slide-fill {
+  position: absolute; inset: 0; background: #4a7cff; transform-origin: left center;
+  transform: scaleX(calc((var(--x) + 60px) / (var(--max) + 64px)));
+  opacity: 0.9;
+  transition: transform .06s linear;
+}
+.bd-slide[data-state="rest"] .bd-slide-fill { transition: transform .45s cubic-bezier(.2,.8,.2,1); }
+.bd-slide[data-state="done"] .bd-slide-fill { transform: scaleX(1); transition: transform .3s ease-out; }
+.bd-slide-label {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  padding-left: 40px;
+  font-family: var(--font-mono, 'Space Mono', monospace); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.85);
+  pointer-events: none;
+  opacity: calc(1 - var(--x) / max(var(--max), 1px) * 1.4);
+}
+.bd-slide[data-state="done"] .bd-slide-label { opacity: 1; padding-left: 0; }
+.bd-slide-handle {
+  position: absolute; top: 3px; left: 4px; width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; color: #0a0a0b; font-size: 20px; text-decoration: none;
+  cursor: grab; transform: translateX(var(--x));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+.bd-slide[data-state="rest"] .bd-slide-handle { transition: transform .45s cubic-bezier(.34,1.56,.64,1); }
+.bd-slide[data-state="drag"] .bd-slide-handle { cursor: grabbing; }
+.bd-slide[data-state="done"] .bd-slide-handle { transform: translateX(var(--max)); }
+.bd-slide-handle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+@media (max-width: 480px) {
+  .bd-pills { grid-template-columns: 1fr; }
+  .bd-pill-label { font-size: 11px; padding: 13px 18px; }
+  .bd-card-title { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bd-pill, .bd-pill-label, .bd-card, .bd-slide-fill, .bd-slide-handle { transition: none; }
+}

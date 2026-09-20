@@ -1,5 +1,11 @@
 # Changelog
 
+## [6.8.0] - 2026-09-20
+
+### Changed
+- **Book a Session is two doors and a slide** (`src/components/BookDoors.jsx`). The old close was a label, a title, two lines and a `mailto:` with a canned body. Now: pick **A music video** or **A website** — the pill grows into its card (what you get; the website door prints the published $500 / $30-a-month / live-in-a-week figures, the video door prints no price because none is published) — then **slide to send**, which opens WhatsApp prefilled with the pick. Same slide as `/sites`, so the site has one way of saying yes. Proof lines come from `PORTFOLIO_STATS` and `WEB_PROJECTS.length`, not typed. Keyboard and reduced-motion get a plain link. Verified: early release springs home, full slide opens `wa.me/14165286149?text=…` on 1440 and 390, zero errors; screenshots `docs/screenshots/2026-09-20_book-doors-*`.
+- The `mailto:dev@jamesdare.com` door is gone from `/` (the `dev@` Workspace flag is still open; WhatsApp is the channel this audience uses).
+
 ## [6.7.1] - 2026-09-20
 
 ### Fixed

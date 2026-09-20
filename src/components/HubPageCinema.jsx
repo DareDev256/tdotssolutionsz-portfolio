@@ -6,6 +6,7 @@ import { VIDEOS, PORTFOLIO_STATS } from '../utils/videoData'
 import { topByViews } from '../utils/videoFilters'
 import { formatViews } from '../utils/formatters'
 import './HubPageCinema.css'
+import { BookDoors } from './BookDoors'
 import ScrambleText from './ScrambleText'
 import FilmStill from './FilmStill'
 import useCountUp from '../hooks/useCountUp'
@@ -351,7 +352,7 @@ export default function HubPageCinema() {
     scene4TL.fromTo('.cinema-s4-label', { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3 }, 0)
     scene4TL.fromTo('.cinema-s4-title', { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.4)' }, 0.1)
     scene4TL.fromTo('.cinema-s4-sub', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, 0.3)
-    scene4TL.fromTo('.cinema-cta-btn', { y: 60, opacity: 0, scale: 0.8 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' }, 0.5)
+    scene4TL.fromTo('.cinema-cta-doors', { y: 60, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.6)' }, 0.5)
 
     // Progress bar
     gsap.to('.cinema-progress', {
@@ -625,10 +626,9 @@ export default function HubPageCinema() {
 
           <ScrambleText as="p" className="cinema-s4-label" text="LET'S WORK" />
           <h2 className="cinema-s4-title">Book a<br />Session</h2>
-          <p className="cinema-s4-sub">Bring the record.<br />We&rsquo;ll bring the camera, the crew,<br />and the site it lives on.</p>
-          <a href="mailto:dev@jamesdare.com?subject=Project%20Inquiry&body=Hey%20James%2C%0A%0AI%27m%20interested%20in%20working%20together.%0A%0A" className="cinema-cta-btn">
-            GET STARTED <span>&rarr;</span>
-          </a>
+          <p className="cinema-s4-sub">Pick the one you came for.</p>
+          {/* two doors and a slide — see BookDoors.jsx for why not a button */}
+          <div className="cinema-cta-doors"><BookDoors videoMeta={`${PORTFOLIO_STATS.totalVideos} films · ${PORTFOLIO_STATS.totalArtists} artists · ${formatViews(PORTFOLIO_STATS.totalViews)} plays`} siteMeta={`${WEB_PROJECTS.length} live · see /sites`} /></div>
           <footer className="cinema-footer">
             <p>TdotsSolutionsz</p>
             <p>Toronto, Ontario &bull; &copy; {new Date().getFullYear()}</p>
