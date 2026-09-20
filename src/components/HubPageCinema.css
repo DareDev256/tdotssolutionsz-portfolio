@@ -502,6 +502,9 @@
 @media (max-width: 480px) {
   .cinema-hero-title { font-size: clamp(2.5rem, 14vw, 4rem); }
   .cinema-frame:nth-child(n+3) { display: none; }
+  /* the scene subtitles ran off the left edge at 390: a tracked 12px line of
+     40 characters is wider than the screen. Smaller, centred, with a gutter. */
+  .cinema-s2-sub, .cinema-s3-sub { font-size: 9px; letter-spacing: 0.12em; text-align: center; padding: 0 20px; max-width: 100%; box-sizing: border-box; }
   /* four sites on a phone, the newest four, one per corner of the floor */
   .cinema-browser { max-width: 168px !important; max-height: 112px !important; }
   .cinema-browser:nth-child(n+5) { display: none; }

@@ -1,5 +1,10 @@
 # Changelog
 
+## [6.7.1] - 2026-09-20
+
+### Fixed
+- Scene subtitles ("SHIPPED · NOT MOCKED UP · LIVE IN PRODUCTION", the films/artists/plays line) ran off the left edge at 390px; now 9px, centred, 20px gutter — measured 30→360px on a 390 viewport.
+
 ## [6.7.0] - 2026-09-20
 
 ### Changed
