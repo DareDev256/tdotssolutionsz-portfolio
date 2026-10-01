@@ -26,6 +26,8 @@ import useVideoDeepLink from '../hooks/useVideoDeepLink'
 import { useDeviceType } from '../hooks/useDeviceType'
 import IntroLetters from './IntroLetters'
 import { loadFilmTexture } from '../utils/filmTexture'
+import { useSearchParams } from 'react-router-dom'
+import { FinderBar, FinderGrid, filterVideos, topArtists } from './VideoFinder'
 
 // ── Tunnel geometry ──────────────────────────────────────────────────
 const CARD_W = 3.6
@@ -66,7 +68,7 @@ const SCROLL_PAGES = 12
 const CAMERA_LERP = 0.15
 
 // Aesthetic constants — clean white space
-const BG_COLOR = '#f5f5f3'    // warm off-white, easier on the eyes than pure #fff
+const BG_COLOR = '#ffffff'    // pure white (2026-10-01: the warm off-white #f5f5f3 sat in the banned cream family)
 const FOG_NEAR = 22
 const FOG_FAR = TUNNEL_LENGTH * 0.85
 const FRAME_COLOR = '#1a1a1a' // near-black thin frame around each card
@@ -299,6 +301,31 @@ export default function VideoTunnelApp() {
             .sort((a, b) => a._frontScore - b._frontScore)
     }, [])
 
+    // ── Finder state (URL-backed: ?view ?q ?artist ?sort) ──
+    const [params, setParams] = useSearchParams()
+    const view = params.get('view') || (isMobile ? 'grid' : 'tunnel')
+    const q = params.get('q') || ''
+    const artist = params.get('artist') || null
+    const sort = params.get('sort') === 'new' ? 'new' : 'top'
+    const setParam = useCallback((key, value, extra = {}) => {
+        setParams((prev) => {
+            const next = new URLSearchParams(prev)
+            for (const [k, v] of Object.entries({ [key]: value, ...extra })) {
+                if (v == null || v === '') next.delete(k); else next.set(k, v)
+            }
+            return next
+        }, { replace: true })
+    }, [setParams])
+    const setView = useCallback((v) => setParam('view', v), [setParam])
+    // searching is a grid task: typing switches to the match list
+    const setQ = useCallback((v) => setParam('q', v, v ? { view: 'grid' } : {}), [setParam])
+    const setArtist = useCallback((a) => setParam('artist', a), [setParam])
+    const setSort = useCallback((v) => setParam('sort', v === 'top' ? null : v), [setParam])
+    const artists = useMemo(() => topArtists(enrichedVideos, 12), [enrichedVideos])
+    const gridVideos = useMemo(() => filterVideos(enrichedVideos, { q, artist, sort }), [enrichedVideos, q, artist, sort])
+    // the player's next/prev follows whatever list the visitor is looking at
+    const queue = view === 'grid' ? gridVideos : enrichedVideos
+
     const handleCardClick = useCallback((video) => {
         setActiveProject(video)
         theaterGuard.open()
@@ -310,18 +337,18 @@ export default function VideoTunnelApp() {
 
     const activeIndex = useMemo(() => {
         if (!activeProject) return -1
-        return enrichedVideos.findIndex(v => v.youtubeId === activeProject.youtubeId)
-    }, [activeProject, enrichedVideos])
+        return queue.findIndex(v => v.youtubeId === activeProject.youtubeId)
+    }, [activeProject, queue])
 
     const handleTheaterNext = useCallback(() => {
-        if (activeIndex < 0) return
-        setActiveProject(enrichedVideos[(activeIndex + 1) % enrichedVideos.length])
-    }, [activeIndex, enrichedVideos])
+        if (activeIndex < 0 || !queue.length) return
+        setActiveProject(queue[(activeIndex + 1) % queue.length])
+    }, [activeIndex, queue])
 
     const handleTheaterPrev = useCallback(() => {
-        if (activeIndex < 0) return
-        setActiveProject(enrichedVideos[(activeIndex - 1 + enrichedVideos.length) % enrichedVideos.length])
-    }, [activeIndex, enrichedVideos])
+        if (activeIndex < 0 || !queue.length) return
+        setActiveProject(queue[(activeIndex - 1 + queue.length) % queue.length])
+    }, [activeIndex, queue])
 
     const handleOpenTheater = useCallback(() => {
         if (activeProject) theaterGuard.open()
@@ -340,7 +367,7 @@ export default function VideoTunnelApp() {
 
     return (
         <>
-            <div className="canvas-container">
+            {view === 'tunnel' && <div className="canvas-container">
                 <Canvas
                     gl={{
                         antialias: true,
@@ -365,18 +392,33 @@ export default function VideoTunnelApp() {
                         </ScrollControls>
                     </Suspense>
                 </Canvas>
-            </div>
+            </div>}
 
             {/* Letter-assembly intro overlay (entrance + scatter on scroll) */}
-            <IntroLetters progressRef={progressRef} />
+            {view === 'tunnel' && <IntroLetters progressRef={progressRef} />}
+
+            {view === 'grid' && (
+                <FinderGrid videos={gridVideos} onOpen={handleCardClick} onClear={() => setParam('q', null, { artist: null })} />
+            )}
+
+            {!theaterMode && (
+                <FinderBar
+                    view={view} setView={setView}
+                    q={q} setQ={setQ}
+                    artist={artist} setArtist={setArtist}
+                    sort={sort} setSort={setSort}
+                    artists={artists}
+                    shown={gridVideos.length} total={enrichedVideos.length}
+                />
+            )}
 
             {/* Selected video — overlay metadata + theater entry */}
-            <VideoOverlay
+            {view === 'tunnel' && <VideoOverlay
                 activeProject={activeProject}
                 audioEnabled={false}
                 onOpenTheater={handleOpenTheater}
                 onArtistClick={() => { /* no artist panel in tunnel v1 */ }}
-            />
+            />}
 
             {/* Full-viewport video player */}
             <TheaterMode
@@ -387,13 +429,13 @@ export default function VideoTunnelApp() {
                 onClose={handleCloseTheater}
                 onNext={handleTheaterNext}
                 onPrev={handleTheaterPrev}
-                hasNext={enrichedVideos.length > 1}
-                hasPrev={enrichedVideos.length > 1}
+                hasNext={queue.length > 1}
+                hasPrev={queue.length > 1}
                 queuePosition={activeIndex >= 0 ? activeIndex + 1 : null}
-                queueTotal={enrichedVideos.length}
+                queueTotal={queue.length}
                 nextVideoTitle={
-                    activeIndex >= 0 && enrichedVideos.length > 1
-                        ? enrichedVideos[(activeIndex + 1) % enrichedVideos.length]?.title
+                    activeIndex >= 0 && queue.length > 1
+                        ? queue[(activeIndex + 1) % queue.length]?.title
                         : null
                 }
             />

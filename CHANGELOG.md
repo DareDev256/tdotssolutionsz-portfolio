@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.10.0] - 2026-10-01
+
+### Added
+- **/videos is findable.** A fixed finder bar (`src/components/VideoFinder.jsx`): search across 101 films by title or artist, artist chips (top 12 by film count), Top/New sort, and a **Tunnel / Grid** switch. Grid is a readable list (16:9 still, title, artist, views, year) that opens the same TheaterMode; the player's next/prev follows the filtered list (filter Street Bud → "1 / 3, up next: Run My Check Up"). Typing in search switches to Grid. Phones open on Grid; desktop opens on the tunnel. State lives in the URL (`?view ?q ?artist ?sort`) so a filtered list can be shared. The tunnel canvas unmounts in Grid, so phones stop rendering WebGL they are not looking at.
+
+### Changed
+- Tunnel ground `#f5f5f3` → `#ffffff` (the warm off-white sat in the banned cream family).
+- Verified: 710/710 tests, build green, flows exercised in Chrome (grid, chip, search, empty state, player opens and plays), screenshots `docs/screenshots/2026-10-01_videos-*`.
+
 ## [6.9.0] - 2026-10-01
 
 ### Changed
