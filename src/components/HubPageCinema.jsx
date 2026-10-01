@@ -13,7 +13,7 @@ import useCountUp from '../hooks/useCountUp'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const FEATURED = topByViews(VIDEOS, 8)
+const FEATURED = topByViews(VIDEOS, 10)
 
 /**
  * Scene 3 browser cards.
@@ -25,11 +25,17 @@ const FEATURED = topByViews(VIDEOS, 8)
  * appended without touching the render.
  */
 const WEB_PROJECTS = [
-  /* newest first: the first four are what a phone shows (CSS hides the rest
-     under 480px), so the order is the claim. Every entry is a site James
+  /* newest first. Desktop places every entry by its `layout`; phones (<=768px)
+     show all of them in two drifting rails (see Rail below), so nothing is cut. Every entry is a site James
      shipped that answers 200 on its own domain (probed 2026-09-20).
      edsonlegal.com is the firm's own site, not ours, and stays out.
      Layouts keep the middle third clear for the title and the tower shaft. */
+  { name: 'Spoiled Kass', type: 'Creator Site',
+    url: 'https://spoiledkass.com', preview: '/sites/spoiledkass-preview.jpg', icon: null,
+    layout: { width: 192, height: 120, top: '4%', left: '25%' } },
+  { name: 'Dancehall Princess Canada', type: 'Series Site',
+    url: 'https://dancehallprincess.ca', preview: '/sites/dancehallprincess-preview.jpg', icon: null,
+    layout: { width: 192, height: 120, top: '4%', right: '25%' } },
   { name: 'Shortiie Raw', type: 'Artist Platform',
     url: 'https://shortiieraw.com', preview: '/sites/shortiieraw-preview.jpg', icon: null,
     layout: { width: 300, height: 188, top: '5%', left: '2%' } },
@@ -70,6 +76,67 @@ const WEB_PROJECTS = [
     url: 'https://100bandplan.com', preview: '/sites/100bandplan-preview.jpg', icon: null,
     layout: { width: 200, height: 125, top: '43%', left: '25%' } },
 ]
+
+/**
+ * Desktop video wall: eight stills, all 16:9, framed around the title. Sizes step
+ * down toward the centre so the eye lands on the title, then the biggest films
+ * at the edges. The middle third (title + shaft) stays clear, as on the sites floor.
+ */
+const WALL = [
+  { width: 352, height: 198, top: '7%', left: '2.5%' },
+  { width: 304, height: 171, top: '38%', left: '5%' },
+  { width: 336, height: 189, top: '67%', left: '2%' },
+  { width: 352, height: 198, top: '6%', right: '2.5%' },
+  { width: 304, height: 171, top: '37%', right: '5%' },
+  { width: 336, height: 189, top: '66%', right: '2%' },
+  { width: 240, height: 135, top: '4%', left: '30.5%' },
+  { width: 240, height: 135, top: '4%', right: '30.5%' },
+]
+
+/**
+ * Phone rail: one row that drifts sideways forever. The track holds the list
+ * twice and slides by exactly half its width, so the loop has no seam. The
+ * second copy is aria-hidden and out of the tab order; touch or hover pauses
+ * the drift so a tile can be read and tapped. Reduced motion gets a plain
+ * swipeable row instead (CSS).
+ */
+function Rail({ items, render, label, reverse = false, low = false }) {
+  return (
+    <div className={`cinema-rail${low ? ' cinema-rail--low' : ''}`} role="list" aria-label={label}>
+      <div className={`cinema-rail-track${reverse ? ' cinema-rail-track--rev' : ''}`} style={{ '--rail-n': items.length }}>
+        {items.map((it) => render(it, false))}
+        {items.map((it) => render(it, true))}
+      </div>
+    </div>
+  )
+}
+
+const renderSite = (project, clone) => (
+  <a key={(clone ? 'c-' : '') + project.name} href={project.url} target="_blank" rel="noopener noreferrer"
+     className="cinema-rail-site" role="listitem" aria-hidden={clone || undefined} tabIndex={clone ? -1 : undefined}>
+    <div className="cinema-browser-chrome">
+      <div className="cinema-browser-dot" style={{ background: '#ff5f57' }} />
+      <div className="cinema-browser-dot" style={{ background: '#febc2e' }} />
+      <div className="cinema-browser-dot" style={{ background: '#28c840' }} />
+      <span className="cinema-browser-url">{project.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+    </div>
+    <div className="cinema-browser-body">
+      <img src={project.preview} alt={clone ? '' : project.name} className="cinema-browser-preview" loading="lazy" />
+    </div>
+  </a>
+)
+
+const renderFilm = (video, clone) => (
+  <Link key={(clone ? 'c-' : '') + video.id} to={`/video/${video.youtubeId}`} className="cinema-rail-film"
+        role="listitem" aria-hidden={clone || undefined} tabIndex={clone ? -1 : undefined}>
+    <FilmStill videoId={video.youtubeId} alt={clone ? '' : video.title} className="cinema-frame-img" />
+    <span className="cinema-frame-play" aria-hidden="true" />
+    <div className="cinema-frame-label">
+      {video.title}
+      <span>{video.artist} &bull; {formatViews(video.viewCount)} views</span>
+    </div>
+  </Link>
+)
 
 /**
  * Animated stat — counts up once the hero settles. The numbers are the
@@ -289,6 +356,7 @@ export default function HubPageCinema() {
       { x: () => (Math.random() - 0.5) * 400, y: () => (Math.random() - 0.5) * 400, rotation: () => (Math.random() - 0.5) * 180, opacity: 0, scale: 0 },
       { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.04, duration: 0.5, ease: 'back.out(2)' }, 0.1)
     scene2TL.fromTo('.cinema-s2-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3 }, 0.3)
+    scene2TL.fromTo('#cinema-scene3 .cinema-rails', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.2)
     scene2TL.fromTo('.cinema-frame',
       { x: (i) => (i % 2 === 0 ? -300 : 300), y: (i) => (i < 3 ? -200 : 200), rotation: (i) => (i % 2 === 0 ? -15 : 10), opacity: 0, scale: 0.6 },
       { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.08, duration: 0.5, ease: 'power2.out' }, 0.2)
@@ -308,6 +376,7 @@ export default function HubPageCinema() {
       rotation: () => (Math.random() - 0.5) * 360, opacity: 0, stagger: 0.02, duration: 0.5,
     }, 0)
     scatter2.to('.cinema-s3-sub', { opacity: 0, y: -50, duration: 0.3 }, 0)
+    scatter2.to('#cinema-scene2 .cinema-rails', { opacity: 0, y: -40, duration: 0.4 }, 0.1)
     scatter2.to('.cinema-browser', { x: (i) => (i % 2 === 0 ? -600 : 600), y: (i) => (i < 4 ? -300 : 300), opacity: 0, duration: 0.5, stagger: 0.03 }, 0.1)
     scatter2.to('#cinema-scene2', { opacity: 0, duration: 0.3 }, 0.5)
     scatter2.to('#cinema-scene3', { opacity: 1, duration: 0.3 }, 0.5)
@@ -325,6 +394,7 @@ export default function HubPageCinema() {
       { scale: 3, opacity: 0, rotation: () => (Math.random() - 0.5) * 90 },
       { scale: 1, opacity: 1, rotation: 0, stagger: 0.06, duration: 0.4, ease: 'expo.out' }, 0.15)
     scene3TL.fromTo('.cinema-s3-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3 }, 0.3)
+    scene3TL.fromTo('#cinema-scene2 .cinema-rails', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.2)
     scene3TL.fromTo('.cinema-browser',
       { x: (i) => (i % 2 === 0 ? -500 : 500), y: (i) => (i < 4 ? -200 : 200), rotateY: (i) => (i % 2 === 0 ? 45 : -45), opacity: 0, scale: 0.5 },
       { x: 0, y: 0, rotateY: 0, rotateX: 0, opacity: 1, scale: 1, stagger: 0.04, duration: 0.6, ease: 'power2.out' }, 0.2)
@@ -341,6 +411,7 @@ export default function HubPageCinema() {
     })
     scatter3.to('.cinema-s2-title .cinema-letter', { y: () => 100 + Math.random() * 200, opacity: 0, stagger: 0.02, duration: 0.4 }, 0)
     scatter3.to('.cinema-s2-sub', { opacity: 0, duration: 0.2 }, 0)
+    scatter3.to('#cinema-scene3 .cinema-rails', { opacity: 0, y: -40, duration: 0.4 }, 0.1)
     scatter3.to('.cinema-frame', { x: (i) => (i % 2 === 0 ? -500 : 500), y: (i) => (i < 3 ? -400 : 400), rotation: (i) => (i % 2 === 0 ? -30 : 20), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
     scatter3.to('#cinema-scene3', { opacity: 0, duration: 0.3 }, 0.4)
     scatter3.to('#cinema-scene4', { opacity: 1, duration: 0.5 }, 0.4)
@@ -556,6 +627,11 @@ export default function HubPageCinema() {
             ))}
           </div>
 
+          <div className="cinema-rails" aria-label="Websites">
+            <Rail items={WEB_PROJECTS.slice(0, Math.ceil(WEB_PROJECTS.length / 2))} label="Websites, row one" render={renderSite} />
+            <Rail items={WEB_PROJECTS.slice(Math.ceil(WEB_PROJECTS.length / 2))} label="Websites, row two" render={renderSite} reverse low />
+          </div>
+
           <Link to="/web-design" className="cinema-enter-btn">
             VIEW WORK <span aria-hidden="true">&rarr;</span>
           </Link>
@@ -587,21 +663,21 @@ export default function HubPageCinema() {
           </h2>
 
           <div className="cinema-floating-frames">
-            {FEATURED.slice(0, 6).map((video, i) => (
-              <Link to={`/video/${video.youtubeId}`} key={video.id} className="cinema-frame" style={{
-                width: [280, 300, 240, 220, 260, 200][i],
-                height: [180, 190, 155, 140, 165, 130][i],
-                top: ['8%', '55%', '72%', '5%', '40%', '80%'][i],
-                left: [8, undefined, 12, undefined, 3, undefined][i] != null ? `${[8, 0, 12, 0, 3, 0][i]}%` : undefined,
-                right: [undefined, 5, undefined, 18, undefined, 10][i] != null ? `${[0, 5, 0, 18, 0, 10][i]}%` : undefined,
-              }}>
+            {FEATURED.slice(0, WALL.length).map((video, i) => (
+              <Link to={`/video/${video.youtubeId}`} key={video.id} className="cinema-frame" style={WALL[i]}>
                 <FilmStill videoId={video.youtubeId} alt={video.title} className="cinema-frame-img" />
+                <span className="cinema-frame-play" aria-hidden="true" />
                 <div className="cinema-frame-label">
                   {video.title}
                   <span>{video.artist} &bull; {formatViews(video.viewCount)} views</span>
                 </div>
               </Link>
             ))}
+          </div>
+
+          <div className="cinema-rails" aria-label="Music videos">
+            <Rail items={FEATURED.slice(0, 5)} label="Music videos, row one" render={renderFilm} />
+            <Rail items={FEATURED.slice(5, 10)} label="Music videos, row two" render={renderFilm} reverse low />
           </div>
 
           <Link to="/videos" className="cinema-enter-btn">

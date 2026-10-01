@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.9.0] - 2026-10-01
+
+### Changed
+- **Every site on a phone.** The Web Design floor showed only the newest four sites under 480px (one per corner). Phones (≤768px) now get two drifting rails of browser tiles carrying every site; touch pauses a rail so a tile can be read and tapped, the loop has no seam (list twice, track slides exactly half), the clone half is `aria-hidden` and out of the tab order, and reduced motion gets a plain swipeable row. Desktop placement is unchanged.
+- **Spoiled Kass and Dancehall Princess Canada** added (15 sites, newest first). New previews `spoiledkass-preview.jpg`, `dancehallprincess-preview.jpg` (960×600, captured from the live sites).
+- **Music Videos wall rebuilt.** Six mismatched frames (280×180, 300×190…) at ad-hoc positions became eight 16:9 stills framed around the title, biggest at the edges, middle third and the Enter button kept clear. Each still gets a hairline frame, a play mark (orange on hover), a legible 13px label, and the scene plate behind it is darker so the stills carry the light. Phones previously showed two tiny frames; they now get the same rails with ten films.
+- Verified: build green, video playback suite 23/23, settled-frame screenshots at 1440 and 390 in `docs/screenshots/2026-10-01_*`. No new section: the hub structure lock stands; this improves two existing floors.
+
 ## [6.8.1] - 2026-09-20
 
 ### Changed
