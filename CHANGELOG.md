@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.11.0] - 2026-10-01
+
+### Changed
+- **The Music Videos floor is a monitor wall.** The still collage (v6.9) read as a gallery, not as film. The floor is now a bank of screens, edge to edge with 3px seams, each playing a 6 s muted loop cut from the film itself: 4x3 on desktop, 2x4 on phones. Scanlines and a per-screen vignette; hover lights one screen, dims the rest and slides up its title; click opens `/video/:id`. The bank powers on screen by screen from the centre and switches off on the way down. Title reads through a tight radial shadow, so 10 of 12 screens stay fully visible behind it.
+- Clips load and play only while the floor is on screen (zero preview requests before it, every clip paused after it, measured), never under reduced motion (posters stand in).
+- `scripts/build-preview-clips.mjs --count=N`; six new loops built for the wall (Hypa, BG, Jose Guapo, Jay Jay, LV, Arez), ~230-660 KB each.
+- Removed the v6.9 still frames and film rails from the hub (superseded); the sites rails stay.
+
 ## [6.10.0] - 2026-10-01
 
 ### Added

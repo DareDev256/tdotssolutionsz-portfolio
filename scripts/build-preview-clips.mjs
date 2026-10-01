@@ -16,6 +16,7 @@
  * Usage:
  *   node scripts/build-preview-clips.mjs            # only missing clips
  *   node scripts/build-preview-clips.mjs --force    # rebuild everything
+ *   node scripts/build-preview-clips.mjs --count=12 # the homepage monitor wall's 12
  *
  * Requires: yt-dlp, ffmpeg on PATH.
  */
@@ -31,6 +32,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const OUT = path.join(ROOT, 'public', 'previews')
 const TMP = path.join(ROOT, '.preview-tmp')
 const FORCE = process.argv.includes('--force')
+/** --count N: how many films (deduped by artist). 6 feeds the reel; 12 feeds the homepage monitor wall. */
+const COUNT = Number((process.argv.find(a => a.startsWith('--count=')) || '--count=6').split('=')[1]) || 6
 
 /** Seconds of footage per loop. Long enough to read as a shot, short enough to stay small. */
 const CLIP_SECONDS = 6
@@ -54,7 +57,7 @@ function selectReel() {
         if (!v.artist || seen.has(v.artist)) continue
         seen.add(v.artist)
         picked.push(v)
-        if (picked.length === 6) break
+        if (picked.length === COUNT) break
     }
     return picked
 }

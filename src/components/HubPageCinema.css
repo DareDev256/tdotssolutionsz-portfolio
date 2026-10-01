@@ -680,38 +680,11 @@
    v6.9 — VIDEO WALL + PHONE RAILS
    ============================================ */
 
-/* The wall reads as film, not as scattered thumbnails: a hairline frame,
-   full-strength stills, a legible label and a play mark that says "tap me". */
-.cinema-frame {
-  border-radius: 6px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.14);
-  background: #0b0b0c;
-}
-.cinema-frame-label { padding: 22px 12px 10px; font-size: 13px; line-height: 1.25;
-  background: linear-gradient(transparent, rgba(0,0,0,0.92) 55%); }
-.cinema-frame-label span { color: rgba(255,255,255,0.7); font-size: 11px; }
-.cinema-frame-play {
-  position: absolute; top: 10px; right: 10px; z-index: 2;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: rgba(10,10,11,0.62); box-shadow: 0 0 0 1px rgba(255,255,255,0.35);
-  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-.cinema-frame-play::after {
-  content: ''; position: absolute; left: 12px; top: 9px;
-  border-style: solid; border-width: 6px 0 6px 10px;
-  border-color: transparent transparent transparent #fff;
-}
-.cinema-frame:hover .cinema-frame-play,
-.cinema-rail-film:active .cinema-frame-play { background: var(--accent-orange, #e85d34); transform: scale(1.08); }
-/* the scene plate sits darker behind the wall so the stills carry the light */
-#cinema-scene3 .cinema-video-overlay { background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.42), rgba(0,0,0,0.82)) !important; }
-
 /* Phone rails: hidden on desktop, they replace the positioned tiles under 768px */
 .cinema-rails { display: none; }
 
 @media (max-width: 768px) {
-  .cinema-browsers, .cinema-floating-frames { display: none; }
+  .cinema-browsers { display: none; }
   .cinema-rails { display: block; position: absolute; inset: 0; z-index: 5; pointer-events: none; }
   .cinema-rail {
     position: absolute; left: 0; right: 0; top: 11%;
@@ -729,7 +702,7 @@
   .cinema-rail:active .cinema-rail-track,
   .cinema-rail:focus-within .cinema-rail-track { animation-play-state: paused; }
 
-  .cinema-rail-site, .cinema-rail-film {
+  .cinema-rail-site {
     position: relative; flex: none; margin-right: 12px; display: block;
     border-radius: 8px; overflow: hidden; color: #fff; text-decoration: none;
     box-shadow: 0 12px 26px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.12);
@@ -740,11 +713,6 @@
   .cinema-rail-site .cinema-browser-dot { width: 6px; height: 6px; }
   .cinema-rail-site .cinema-browser-url { font-size: 9px; }
   .cinema-rail-site .cinema-browser-body { height: calc(100% - 22px); }
-  .cinema-rail-film { width: 224px; height: 126px; }
-  .cinema-rail-film .cinema-frame-label { font-size: 11px; padding: 18px 10px 8px; }
-  .cinema-rail-film .cinema-frame-label span { font-size: 10px; }
-  .cinema-rail-film .cinema-frame-play { width: 24px; height: 24px; top: 8px; right: 8px; }
-  .cinema-rail-film .cinema-frame-play::after { left: 9px; top: 6px; border-width: 6px 0 6px 9px; }
 }
 
 @keyframes cinema-rail { to { transform: translateX(-50%); } }
@@ -753,5 +721,72 @@
   .cinema-rail { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-mask-image: none; mask-image: none; }
   .cinema-rail-track { animation: none; padding-left: 16px; }
   .cinema-rail-track > [aria-hidden="true"] { display: none; }
-  .cinema-rail-site, .cinema-rail-film { scroll-snap-align: start; }
+  .cinema-rail-site { scroll-snap-align: start; }
+}
+
+/* ============================================
+   v6.11 — MONITOR WALL (Music Videos floor)
+   ============================================ */
+.cinema-monitors {
+  position: absolute; inset: 0; z-index: 4;
+  display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr);
+  gap: 3px; background: #050505; padding: 3px;
+}
+.cinema-monitor {
+  position: relative; overflow: hidden; display: block; background: #0b0b0c;
+  transform-origin: 50% 50%; color: #fff; text-decoration: none;
+}
+.cinema-monitor-still, .cinema-monitor-video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.cinema-monitor-video { opacity: 0; transition: opacity 0.6s ease; }
+.cinema-monitor.is-live .cinema-monitor-video { opacity: 1; }
+/* scanlines + a slight vignette per screen: monitors, not thumbnails */
+.cinema-monitor::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55));
+  transition: background-color 0.35s ease;
+}
+.cinema-monitor { filter: brightness(0.72) saturate(0.95); transition: filter 0.35s ease; }
+.cinema-monitors:hover .cinema-monitor { filter: brightness(0.42) saturate(0.7); }
+.cinema-monitors .cinema-monitor:hover,
+.cinema-monitors .cinema-monitor:focus-visible { filter: brightness(1.05) saturate(1.1); z-index: 2; outline: none; }
+.cinema-monitor-label {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 28px 14px 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.88));
+  font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+  transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.cinema-monitor-label b { display: block; font: 700 14px/1.25 var(--font-display, 'Archivo', system-ui, sans-serif); }
+.cinema-monitor-label span { display: block; margin-top: 3px; font-size: 11px; color: rgba(255,255,255,0.72); }
+.cinema-monitor:hover .cinema-monitor-label,
+.cinema-monitor:focus-visible .cinema-monitor-label { transform: none; }
+
+/* the title sits on a dark band over the bank so it always reads */
+#cinema-scene3 .cinema-s2-title, #cinema-scene3 .cinema-s2-sub { position: relative; z-index: 6; pointer-events: none; }
+#cinema-scene3 .cinema-s2-title { text-shadow: 0 6px 40px rgba(0,0,0,0.85); }
+#cinema-scene3::before {
+  content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  background: radial-gradient(ellipse 26% 24% at 50% 50%, rgba(5,5,5,0.82), rgba(5,5,5,0.55) 55%, transparent 100%);
+}
+#cinema-scene3 .cinema-enter-btn { z-index: 7; background: rgba(5,5,5,0.7); }
+
+@media (max-width: 768px) {
+  .cinema-monitors { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 1fr); }
+  .cinema-monitor--wide { display: none; }
+  .cinema-monitor { filter: brightness(0.8); }
+  /* touch: show the label always, small */
+  .cinema-monitor-label { transform: none; padding: 18px 10px 8px; }
+  .cinema-monitor-label b { font-size: 11px; }
+  .cinema-monitor-label span { display: none; }
+  /* the two screens behind the title keep their pictures, not their captions */
+  .cinema-monitor:nth-child(3) .cinema-monitor-label, .cinema-monitor:nth-child(4) .cinema-monitor-label { display: none; }
+  #cinema-scene3::before { background: radial-gradient(ellipse 48% 16% at 50% 50%, rgba(5,5,5,0.85), rgba(5,5,5,0.5) 60%, transparent 100%); }
+  .cinema-monitor::after { background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1) 0 1px, transparent 1px 3px), radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.5)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinema-monitor-video { display: none; }
 }

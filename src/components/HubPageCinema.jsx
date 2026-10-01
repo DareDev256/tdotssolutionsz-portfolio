@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { VIDEOS, PORTFOLIO_STATS } from '../utils/videoData'
-import { topByViews } from '../utils/videoFilters'
 import { formatViews } from '../utils/formatters'
 import './HubPageCinema.css'
 import { BookDoors } from './BookDoors'
@@ -13,7 +12,6 @@ import useCountUp from '../hooks/useCountUp'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const FEATURED = topByViews(VIDEOS, 10)
 
 /**
  * Scene 3 browser cards.
@@ -78,20 +76,54 @@ const WEB_PROJECTS = [
 ]
 
 /**
- * Desktop video wall: eight stills, all 16:9, framed around the title. Sizes step
- * down toward the centre so the eye lands on the title, then the biggest films
- * at the edges. The middle third (title + shaft) stays clear, as on the sites floor.
+ * Monitor wall (v6.11): the Music Videos floor is a bank of screens, edge to edge,
+ * each playing a 6 s muted loop cut from the film itself (public/previews, built by
+ * scripts/build-preview-clips.mjs --count=12: highest-viewed, one film per artist).
+ * Desktop 4x3, phone 2x4. Clips are attached and played only while the floor is on
+ * screen (see the toggle in the scroll effect) and never under reduced motion, where
+ * the poster frame stands in.
  */
-const WALL = [
-  { width: 352, height: 198, top: '7%', left: '2.5%' },
-  { width: 304, height: 171, top: '38%', left: '5%' },
-  { width: 336, height: 189, top: '67%', left: '2%' },
-  { width: 352, height: 198, top: '6%', right: '2.5%' },
-  { width: 304, height: 171, top: '37%', right: '5%' },
-  { width: 336, height: 189, top: '66%', right: '2%' },
-  { width: 240, height: 135, top: '4%', left: '30.5%' },
-  { width: 240, height: 135, top: '4%', right: '30.5%' },
+const MONITOR_IDS = [
+  'u3O5PKN9vCQ', 'E7ZStZMn-ac', '8p4i1b5IW2k', 'AKuI1b-o69M',
+  'sJMGY1k2lBk', 'gwXOTijyua4', 'B28ZQ0l2loc', 'pPVPBMPShkQ',
+  'l0kNVJaF5as', 'kgIISZzhQBE', '4kC6wYSyfQY', 'KZMiTNbaVyw',
 ]
+const MONITORS = MONITOR_IDS.map((id) => VIDEOS.find((v) => v.youtubeId === id)).filter(Boolean)
+
+function MonitorWall() {
+  return (
+    <div className="cinema-monitors" aria-label="Music videos">
+      {MONITORS.map((v, i) => (
+        <Link key={v.youtubeId} to={`/video/${v.youtubeId}`} className={`cinema-monitor${i >= 8 ? ' cinema-monitor--wide' : ''}`}
+              aria-label={`${v.title}, ${formatViews(v.viewCount)} views`}>
+          <FilmStill videoId={v.youtubeId} alt="" className="cinema-monitor-still" />
+          <video className="cinema-monitor-video" muted loop playsInline preload="none"
+                 data-webm={`/previews/${v.youtubeId}.webm`} data-mp4={`/previews/${v.youtubeId}.mp4`} aria-hidden="true" />
+          <span className="cinema-monitor-label">
+            <b>{v.title}</b>
+            <span>{v.artist} &bull; {formatViews(v.viewCount)} views</span>
+          </span>
+        </Link>
+      ))}
+    </div>
+  )
+}
+
+/** Attach sources on first need, then play or pause every monitor. */
+function setMonitorsPlaying(on) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  document.querySelectorAll('.cinema-monitor-video').forEach((v) => {
+    if (getComputedStyle(v.parentElement).display === 'none') return
+    if (on) {
+      if (!v.dataset.ready) {
+        const can = v.canPlayType('video/webm; codecs="vp9"') ? v.dataset.webm : v.dataset.mp4
+        v.src = can; v.dataset.ready = '1'
+        v.addEventListener('playing', () => v.parentElement.classList.add('is-live'), { once: true })
+      }
+      const p = v.play(); if (p && p.catch) p.catch(() => {})
+    } else if (!v.paused) v.pause()
+  })
+}
 
 /**
  * Phone rail: one row that drifts sideways forever. The track holds the list
@@ -124,18 +156,6 @@ const renderSite = (project, clone) => (
       <img src={project.preview} alt={clone ? '' : project.name} className="cinema-browser-preview" loading="lazy" />
     </div>
   </a>
-)
-
-const renderFilm = (video, clone) => (
-  <Link key={(clone ? 'c-' : '') + video.id} to={`/video/${video.youtubeId}`} className="cinema-rail-film"
-        role="listitem" aria-hidden={clone || undefined} tabIndex={clone ? -1 : undefined}>
-    <FilmStill videoId={video.youtubeId} alt={clone ? '' : video.title} className="cinema-frame-img" />
-    <span className="cinema-frame-play" aria-hidden="true" />
-    <div className="cinema-frame-label">
-      {video.title}
-      <span>{video.artist} &bull; {formatViews(video.viewCount)} views</span>
-    </div>
-  </Link>
 )
 
 /**
@@ -356,10 +376,10 @@ export default function HubPageCinema() {
       { x: () => (Math.random() - 0.5) * 400, y: () => (Math.random() - 0.5) * 400, rotation: () => (Math.random() - 0.5) * 180, opacity: 0, scale: 0 },
       { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.04, duration: 0.5, ease: 'back.out(2)' }, 0.1)
     scene2TL.fromTo('.cinema-s2-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3 }, 0.3)
-    scene2TL.fromTo('#cinema-scene3 .cinema-rails', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.2)
-    scene2TL.fromTo('.cinema-frame',
-      { x: (i) => (i % 2 === 0 ? -300 : 300), y: (i) => (i < 3 ? -200 : 200), rotation: (i) => (i % 2 === 0 ? -15 : 10), opacity: 0, scale: 0.6 },
-      { x: 0, y: 0, rotation: 0, opacity: 1, scale: 1, stagger: 0.08, duration: 0.5, ease: 'power2.out' }, 0.2)
+    // the bank powers on screen by screen
+    scene2TL.fromTo('.cinema-monitor',
+      { opacity: 0, scaleY: 0.02 },
+      { opacity: 1, scaleY: 1, stagger: { each: 0.035, from: 'center' }, duration: 0.35, ease: 'power3.out' }, 0)
 
     // Scatter 2: Scene 2 → Scene 3 (30-36%)
     const scatter2 = gsap.timeline({
@@ -411,8 +431,8 @@ export default function HubPageCinema() {
     })
     scatter3.to('.cinema-s2-title .cinema-letter', { y: () => 100 + Math.random() * 200, opacity: 0, stagger: 0.02, duration: 0.4 }, 0)
     scatter3.to('.cinema-s2-sub', { opacity: 0, duration: 0.2 }, 0)
-    scatter3.to('#cinema-scene3 .cinema-rails', { opacity: 0, y: -40, duration: 0.4 }, 0.1)
-    scatter3.to('.cinema-frame', { x: (i) => (i % 2 === 0 ? -500 : 500), y: (i) => (i < 3 ? -400 : 400), rotation: (i) => (i % 2 === 0 ? -30 : 20), opacity: 0, duration: 0.5, stagger: 0.05 }, 0.1)
+    // and switches off, top row first
+    scatter3.to('.cinema-monitor', { opacity: 0, scaleY: 0.02, duration: 0.3, stagger: 0.03 }, 0.05)
     scatter3.to('#cinema-scene3', { opacity: 0, duration: 0.3 }, 0.4)
     scatter3.to('#cinema-scene4', { opacity: 1, duration: 0.5 }, 0.4)
     scatter3.set('#cinema-scene3', { pointerEvents: 'none' }, 0.7)
@@ -431,7 +451,9 @@ export default function HubPageCinema() {
       scrollTrigger: { trigger: track, start: 'top top', end: 'bottom bottom', scrub: 0.3 }
     })
 
-    return () => ScrollTrigger.getAll().forEach(t => t.kill())
+    ScrollTrigger.create({ trigger: track, start: '34% top', end: '62% top', onToggle: (self) => setMonitorsPlaying(self.isActive) })
+
+    return () => { setMonitorsPlaying(false); ScrollTrigger.getAll().forEach(t => t.kill()) }
   }, [])
 
   // Scroll-scrubbed video
@@ -662,23 +684,7 @@ export default function HubPageCinema() {
             <span className="cinema-line-2">{splitIntoLetters('Videos')}</span>
           </h2>
 
-          <div className="cinema-floating-frames">
-            {FEATURED.slice(0, WALL.length).map((video, i) => (
-              <Link to={`/video/${video.youtubeId}`} key={video.id} className="cinema-frame" style={WALL[i]}>
-                <FilmStill videoId={video.youtubeId} alt={video.title} className="cinema-frame-img" />
-                <span className="cinema-frame-play" aria-hidden="true" />
-                <div className="cinema-frame-label">
-                  {video.title}
-                  <span>{video.artist} &bull; {formatViews(video.viewCount)} views</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <div className="cinema-rails" aria-label="Music videos">
-            <Rail items={FEATURED.slice(0, 5)} label="Music videos, row one" render={renderFilm} />
-            <Rail items={FEATURED.slice(5, 10)} label="Music videos, row two" render={renderFilm} reverse low />
-          </div>
+          <MonitorWall />
 
           <Link to="/videos" className="cinema-enter-btn">
             ENTER PORTFOLIO <span aria-hidden="true">&rarr;</span>
