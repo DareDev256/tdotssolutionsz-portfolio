@@ -1,5 +1,15 @@
 # Changelog
 
+## [6.12.0] - 2026-10-01
+
+### Removed
+- **The /videos WebGL tunnel** (James's call). `VideoTunnelApp.jsx`, `IntroLetters.jsx/.css` deleted; no canvas or Three.js on /videos any more.
+
+### Changed
+- `/videos` is `src/components/VideosPage.jsx`: the finder alone. Home mark, search, artist chips, Top/New, an h1 with the catalogue numbers, the grid, and TheaterMode whose next/prev follows the filtered list.
+- **Fixed: closing a film no longer wipes the filter.** The shared `useVideoDeepLink` hook replaced the whole query string on open/close, so in v6.10-6.11 closing a film from a filtered grid reset it. VideosPage writes `?v` key by key and handles the `?v=` deep link itself. Verified: `/videos?artist=Street+Bud` → open → `&v=AKuI1b-o69M` → close → back to `?artist=Street+Bud`, "3 of 101 films".
+- Verified: 710/710 tests, zero page errors, deep link opens the player, home mark returns to `/`. Screenshots `docs/screenshots/2026-10-01_videos-grid-only-*`.
+
 ## [6.11.0] - 2026-10-01
 
 ### Changed

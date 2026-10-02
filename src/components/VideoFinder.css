@@ -1,5 +1,4 @@
-/* VideoFinder — /videos index layer. White ground, ink type, cobalt for state.
-   Sits above the tunnel canvas and below TheaterMode. */
+/* VideoFinder — /videos. White ground, ink type, cobalt for state. Below TheaterMode. */
 
 .vf-bar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 60;
@@ -7,7 +6,7 @@
   font-family: var(--font-body, 'Inter', system-ui, sans-serif);
   color: #111;
 }
-.vf-bar--grid {
+.vf-bar {
   background: rgba(255,255,255,0.94);
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   box-shadow: 0 1px 0 rgba(0,0,0,0.08);
@@ -30,18 +29,18 @@
 .vf-search input::placeholder { color: rgba(0,0,0,0.45); }
 .vf-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
-.vf-switch, .vf-sort {
+.vf-sort {
   display: inline-flex; flex: none; padding: 4px; border-radius: 999px;
   background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,0.14), 0 8px 24px rgba(0,0,0,0.08);
 }
-.vf-switch button, .vf-sort button {
+.vf-sort button {
   border: 0; background: transparent; cursor: pointer;
   height: 38px; padding: 0 16px; border-radius: 999px;
   font: 700 11px/1 var(--font-mono, 'Space Mono', monospace); letter-spacing: 0.12em; text-transform: uppercase; color: #111;
 }
 .vf-sort button { height: 32px; padding: 0 12px; }
-.vf-switch button[aria-pressed="true"], .vf-sort button[aria-pressed="true"] { background: #111; color: #fff; }
-.vf-switch button:focus-visible, .vf-sort button:focus-visible, .vf-chips button:focus-visible, .vf-card:focus-visible {
+.vf-sort button[aria-pressed="true"] { background: #111; color: #fff; }
+.vf-home:focus-visible, .vf-sort button:focus-visible, .vf-chips button:focus-visible, .vf-card:focus-visible {
   outline: 2px solid #4a7cff; outline-offset: 2px;
 }
 
@@ -60,7 +59,7 @@
 /* Grid */
 .vf-grid-wrap {
   position: fixed; inset: 0; z-index: 50; overflow-y: auto; -webkit-overflow-scrolling: touch;
-  background: #fff; padding: 168px clamp(16px, 3vw, 32px) 64px;
+  background: #fff; padding: 150px clamp(16px, 3vw, 32px) 64px;
 }
 .vf-grid {
   list-style: none; margin: 0 auto; padding: 0; max-width: 1320px;
@@ -97,13 +96,20 @@
   .vf-bar { padding-top: 10px; }
   .vf-row:first-child { flex-wrap: nowrap; gap: 8px; }
   .vf-search { height: 42px; padding: 0 12px; }
-  .vf-switch button { height: 34px; padding: 0 11px; font-size: 10px; letter-spacing: 0.08em; }
   .vf-row--chips { flex-direction: column; align-items: stretch; gap: 8px; }
   .vf-sort { align-self: flex-start; }
-  .vf-grid-wrap { padding-top: 196px; }
+  .vf-grid-wrap { padding-top: 186px; }
   .vf-grid { grid-template-columns: 1fr; gap: 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .vf-card:hover .vf-still img { transform: none; }
 }
+
+.vf-page { min-height: 100vh; background: #fff; }
+.vf-home { flex: none; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: #111; }
+.vf-home img { width: 26px; height: 26px; filter: invert(1); }
+.vf-head { max-width: 1320px; margin: 0 auto 24px; color: #111; }
+.vf-head h1 { margin: 0; font: 400 clamp(44px, 7vw, 96px)/0.9 var(--font-poster, 'Anton', Impact, sans-serif); text-transform: uppercase; letter-spacing: 0.01em; }
+.vf-head p { margin: 10px 0 0; font: 700 11px/1.4 var(--font-mono, 'Space Mono', monospace); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(0,0,0,0.55); }
+@media (max-width: 640px) { .vf-home { width: 42px; height: 42px; } .vf-home img { width: 22px; height: 22px; } }

@@ -1,14 +1,9 @@
 /**
  * VideoFinder — the plain way into /videos.
  *
- * The tunnel is the experience; this is the index. A fixed bar carries search,
- * artist chips, a Top/New sort and the Tunnel/Grid switch. Grid is a readable
- * list of every film (still, title, artist, views, year) that opens the same
- * TheaterMode the tunnel does. Typing in search jumps to Grid, because a match
- * list is what someone searching wants, not a flight.
- *
- * State lives in the URL (?view, ?q, ?artist, ?sort) so a filtered grid can be
- * shared and the back button behaves.
+ * A fixed bar carries the home mark, search, artist chips and a Top/New sort.
+ * The grid is a readable list of every film (still, title, artist, views,
+ * year) that opens TheaterMode. Used by VideosPage (/videos).
  *
  * @module components/VideoFinder
  */
@@ -38,10 +33,11 @@ export function topArtists(videos, n = 10) {
     return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, n).map(([a]) => a)
 }
 
-export function FinderBar({ view, setView, q, setQ, artist, setArtist, sort, setSort, artists, shown, total }) {
+export function FinderBar({ q, setQ, artist, setArtist, sort, setSort, artists, shown, total, home = null }) {
     return (
-        <div className={`vf-bar vf-bar--${view}`} role="search">
+        <div className="vf-bar" role="search">
             <div className="vf-row">
+                {home}
                 <label className="vf-search">
                     <span className="vf-sr">Search films</span>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
@@ -55,36 +51,28 @@ export function FinderBar({ view, setView, q, setQ, artist, setArtist, sort, set
                         enterKeyHint="search"
                     />
                 </label>
-                <div className="vf-switch" role="group" aria-label="View">
-                    <button type="button" aria-pressed={view === 'tunnel'} onClick={() => setView('tunnel')}>Tunnel</button>
-                    <button type="button" aria-pressed={view === 'grid'} onClick={() => setView('grid')}>Grid</button>
+            </div>
+            <div className="vf-row vf-row--chips">
+                <div className="vf-chips" role="group" aria-label="Artist">
+                    <button type="button" aria-pressed={!artist} onClick={() => setArtist(null)}>All</button>
+                    {artists.map((a) => (
+                        <button key={a} type="button" aria-pressed={artist === a} onClick={() => setArtist(artist === a ? null : a)}>{a}</button>
+                    ))}
+                </div>
+                <div className="vf-sort" role="group" aria-label="Sort">
+                    <button type="button" aria-pressed={sort === 'top'} onClick={() => setSort('top')}>Top</button>
+                    <button type="button" aria-pressed={sort === 'new'} onClick={() => setSort('new')}>New</button>
                 </div>
             </div>
-            {view === 'grid' && (
-                <div className="vf-row vf-row--chips">
-                    <div className="vf-chips" role="group" aria-label="Artist">
-                        <button type="button" aria-pressed={!artist} onClick={() => setArtist(null)}>All</button>
-                        {artists.map((a) => (
-                            <button key={a} type="button" aria-pressed={artist === a} onClick={() => setArtist(artist === a ? null : a)}>{a}</button>
-                        ))}
-                    </div>
-                    <div className="vf-sort" role="group" aria-label="Sort">
-                        <button type="button" aria-pressed={sort === 'top'} onClick={() => setSort('top')}>Top</button>
-                        <button type="button" aria-pressed={sort === 'new'} onClick={() => setSort('new')}>New</button>
-                    </div>
-                </div>
-            )}
-            {view === 'grid' && (
-                <p className="vf-count" aria-live="polite">
-                    {shown === total ? `${total} films` : `${shown} of ${total} films`}
-                    {artist ? ` · ${artist}` : ''}
-                </p>
-            )}
+            <p className="vf-count" aria-live="polite">
+                {shown === total ? `${total} films` : `${shown} of ${total} films`}
+                {artist ? ` · ${artist}` : ''}
+            </p>
         </div>
     )
 }
 
-export function FinderGrid({ videos, onOpen, onClear }) {
+export function FinderGrid({ videos, onOpen, onClear, heading = null }) {
     const cards = useMemo(() => videos.map((v) => (
         <li key={v.youtubeId}>
             <button type="button" className="vf-card" onClick={() => onOpen(v)}>
@@ -102,6 +90,7 @@ export function FinderGrid({ videos, onOpen, onClear }) {
 
     return (
         <div className="vf-grid-wrap">
+            {heading}
             {videos.length
                 ? <ul className="vf-grid" aria-label="Music videos">{cards}</ul>
                 : <div className="vf-empty"><p>No film matches that.</p><button type="button" onClick={onClear}>Clear search</button></div>}

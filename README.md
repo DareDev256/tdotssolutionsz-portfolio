@@ -35,7 +35,7 @@ Reachable on the deployed site: `/` cinematic hub (the four floors — pod, Web 
 all 13 shipped sites, Music Videos, Book a Session (two doors and a slide-to-send that emails tdotssolutionsz@gmail.com) — descend one continuous CN Tower plate,
 `public/videos/seedance/tower-descent.webp`, on desktop and phones alike; reduced-motion
 keeps the scene videos) · `/sites/` operator-site offer (static HTML; `/sites/blocks.js` carries the tilt tiles
-and the slide-to-confirm CTA) · `/videos` WebGL card field · `/video/:youtubeId` shareable
+and the slide-to-confirm CTA) · `/videos` searchable grid (search, artist filters, Top/New) · `/video/:youtubeId` shareable
 per-video page · `/web-design` · `/privacy` · `/terms`.
 
 A real static `404.html` ships at the build output root — Vercel serves it for any

@@ -1,7 +1,7 @@
 /**
  * Application entry point — BrowserRouter wraps active routes:
  *   /              → HubPage (landing page)
- *   /videos        → VideoTunnelApp (white-space WebGL card field, v5.6.0+)
+ *   /videos        → VideosPage (search + grid; the WebGL tunnel was removed in v6.12.0)
  *   /oldvideopage  → Preserved original Infinite Drive synthwave experience
  *
  * /photos is intentionally DISABLED (Coming Soon). Do NOT re-enable without owner approval.
@@ -32,7 +32,7 @@ const App = lazy(() => import('./App.jsx'))
 /** Mobile grid view — lightweight chunk without Three.js dependency */
 const MobileApp = lazy(() => import('./MobileApp.jsx'))
 /** White-space card-field tunnel — primary /videos experience as of v5.6.0 */
-const VideoTunnelApp = lazy(() => import('./components/VideoTunnelApp.jsx'))
+const VideosPage = lazy(() => import('./components/VideosPage.jsx'))
 /** Shot Lab — three concept demos built from the catalogue's own footage (/lab) */
 const ShotLab = lazy(() => import('./components/lab/ShotLab.jsx'))
 /** Web Design portfolio page */
@@ -187,7 +187,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                             preferred the original hub; kept for reference only. */}
                         <Route path="/v6" element={<StudioHome />} />
                         <Route path="/video/:youtubeId" element={<VideoPage />} />
-                        <Route path="/videos" element={<VideoTunnelApp />} />
+                        <Route path="/videos" element={<VideosPage />} />
                         <Route path="/oldvideopage" element={<VideosRoute />} />
                         <Route path="/web-design" element={<WebDesignPage />} />
                         <Route path="/lab" element={<ShotLab />} />
