@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.13.0] - 2026-10-03
+
+### Changed
+- Homepage Music Videos monitor wall now shows the top 5 most-viewed films plus the 7 newest uploads, interleaved, picked from the video data at build time (`selectMonitors` in HubPageCinema.jsx) instead of a hand-typed id list.
+- `scripts/build-preview-clips.mjs --ids=a,b,c` builds clips for an exact selection; 7 new 6 s loops added.
+
+### Added
+- `monitorWall.test.js`: asserts the 12-film pick and fails when any film on the wall has no preview clip (mutation-checked).
+
 ## [6.12.0] - 2026-10-01
 
 ### Removed

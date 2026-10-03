@@ -50,7 +50,16 @@ const { default: videoData } = await import('../src/data/videos.json', {
     with: { type: 'json' }
 })
 
+/** --ids=a,b,c: build exactly these films (the homepage wall passes its live selection). */
+const IDS = (process.argv.find(a => a.startsWith('--ids=')) || '').slice(6).split(',').filter(Boolean)
+
 function selectReel() {
+    if (IDS.length) {
+        const picked = IDS.map(id => videoData.videos.find(v => v.youtubeId === id))
+        const missing = IDS.filter((id, i) => !picked[i])
+        if (missing.length) { console.error(`--ids not in videos.json: ${missing.join(', ')}`); process.exit(1) }
+        return picked
+    }
     const seen = new Set()
     const picked = []
     for (const v of [...videoData.videos].sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0))) {

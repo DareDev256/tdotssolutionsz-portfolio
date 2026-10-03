@@ -76,19 +76,29 @@ const WEB_PROJECTS = [
 ]
 
 /**
- * Monitor wall (v6.11): the Music Videos floor is a bank of screens, edge to edge,
- * each playing a 6 s muted loop cut from the film itself (public/previews, built by
- * scripts/build-preview-clips.mjs --count=12: highest-viewed, one film per artist).
+ * Monitor wall (v6.13): the Music Videos floor is a bank of screens, edge to edge,
+ * each playing a 6 s muted loop cut from the film itself. The wall shows the TOP 5
+ * most-viewed films plus the 7 NEWEST (by uploadDate), interleaved, picked from
+ * VIDEOS at build time so a new upload reaches the wall with no hand-edited list.
+ * Clips live in public/previews; build them for the current pick with
+ *   node scripts/build-preview-clips.mjs --ids=<the 12 ids>
+ * A film without a clip falls back to its poster still (FilmStill), never a blank.
  * Desktop 4x3, phone 2x4. Clips are attached and played only while the floor is on
- * screen (see the toggle in the scroll effect) and never under reduced motion, where
- * the poster frame stands in.
+ * screen (see the toggle in the scroll effect) and never under reduced motion.
  */
-const MONITOR_IDS = [
-  'u3O5PKN9vCQ', 'E7ZStZMn-ac', '8p4i1b5IW2k', 'AKuI1b-o69M',
-  'sJMGY1k2lBk', 'gwXOTijyua4', 'B28ZQ0l2loc', 'pPVPBMPShkQ',
-  'l0kNVJaF5as', 'kgIISZzhQBE', '4kC6wYSyfQY', 'KZMiTNbaVyw',
-]
-const MONITORS = MONITOR_IDS.map((id) => VIDEOS.find((v) => v.youtubeId === id)).filter(Boolean)
+export function selectMonitors(videos, top = 5, newest = 7) {
+  const byViews = [...videos].sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0)).slice(0, top)
+  const ids = new Set(byViews.map((v) => v.youtubeId))
+  const byDate = [...videos].sort((a, b) => String(b.uploadDate || '').localeCompare(String(a.uploadDate || '')))
+    .filter((v) => !ids.has(v.youtubeId)).slice(0, newest)
+  const out = []
+  for (let i = 0; i < Math.max(byViews.length, byDate.length); i++) {
+    if (byViews[i]) out.push(byViews[i])
+    if (byDate[i]) out.push(byDate[i])
+  }
+  return out
+}
+const MONITORS = selectMonitors(VIDEOS)
 
 function MonitorWall() {
   return (
