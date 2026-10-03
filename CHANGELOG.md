@@ -1,5 +1,10 @@
 # Changelog
 
+## [6.13.1] - 2026-10-03
+
+### Changed
+- Monitor wall: Seanpane "Only 1s" sits out (read too close to Shortiie Raw "Fire"); next newest, Seanpane ft. Swagger Rite "Still Thuggin", takes the slot. Fire swaps with Sip Cuca onto the top row. Test pins both calls.
+
 ## [6.13.0] - 2026-10-03
 
 ### Changed

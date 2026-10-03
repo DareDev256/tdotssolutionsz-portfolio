@@ -86,15 +86,24 @@ const WEB_PROJECTS = [
  * Desktop 4x3, phone 2x4. Clips are attached and played only while the floor is on
  * screen (see the toggle in the scroll effect) and never under reduced motion.
  */
+/** Owner calls (2026-10-03): Only 1s reads too close to Fire (both dark stage shots), so it sits out. */
+const WALL_SKIP = new Set(['hqnjuO9XMlQ'])
+/** ...and Fire swaps with Sip Cuca so it lands on the top row, away from the other dark tiles. */
+const WALL_SWAPS = [['82_xVuYR45c', 'NbJnT5j365M']]
+
 export function selectMonitors(videos, top = 5, newest = 7) {
   const byViews = [...videos].sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0)).slice(0, top)
   const ids = new Set(byViews.map((v) => v.youtubeId))
   const byDate = [...videos].sort((a, b) => String(b.uploadDate || '').localeCompare(String(a.uploadDate || '')))
-    .filter((v) => !ids.has(v.youtubeId)).slice(0, newest)
+    .filter((v) => !ids.has(v.youtubeId) && !WALL_SKIP.has(v.youtubeId)).slice(0, newest)
   const out = []
   for (let i = 0; i < Math.max(byViews.length, byDate.length); i++) {
     if (byViews[i]) out.push(byViews[i])
     if (byDate[i]) out.push(byDate[i])
+  }
+  for (const [a, b] of WALL_SWAPS) {
+    const i = out.findIndex((v) => v.youtubeId === a), j = out.findIndex((v) => v.youtubeId === b)
+    if (i >= 0 && j >= 0) [out[i], out[j]] = [out[j], out[i]]
   }
   return out
 }

@@ -15,6 +15,12 @@ describe('homepage monitor wall', () => {
     expect(picked.map((v) => v.youtubeId)).toContain(newest)
   })
 
+  it('honours the owner calls: Only 1s out, Fire on the top row (slot < 4), not stacked on a dark tile', () => {
+    const order = picked.map((v) => v.youtubeId)
+    expect(order).not.toContain('hqnjuO9XMlQ')
+    expect(order.indexOf('82_xVuYR45c')).toBeLessThan(4)
+  })
+
   // A new upload enters the wall automatically; this goes red until its clip is built.
   it('every film on the wall has a preview clip', () => {
     const missing = picked.filter((v) => !existsSync(`public/previews/${v.youtubeId}.mp4`)).map((v) => v.youtubeId)
