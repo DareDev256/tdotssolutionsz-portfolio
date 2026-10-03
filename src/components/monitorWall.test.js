@@ -18,6 +18,7 @@ describe('homepage monitor wall', () => {
   it('honours the owner calls: Only 1s out, Fire on the top row (slot < 4), not stacked on a dark tile', () => {
     const order = picked.map((v) => v.youtubeId)
     expect(order).not.toContain('hqnjuO9XMlQ')
+    expect(order).toContain('0l5xIst3VME') // Soodope - WTF
     expect(order.indexOf('82_xVuYR45c')).toBeLessThan(4)
   })
 

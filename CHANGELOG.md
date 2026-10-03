@@ -1,5 +1,10 @@
 # Changelog
 
+## [6.13.2] - 2026-10-03
+
+### Changed
+- Monitor wall: Soodope "WTF" replaces Seanpane "Still Thuggin" (owner call, a different artist).
+
 ## [6.13.1] - 2026-10-03
 
 ### Changed

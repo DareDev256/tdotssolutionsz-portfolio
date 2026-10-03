@@ -86,8 +86,9 @@ const WEB_PROJECTS = [
  * Desktop 4x3, phone 2x4. Clips are attached and played only while the floor is on
  * screen (see the toggle in the scroll effect) and never under reduced motion.
  */
-/** Owner calls (2026-10-03): Only 1s reads too close to Fire (both dark stage shots), so it sits out. */
-const WALL_SKIP = new Set(['hqnjuO9XMlQ'])
+/** Owner calls (2026-10-03): Only 1s reads too close to Fire (both dark stage shots), so it sits out;
+ *  Still Thuggin also sits out so the slot goes to Soodope "WTF" (a different artist). */
+const WALL_SKIP = new Set(['hqnjuO9XMlQ', '_ermU7tanb4'])
 /** ...and Fire swaps with Sip Cuca so it lands on the top row, away from the other dark tiles. */
 const WALL_SWAPS = [['82_xVuYR45c', 'NbJnT5j365M']]
 
