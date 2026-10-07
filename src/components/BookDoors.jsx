@@ -59,10 +59,11 @@ export function BookDoors({ videoMeta, siteMeta }) {
   /* the proof lines come from the page's own measured data, never typed here */
   const META = { video: videoMeta, site: siteMeta }
   const [pick, setPick] = useState(null)
+  const [rail, setRail] = useState(false)
   const door = DOORS.find(d => d.id === pick)
-  const href = door
-    ? mailto(`${door.subject} — booking`, door.body)
-    : mailto('Booking', 'Hi James,\n\nI want to book a session.\n\n')
+  const subject = door ? `${door.subject} — booking` : 'Booking'
+  const body = door ? door.body : 'Hi James,\n\nI want to book a session.\n\n'
+  const href = mailto(subject, body)
 
   return (
     <div className="bd">
@@ -74,7 +75,7 @@ export function BookDoors({ videoMeta, siteMeta }) {
             className="bd-pill"
             data-open={pick === d.id}
             aria-pressed={pick === d.id}
-            onClick={() => setPick(p => (p === d.id ? null : d.id))}
+            onClick={() => { setRail(false); setPick(p => (p === d.id ? null : d.id)) }}
           >
             <span className="bd-pill-label">{d.pill}</span>
             {/* the card, inside the pill: the pill IS the card once it opens */}
@@ -88,7 +89,38 @@ export function BookDoors({ videoMeta, siteMeta }) {
           </button>
         ))}
       </div>
-      <SlideToConfirm href={href} label={door ? `Slide to send · ${door.pill.toLowerCase()}` : 'Slide to send'} />
+      <SlideToConfirm href={href} onReveal={() => setRail(true)} label={door ? `Slide to send · ${door.pill.toLowerCase()}` : 'Slide to send'} />
+      {rail && <SendRail key={pick || 'any'} subject={subject} body0={body} />}
+    </div>
+  )
+}
+
+/* ── The send rail ──────────────────────────────────────────
+   The slide used to end in window.location = mailto:. On a phone, or a desktop
+   with no mail handler, that does nothing, and the booking is lost with the
+   visitor none the wiser (2026-10-07 audit). Now the slide composes the message
+   and PRINTS it here, editable, with a route per mail service. The text on
+   screen cannot fail; each button under it can, so each says where it goes.
+   Subject carries a timestamp so Gmail never folds two bookings into one thread. */
+function SendRail({ subject, body0 }) {
+  const [body, setBody] = useState(body0)
+  const [copied, setCopied] = useState(false)
+  const [subj] = useState(() => `${subject} (${new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })})`)
+  const q = encodeURIComponent
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(`To: ${TO}\nSubject: ${subj}\n\n${body}`); setCopied(true) } catch { setCopied(false) }
+  }
+  return (
+    <div className="bd-rail" aria-live="polite">
+      <p className="bd-rail-k">Your message to {TO}</p>
+      <p className="bd-rail-subject">{subj}</p>
+      <textarea className="bd-rail-body" value={body} onChange={e => { setBody(e.target.value); setCopied(false) }} rows={7} aria-label="Message body, editable" />
+      <div className="bd-rail-routes">
+        <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${q(TO)}&su=${q(subj)}&body=${q(body)}`} target="_blank" rel="noopener noreferrer">Send via Gmail</a>
+        <a href={`https://outlook.live.com/mail/0/deeplink/compose?to=${q(TO)}&subject=${q(subj)}&body=${q(body)}`} target="_blank" rel="noopener noreferrer">Via Outlook</a>
+        <button type="button" onClick={copy}>{copied ? 'Copied' : 'Copy it'}</button>
+        <a href={mailto(subj, body)}>Mail app</a>
+      </div>
     </div>
   )
 }
@@ -98,7 +130,7 @@ export function BookDoors({ videoMeta, siteMeta }) {
    plain "open email" press. With a pointer, the click is suppressed
    unless the drag reached the end: the commit is the arrival, not the
    press. Released early it springs home with a small squash. */
-function SlideToConfirm({ href, label }) {
+function SlideToConfirm({ href, label, onReveal }) {
   const track = useRef(null)
   const [x, setX] = useState(0)
   const [max, setMax] = useState(0)
@@ -137,7 +169,7 @@ function SlideToConfirm({ href, label }) {
     if (max > 0 && dx >= max - 4) {
       setX(max)
       setState('done')
-      window.setTimeout(() => { window.location.href = href }, 420)
+      window.setTimeout(onReveal, 420)
     } else {
       setX(0)
       setState('rest')
@@ -146,7 +178,10 @@ function SlideToConfirm({ href, label }) {
   const click = (e) => {
     /* a pointer that dragged is not a click; a keyboard press or a
        reduced-motion user IS, and the link does its ordinary job */
-    if (drag.current || (state !== 'done' && !still && e.detail !== 0 && max > 0)) e.preventDefault()
+    if (drag.current || (state !== 'done' && !still && e.detail !== 0 && max > 0)) { e.preventDefault(); return }
+    /* a keyboard or reduced-motion press: show the rail instead of leaving the page */
+    e.preventDefault()
+    onReveal()
   }
 
   const done = state === 'done'
@@ -158,7 +193,7 @@ function SlideToConfirm({ href, label }) {
       style={{ '--x': `${x}px`, '--max': `${max}px` }}
     >
       <span className="bd-slide-fill" aria-hidden="true" />
-      <span className="bd-slide-label" aria-hidden="true">{done ? 'Opening your email' : label}</span>
+      <span className="bd-slide-label" aria-hidden="true">{done ? 'Your message is below' : label}</span>
       <a
         href={href}
         className="bd-slide-handle"

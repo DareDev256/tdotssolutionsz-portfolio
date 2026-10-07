@@ -86,3 +86,29 @@
 @media (prefers-reduced-motion: reduce) {
   .bd-pill, .bd-pill-label, .bd-card, .bd-slide-fill, .bd-slide-handle { transition: none; }
 }
+
+/* send rail: the composed message printed under the slide */
+.bd-rail { border: 1px solid #4a7cff; border-radius: 14px; background: rgba(10,10,11,0.88); padding: 16px 18px; display: grid; gap: 10px; text-align: left; }
+.bd-rail-k { font-family: var(--font-mono, 'Space Mono', monospace); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #4a7cff; margin: 0; overflow-wrap: anywhere; }
+.bd-rail-subject { font-family: 'Inter', system-ui, sans-serif; font-size: 13.5px; font-weight: 600; color: #fff; margin: 0; overflow-wrap: anywhere; }
+.bd-rail-body { width: 100%; box-sizing: border-box; resize: vertical; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.22); border-radius: 8px; color: #fff; font-family: 'Inter', system-ui, sans-serif; font-size: 13.5px; line-height: 1.5; padding: 10px 12px; }
+.bd-rail-body:focus-visible { outline: 2px solid #4a7cff; outline-offset: 1px; }
+.bd-rail-routes { display: flex; flex-wrap: wrap; gap: 8px; }
+.bd-rail-routes a, .bd-rail-routes button { font-family: var(--font-mono, 'Space Mono', monospace); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: transparent; border: 1px solid rgba(255,255,255,0.4); border-radius: 999px; padding: 10px 16px; text-decoration: none; cursor: pointer; }
+.bd-rail-routes a:hover, .bd-rail-routes button:hover { border-color: #4a7cff; color: #4a7cff; }
+.bd-rail-routes a:focus-visible, .bd-rail-routes button:focus-visible { outline: 2px solid #4a7cff; outline-offset: 2px; }
+
+/* rail open: the pinned scene is exactly one viewport tall, so give the printed
+   message the room (the sub-line, label and absolute footer would otherwise sit
+   on top of the send buttons) */
+.cinema-scene:has(.bd-rail) .cinema-s4-label,
+.cinema-scene:has(.bd-rail) .cinema-s4-sub,
+.cinema-scene:has(.bd-rail) .cinema-footer { display: none; }
+.cinema-scene:has(.bd-rail) .cinema-s4-title { font-size: clamp(1.9rem, 5vw, 3rem); line-height: 0.98; margin-bottom: 14px; }
+.cinema-scene:has(.bd-rail) .bd-rail-body { height: 150px; }
+@media (max-width: 768px) {
+  .cinema-scene:has(.bd-rail) .bd-card-line:not(:first-of-type) { display: none; }
+  .cinema-scene:has(.bd-rail) .bd-rail { padding: 12px 14px; gap: 8px; }
+  .cinema-scene:has(.bd-rail) .bd-rail-body { height: 128px; }
+  .bd-rail-routes a, .bd-rail-routes button { padding: 9px 12px; }
+}

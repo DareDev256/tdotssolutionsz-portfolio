@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.13.3] - 2026-10-07
+
+### Fixed
+- "Book a Session" slid into `window.location = mailto:`. On a phone, or a desktop with no mail handler, that does nothing and the booking is lost. The slide now composes the message and prints it on screen (editable), with Send via Gmail / Via Outlook / Copy it / Mail app under it. Destination unchanged (tdotssolutionsz@gmail.com). The subject carries a timestamp so Gmail does not thread bookings together. While the message is open the pinned close scene hides its sub-line and footer so nothing sits on the send buttons.
+- `docs/screenshots/2026-10-07_contact-rail_{desktop,mobile}.png`.
+- Not changed: the footer "Book a Session" mailto links on HubPage, VideoPage and /v6 still open a mail app only.
+
 ## [6.13.2] - 2026-10-03
 
 ### Changed
