@@ -1,5 +1,10 @@
 # Changelog
 
+## [6.15.0] — 2026-10-08 · Talk to the studio's assistant (voice)
+
+- Voice bubble (bottom-right): ElevenLabs web agent, persona "TdotsSolutionsz — web". Asks about the business, never quotes prices, books the free 15-minute call on James's live calendar (same backend as the booking block). Pinned `@elevenlabs/convai-widget-embed@0.18.2`.
+- Headers: `Permissions-Policy` microphone `()` → `(self)`; CSP adds the pinned widget path, `api.elevenlabs.io` + `livekit.rtc.elevenlabs.io` (https/wss), `blob:` media. COEP, iframe sandbox, Trusted Types, referrer rules untouched; videoPlayback tests 23/23.
+
 ## [6.14.0] — 2026-10-08 · Book a free 15-minute call
 
 - **`IntroCall`** under Book a Session: pick a time from James's real calendar (live free/busy across every calendar, start times only) and get a Google invite with a Meet link. WhatsApp stays beside it. The widget and its `/api/slots` + `/api/book` backend live on jamesdare.com, one backend for both sites. If the calendar can't be read, it offers WhatsApp instead of a time.
