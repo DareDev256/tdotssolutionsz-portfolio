@@ -1,5 +1,10 @@
 # Changelog
 
+## [6.14.0] — 2026-10-08 · Book a free 15-minute call
+
+- **`IntroCall`** under Book a Session: pick a time from James's real calendar (live free/busy across every calendar, start times only) and get a Google invite with a Meet link. WhatsApp stays beside it. The widget and its `/api/slots` + `/api/book` backend live on jamesdare.com, one backend for both sites. If the calendar can't be read, it offers WhatsApp instead of a time.
+- CSP: `script-src` + `connect-src` allow `https://www.jamesdare.com` for the widget and its API. No other directive changed (COEP, iframe sandbox, Trusted Types, referrer rules untouched).
+
 ## [6.13.3] - 2026-10-07
 
 ### Fixed

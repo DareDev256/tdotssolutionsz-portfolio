@@ -6,6 +6,7 @@ import { VIDEOS, PORTFOLIO_STATS } from '../utils/videoData'
 import { formatViews } from '../utils/formatters'
 import './HubPageCinema.css'
 import { BookDoors } from './BookDoors'
+import { IntroCall } from './IntroCall'
 import ScrambleText from './ScrambleText'
 import FilmStill from './FilmStill'
 import useCountUp from '../hooks/useCountUp'
@@ -731,6 +732,7 @@ export default function HubPageCinema() {
           <p className="cinema-s4-sub">Pick the one you came for.</p>
           {/* two doors and a slide — see BookDoors.jsx for why not a button */}
           <div className="cinema-cta-doors"><BookDoors videoMeta={`${PORTFOLIO_STATS.totalVideos} films · ${PORTFOLIO_STATS.totalArtists} artists · ${formatViews(PORTFOLIO_STATS.totalViews)} plays`} siteMeta={`${WEB_PROJECTS.length} live · see /sites`} /></div>
+          <IntroCall />
           <footer className="cinema-footer">
             <p>TdotsSolutionsz</p>
             <p>Toronto, Ontario &bull; &copy; {new Date().getFullYear()}</p>
