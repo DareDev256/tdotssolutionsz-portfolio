@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.16.0] — 2026-10-16 · Owner socials in the home footer
+
+- Flagged by the System advice panel: the live site linked no socials (the old links only existed on /video/:id, and its YouTube link, youtube.com/@Tdotssolutionsz, returns 404).
+- Home footer: Instagram @tdotssolutionsz (live, 1.7k followers, bio links the site), X @TdotsSolutionsz (live, Toronto, posts about Savv4x and cmux), LinkedIn james-olusoga (same URL jamesdare.com links), GitHub DareDev256 (live). Same mono 11px / 35% white style as the legal row. Brand + location now share one line so the footer is no taller than before and clears the intro-call card at 1440 and 390.
+- /video/:id footer: dead YouTube link removed, X added.
+- Not added: YouTube (no channel at that handle). Add back only after opening the profile.
+
 ## [6.15.0] — 2026-10-08 · Talk to the studio's assistant (voice)
 
 - Voice bubble (bottom-right): ElevenLabs web agent, persona "TdotsSolutionsz — web". Asks about the business, never quotes prices, books the free 15-minute call on James's live calendar (same backend as the booking block). Pinned `@elevenlabs/convai-widget-embed@0.18.2`.

@@ -734,8 +734,16 @@ export default function HubPageCinema() {
           <div className="cinema-cta-doors"><BookDoors videoMeta={`${PORTFOLIO_STATS.totalVideos} films · ${PORTFOLIO_STATS.totalArtists} artists · ${formatViews(PORTFOLIO_STATS.totalViews)} plays`} siteMeta={`${WEB_PROJECTS.length} live · see /sites`} /></div>
           <IntroCall />
           <footer className="cinema-footer">
-            <p>TdotsSolutionsz</p>
-            <p>Toronto, Ontario &bull; &copy; {new Date().getFullYear()}</p>
+            <p>TdotsSolutionsz &bull; Toronto, Ontario &bull; &copy; {new Date().getFullYear()}</p>
+            <p className="cinema-footer-social">
+              <a href="https://www.instagram.com/tdotssolutionsz" target="_blank" rel="noopener noreferrer">Instagram</a>
+              <span aria-hidden="true"> &middot; </span>
+              <a href="https://x.com/TdotsSolutionsz" target="_blank" rel="noopener noreferrer">X</a>
+              <span aria-hidden="true"> &middot; </span>
+              <a href="https://www.linkedin.com/in/james-olusoga" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              <span aria-hidden="true"> &middot; </span>
+              <a href="https://github.com/DareDev256" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </p>
             <p className="cinema-footer-legal">
               <Link to="/privacy">Privacy</Link>
               <span aria-hidden="true"> &middot; </span>

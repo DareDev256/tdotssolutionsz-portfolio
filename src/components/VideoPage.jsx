@@ -239,8 +239,8 @@ export default function VideoPage() {
                 <div className="vp-footer-content">
                     <span className="vp-footer-brand">TDOTSSOLUTIONSZ</span>
                     <div className="vp-footer-links">
-                        <a href="https://www.youtube.com/@Tdotssolutionsz" target="_blank" rel="noopener noreferrer" className="vp-footer-link">YouTube</a>
                         <a href="https://www.instagram.com/tdotssolutionsz" target="_blank" rel="noopener noreferrer" className="vp-footer-link">Instagram</a>
+                        <a href="https://x.com/TdotsSolutionsz" target="_blank" rel="noopener noreferrer" className="vp-footer-link">X</a>
                         <a href="mailto:tdotssolutionsz@gmail.com" className="vp-footer-link">Book a Session</a>
                     </div>
                     <span className="vp-footer-loc">TORONTO, CANADA</span>

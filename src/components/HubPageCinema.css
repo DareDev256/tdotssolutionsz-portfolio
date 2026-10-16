@@ -478,12 +478,14 @@
   margin: 4px 0;
 }
 
-.cinema-footer-legal a {
+.cinema-footer-legal a,
+.cinema-footer-social a {
   color: rgba(255,255,255,0.35);
   text-decoration: none;
 }
 
-.cinema-footer-legal a:hover {
+.cinema-footer-legal a:hover,
+.cinema-footer-social a:hover {
   color: #4a7cff;
 }
 
