@@ -798,9 +798,16 @@
    The scene was centre-justified with an absolute footer, so the widget spilled past
    both edges and the footer sat on its textarea and "Pick a time" button at 390px.
    Every size (6.16.2: live slots overflow 1440x900 too): the scene centres when it fits,
-   scrolls inside itself when it does not, and the footer joins the flow. */
+   scrolls inside itself when it does not, and the footer joins the flow.
+   6.16.3: the scroll lives on .cinema-s4-scroll, not the scene, so the video bg never moves. */
 #intro-call { width: 100%; max-width: 640px; box-sizing: border-box; }
-#cinema-scene4 {
+.cinema-s4-scroll {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: safe center;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;

@@ -727,6 +727,8 @@ export default function HubPageCinema() {
           </video>
           <div className="cinema-video-overlay" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0.4),rgba(0,0,0,0.8))' }} />
 
+          {/* content scrolls inside this layer so the twilight video behind stays put (6.16.3) */}
+          <div className="cinema-s4-scroll">
           <ScrambleText as="p" className="cinema-s4-label" text="LET'S WORK" />
           <h2 className="cinema-s4-title">Book a<br />Session</h2>
           <p className="cinema-s4-sub">Pick the one you came for.</p>
@@ -750,6 +752,7 @@ export default function HubPageCinema() {
               <Link to="/terms">Terms</Link>
             </p>
           </footer>
+          </div>
         </div>
       </div>
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## [6.16.3] — 2026-10-16 · Scene 4 background stays put
+
+- 6.16.2 scrolled the whole scene, so the twilight video and its overlay scrolled away with the content and left a hard band. Content now scrolls in its own layer (.cinema-s4-scroll); the background never moves.
+
 ## [6.16.2] — 2026-10-16 · Scene 4 fit at every size
 
 - Live check after 6.16.1: at 1440x900 the widget with real slots still put one control under the footer (the media query only covered phones and short windows). The fit now applies at every size with `justify-content: safe center`: centred when it fits, scrolls inside itself when it does not.
