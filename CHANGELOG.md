@@ -1,5 +1,11 @@
 # Changelog
 
+## [6.16.1] — 2026-10-16 · Book a Session fits a phone
+
+- At 390px the intro-call widget (with live slots) made scene 4 taller than the viewport. The scene was centre-justified, so the widget spilled past both edges ("e 15-min call"), and the absolute footer sat on its textarea and "Pick a time" button. 6.16.0's "clears at 390" was measured with the widget empty.
+- Phones and short windows (max-width 768 or max-height 760): scene 4 starts at the top and scrolls inside itself; the footer joins the flow with room under the voice bubble. #intro-call capped at 640px wide.
+- Checked: 390x844 and 1440x900, zero controls under the footer, no horizontal scroll.
+
 ## [6.16.0] — 2026-10-16 · Owner socials in the home footer
 
 - Flagged by the System advice panel: the live site linked no socials (the old links only existed on /video/:id, and its YouTube link, youtube.com/@Tdotssolutionsz, returns 404).

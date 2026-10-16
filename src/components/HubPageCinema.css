@@ -792,3 +792,21 @@
 @media (prefers-reduced-motion: reduce) {
   .cinema-monitor-video { display: none; }
 }
+
+/* ── scene 4 fit (6.16.1) ──
+   Book a Session + the intro-call widget + footer are taller than a phone viewport.
+   The scene was centre-justified with an absolute footer, so the widget spilled past
+   both edges and the footer sat on its textarea and "Pick a time" button at 390px.
+   Phones: the scene scrolls inside itself and the footer joins the flow. */
+#intro-call { width: 100%; max-width: 640px; box-sizing: border-box; }
+@media (max-width: 768px), (max-height: 760px) {
+  #cinema-scene4 {
+    justify-content: flex-start;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 72px 16px 32px;
+    box-sizing: border-box;
+  }
+  #cinema-scene4 .cinema-footer { position: static; margin-top: 40px; padding-bottom: 88px; }
+}
