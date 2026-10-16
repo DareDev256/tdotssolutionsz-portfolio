@@ -1,5 +1,9 @@
 # Changelog
 
+## [6.16.2] — 2026-10-16 · Scene 4 fit at every size
+
+- Live check after 6.16.1: at 1440x900 the widget with real slots still put one control under the footer (the media query only covered phones and short windows). The fit now applies at every size with `justify-content: safe center`: centred when it fits, scrolls inside itself when it does not.
+
 ## [6.16.1] — 2026-10-16 · Book a Session fits a phone
 
 - At 390px the intro-call widget (with live slots) made scene 4 taller than the viewport. The scene was centre-justified, so the widget spilled past both edges ("e 15-min call"), and the absolute footer sat on its textarea and "Pick a time" button. 6.16.0's "clears at 390" was measured with the widget empty.
