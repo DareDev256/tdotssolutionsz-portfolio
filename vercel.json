@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/bib-count",
+      "destination": "https://savv4x-bodies-in-boxes.vercel.app/run/api/count"
+    },
+    {
       "source": "/videos",
       "destination": "/index.html"
     },

@@ -927,8 +927,118 @@ body.v6-body {
     border-radius: 999px;
 }
 
+/* The lead build: full row, portrait gameplay loop beside the copy. */
+.v6-build--feature {
+    grid-column: 1 / -1;
+}
+
+.v6-build__link--feature {
+    flex-direction: row;
+}
+
+.v6-build__clip {
+    flex: 0 0 clamp(200px, 24%, 300px);
+    aspect-ratio: 9 / 16;
+    align-self: flex-start;
+    overflow: hidden;
+    background: #000;
+    border-right: 1px solid var(--hair-ink);
+}
+
+.v6-build__clip video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.v6-build__body--feature {
+    padding: clamp(24px, 3.4vw, 56px);
+    gap: 14px;
+    justify-content: center;
+}
+
+.v6-build__flag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--signal);
+}
+
+.v6-build__client--feature {
+    font-size: clamp(2rem, 4.6vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+}
+
+.v6-build__body--feature .v6-build__summary {
+    font-size: clamp(0.92rem, 1.1vw, 1.05rem);
+    max-width: 60ch;
+    flex: 0 0 auto;
+}
+
+.v6-build__live {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--on-ink-2);
+}
+
+.v6-build__live b {
+    color: var(--on-ink);
+    font-weight: 700;
+}
+
+.v6-build__live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--signal);
+    margin-right: 4px;
+}
+
+.v6-build__cta {
+    align-self: flex-start;
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: var(--signal);
+    padding: 12px 18px;
+    transition: transform 0.3s var(--ease);
+}
+
+.v6-build__link--feature:hover .v6-build__cta,
+.v6-build__link--feature:focus-visible .v6-build__cta {
+    transform: translateX(3px);
+}
+
 @media (max-width: 980px) {
     .v6-builds { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px) {
+    .v6-build__link--feature {
+        flex-direction: column;
+    }
+    .v6-build__clip {
+        flex-basis: auto;
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        border-right: 0;
+        border-bottom: 1px solid var(--hair-ink);
+    }
+    .v6-build__clip video {
+        object-position: center 38%;
+    }
 }
 
 @media (max-width: 620px) {

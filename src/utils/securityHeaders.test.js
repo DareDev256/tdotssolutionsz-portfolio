@@ -54,7 +54,8 @@ describe('vercel.json security headers', () => {
     it('disables unnecessary browser features via Permissions-Policy', () => {
         const pp = getHeader('Permissions-Policy')
         expect(pp).toContain('camera=()')
-        expect(pp).toContain('microphone=()')
+        // v6.15.0: the talk-to-the-studio voice agent needs the mic, first-party only
+        expect(pp).toContain('microphone=(self)')
         expect(pp).toContain('geolocation=()')
     })
 

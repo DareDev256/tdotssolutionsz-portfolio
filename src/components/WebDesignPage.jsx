@@ -11,6 +11,17 @@ import './WebDesignPage.css'
 
 const SITES = [
   {
+    // first = the top of the ring: the newest and biggest build
+    id: 'bodiesinboxes',
+    name: 'Bodies In Boxes',
+    type: 'Browser Game',
+    url: 'https://savv4x.com/play?ref=tdots',
+    icon: '/sites/bib-icon.png',
+    preview: '/sites/bib-play-preview.jpg',
+    description: 'Promo game for Savv4x’s single. His music video plays on top so every run is a real view; the song is the level, so waves, gates, guns and the boss land on the beat. Three stages, live leaderboards.',
+    tech: ['TypeScript', 'Three.js', 'Neon', 'Vercel'],
+  },
+  {
     id: 'syreneffect',
     name: 'SyrenEffect',
     type: 'Creator Site',

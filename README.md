@@ -32,7 +32,7 @@ npm run prescan   # pre-commit secret scanner
 ## Routes
 
 Reachable on the deployed site: `/` cinematic hub (the four floors — pod, Web Design with
-all 13 shipped sites, Music Videos, Book a Session (two doors and a slide-to-send that emails tdotssolutionsz@gmail.com) — descend one continuous CN Tower plate,
+all 15 shipped sites plus the Bodies In Boxes game card (the one card that moves: a muted gameplay loop, played only while that floor is on screen), Music Videos, Book a Session (two doors and a slide-to-send that emails tdotssolutionsz@gmail.com) — descend one continuous CN Tower plate,
 `public/videos/seedance/tower-descent.webp`, on desktop and phones alike; reduced-motion
 keeps the scene videos) · `/sites/` operator-site offer (static HTML; `/sites/blocks.js` carries the tilt tiles
 and the slide-to-confirm CTA) · `/videos` searchable grid (search, artist filters, Top/New) · `/video/:youtubeId` shareable

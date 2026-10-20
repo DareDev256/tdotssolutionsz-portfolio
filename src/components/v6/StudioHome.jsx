@@ -8,7 +8,7 @@
  *   2. Ledger    — the four numbers, set large, on inverted (bone) ground.
  *   3. Reel      — six films as case tiles, credited, with real view counts.
  *   4. Pipeline  — Direct / Design / Ship: why one studio beats three vendors.
- *   5. Builds    — six shipped products, each linking to the live site.
+ *   5. Builds    — shipped products, each linking to the live site; the newest leads full width.
  *   6. Roster    — every artist, as a credit wall.
  *   7. Contact   — one CTA, on bone ground.
  *
@@ -452,7 +452,95 @@ function Pipeline() {
     )
 }
 
-/** Six shipped products. Each card links to the live site, not a case-study stub. */
+/** 6,498 → "6,498"; 3,535,191 → "3.54M". */
+const fmtRuns = (n) => n.toLocaleString('en-US')
+const fmtBig = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(2)}M` : n.toLocaleString('en-US'))
+
+/**
+ * Live totals for a build that publishes them. Renders nothing until a real
+ * number arrives, so a failed fetch shows no figure rather than a stale one.
+ */
+function useLiveCount(url) {
+    const [count, setCount] = useState(null)
+    useEffect(() => {
+        if (!url) return undefined
+        const ctl = new AbortController()
+        fetch(url, { signal: ctl.signal })
+            .then((r) => (r.ok ? r.json() : null))
+            .then((d) => {
+                if (d && Number.isFinite(d.runs) && Number.isFinite(d.bodies) && d.runs > 0) setCount(d)
+            })
+            .catch(() => {})
+        return () => ctl.abort()
+    }, [url])
+    return count
+}
+
+/**
+ * The lead build, full width: a muted gameplay loop that only plays while on
+ * screen (and never under reduced motion), plus the game's live run counter.
+ */
+function BuildFeature({ b }) {
+    const clipRef = useRef(null)
+    const count = useLiveCount(b.countUrl)
+
+    useEffect(() => {
+        const v = clipRef.current
+        if (!v) return undefined
+        if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return undefined
+        const io = new IntersectionObserver(
+            ([e]) => {
+                if (e.isIntersecting) v.play().catch(() => {})
+                else v.pause()
+            },
+            { threshold: 0.25 }
+        )
+        io.observe(v)
+        return () => io.disconnect()
+    }, [])
+
+    return (
+        <Reveal className="v6-build v6-build--feature">
+            <a className="v6-build__link v6-build__link--feature" href={b.url} target="_blank" rel="noopener noreferrer">
+                <div className="v6-build__clip">
+                    <video
+                        ref={clipRef}
+                        src={b.clip}
+                        poster={b.preview}
+                        muted
+                        loop
+                        playsInline
+                        preload="none"
+                        aria-label={`${b.client} gameplay`}
+                    />
+                </div>
+                <div className="v6-build__body v6-build__body--feature">
+                    <span className="v6-build__flag">{b.flag}</span>
+                    <div className="v6-build__row">
+                        <h3 className="v6-build__client v6-build__client--feature">{b.client}</h3>
+                        <span className="v6-build__go" aria-hidden="true">↗</span>
+                    </div>
+                    <span className="v6-build__sector">{b.sector}</span>
+                    <p className="v6-build__summary">{b.summary}</p>
+                    {count && (
+                        <p className="v6-build__live" aria-live="polite">
+                            <span className="v6-build__live-dot" aria-hidden="true" />
+                            <b>{fmtRuns(count.runs)}</b> runs · <b>{fmtBig(count.bodies)}</b> bodies in boxes
+                        </p>
+                    )}
+                    <ul className="v6-build__stack">
+                        {b.stack.map((s) => (
+                            <li key={s}>{s}</li>
+                        ))}
+                    </ul>
+                    <span className="v6-build__cta">Play it free ↗</span>
+                </div>
+            </a>
+        </Reveal>
+    )
+}
+
+/** Shipped products. Each card links to the live product, not a case-study stub. */
 function Builds() {
     return (
         <section className="v6-section v6-section--ink" id="build">
@@ -466,7 +554,9 @@ function Builds() {
                 </Reveal>
 
                 <div className="v6-builds">
-                    {BUILDS.map((b, i) => (
+                    {BUILDS.map((b, i) => b.feature ? (
+                        <BuildFeature b={b} key={b.slug} />
+                    ) : (
                         <Reveal className="v6-build" key={b.slug} delay={(i % 3) * 80}>
                             <a
                                 className="v6-build__link"

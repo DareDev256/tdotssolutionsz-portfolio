@@ -344,6 +344,24 @@
 
 .cinema-browser:hover { transform: scale(1.04); }
 
+/* The game card: the only card on the floor that moves, so it carries no extra
+   decoration beyond a hairline in the game's red and its PLAY tag. */
+.cinema-browser--game { box-shadow: 0 25px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,40,72,0.55); }
+
+.cinema-browser-tag {
+  margin-left: auto;
+  font-family: var(--font-mono, 'Space Mono', monospace);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #fff;
+  background: #ff2848;
+  padding: 3px 7px;
+  border-radius: 3px;
+}
+
+video.cinema-browser-preview { object-position: center; background: #050505; }
+
 .cinema-browser-chrome {
   height: 32px;
   background: #1e1e1e;
@@ -715,6 +733,8 @@
   .cinema-rail-site .cinema-browser-dot { width: 6px; height: 6px; }
   .cinema-rail-site .cinema-browser-url { font-size: 9px; }
   .cinema-rail-site .cinema-browser-body { height: calc(100% - 22px); }
+  .cinema-rail-site--game { box-shadow: 0 12px 26px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,40,72,0.6); }
+  .cinema-rail-site .cinema-browser-tag { font-size: 8px; padding: 2px 5px; }
 }
 
 @keyframes cinema-rail { to { transform: translateX(-50%); } }

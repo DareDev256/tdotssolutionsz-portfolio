@@ -89,6 +89,22 @@ export const ROSTER = (() => {
  */
 export const BUILDS = [
     {
+        // The lead card. `feature` renders it full width with a gameplay loop and the
+        // live run counter (proxied same-origin at /api/bib-count, see vercel.json).
+        slug: 'bodies-in-boxes',
+        client: 'Bodies In Boxes',
+        sector: 'Browser game · Savv4x',
+        flag: 'Newest build · free to play',
+        summary:
+            'A promo game for Savv4x’s single. His music video plays on top, so every run is a real view, and the song is the level: the waves, the gates, the guns and the boss all land on the beat. Three stages, daily and all-time leaderboards, a share card that brings the next player in. Brainstorm to launch in eight hours.',
+        stack: ['TypeScript', 'Three.js', 'YouTube IFrame API', 'Neon', 'Vercel'],
+        url: 'https://savv4x.com/play?ref=tdots',
+        feature: true,
+        clip: '/sites/bib-loop.mp4',
+        preview: '/sites/bib-poster.jpg',
+        countUrl: '/api/bib-count'
+    },
+    {
         slug: 'betmetrics',
         client: 'BetMetrics',
         sector: 'Sports analytics',
@@ -211,7 +227,7 @@ export const PIPELINE = [
         title: 'Ship',
         lede: 'Production software, not brochureware.',
         body:
-            'Real applications — auth, databases, payments, admin panels the team can run without us. Deployed, monitored, and handed over with the keys. Six live products currently in production.'
+            `Real applications — auth, databases, payments, admin panels the team can run without us. Deployed, monitored, and handed over with the keys. ${BUILDS.length} live products currently in production.`
     }
 ]
 

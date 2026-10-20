@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.17.0] — 2026-10-19 · Bodies In Boxes on the site
+
+- **Web Design floor (`/`):** Bodies In Boxes, the Savv4x promo game, is the lead card (top-left, the floor's biggest slot) and the only card that moves: a 4.8 s muted gameplay loop cut from the launch trailer, framed the way savv4x.com/play looks on a desktop (`public/sites/bib-play-loop.mp4`, 340 KB, poster `bib-play-preview.jpg`). A red PLAY tag in its address bar, a red hairline round the card. The clip source attaches on first need and plays only while the floor is on screen (`setClipsPlaying`, ScrollTrigger 8%-37%), never under reduced motion; the phone rail carries it too. The link is `savv4x.com/play?ref=tdots` so site traffic shows up in the game's channel counters. Shortiie Raw moved to the open inner-right slot.
+- **Card entrances keyed to each card's slot**, not its array index: a card anchored left flies in from the left, the top row from above. Same choreography as before for every existing card; inserting one no longer flips everyone after it.
+- **`/web-design`:** Bodies In Boxes is the top node of the network, with the gameplay preview in its card.
+- **`/v6` (parked StudioHome):** the same build leads the Builds section full width with the portrait loop and a live run counter from `/api/bib-count` (a same-origin rewrite to the game's own count endpoint, so CSP `connect-src 'self'` covers it; a failed fetch shows no number rather than a stale one). The Pipeline line now counts `BUILDS.length` instead of a typed "Six".
+- Tests: `securityHeaders.test.js` expected `microphone=()`; v6.15.0 set `microphone=(self)` for the voice agent, so the suite had been red since then. The assertion now matches the intended policy. 713/713; videoPlayback 23/23.
+
 ## [6.16.3] — 2026-10-16 · Scene 4 background stays put
 
 - 6.16.2 scrolled the whole scene, so the twilight video and its overlay scrolled away with the content and left a hard band. Content now scrolls in its own layer (.cinema-s4-scroll); the background never moves.

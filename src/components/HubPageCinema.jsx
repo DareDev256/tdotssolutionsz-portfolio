@@ -29,6 +29,12 @@ const WEB_PROJECTS = [
      shipped that answers 200 on its own domain (probed 2026-09-20).
      edsonlegal.com is the firm's own site, not ours, and stays out.
      Layouts keep the middle third clear for the title and the tower shaft. */
+  /* The one card that moves: Bodies In Boxes, the Savv4x promo game (2026-10-15).
+     `clip` is a muted gameplay loop framed the way savv4x.com/play looks on a
+     desktop; it plays only while this floor is on screen (setClipsPlaying). */
+  { name: 'Bodies In Boxes', type: 'Browser Game', tag: 'PLAY',
+    url: 'https://savv4x.com/play?ref=tdots', preview: '/sites/bib-play-preview.jpg', clip: '/sites/bib-play-loop.mp4', icon: null,
+    layout: { width: 300, height: 188, top: '5%', left: '2%' } },
   { name: 'Spoiled Kass', type: 'Creator Site',
     url: 'https://spoiledkass.com', preview: '/sites/spoiledkass-preview.jpg', icon: null,
     layout: { width: 192, height: 120, top: '4%', left: '25%' } },
@@ -37,7 +43,7 @@ const WEB_PROJECTS = [
     layout: { width: 192, height: 120, top: '4%', right: '25%' } },
   { name: 'Shortiie Raw', type: 'Artist Platform',
     url: 'https://shortiieraw.com', preview: '/sites/shortiieraw-preview.jpg', icon: null,
-    layout: { width: 300, height: 188, top: '5%', left: '2%' } },
+    layout: { width: 200, height: 125, top: '43%', right: '25%' } },
   { name: 'ShairBraiding', type: 'Operator Site',
     url: 'https://shairbraiding.com', preview: '/sites/shair-preview.jpg', icon: null,
     layout: { width: 300, height: 188, top: '5%', right: '2%' } },
@@ -164,17 +170,50 @@ function Rail({ items, render, label, reverse = false, low = false }) {
   )
 }
 
-const renderSite = (project, clone) => (
-  <a key={(clone ? 'c-' : '') + project.name} href={project.url} target="_blank" rel="noopener noreferrer"
-     className="cinema-rail-site" role="listitem" aria-hidden={clone || undefined} tabIndex={clone ? -1 : undefined}>
+/** The address bar shows the page, not the tracking ref. */
+const shownUrl = (url) => url.replace(/^https?:\/\//, '').replace(/\?.*$/, '').replace(/\/$/, '')
+
+function BrowserChrome({ project }) {
+  return (
     <div className="cinema-browser-chrome">
       <div className="cinema-browser-dot" style={{ background: '#ff5f57' }} />
       <div className="cinema-browser-dot" style={{ background: '#febc2e' }} />
       <div className="cinema-browser-dot" style={{ background: '#28c840' }} />
-      <span className="cinema-browser-url">{project.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+      <span className="cinema-browser-url">{shownUrl(project.url)}</span>
+      {project.tag && <span className="cinema-browser-tag">{project.tag}</span>}
     </div>
+  )
+}
+
+/** A still for a site; a muted loop (poster first, source attached on play) for a card with a clip. */
+function BrowserShot({ project, alt, lazy = false }) {
+  if (project.clip) {
+    return (
+      <video className="cinema-browser-preview cinema-browser-clip" poster={project.preview}
+             data-src={project.clip} muted loop playsInline preload="none" aria-label={alt || undefined} aria-hidden={alt ? undefined : true} />
+    )
+  }
+  return <img src={project.preview} alt={alt} className="cinema-browser-preview" loading={lazy ? 'lazy' : undefined} />
+}
+
+/** Attach the clip on first need, then play or pause every visible game card. */
+function setClipsPlaying(on) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  document.querySelectorAll('.cinema-browser-clip').forEach((v) => {
+    if (on) {
+      if (v.offsetParent === null) return
+      if (!v.dataset.ready) { v.src = v.dataset.src; v.dataset.ready = '1' }
+      const p = v.play(); if (p && p.catch) p.catch(() => {})
+    } else if (!v.paused) v.pause()
+  })
+}
+
+const renderSite = (project, clone) => (
+  <a key={(clone ? 'c-' : '') + project.name} href={project.url} target="_blank" rel="noopener noreferrer"
+     className={`cinema-rail-site${project.clip ? ' cinema-rail-site--game' : ''}`} role="listitem" aria-hidden={clone || undefined} tabIndex={clone ? -1 : undefined}>
+    <BrowserChrome project={project} />
     <div className="cinema-browser-body">
-      <img src={project.preview} alt={clone ? '' : project.name} className="cinema-browser-preview" loading="lazy" />
+      <BrowserShot project={project} alt={clone ? '' : project.name} lazy />
     </div>
   </a>
 )
@@ -437,7 +476,9 @@ export default function HubPageCinema() {
     scene3TL.fromTo('.cinema-s3-sub', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3 }, 0.3)
     scene3TL.fromTo('#cinema-scene2 .cinema-rails', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.2)
     scene3TL.fromTo('.cinema-browser',
-      { x: (i) => (i % 2 === 0 ? -500 : 500), y: (i) => (i < 4 ? -200 : 200), rotateY: (i) => (i % 2 === 0 ? 45 : -45), opacity: 0, scale: 0.5 },
+      // direction comes from each card's own slot (left-anchored flies in from the left,
+      // top row from above), so inserting a card never flips everyone else's entrance
+      { x: (i, el) => (el.style.left ? -500 : 500), y: (i, el) => (parseFloat(el.style.top) < 10 ? -200 : 200), rotateY: (i, el) => (el.style.left ? 45 : -45), opacity: 0, scale: 0.5 },
       { x: 0, y: 0, rotateY: 0, rotateX: 0, opacity: 1, scale: 1, stagger: 0.04, duration: 0.6, ease: 'power2.out' }, 0.2)
 
     // Scatter 3: Scene 3 → Scene 4 CTA (55-62%)
@@ -473,8 +514,10 @@ export default function HubPageCinema() {
     })
 
     ScrollTrigger.create({ trigger: track, start: '34% top', end: '62% top', onToggle: (self) => setMonitorsPlaying(self.isActive) })
+    // the Web Design floor (scatter 1 in → scatter 2 out): the game card's loop
+    ScrollTrigger.create({ trigger: track, start: '8% top', end: '37% top', onToggle: (self) => setClipsPlaying(self.isActive) })
 
-    return () => { setMonitorsPlaying(false); ScrollTrigger.getAll().forEach(t => t.kill()) }
+    return () => { setMonitorsPlaying(false); setClipsPlaying(false); ScrollTrigger.getAll().forEach(t => t.kill()) }
   }, [])
 
   // Scroll-scrubbed video
@@ -647,22 +690,17 @@ export default function HubPageCinema() {
 
           <div className="cinema-browsers">
             {WEB_PROJECTS.map((project, i) => (
-              <a key={project.name} href={project.url} target="_blank" rel="noopener noreferrer" className="cinema-browser" style={{
+              <a key={project.name} href={project.url} target="_blank" rel="noopener noreferrer" className={`cinema-browser${project.clip ? ' cinema-browser--game' : ''}`} style={{
                 width: project.layout.width,
                 height: project.layout.height,
                 top: project.layout.top,
                 left: project.layout.left,
                 right: project.layout.right,
               }}>
-                <div className="cinema-browser-chrome">
-                  <div className="cinema-browser-dot" style={{ background: '#ff5f57' }} />
-                  <div className="cinema-browser-dot" style={{ background: '#febc2e' }} />
-                  <div className="cinema-browser-dot" style={{ background: '#28c840' }} />
-                  <span className="cinema-browser-url">{project.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
-                </div>
+                <BrowserChrome project={project} />
                 <div className="cinema-browser-body">
                   {project.preview
-                    ? <img src={project.preview} alt={project.name} className="cinema-browser-preview" />
+                    ? <BrowserShot project={project} alt={project.name} />
                     : <div className="cinema-browser-placeholder">{project.name}</div>
                   }
                 </div>
