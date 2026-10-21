@@ -158,10 +158,10 @@
 .cinema-hero-logo {
   height: 140px;
   width: auto;
-  /* v5.11: logo.png was rebuilt as white artwork on transparency (the old file
-     was dark-on-white AND cropped to "OTS / OLUTIONSZ"). The invert(1) that
-     corrected the old asset now turns the new one black — removed. */
-  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.55));
+  /* James's own logo (the G+W cut of his PSD): the CN Tower is the T, so
+     "DOTS / SOLUTIONSZ" beside it is complete, not cropped. Never invert it.
+     The tight halo keeps the grey letters off the lit pod behind them. */
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.7)) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.55));
   margin-bottom: 16px;
   opacity: 0.95;
 }
@@ -344,8 +344,8 @@
 
 .cinema-browser:hover { transform: scale(1.04); }
 
-/* The game card: the only card on the floor that moves, so it carries no extra
-   decoration beyond a hairline in the game's red and its PLAY tag. */
+/* The game card: every card moves now (scroll-throughs), so the game is told
+   apart by a hairline in its red and its PLAY tag, nothing louder. */
 .cinema-browser--game { box-shadow: 0 25px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,40,72,0.55); }
 
 .cinema-browser-tag {
@@ -361,6 +361,8 @@
 }
 
 video.cinema-browser-preview { object-position: center; background: #050505; }
+/* a site's scroll-through keeps its nav bar in frame when the card crops */
+video.cinema-browser-clip--site { object-position: top center; }
 
 .cinema-browser-chrome {
   height: 32px;

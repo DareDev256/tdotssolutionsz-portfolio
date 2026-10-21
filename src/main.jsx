@@ -118,7 +118,7 @@ function LoadingScreen() {
     return (
         <div className="loading-screen">
             <img
-                src="/logo-mark.png"
+                src="/brand/tdots-logo.png"
                 alt="TdotsSolutionsz"
                 className="loading-logo"
             />

@@ -89,7 +89,7 @@ export default function VideosPage() {
                     sort={sort} setSort={(v) => setParam({ sort: v === 'top' ? null : v })}
                     artists={artists}
                     shown={list.length} total={CATALOG.length}
-                    home={<Link to="/" className="vf-home" aria-label="TdotsSolutionsz home"><img src="/brand/mark.svg" alt="" /></Link>}
+                    home={<Link to="/" className="vf-home" aria-label="TdotsSolutionsz home"><img src="/brand/tdots-logo.png" alt="" /></Link>}
                 />
             )}
 

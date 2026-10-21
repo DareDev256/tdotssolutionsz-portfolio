@@ -18,6 +18,8 @@ const SITES = [
     url: 'https://savv4x.com/play?ref=tdots',
     icon: '/sites/bib-icon.png',
     preview: '/sites/bib-play-preview.jpg',
+    clip: '/sites/bib-play-loop.mp4',
+    poster: '/sites/bib-play-preview.jpg',
     description: 'Promo game for Savv4x’s single. His music video plays on top so every run is a real view; the song is the level, so waves, gates, guns and the boss land on the beat. Three stages, live leaderboards.',
     tech: ['TypeScript', 'Three.js', 'Neon', 'Vercel'],
   },
@@ -28,6 +30,8 @@ const SITES = [
     url: 'https://syreneffect-site.vercel.app',
     icon: '/sites/syren-icon.png',
     preview: '/sites/syren-preview.jpg',
+    clip: '/sites/clips/syreneffect.mp4',
+    poster: '/sites/clips/syreneffect.jpg',
     description: 'Custom site for Twitch streamer — dark aesthetic, live integration, brand identity.',
     tech: ['Next.js', 'React', 'Vercel'],
   },
@@ -38,6 +42,8 @@ const SITES = [
     url: 'https://officialkmoney.com',
     icon: '/sites/kmoney-icon.svg',
     preview: '/sites/kmoney-preview.jpg',
+    clip: '/sites/clips/kmoney.mp4',
+    poster: '/sites/clips/kmoney.jpg',
     description: 'Drill artist site — immersive Three.js WebGL bank vault, catalogue hung as gold & platinum art, scroll to explore.',
     tech: ['Three.js', 'WebGL', 'Cloudflare'],
   },
@@ -48,6 +54,8 @@ const SITES = [
     url: 'https://100bandplan.com',
     icon: '/sites/100bandplan-icon.svg',
     preview: '/sites/100bandplan-preview.jpg',
+    clip: '/sites/clips/100bandplan.mp4',
+    poster: '/sites/clips/100bandplan.jpg',
     description: 'Drill artist site — blueprint drafting table, photo & video frames drop onto the plan, in-site video lightbox.',
     tech: ['JavaScript', 'CSS3', 'Cloudflare'],
   },
@@ -58,6 +66,8 @@ const SITES = [
     url: 'https://savv4x.com',
     icon: '/sites/savv-icon.png',
     preview: '/sites/savv-preview.jpg',
+    clip: '/sites/clips/savv4x.mp4',
+    poster: '/sites/clips/savv4x.jpg',
     description: 'Personal brand site — animated particles, music videos, discography, floating now-playing bar.',
     tech: ['Next.js', 'React', 'Cloudflare'],
   },
@@ -68,6 +78,8 @@ const SITES = [
     url: 'https://nirvanadeshaunbuilds.com',
     icon: '/sites/nirvana-icon.svg',
     preview: '/sites/nirvana-preview.jpg',
+    clip: '/sites/clips/nirvana.mp4',
+    poster: '/sites/clips/nirvana.jpg',
     description: 'Custom home builder in Metro Atlanta — editorial serif identity, full-bleed build photography, project enquiry funnel.',
     tech: ['React', 'Vite', 'Vercel'],
   },
@@ -78,6 +90,8 @@ const SITES = [
     url: 'https://musthavefrenchies.com',
     icon: '/sites/frenchies-icon.png',
     preview: '/sites/frenchies-preview.jpg',
+    clip: '/sites/clips/frenchies.mp4',
+    poster: '/sites/clips/frenchies.jpg',
     description: 'Premium French Bulldog breeder — puppy listings, litter management, co-ownership program.',
     tech: ['HTML/CSS/JS', 'Vercel'],
   },
@@ -88,6 +102,8 @@ const SITES = [
     url: 'https://shairbraiding.com',
     icon: '/sites/shair-icon.svg',
     preview: '/sites/shair-preview.jpg',
+    clip: '/sites/clips/shairbraiding.mp4',
+    poster: '/sites/clips/shairbraiding.jpg',
     description: 'Bali braider who comes to your villa — styles by hair type, built from her own photos and rate card, WhatsApp booking pre-typed.',
     tech: ['Static', 'WhatsApp rail', 'Vercel'],
   },
@@ -98,6 +114,8 @@ const SITES = [
     url: 'https://baliwhisper.com',
     icon: '/sites/baliwhisper-icon.png',
     preview: '/sites/baliwhisper-preview.jpg',
+    clip: '/sites/clips/baliwhisper.mp4',
+    poster: '/sites/clips/baliwhisper.jpg',
     description: 'Scroll-driven site for an Ubud driver — the route draws itself, a day-builder composes the WhatsApp booking, every photo has him in it.',
     tech: ['scroll-craft', 'Static', 'Vercel'],
   },
@@ -346,6 +364,7 @@ export default function WebDesignPage() {
   }, [anchors])
 
   const activeSite = SITES.find(s => s.id === activeId)
+  const reducedMotion = useMemo(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches, [])
 
   return (
     <div className="webdesign-page">
@@ -421,12 +440,18 @@ export default function WebDesignPage() {
             Every entry in SITES now ships a /sites/*-preview.jpg. Keep it that way.
           */}
           <div className="webdesign-page__card-preview">
-            <img
-              src={activeSite.preview}
-              alt={`${activeSite.name} website preview`}
-              className="webdesign-page__card-shot"
-              loading="lazy"
-            />
+            {/* The selected site's scroll-through (scripts/build-site-clips.mjs); the
+                still stays for reduced motion. key= restarts the loop on each pick. */}
+            {activeSite.clip && !reducedMotion
+              ? <video key={activeSite.id} src={activeSite.clip} poster={activeSite.poster}
+                       className="webdesign-page__card-shot" autoPlay muted loop playsInline
+                       aria-label={`${activeSite.name} website preview`} />
+              : <img
+                  src={activeSite.preview}
+                  alt={`${activeSite.name} website preview`}
+                  className="webdesign-page__card-shot"
+                  loading="lazy"
+                />}
           </div>
           <a
             href={activeSite.url}

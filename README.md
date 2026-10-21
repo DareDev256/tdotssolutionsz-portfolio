@@ -32,7 +32,7 @@ npm run prescan   # pre-commit secret scanner
 ## Routes
 
 Reachable on the deployed site: `/` cinematic hub (the four floors — pod, Web Design with
-all 15 shipped sites plus the Bodies In Boxes game card (the one card that moves: a muted gameplay loop, played only while that floor is on screen), Music Videos, Book a Session (two doors and a slide-to-send that emails tdotssolutionsz@gmail.com) — descend one continuous CN Tower plate,
+all 15 shipped sites plus the Bodies In Boxes game card, every card playing a muted scroll-through of its own site (the game card: a gameplay loop), only while that floor is on screen and the card is in view, Music Videos, Book a Session (two doors and a slide-to-send that emails tdotssolutionsz@gmail.com) — descend one continuous CN Tower plate,
 `public/videos/seedance/tower-descent.webp`, on desktop and phones alike; reduced-motion
 keeps the scene videos) · `/sites/` operator-site offer (static HTML; `/sites/blocks.js` carries the tilt tiles
 and the slide-to-confirm CTA) · `/videos` searchable grid (search, artist filters, Top/New) · `/video/:youtubeId` shareable
@@ -61,6 +61,14 @@ postprocessing, GSAP, Vitest. Hosted on Vercel.
   at build time, so the client never calls the YouTube API.
 - **Hover-scrub previews.** `scripts/build-preview-clips.mjs` cuts short webm/mp4 loops
   with yt-dlp and ffmpeg, using cropdetect debarring and signalstats frame scoring.
+- **Site scroll-throughs.** `scripts/build-site-clips.mjs` records each client site at a
+  1280x800 desktop with real wheel input and the CDP screencast, then encodes an 8.4 s
+  640x400 loop plus its first-frame poster to `public/sites/clips/` (`--only=<slug>` for one
+  site). It refuses a site that will not scroll. `scripts/verify-site-clips.mjs` serves `dist/`
+  and checks which cards play on desktop and a 390 px phone.
+- **Logo.** `public/brand/tdots-logo.png` is James's own logo (the G+W cut of
+  `~/Pictures/Projects/Logos/TDots Solutionsz Logo PSD (1).psd`): the CN Tower is the T.
+  Icons are `public/brand/tdots-icon-{48,180,192,512}.png`.
 - **Security.** CSP with YouTube allowlists, HSTS, COOP, CORP, Permissions-Policy;
   centralised blocking of `javascript:`, `data:`, `vbscript:` and `blob:` URLs;
   prototype-pollution-safe JSON parsing on localStorage reads; a pre-commit secret
