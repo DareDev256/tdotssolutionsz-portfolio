@@ -41,6 +41,14 @@ per-video page · `/web-design` · `/privacy` · `/terms`.
 A real static `404.html` ships at the build output root — Vercel serves it for any
 static path that matches none of the `rewrites` below and has no other route.
 
+**Readable without JavaScript (6.19.0).** AI search crawlers never run JS, so the served
+`index.html` carries the hub's words as a visually hidden section inside `#root` (counts, the
+most-watched films, every live site, both booking offers). `vite.config.js` renders it at build
+time with `scripts/static-copy.mjs` from the same modules the hub reads (`utils/videoData`,
+`data/webProjects`, `data/doors`), so it cannot drift; React replaces it on mount. A missing
+`<!--STATIC-COPY-->` marker or an empty source fails the build. Check the live page with
+`node ~/.claude/skills/seo-geo-audit/scripts/seo-geo-audit.mjs tdotssolutionsz.com`.
+
 Declared in `src/main.jsx` but **not reachable in production**: `/oldvideopage` (the
 original 3D city), `/lab`, `/v6`. `vercel.json` rewrites only `/videos`,
 `/video/:youtubeId`, `/web-design`, `/photos`, `/privacy` and `/terms` to `index.html`,

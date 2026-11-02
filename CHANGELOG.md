@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.19.0] — 2026-11-02 · The studio is readable without JavaScript
+
+- **Why:** AI search crawlers (ChatGPT, Claude, Perplexity) read only the served HTML and never run JS. `seo-geo-audit` measured 58 words in tdotssolutionsz.com's served document on 2026-11-01, so an AI answer could not say what the studio does.
+- **What:** `index.html` now carries the hub's words inside `#root` as a visually hidden section: the catalogue counts, the most-watched film per artist, every live site on the Web Design floor, and both booking offers verbatim. 58 → 304 words in the local build. React's `createRoot` replaces `#root` on mount, so the section is gone from the DOM once the hub loads (checked at 1440 and 390, 0 page errors); the hub looks identical to 6.18.0 (side-by-side screenshots, live vs build).
+- **No drift:** `scripts/static-copy.mjs` renders it at build time inside `vite.config.js` from the same modules the hub reads. To make that possible, the hub's site list moved to `src/data/webProjects.js` and the booking doors to `src/data/doors.js`, both unchanged. It refuses (fails the build) on a missing marker or an empty source rather than ship "0 films".
+- **Tests:** `src/data/staticCopy.test.js` (5): counts match `PORTFOLIO_STATS`, every site URL and door line present, over 150 words, hidden by style, escaping, refusal. Mutating the empty-projects guard turns it red. Full suite 718/718, video playback suite green.
+
 ## [6.18.0] — 2026-10-21 · Every site card plays its site; the real logo
 
 - **Web Design floor (`/`):** every site card now plays a muted scroll-through of its own live site instead of a still: 15 loops of 8.4 s at 640x400 (`public/sites/clips/<slug>.mp4`, 151-468 KB, 5.1 MB together), each recorded from the live domain at a 1280x800 desktop with real wheel input so Lenis, GSAP and WebGL scrollers move the way a visitor sees them (`scripts/build-site-clips.mjs`). The poster is each clip's own first frame, so the still-to-video swap does not jump. Cookie bars on Bali Whisper and Lodiie are hidden in the recording, never clicked. SyrenEffect is one screen, so its loop is the page's own TV motion.
