@@ -1,9 +1,21 @@
-# tdotssolutionsz.com
+# TdotsSolutionsz: Toronto music video production studio site
 
-Source for the TdotsSolutionsz site: a Toronto music video studio's catalogue, built as a
-cinematic interface rather than a thumbnail grid.
+The source of [tdotssolutionsz.com](https://tdotssolutionsz.com), the site of a Toronto music video production studio, for artists looking for a music video director in Toronto: a cinematic catalogue of 101 music videos for 54 artists, plus web design and booking, built with React and Three.js.
+
+![The /videos catalogue on tdotssolutionsz.com: search, artist filters, Top and New sorting, and the most-watched videos](docs/screenshots/2026-11-15_videos-catalogue-1280.png)
 
 **Live:** [tdotssolutionsz.com](https://tdotssolutionsz.com)
+
+## Quick start
+
+```bash
+git clone https://github.com/DareDev256/tdotssolutionsz-portfolio.git
+cd tdotssolutionsz-portfolio
+npm install
+npm run dev       # http://localhost:5173
+```
+
+More commands are under [Run it](#run-it). License: MIT, see [LICENSE](LICENSE). The music videos, artist names and thumbnails belong to their owners and are not covered by it.
 
 The catalogue is a single JSON file, and every figure on the site is derived from it at
 build time. Check it yourself:
@@ -75,7 +87,7 @@ postprocessing, GSAP, Vitest. Hosted on Vercel.
   site). It refuses a site that will not scroll. `scripts/verify-site-clips.mjs` serves `dist/`
   and checks which cards play on desktop and a 390 px phone.
 - **Logo.** `public/brand/tdots-logo.png` is James's own logo (the G+W cut of
-  `~/Pictures/Projects/Logos/TDots Solutionsz Logo PSD (1).psd`): the CN Tower is the T.
+  his TDots Solutionsz logo PSD): the CN Tower is the T.
   Icons are `public/brand/tdots-icon-{48,180,192,512}.png`.
 - **Security.** CSP with YouTube allowlists, HSTS, COOP, CORP, Permissions-Policy;
   centralised blocking of `javascript:`, `data:`, `vbscript:` and `blob:` URLs;
