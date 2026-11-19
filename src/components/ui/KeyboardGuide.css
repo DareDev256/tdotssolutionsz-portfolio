@@ -9,7 +9,6 @@
     position: relative; background: rgb(var(--dark-bg-rgb) / 0.95);
     border: 1px solid var(--neon-cyan); border-radius: 12px;
     padding: 28px 32px; max-width: 460px; width: 90%;
-    box-shadow: 0 0 40px rgb(var(--neon-cyan-rgb) / 0.25);
 }
 .kbd-guide-close {
     position: absolute; top: 10px; right: 14px; background: none; border: none;

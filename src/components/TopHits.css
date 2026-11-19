@@ -72,7 +72,6 @@
 .top-hit-card:hover {
   transform: translateY(-6px) scale(1.03);
   box-shadow:
-    0 0 30px color-mix(in srgb, var(--rank-color) 25%, transparent),
     0 8px 24px rgba(0, 0, 0, 0.4);
   border-color: color-mix(in srgb, var(--rank-color) 30%, transparent);
 }
@@ -89,9 +88,6 @@
   z-index: 3;
   color: transparent;
   -webkit-text-stroke: 2px var(--rank-color);
-  text-shadow:
-    0 0 20px color-mix(in srgb, var(--rank-color) 40%, transparent),
-    0 0 40px color-mix(in srgb, var(--rank-color) 20%, transparent);
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
   pointer-events: none;
   transition: transform 0.3s ease, filter 0.3s ease;
@@ -187,7 +183,6 @@
   border-radius: 6px;
   backdrop-filter: blur(8px);
   z-index: 2;
-  text-shadow: 0 0 8px color-mix(in srgb, var(--rank-color) 40%, transparent);
 }
 
 .top-hit-play-icon {

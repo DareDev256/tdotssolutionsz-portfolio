@@ -35,7 +35,7 @@
 }
 .era-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 0 24px color-mix(in srgb, var(--era-color) 20%, transparent), 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   border-color: color-mix(in srgb, var(--era-color) 25%, transparent);
 }
 
@@ -78,7 +78,6 @@
   height: 28px;
   display: block;
   margin: 0 auto 6px;
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--era-color) 40%, transparent));
 }
 
 /* Era label — Bebas Neue, film credits feel, no gradient */
@@ -137,7 +136,7 @@
 
 /* ---- Timeline Connector Dots ---- */
 .era-connector { display: flex; align-items: center; justify-content: center; margin-top: 8px; padding: 0 20px; }
-.era-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--era-color); box-shadow: 0 0 8px color-mix(in srgb, var(--era-color) 50%, transparent); position: relative; flex-shrink: 0; }
+.era-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--era-color); position: relative; flex-shrink: 0; }
 .era-dot::after { content: ''; position: absolute; top: 50%; left: 100%; width: 60px; height: 1px; background: linear-gradient(90deg, var(--era-color), transparent); opacity: 0.3; }
 .era-dot:last-child::after { display: none; }
 

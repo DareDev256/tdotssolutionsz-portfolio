@@ -66,7 +66,6 @@
   color: #4a7cff;
   border-color: #4a7cff;
   background: rgba(74, 124, 255, 0.1);
-  box-shadow: 0 0 15px rgba(74, 124, 255, 0.2);
 }
 
 .gallery-header-text {
@@ -80,7 +79,7 @@
 .gallery-logo {
   height: 40px;
   width: auto;
-  filter: brightness(1.5) drop-shadow(0 0 8px rgba(74, 124, 255, 0.5));
+  filter: brightness(1.5);
 }
 
 .gallery-title {
@@ -89,7 +88,6 @@
   font-weight: 700;
   letter-spacing: 0.15em;
   color: #4a7cff;
-  text-shadow: 0 0 10px rgba(74, 124, 255, 0.5);
   margin: 0;
   white-space: nowrap;
 }
@@ -141,7 +139,6 @@
   background: linear-gradient(135deg, rgba(74, 124, 255, 0.3), rgba(74, 124, 255, 0.15));
   border-color: #4a7cff;
   color: #fff;
-  box-shadow: 0 0 20px rgba(74, 124, 255, 0.2);
 }
 
 .gallery-tab-count {
@@ -183,7 +180,6 @@
 
 .gallery-img-wrap:hover {
   border-color: rgba(74, 124, 255, 0.4);
-  box-shadow: 0 0 24px rgba(74, 124, 255, 0.15);
 }
 
 .gallery-img {
@@ -240,7 +236,6 @@
   max-height: 75vh;
   object-fit: contain;
   border-radius: 4px;
-  box-shadow: 0 0 60px rgba(74, 124, 255, 0.15);
 }
 
 .lightbox-close {
@@ -282,7 +277,6 @@
 
 .lightbox-nav:hover {
   background: rgba(74, 124, 255, 0.15);
-  box-shadow: 0 0 20px rgba(74, 124, 255, 0.3);
 }
 
 .lightbox-prev {
@@ -304,7 +298,6 @@
   font-size: 0.9rem;
   letter-spacing: 0.1em;
   color: #4a7cff;
-  text-shadow: 0 0 8px rgba(74, 124, 255, 0.4);
   margin: 0 0 6px;
 }
 

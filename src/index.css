@@ -136,8 +136,7 @@ body.mobile-mode {
 .site-logo {
     height: 200px;
     width: auto;
-    filter: brightness(1.5) drop-shadow(0 0 18px rgba(74, 124, 255, 0.7));
-    animation: glow-pulse 2s ease-in-out infinite alternate;
+    filter: brightness(1.5);
 }
 
 .title {
@@ -147,10 +146,6 @@ body.mobile-mode {
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--neon-cyan);
-    text-shadow:
-        0 0 10px rgba(74, 124, 255, 0.8),
-        0 0 40px rgba(74, 124, 255, 0.4);
-    animation: glow-pulse 2s ease-in-out infinite alternate;
 }
 
 .subtitle {
@@ -161,17 +156,6 @@ body.mobile-mode {
     color: var(--neon-pink);
     opacity: 0.9;
     margin-top: 5px;
-    text-shadow: 0 0 8px rgba(255, 143, 94, 0.6);
-}
-
-@keyframes glow-pulse {
-    from {
-        filter: drop-shadow(0 0 10px rgba(74, 124, 255, 0.5));
-    }
-
-    to {
-        filter: drop-shadow(0 0 20px rgba(255, 143, 94, 0.8));
-    }
 }
 
 /* Controls Hint */
@@ -227,7 +211,6 @@ body.mobile-mode {
     font-size: 2rem;
     font-weight: 700;
     color: var(--neon-pink);
-    text-shadow: 0 0 20px rgba(255, 143, 94, 0.8);
 }
 
 /* Loading Screen — editorial logo zoom-in (v5.6.1+).
@@ -255,7 +238,6 @@ body.mobile-mode {
     animation:
         loading-logo-in 780ms cubic-bezier(0.22, 1, 0.36, 1) forwards,
         loading-logo-breathe 2.4s ease-in-out 780ms infinite;
-    filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.08));
     /* Smooth out logo edges during scale animation */
     image-rendering: -webkit-optimize-contrast;
 }
@@ -277,11 +259,9 @@ body.mobile-mode {
 @keyframes loading-logo-breathe {
     0%, 100% {
         transform: scale(1);
-        filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.08));
     }
     50% {
         transform: scale(1.04);
-        filter: drop-shadow(0 0 36px rgba(255, 255, 255, 0.16));
     }
 }
 
@@ -344,7 +324,6 @@ body.mobile-mode {
 .project-link:hover {
     background: var(--neon-pink);
     color: var(--dark-bg);
-    box-shadow: 0 0 20px rgba(255, 143, 94, 0.5);
 }
 
 /* Pulse animation for audio button */
@@ -365,7 +344,6 @@ body.mobile-mode {
     letter-spacing: 2px;
     animation: pulse 2s infinite;
     z-index: 1000;
-    box-shadow: 0 0 20px rgba(74, 124, 255, 0.3);
     appearance: none;
 }
 
@@ -413,12 +391,10 @@ body.mobile-mode {
     0%,
     100% {
         transform: translateX(-50%) scale(1);
-        box-shadow: 0 0 20px rgba(74, 124, 255, 0.3);
     }
 
     50% {
         transform: translateX(-50%) scale(1.05);
-        box-shadow: 0 0 30px rgba(74, 124, 255, 0.6);
     }
 }
 
@@ -448,9 +424,6 @@ body.mobile-mode {
     border: 2px solid var(--neon-cyan);
     border-radius: 8px;
     padding: 15px;
-    box-shadow:
-        0 0 30px rgba(74, 124, 255, 0.3),
-        inset 0 0 60px rgba(74, 124, 255, 0.05);
     backdrop-filter: blur(10px);
 }
 
@@ -460,7 +433,6 @@ body.mobile-mode {
     letter-spacing: 0.15em;
     text-transform: uppercase;
     margin-bottom: 10px;
-    text-shadow: 0 0 10px currentColor;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -551,7 +523,6 @@ body.mobile-mode {
     border-radius: 30px;
     padding: 8px 12px;
     backdrop-filter: blur(10px);
-    box-shadow: 0 0 30px rgba(74, 124, 255, 0.15);
 }
 
 .lane-btn {
@@ -577,12 +548,10 @@ body.mobile-mode {
 .lane-btn.active {
     background: rgba(74, 124, 255, 0.2);
     color: var(--neon-cyan);
-    box-shadow: 0 0 15px rgba(74, 124, 255, 0.3);
 }
 
 .lane-btn.active .lane-icon {
     color: var(--neon-pink);
-    text-shadow: 0 0 10px var(--neon-pink);
 }
 
 .lane-icon {
@@ -652,17 +621,12 @@ body.mobile-mode {
 .vehicle-btn.active {
     background: rgba(74, 124, 255, 0.2);
     color: var(--neon-cyan);
-    box-shadow: 0 0 15px rgba(74, 124, 255, 0.3);
 }
 
 .vehicle-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.vehicle-icon .icon {
-    filter: drop-shadow(0 0 6px currentColor);
 }
 
 /* Inline SVG icons (e.g. maple leaf in footer text) */
@@ -673,14 +637,6 @@ body.mobile-mode {
 }
 
 /* Global SVG icon glow for share/action buttons */
-.vp-share-btn .icon,
-.vp-cta-icon .icon,
-.vp-memorial-icon .icon,
-.theater-share-btn .icon,
-.theater-mode-btn .icon,
-.search-trigger .icon {
-    filter: drop-shadow(0 0 6px currentColor);
-}
 
 .vehicle-label {
     font-size: 0.55rem;
@@ -760,13 +716,11 @@ body.mobile-mode {
 
 .search-trigger:hover {
     background: rgba(74, 124, 255, 0.15);
-    box-shadow: 0 0 15px rgba(74, 124, 255, 0.3);
 }
 
 .search-active-filter {
     border-color: var(--neon-pink);
     color: var(--neon-pink);
-    box-shadow: 0 0 12px rgba(255, 143, 94, 0.3);
 }
 
 .search-active-filter:hover {
@@ -907,7 +861,7 @@ body.mobile-mode {
     z-index: 1000; cursor: pointer; appearance: none;
     transition: background 0.2s ease, box-shadow 0.2s ease;
 }
-.stats-toggle-btn:hover { background: rgba(232, 93, 52, 0.25); box-shadow: 0 0 12px rgba(232, 93, 52, 0.4); }
+.stats-toggle-btn:hover { background: rgba(232, 93, 52, 0.25); }
 .stats-toggle-btn:focus-visible { outline: 2px solid var(--neon-purple, #e85d34); outline-offset: 2px; }
 .shuffle-btn {
     position: fixed; bottom: 30px; right: 250px; padding: 8px 16px;
@@ -917,7 +871,7 @@ body.mobile-mode {
     z-index: 1000; cursor: pointer; appearance: none;
     transition: background 0.2s ease, box-shadow 0.2s ease;
 }
-.shuffle-btn:hover { background: rgba(255, 107, 53, 0.25); box-shadow: 0 0 12px rgba(255, 107, 53, 0.4); }
+.shuffle-btn:hover { background: rgba(255, 107, 53, 0.25); }
 .shuffle-btn:active { transform: scale(0.95); }
 .shuffle-btn:focus-visible { outline: 2px solid var(--neon-orange, #ff6b35); outline-offset: 2px; }
 .portfolio-stats-overlay {
@@ -928,7 +882,6 @@ body.mobile-mode {
     position: relative; background: rgba(18, 13, 10, 0.95);
     border: 1px solid var(--neon-purple, #e85d34); border-radius: 12px;
     padding: 32px; max-width: 420px; width: 90%; text-align: center;
-    box-shadow: 0 0 40px rgba(232, 93, 52, 0.3);
 }
 .portfolio-stats-close {
     position: absolute; top: 10px; right: 14px; background: none; border: none;

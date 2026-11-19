@@ -93,7 +93,6 @@
 .theater-nav-btn:hover {
   background: rgba(74, 124, 255, 0.15);
   border-color: rgba(74, 124, 255, 0.6);
-  box-shadow: 0 0 20px rgba(74, 124, 255, 0.3);
   transform: scale(1.1);
 }
 
@@ -107,7 +106,6 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  text-shadow: 0 0 30px currentColor;
   text-align: center;
   flex: 1;
   min-width: 0;
@@ -120,8 +118,6 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow:
-    0 0 60px rgba(0, 0, 0, 0.8),
-    0 0 30px currentColor,
     inset 0 0 30px rgba(0, 0, 0, 0.5);
   position: relative;
 }

@@ -58,7 +58,6 @@
     rgba(74, 124, 255, 0) 92%,
     transparent 100%
   );
-  box-shadow: 0 0 12px rgba(74, 124, 255, 0.4);
   animation: hubikin-line-draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
 }
 

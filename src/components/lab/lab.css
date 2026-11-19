@@ -206,10 +206,7 @@ body.lab-body { background: #08080a; }
     background: var(--rec);
     border-color: var(--rec);
     color: #fff;
-    animation: lab-pulse 1.3s ease-in-out infinite;
 }
-
-@keyframes lab-pulse { 50% { opacity: 0.66; } }
 
 .lab-chip--hue { display: inline-flex; align-items: center; gap: 7px; }
 
@@ -547,7 +544,7 @@ body.lab-body { background: #08080a; }
 
 .lab-pad__key.is-lit {
     transform: scale(0.955);
-    box-shadow: 0 0 0 2px var(--amber) inset, 0 0 26px rgba(255, 165, 31, 0.4);
+    box-shadow: 0 0 0 2px var(--amber) inset;
 }
 
 .lab-pad__key.is-lit img { filter: saturate(1.1) brightness(1); }

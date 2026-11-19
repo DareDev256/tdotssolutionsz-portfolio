@@ -92,7 +92,6 @@ function NotFoundPage() {
             <div style={{
                 fontFamily: "'Orbitron', monospace", fontSize: '5rem', fontWeight: 900,
                 color: '#ff8f5e',
-                textShadow: '0 0 20px rgba(255, 143, 94, 0.6), 0 0 60px rgba(255, 143, 94, 0.3)',
                 animation: 'loading-blink 1.5s ease-in-out infinite'
             }}>404</div>
             <p style={{

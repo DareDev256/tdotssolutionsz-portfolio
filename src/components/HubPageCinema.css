@@ -479,7 +479,6 @@ video.cinema-browser-clip--site { object-position: top center; }
   transform: scale(1.04);
   background: #4a7cff;
   border-color: #4a7cff;
-  box-shadow: 0 0 50px rgba(74, 124, 255, 0.4);
 }
 
 .cinema-footer {
