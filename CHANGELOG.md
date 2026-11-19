@@ -1,5 +1,9 @@
 # Changelog
 
+## [6.19.3] - 2026-11-19 · /sites/ no longer scrolls sideways on phones
+
+- `/sites/` was 438px wide on a 390px phone: every `.reveal` heading waits 64px to the right until it slides in, so an unrevealed heading pushed the page wider. `html,body{overflow-x:clip}` keeps the slide and stops the sideways scroll; `clip` (not `hidden`) leaves the pinned WhatsApp stage sticky.
+
 ## [6.19.1] - 2026-11-19 · Zero marquees
 
 - **Why:** James banned scrolling marquees, tickers and looping rails on every site ("ultimate ai slop tell"). `slop-lint --bans-only` found them here.
