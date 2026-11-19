@@ -105,16 +105,16 @@ footer a{color:#ddd;text-decoration:none}
 .msg u{text-decoration-color:currentColor}
 .phone__input{display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid #222;color:#555;font-size:14px}
 .phone__input i{width:2px;height:16px;background:var(--signal);animation:blink 1s steps(2) infinite}
-.who{padding:clamp(56px,8vw,96px) 0 clamp(48px,7vw,88px);border-top:1px solid var(--line);overflow:hidden}
-.marquee{margin:22px 0 28px;white-space:nowrap;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.marquee__track{display:inline-flex;gap:0;animation:run 42s linear infinite;will-change:transform}
-.marquee__track span{font-family:Anton,Impact,sans-serif;text-transform:uppercase;font-size:clamp(56px,9vw,132px);line-height:1;padding:0 .35em;color:#fff}
-.marquee__track span:nth-child(odd){color:transparent;-webkit-text-stroke:2px #fff}
-.marquee__track span:nth-child(6n+3){color:var(--signal);-webkit-text-stroke:0}
-@keyframes run{to{transform:translateX(-50%)}}
+.who{padding:clamp(56px,8vw,96px) 0 clamp(48px,7vw,88px);border-top:1px solid var(--line)}
+.roll{display:flex;flex-wrap:wrap;gap:6px 0;margin:22px auto 28px;padding:0 var(--gutter);list-style:none}
+.roll li{display:block}
+.roll a{display:block;font-family:Anton,Impact,sans-serif;text-transform:uppercase;font-size:clamp(40px,7vw,104px);line-height:1;padding:0 .35em 0 0;color:#fff;text-decoration:none}
+.roll li:nth-child(odd) a{color:transparent;-webkit-text-stroke:2px #fff}
+.roll li:nth-child(6n+3) a{color:var(--signal);-webkit-text-stroke:0}
+.roll a:hover,.roll a:focus-visible{color:var(--signal);-webkit-text-stroke:0}
 .who__line{max-width:60ch;color:#d6d6d6;font-size:clamp(16px,1.4vw,19px)}
 @media (max-width:860px){.stage__grid{grid-template-columns:1fr;gap:20px;align-content:start;padding-top:72px}.stage__copy h2{font-size:34px}.stage__copy .lede{display:none}.beats{margin-top:14px}.beats li{padding:8px 0;font-size:14px}.phone{height:min(440px,52svh);justify-self:stretch;max-width:none}.msg{font-size:13.5px}}
-@media (prefers-reduced-motion:reduce){.reveal,.reveal-stagger>*{opacity:1;transform:none;filter:none;transition:none}.marquee__track{animation:none}.msg{display:block;animation:none}.beats li{color:#fff}.beats li b{color:var(--signal)}.stage{position:static;height:auto;padding:64px 0}.act{height:auto!important}}
+@media (prefers-reduced-motion:reduce){.reveal,.reveal-stagger>*{opacity:1;transform:none;filter:none;transition:none}.msg{display:block;animation:none}.beats li{color:#fff}.beats li b{color:var(--signal)}.stage{position:static;height:auto;padding:64px 0}.act{height:auto!important}}
 /* ---- bencho blocks: tilt card + slide to confirm (see /sites/blocks.js) ---- */
 .tlt{position:relative}
 .tlt-card{position:relative;transform-style:preserve-3d}
@@ -224,10 +224,20 @@ footer a{color:#ddd;text-decoration:none}
 
 <section class="who" aria-label="Who this is for">
   <p class="mono wrap">Who this is for</p>
-  <div class="marquee" aria-hidden="true"><div class="marquee__track">
-    <span>Braiders</span><span>Barbers</span><span>Lash techs</span><span>Nail techs</span><span>Drivers</span><span>Tours</span><span>Movers</span><span>Detailers</span><span>Cleaners</span><span>Contractors</span><span>Tattoo artists</span><span>Trainers</span>
-    <span>Braiders</span><span>Barbers</span><span>Lash techs</span><span>Nail techs</span><span>Drivers</span><span>Tours</span><span>Movers</span><span>Detailers</span><span>Cleaners</span><span>Contractors</span><span>Tattoo artists</span><span>Trainers</span>
-  </div></div>
+  <ul class="roll wrap">
+    <li><a href="https://shairbraiding.com" target="_blank" rel="noopener">Braiders</a></li>
+    <li><a href="#offer">Barbers</a></li>
+    <li><a href="#offer">Lash techs</a></li>
+    <li><a href="#offer">Nail techs</a></li>
+    <li><a href="https://baliwhisper.com" target="_blank" rel="noopener">Drivers</a></li>
+    <li><a href="https://lodiieharmonytour.com" target="_blank" rel="noopener">Tours</a></li>
+    <li><a href="#offer">Movers</a></li>
+    <li><a href="#offer">Detailers</a></li>
+    <li><a href="#offer">Cleaners</a></li>
+    <li><a href="https://nirvanadeshaunbuilds.com" target="_blank" rel="noopener">Contractors</a></li>
+    <li><a href="#offer">Tattoo artists</a></li>
+    <li><a href="#offer">Trainers</a></li>
+  </ul>
   <p class="wrap who__line">If your customers already find you on Instagram, this is the next step. If you book by DM today, you book by WhatsApp with a site behind it tomorrow.</p>
 </section>
 

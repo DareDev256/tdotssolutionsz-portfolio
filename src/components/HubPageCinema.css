@@ -571,31 +571,6 @@ video.cinema-browser-clip--site { object-position: top center; }
   margin-right: 0.18em;
 }
 
-/* Hero wordmark: a slow specular sweep, as if a light were passing the letters.
-   Masked to the text itself so it never becomes a rectangle crossing the page. */
-.cinema-hero-title {
-  position: relative;
-}
-
-.cinema-hero-title .cinema-letter {
-  background-image: linear-gradient(
-    100deg,
-    #fff 0%, #fff 38%,
-    rgba(255, 255, 255, 0.62) 48%,
-    #fff 58%, #fff 100%
-  );
-  background-size: 260% 100%;
-  background-position: 130% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: cinema-sheen 7s ease-in-out infinite;
-}
-
-@keyframes cinema-sheen {
-  0%, 62% { background-position: 130% 0; }
-  86%, 100% { background-position: -30% 0; }
-}
-
 /* Per-letter lift on hover — the wordmark becomes something you can touch. */
 .cinema-hero-title .cinema-letter {
   display: inline-block;
@@ -688,7 +663,6 @@ video.cinema-browser-clip--site { object-position: top center; }
 .cinema-cta-btn:hover::after { transform: translateX(100%); }
 
 @media (prefers-reduced-motion: reduce) {
-  .cinema-hero-title .cinema-letter { animation: none; background-image: none; }
   .cinema-frame:hover,
   .cinema-browser:hover { transform: none; }
   .cinema-cta-btn::after { display: none; }
@@ -710,22 +684,17 @@ video.cinema-browser-clip--site { object-position: top center; }
   .cinema-rails { display: block; position: absolute; inset: 0; z-index: 5; pointer-events: none; }
   .cinema-rail {
     position: absolute; left: 0; right: 0; top: 11%;
-    overflow: hidden; pointer-events: auto; padding: 24px 0 48px; margin: -24px 0 -48px;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-            mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    overflow-x: auto; overflow-y: hidden; pointer-events: auto; padding: 24px 0 48px; margin: -24px 0 -48px;
+    scroll-snap-type: x mandatory; scrollbar-width: none;
   }
+  .cinema-rail::-webkit-scrollbar { display: none; }
   .cinema-rail--low { top: auto; bottom: 108px; }
   .cinema-rail-track {
-    display: flex; width: max-content;
-    animation: cinema-rail calc(var(--rail-n, 6) * 6s) linear infinite;
+    display: flex; width: max-content; padding-left: 16px;
   }
-  .cinema-rail-track--rev { animation-direction: reverse; }
-  .cinema-rail:hover .cinema-rail-track,
-  .cinema-rail:active .cinema-rail-track,
-  .cinema-rail:focus-within .cinema-rail-track { animation-play-state: paused; }
 
   .cinema-rail-site {
-    position: relative; flex: none; margin-right: 12px; display: block;
+    position: relative; flex: none; margin-right: 12px; display: block; scroll-snap-align: start;
     border-radius: 8px; overflow: hidden; color: #fff; text-decoration: none;
     box-shadow: 0 12px 26px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.12);
     background: #111;
@@ -737,15 +706,6 @@ video.cinema-browser-clip--site { object-position: top center; }
   .cinema-rail-site .cinema-browser-body { height: calc(100% - 22px); }
   .cinema-rail-site--game { box-shadow: 0 12px 26px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,40,72,0.6); }
   .cinema-rail-site .cinema-browser-tag { font-size: 8px; padding: 2px 5px; }
-}
-
-@keyframes cinema-rail { to { transform: translateX(-50%); } }
-
-@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
-  .cinema-rail { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-mask-image: none; mask-image: none; }
-  .cinema-rail-track { animation: none; padding-left: 16px; }
-  .cinema-rail-track > [aria-hidden="true"] { display: none; }
-  .cinema-rail-site { scroll-snap-align: start; }
 }
 
 /* ============================================

@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.19.1] - 2026-11-19 · Zero marquees
+
+- **Why:** James banned scrolling marquees, tickers and looping rails on every site ("ultimate ai slop tell"). `slop-lint --bans-only` found them here.
+- **/sites/:** the "Who this is for" marquee (12 trades scrolling forever) is now a still roll call: the same 12 names in the same Anton outline/solid/signal rhythm, wrapped. Braiders, Drivers, Tours and Contractors link to the live site that is their example (ShairBraiding, Bali Whisper, Lodiie Harmony Tour, NirvanaDeshaun Builds); the rest link to `#offer`.
+- **Hub `/` phone rails:** the two auto-drifting rows of site tiles (under 768px) are now still rows the visitor swipes (scroll-snap), no duplicate copy, no drift. Every tile still links to its live site.
+- **Hub wordmark:** the white-on-white "sheen" gradient-text sweep is gone; the letters are solid white.
+- **Left alone:** `ArtistShowcase.*` and `FilmStrip.css` still contain a ticker and a scroll loop but nothing imports them (not in the build); delete them in a later pass.
+
 ## [6.19.0] — 2026-11-02 · The studio is readable without JavaScript
 
 - **Why:** AI search crawlers (ChatGPT, Claude, Perplexity) read only the served HTML and never run JS. `seo-geo-audit` measured 58 words in tdotssolutionsz.com's served document on 2026-11-01, so an AI answer could not say what the studio does.

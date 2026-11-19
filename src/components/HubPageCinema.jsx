@@ -87,18 +87,14 @@ function setMonitorsPlaying(on) {
 }
 
 /**
- * Phone rail: one row that drifts sideways forever. The track holds the list
- * twice and slides by exactly half its width, so the loop has no seam. The
- * second copy is aria-hidden and out of the tab order; touch or hover pauses
- * the drift so a tile can be read and tapped. Reduced motion gets a plain
- * swipeable row instead (CSS).
+ * Phone rail: one still row of site tiles the visitor swipes themselves. No
+ * drift, no looping; each tile is a link to its live site.
  */
 function Rail({ items, render, label, reverse = false, low = false }) {
   return (
     <div className={`cinema-rail${low ? ' cinema-rail--low' : ''}`} role="list" aria-label={label}>
-      <div className={`cinema-rail-track${reverse ? ' cinema-rail-track--rev' : ''}`} style={{ '--rail-n': items.length }}>
-        {items.map((it) => render(it, false))}
-        {items.map((it) => render(it, true))}
+      <div className={`cinema-rail-track${reverse ? ' cinema-rail-track--rev' : ''}`}>
+        {items.map((it) => render(it))}
       </div>
     </div>
   )
@@ -168,12 +164,12 @@ function stopClips() {
   clipState.seen.clear()
 }
 
-const renderSite = (project, clone) => (
-  <a key={(clone ? 'c-' : '') + project.name} href={project.url} target="_blank" rel="noopener noreferrer"
-     className={`cinema-rail-site${project.tag ? ' cinema-rail-site--game' : ''}`} role="listitem" aria-hidden={clone || undefined} tabIndex={clone ? -1 : undefined}>
+const renderSite = (project) => (
+  <a key={project.name} href={project.url} target="_blank" rel="noopener noreferrer"
+     className={`cinema-rail-site${project.tag ? ' cinema-rail-site--game' : ''}`} role="listitem">
     <BrowserChrome project={project} />
     <div className="cinema-browser-body">
-      <BrowserShot project={project} alt={clone ? '' : project.name} lazy />
+      <BrowserShot project={project} alt={project.name} lazy />
     </div>
   </a>
 )
